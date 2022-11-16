@@ -1,0 +1,10 @@
+<link rel="stylesheet" href="{{ asset('assets/web/css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/web/css/jquery-ui.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/web/css/icofont.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/web/css/animate.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/web/css/owl.carousel.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/web/css/magnific-popup.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/web/css/owl.theme.default.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/web/css/style.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/web/css/responsive.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/web/css/dark-style.css') }}">

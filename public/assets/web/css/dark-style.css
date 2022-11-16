@@ -1,0 +1,188 @@
+/* Theme Dark CSS */
+.theme-dark body {
+    background-color: #000;
+    color: #fff;
+}
+.theme-dark p {
+    color: #cacaca;
+}
+.theme-dark a {
+    color: #fff;
+}
+.theme-dark .h1, .theme-dark .h2, .theme-dark .h3, .theme-dark .h4, .theme-dark .h5, .theme-dark .h6, .theme-dark h1, .theme-dark h2, .theme-dark h3, .theme-dark h4, .theme-dark h5, .theme-dark h6 {
+    color: #fff;
+}
+.theme-dark .btn {
+    color: #fff;
+    border-color: #000;
+}
+.theme-dark .appointment-btn {
+    color: #0075ff;
+}
+.theme-dark .appointment-btn:hover {
+    color: #fff;
+}
+.theme-dark .btn:hover {
+    color: #007aff;
+    border-color: #007aff;
+}
+.theme-dark .btn.focus, .theme-dark .btn:focus {
+    color: #007aff;
+    border-color: #007aff;
+}
+.theme-dark .btn.disabled, .theme-dark .btn:disabled, .theme-dark fieldset:disabled .btn {
+    color: #fff;
+    background-color: #007aff;
+    border-color: #007aff;
+}
+.theme-dark .btn.disabled:hover, .theme-dark .btn:disabled, .theme-dark fieldset:disabled .btn:hover {
+    color: #000;
+}
+.theme-dark .navbar-light.is-sticky {
+    background: rgba(18, 18, 18, 0.7) !important;
+    backdrop-filter: blur(20px);
+}
+.theme-dark .navbar-light.navbar-expand-lg .navbar-nav li a {
+    color: #fff;
+}
+.theme-dark .navbar-brand img {
+    filter: brightness(5);
+}
+.theme-dark .navbar.navbar-two {
+    background: #000 !important;
+}
+.theme-dark .main-banner::before {
+    filter: invert(1);
+}
+.theme-dark .single-box {
+    background: #222;
+}
+.theme-dark .bg-f9faff {
+    background: #111111;
+}
+.theme-dark .why-choose-us .section-title span::before {
+    background: #fff;
+}
+.theme-dark .why-choose-us-text ul li {
+    color: #cacaca;
+}
+.theme-dark .who-we-are .section-title span::before {
+    background: #fff;
+}
+.theme-dark .member-info p {
+    color: #fff;
+}
+.theme-dark .tabs li a {
+    background: #222;
+    color: #fff;
+}
+.theme-dark .tabs_item {
+    background-color: #222;
+}
+.theme-dark .tabs_item_content ul li {
+    color: #cacaca;
+}
+.theme-dark .appointment-area .section-title span::before {
+    background: #fff;
+}
+.theme-dark .accordion .accordion-item {
+    border-color: #000;
+}
+.theme-dark .accordion .accordion-title {
+    border-color: #000;
+}
+.theme-dark .accordion .accordion-content {
+    background: #222;
+}
+.theme-dark .single-services {
+    background: #222;
+}
+.theme-dark .shorting-menu .filter {
+    background-color: #222;
+    color: #fff;
+}
+.theme-dark .pricing-table {
+    background: #222;
+}
+.theme-dark .pricing-table .pricing-header {
+    background: #222;
+    border-color: rgba(255, 255, 255, .10);
+}
+.theme-dark .pricing-features ul li {
+    color: #fff;
+}
+.theme-dark .single-feedback {
+    background: #222;
+}
+.theme-dark .single-blog-post .post-content h4 a {
+    color: #fff;
+}
+.theme-dark .contact-box {
+    background: #222;
+}
+.theme-dark .contact-box ul li {
+    color: #fff;
+}
+.theme-dark .get-in-touch ul li a {
+    color: #fff;
+}
+.theme-dark .contact-box h3, .theme-dark .contact-box h3 i, .theme-dark .contact-box p a, .theme-dark .contact-box ul li {
+    color: #fff;
+}
+.theme-dark .get-in-touch h3 {
+    border-color: rgba(255, 255, 255, .10);
+}
+.theme-dark .form-control {
+    color: rgb(255, 255, 255);
+    border-color: rgba(255, 255, 255, .10);
+}
+.theme-dark .form-control::placeholder {
+    color: rgb(255, 255, 255);
+}
+.theme-dark .footer-area ul li::before {
+    background: #fff;
+}
+.theme-dark .footer-area ul li a {
+    color: #fff;
+}
+.theme-dark .footer-area p {
+    color: #fff;
+}
+.theme-dark .page-link {
+    background-color: #111111;
+    box-shadow: unset;
+}
+.theme-dark .page-link:hover {
+    background-color: #0075ff;
+}
+.theme-dark .blog-details-heading ul li {
+    color: #fff;
+}
+.theme-dark .blog-details-meta {
+    border-color: rgba(255, 255, 255, .10);
+}
+.theme-dark .blog-details-meta ul .title {
+    color: #fff;
+}
+.theme-dark .blog-details-meta .tags li a {
+    color: #fff;
+    border-color: rgba(255, 255, 255, .10);
+}
+.theme-dark .blog-details-meta .share li a {
+    color: #fff;
+    border-color: rgba(255, 255, 255, .10);
+}
+.theme-dark .blog-details-comments .single-comments .content span {
+    color: #fff;
+}
+.theme-dark .blog-details-comments .border {
+    border-color: rgb(255, 255, 255, .10) !important;
+}
+@media only screen and (max-width: 767px){
+    .navbar {
+        background: rgb(0, 0, 0) !important;
+    }
+    .hero-content p {
+        color: #fff;
+    }
+}
