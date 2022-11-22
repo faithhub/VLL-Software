@@ -23,6 +23,32 @@
     </section>
     <!-- End Boxes Area -->
 
+
+    <!-- Start Why Choose Us Area -->
+    @isset($materials)
+        <section id="about" class="why-choose-us ptb-100 bg-f9faff">
+            <div class="container">
+                <div class="row">
+                    @foreach ($materials as $material)
+                        <div class="col-lg-4 col-md-4 mb-5">
+                            <div class="image">
+                                <a href="{{ $material->link }}">
+                                    <img src="{{ $material->img }}" alt="{{ $material->title }}">
+                                </a>
+                            </div>
+                            <div class="mat-title">
+                                <a href="{{ $material->link }}">
+                                    <h4>{{ $material->title }}</h4>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endisset
+    <!-- End Why Choose Us Area -->
+
     <!-- Start Why Choose Us Area -->
     <section id="about" class="why-choose-us ptb-100 bg-f9faff">
         <div class="container">

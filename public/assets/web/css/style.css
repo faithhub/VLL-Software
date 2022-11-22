@@ -19,6 +19,55 @@ p {
     font-size: 14px;
     line-height: 1.8;
 }
+.nav-tab-btn {
+    font-family: inherit;
+    background: transparent;
+    color: #3b566e !important;
+    font-weight: 800 !important;
+}
+
+.outerdiv {
+    border-bottom: 3px #f0f4f9 solid;
+    cursor: pointer !important;
+}
+.outerdiv-active {
+    border-bottom: 3px #3b566e solid;
+    cursor: pointer !important;
+}
+
+.sign-up-form-btn {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: #fff !important;
+    background: #1d3557 !important;
+    border: #1d3557 !important;
+    border-radius: 5px;
+}
+.sign-up-google-form-btn img {
+    max-height: 1rem !important;
+    width: auto;
+    margin-right: 15px;
+}
+.sign-up-google-form-btn {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: #1d3557 !important;
+    border: #1d3557 solid !important;
+    background: #fff !important;
+    border-radius: 5px;
+}
+.user-form-a:hover {
+    color: #1d3557;
+}
+.user-form-a {
+    display: contents !important;
+    color: #1d3557;
+    font-weight: 800;
+}
+.user-form-text {
+    font-size: 12px;
+}
+
 .bg-f9faff {
     background: #f9faff;
 }
@@ -75,6 +124,20 @@ button {
 .sub-btn:hover {
     color: #1d3557;
     background-color: #fff;
+}
+.form-check-input:checked {
+    background-color: #1d3557;
+    border-color: #1d3557;
+}
+
+.form-check-label p {
+    font-size: 12px;
+}
+
+.form-check-label p a,
+.legal-article form .text-center a {
+    color: #1d3557;
+    font-weight: 800;
 }
 
 .gt-btn {
@@ -156,8 +219,8 @@ button {
 .btn:disabled,
 fieldset:disabled .btn {
     color: #fff;
-    background-color: #007aff;
-    border-color: #007aff;
+    /* background-color: #007aff;
+    border-color: #007aff; */
 }
 .btn.disabled:hover,
 .btn:disabled,
@@ -1130,9 +1193,9 @@ fieldset:disabled .btn:hover {
     color: #92a5b8;
 }
 .appointment-form form .btn {
-    border: 1px solid #fff;
+    /* border: 1px solid #fff;
     margin-top: 5px;
-    color: #0075ff;
+    color: #0075ff; */
 }
 .appointment-form form .btn:hover {
     color: #fff;
@@ -1831,7 +1894,7 @@ fieldset:disabled .btn:hover {
     background: #fff;
 }
 #contactForm .btn {
-    margin-top: 10px;
+    /* margin-top: 10px; */
 }
 #contactForm .list-unstyled {
     padding: 0;
@@ -2126,4 +2189,33 @@ fieldset:disabled .btn:hover {
 }
 textarea.form-control {
     min-height: 125px;
+}
+
+.parsley-errors-list {
+    list-style-type: none !important;
+    padding-left: 2px !important;
+    color: red !important;
+    letter-spacing: 2px !important;
+    font-weight: 600 !important;
+}
+.parsley-errors-list l {
+    color: red !important;
+    letter-spacing: 2px !important;
+}
+.invalid-feedback {
+    color: red !important;
+    letter-spacing: 2px !important;
+    display: block !important;
+}
+
+.mat-title {
+    padding: 5px;
+    text-align: left;
+}
+
+.mat-title h4 {
+    font-size: 20px;
+    font-weight: 700;
+    padding-top: 10px;
+    color: black;
 }

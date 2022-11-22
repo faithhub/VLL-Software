@@ -28,7 +28,7 @@
                       </div>
                   </div>
                   <ul class="mt-4">
-                      <li><a href="">Privacy policies</a></li>
+                      <li><a target="blank" href="{{ route('privacy') }}">Privacy policies</a></li>
                   </ul>
               </div>
           </div>
