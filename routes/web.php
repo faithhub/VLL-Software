@@ -45,7 +45,7 @@ Route::prefix('user')->name('user.')->group(function () {
 });
 
 //Vendor
-Route::prefix('vender')->name('vender.')->group(function () {
+Route::prefix('vendor')->name('vender.')->group(function () {
     Route::group(['middleware' => ['vendor']], function () {
         Route::get('/',  [App\Http\Controllers\Dashboard\VendorController::class, 'index'])->name('index');
     });

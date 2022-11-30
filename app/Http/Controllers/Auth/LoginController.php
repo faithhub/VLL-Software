@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -36,5 +37,20 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function redirectTo()
+    {
+        $role = Auth::user()->role;
+        switch ($role) {
+            case "admin":
+                return '/admin';
+            case "vendor":
+                return '/vendor';
+            case "user":
+                return '/user';
+            default:
+                return '/login';
+        }
     }
 }
