@@ -35030,7 +35030,16 @@ a.icon:hover {
     width: 100%;
     border: 1px solid transparent;
     box-shadow: 0 0.76rem 1.52rem rgba(18, 38, 63, 0.03);
-    border-radius: 0.3rem;
+    border-radius: 0.8rem;
+}
+
+.text-card{
+    background-color: #1D3557;
+    colour: white !important;
+}
+.card-margin{
+    padding-left: 10px !important;
+    padding-right: 10px !important;
 }
 
 .card>hr {

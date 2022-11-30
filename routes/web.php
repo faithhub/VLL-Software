@@ -37,6 +37,23 @@ Route::prefix('google')->name('google.')->group(function () {
     Route::any('callback2',  [App\Http\Controllers\Auth\GoogleController::class,  'callbackFromGoogle2'])->name('callback2');
 });
 
+//User
 Route::prefix('user')->name('user.')->group(function () {
-    Route::get('/',  [App\Http\Controllers\Dashboard\UserController::class, 'index'])->name('index');
+    Route::group(['middleware' => ['user']], function () {
+        Route::get('/',  [App\Http\Controllers\Dashboard\UserController::class, 'index'])->name('index');
+    });
+});
+
+//Vendor
+Route::prefix('vender')->name('vender.')->group(function () {
+    Route::group(['middleware' => ['vendor']], function () {
+        Route::get('/',  [App\Http\Controllers\Dashboard\VendorController::class, 'index'])->name('index');
+    });
+});
+
+//Admin
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::group(['middleware' => ['user']], function () {
+        Route::get('/',  [App\Http\Controllers\Dashboard\AdminController::class, 'index'])->name('index');
+    });
 });

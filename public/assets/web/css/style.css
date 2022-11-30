@@ -4,6 +4,7 @@ body {
     padding: 0;
     margin: 0;
     font-family: "Nunito", sans-serif;
+    background: #e5e7ee !important
 }
 img {
     max-width: 100%;
@@ -546,6 +547,7 @@ fieldset:disabled .btn:hover {
     position: relative;
     /* background: #fff !important; */
     background: #f9faff !important;
+    background: #e5e7ee !important
 }
 .navbar.navbar-two.is-sticky {
     position: fixed;
