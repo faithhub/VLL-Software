@@ -45,6 +45,9 @@
     img {
         width: 100%;
     }
+    .logo {
+        max-width: 25%;
+    }
     .navbar {
         position: relative;
         background: #fff !important;
@@ -686,5 +689,30 @@
     }
     .contact-box {
         padding: 30px 15px;
+    }
+}
+@media (min-width: 1400px) {
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl,
+    .container-xxl {
+        max-width: 1450px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .navbar-light .sign-up-btn,
+    .navbar-light .login-btn {
+        font-size: 16px !important;
+        font-weight: 500;
+        color: #1d3557 !important;
+        border: 0px !important;
+        background: transparent !important;
+        padding: 10px 4px 1px 10px !important;
+        border-radius: 0px !important;
+        font-style: normal;
+        line-height: 19px;
     }
 }

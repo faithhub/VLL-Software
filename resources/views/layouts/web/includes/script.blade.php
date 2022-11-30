@@ -12,12 +12,6 @@
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script> --}}
 
 <script type="text/javascript">
-    // $('.selectpicker').selectpicker('val', 'Mustard');
-    // $('.selectpicker').selectpicker();
-    // $('.selectpicker').selectpicker('val', 'All');
-    // $(function() {
-    //     $('select').selectpicker();
-    // });
     window.Parsley.addValidator("requiredIf", {
         validateString: function(value, requirement) {
             if (jQuery(requirement).val()) {
@@ -30,12 +24,51 @@
         priority: 33
     })
 
+
+    function viewPassword(data) {
+        try {
+            var p = $(data).closest("div.mb-3").find("input[name=password]");
+            var cp = $(data).closest("div.mb-3").find("input[name=password_confirmation]");
+            var v = null;
+            console.log(p, cp, v);
+            if (p.length > 0) {
+                v = p;
+            } else if (cp.length > 0) {
+                v = cp;
+            } else {
+                return false
+            }
+
+            if (v[0].name == "password" || v[0].name == "password_confirmation") {
+                const password = document.querySelector('#' + v[0].id);
+                const type = password.getAttribute('type');
+                switch (type) {
+                    case 'password':
+                        $('#' + v[0].id).get(0).type = 'text';
+                        $(data).addClass('fa-eye-slash');
+                        break;
+                    case 'text':
+                        $('#' + v[0].id).get(0).type = 'password';
+                        $(data).removeClass('fa-eye-slash');
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
     function checkUniversities(data) {
         if (data.name == "type" && data.value == "student") {
             // document.getElementById("universities_id").style.display = "block"
             document.getElementById("universities").required = true;
             document.getElementById("universities").removeAttribute("disabled");
         } else if (data.name == "type" && data.value == "professionals") {
+            reset = document.getElementById("universities");
+            reset.selectedIndex = -1;
             document.getElementById("universities").required = false;
             // document.getElementById("universities_id").style.display = "none"
             document.getElementById("universities").setAttribute("disabled", "disabled");

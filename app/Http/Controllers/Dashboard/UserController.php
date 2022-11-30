@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Http\Controllers\Dashboard;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class UserController extends Controller
+{
+    public function index()
+    {
+        # code...
+        try {
+            //code...
+            $data['title'] = "User Dashboard";
+            return View('dashboard.user.index', $data);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+}

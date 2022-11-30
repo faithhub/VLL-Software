@@ -11,6 +11,9 @@
     <!-- Link of CSS files -->
     @include('layouts.web.includes.style')
 
+    <!-- Alert -->
+    @include('layouts.web.includes.alert')
+
     <title>VLL - {{ $title ?? '' }}</title>
 </head>
 

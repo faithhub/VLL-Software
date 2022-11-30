@@ -3,7 +3,7 @@
     <!-- Start Boxes Area -->
     <section class="home ptb-100">
         <div class="container">
-            <div class="row">
+            <div class="row align-items-center vll-wel-sec">
                 <div class="col-lg-12 col-md-12">
                     <div class="section-title">
                         <h2 class="single-box-h2">Welcome To The Virtual Library</h2>
@@ -30,7 +30,7 @@
             <div class="container">
                 <div class="row">
                     @foreach ($materials as $material)
-                        <div class="col-lg-4 col-md-4 mb-5">
+                        <div class="col-lg-4 col-md-4 mb-5 justify-content-center">
                             <div class="image">
                                 <a href="{{ $material->link }}">
                                     <img src="{{ $material->img }}" alt="{{ $material->title }}">

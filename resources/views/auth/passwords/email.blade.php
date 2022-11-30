@@ -7,14 +7,14 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-12">
                     <div class="row about-image">
-                        <div class="col-12 col-lg-12 col-md-6">
+                        <div class="col-12 col-lg-12 col-md-12 d-none d-md-block">
                             <div class="image">
                                 <img src="{{ asset('assets/web/img/login.png') }}" alt="about">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12">
+                <div class="col-lg-6 col-md-12 ptb-100">
                     <div class="legal-article">
                         <div class="section-title mb-4">
                             <h3 class="single-box-h2">{{ __('Reset Password') }}</h3>

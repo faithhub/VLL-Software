@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -51,6 +52,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         if ($data['form_type'] == "vendor") {
+            Session::flash('warning', __('All fields are required'));
             return Validator::make($data, [
                 'name' => ['required', 'string', 'max:255'],
                 'type' => ['required', 'string', 'max:255'],
@@ -60,6 +62,7 @@ class RegisterController extends Controller
         }
 
         if ($data['form_type'] == "user") {
+            Session::flash('warning', __('All fields are required'));
             return Validator::make($data, [
                 'name' => ['required', 'string', 'max:255'],
                 'type' => ['required', 'string', 'max:255'],
@@ -79,47 +82,29 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return back();
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-    }
+        // dd($data);
+        // return back();
+        if ($data['form_type'] == "user") {
+            # code...
+            return User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'role' => $data['form_type'],
+                'user_type' => $data['type'],
+                'universities' => $data['universities'] ?? null,
+                'password' => Hash::make($data['password']),
+            ]);
+        }
 
-    public function vendor(Request $request)
-    {
-        # code...
-        try {
-            $data['form_type'] = 'vendor';
-            //code...
-            if ($_POST) {
-                $rules = array(
-                    'name_v' => ['required', 'string', 'max:255'],
-                    'type_v' => ['required', 'string', 'max:255'],
-                    'email_v' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                    'password_v' => ['required', 'string', 'min:8', 'confirmed'],
-                );
-
-                $messages = [
-                    'name_v.required' => __('The name is required'),
-                    'type_v.required' => __('The type is required'),
-                    'email_v.required' => __('The emal is required'),
-                    'password_v.required' => __('The password is required')
-                ];
-
-                $validator = Validator::make($request->all(), $rules, $messages);
-
-                if ($validator->fails()) {
-                    Session::flash('warning', __('All fields are required'));
-                    return back()->withErrors($validator)->withInput();
-                }
-            }
-
-            return redirect('register');
-            return view('auth.register');
-        } catch (\Throwable $th) {
-            //throw $th;
+        if ($data['form_type'] == "vendor") {
+            return User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'role' => $data['form_type'],
+                'vendor_type' => $data['type'],
+                'universities' => $data['universities'] ?? null,
+                'password' => Hash::make($data['password']),
+            ]);
         }
     }
 }

@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('home', function () {
+    return view('home');
+});
 Route::get('/', function () {
     return view('welcome');
 });
@@ -31,4 +34,9 @@ Route::get('privacy', [App\Http\Controllers\Web\HomeController::class, 'privacy'
 Route::prefix('google')->name('google.')->group(function () {
     Route::get('login',  [App\Http\Controllers\Auth\GoogleController::class, 'loginWithGoogle'])->name('login');
     Route::any('callback',  [App\Http\Controllers\Auth\GoogleController::class,  'callbackFromGoogle'])->name('callback');
+    Route::any('callback2',  [App\Http\Controllers\Auth\GoogleController::class,  'callbackFromGoogle2'])->name('callback2');
+});
+
+Route::prefix('user')->name('user.')->group(function () {
+    Route::get('/',  [App\Http\Controllers\Dashboard\UserController::class, 'index'])->name('index');
 });

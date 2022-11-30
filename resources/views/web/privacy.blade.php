@@ -1,7 +1,7 @@
 @extends('layouts/web/app')
 @section('content')
     <!-- Start Boxes Area -->
-    <section class="home ptb-50">
+    <section class="home ptb-50 privacy">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 col-md-12">
@@ -22,7 +22,7 @@
 
 
     <!-- Start Fun Facts Area -->
-    <section class="fun-facts-area ptb-100"
+    {{-- <section class="fun-facts-area ptb-100"
         style="background-image: linear-gradient(rgba(57, 81, 133, 0.04) 0.28%, #395185 99.67%), url('{{ asset('assets/web/img/team.png') }}')">
         <div class="team-text">
             <div class="container">
@@ -37,6 +37,6 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
     <!-- End Fun Facts Area -->
 @endsection
