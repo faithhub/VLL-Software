@@ -39,21 +39,32 @@ Route::prefix('google')->name('google.')->group(function () {
 
 //User
 Route::prefix('user')->name('user.')->group(function () {
-    Route::group(['middleware' => ['user']], function () {
+    Route::group(['middleware' => ['user', 'auth']], function () {
         Route::get('/',  [App\Http\Controllers\Dashboard\UserController::class, 'index'])->name('index');
+        Route::get('library',  [App\Http\Controllers\Dashboard\UserController::class, 'library'])->name('library');
+        Route::get('transactions',  [App\Http\Controllers\Dashboard\UserController::class, 'transactions'])->name('transactions');
+        Route::get('view/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'view_material'])->name('view');
+        Route::get('summary/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'summary_material'])->name('summary');
+        Route::get('help',  [App\Http\Controllers\Dashboard\UserController::class, 'help'])->name('help');
+        Route::get('settings',  [App\Http\Controllers\Dashboard\UserController::class, 'settings'])->name('settings');
     });
 });
 
 //Vendor
-Route::prefix('vendor')->name('vender.')->group(function () {
-    Route::group(['middleware' => ['vendor']], function () {
+Route::prefix('vendor')->name('vendor.')->group(function () {
+    Route::group(['middleware' => ['vendor', 'auth']], function () {
         Route::get('/',  [App\Http\Controllers\Dashboard\VendorController::class, 'index'])->name('index');
+        Route::get('library',  [App\Http\Controllers\Dashboard\VendorController::class, 'library'])->name('library');
+        Route::get('settings',  [App\Http\Controllers\Dashboard\VendorController::class, 'settings'])->name('settings');
+        Route::get('help',  [App\Http\Controllers\Dashboard\VendorController::class, 'help'])->name('help');
+        Route::get('transactions',  [App\Http\Controllers\Dashboard\VendorController::class, 'transactions'])->name('transactions');
+        Route::get('summary/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'summary'])->name('summary');
     });
 });
 
 //Admin
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::group(['middleware' => ['user']], function () {
+    Route::group(['middleware' => ['admin', 'auth']], function () {
         Route::get('/',  [App\Http\Controllers\Dashboard\AdminController::class, 'index'])->name('index');
     });
 });

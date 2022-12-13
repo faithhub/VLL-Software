@@ -4,7 +4,7 @@ body {
     padding: 0;
     margin: 0;
     font-family: "Nunito", sans-serif;
-    background: #e5e7ee !important
+    background: #e5e7ee !important;
 }
 img {
     max-width: 100%;
@@ -547,7 +547,7 @@ fieldset:disabled .btn:hover {
     position: relative;
     /* background: #fff !important; */
     background: #f9faff !important;
-    background: #e5e7ee !important
+    background: #e5e7ee !important;
 }
 .navbar.navbar-two.is-sticky {
     position: fixed;
@@ -616,7 +616,7 @@ fieldset:disabled .btn:hover {
     z-index: -1;
 }
 .main-banner-three {
-    height: 70vh;
+    height: 60vh;
     overflow: hidden;
 }
 .main-banner-three .col-lg-5 {
@@ -682,14 +682,14 @@ fieldset:disabled .btn:hover {
 .single-box h3 {
     font-size: 20px;
     margin-top: 20px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .single-box-h2 {
     font-size: 30px !important;
-    margin-top: 20px;
+    margin-top: 10px;
     font-weight: 700 !important;
-    margin-bottom: 7%;
+    margin-bottom: 3%;
 }
 
 .legal-article {
@@ -704,9 +704,9 @@ fieldset:disabled .btn:hover {
 .single-box-h2-sub {
     color: #395185 !important;
     font-size: 30px !important;
-    margin-top: 20px;
+    margin-top: 10px;
     font-weight: 700 !important;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 .single-box h3,
 .single-box i,
@@ -1305,7 +1305,12 @@ fieldset:disabled .btn:hover {
     background-repeat: no-repeat;
     /* position: relative;
     z-index: 1; */
-    min-height: 700px;
+    min-height: 300px;
+}
+
+.mtb-20{
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 /* .fun-facts-area::before {
     content: "";
@@ -2252,3 +2257,4 @@ textarea.form-control {
     position: relative;
     z-index: 2;
 }
+

@@ -1,7 +1,35 @@
 @extends('layouts/web/app')
 @section('content')
+
+
+    <!-- Start Why Choose Us Area -->
+    @isset($materials)
+        <section id="about" class="why-choose-us ptb-0 mtb-20 bg-f9faff">
+            <div class="container">
+                <div class="row">
+                    @foreach ($materials as $material)
+                        <div class="col-lg-4 col-md-4 mb-2 justify-content-center">
+                            <div class="image">
+                                <a href="{{ $material->link }}">
+                                    <img src="{{ $material->img }}" alt="{{ $material->title }}">
+                                </a>
+                            </div>
+                            <div class="mat-title">
+                                <a href="{{ $material->link }}">
+                                    <h4>{{ $material->title }}</h4>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endisset
+    <!-- End Why Choose Us Area -->
+
+
     <!-- Start Boxes Area -->
-    <section class="home ptb-100">
+    <section class="home ptb-0 mtb-20">
         <div class="container">
             <div class="row align-items-center vll-wel-sec">
                 <div class="col-lg-12 col-md-12">
@@ -22,35 +50,9 @@
         </div>
     </section>
     <!-- End Boxes Area -->
-
-
+    
     <!-- Start Why Choose Us Area -->
-    @isset($materials)
-        <section id="about" class="why-choose-us ptb-100 bg-f9faff">
-            <div class="container">
-                <div class="row">
-                    @foreach ($materials as $material)
-                        <div class="col-lg-4 col-md-4 mb-5 justify-content-center">
-                            <div class="image">
-                                <a href="{{ $material->link }}">
-                                    <img src="{{ $material->img }}" alt="{{ $material->title }}">
-                                </a>
-                            </div>
-                            <div class="mat-title">
-                                <a href="{{ $material->link }}">
-                                    <h4>{{ $material->title }}</h4>
-                                </a>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-    @endisset
-    <!-- End Why Choose Us Area -->
-
-    <!-- Start Why Choose Us Area -->
-    <section id="about" class="why-choose-us ptb-100 bg-f9faff">
+    <section id="about" class="why-choose-us ptb-0 mtb-20 bg-f9faff">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-12">
@@ -72,8 +74,8 @@
                 <div class="col-lg-6 col-md-12">
                     <div class="row about-image">
                         <div class="col-12 col-lg-12 col-md-6">
-                            <div class="image">
-                                <img src="{{ asset('assets/web/img/book.png') }}" alt="about">
+                            <div class="image" style="max-height: 300px">
+                                <img src="{{ asset('assets/web/img/book.png') }}" alt="about" style="max-height: inherit">
                             </div>
                         </div>
                     </div>
@@ -84,14 +86,14 @@
     <!-- End Why Choose Us Area -->
 
     <!-- Start Why Choose Us Area -->
-    <section id="about" class="why-choose-us ptb-100 bg-f9faff">
+    <section id="about" class="why-choose-us ptb-0 bg-f9faff mtb-20">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-12">
                     <div class="row about-image">
                         <div class="col-12 col-lg-12 col-md-6">
-                            <div class="image">
-                                <img src="{{ asset('assets/web/img/books.png') }}" alt="about">
+                            <div class="image" style="max-height: 300px">
+                                <img src="{{ asset('assets/web/img/books.png') }}"  class="img-fluid" alt="about" style="max-height: inherit">
                             </div>
                         </div>
                     </div>
@@ -116,14 +118,14 @@
     <!-- End Why Choose Us Area -->
 
     <!-- Start Fun Facts Area -->
-    <section class="fun-facts-area ptb-100"
+    <section class="fun-facts-area ptb-1"
         style="background-image: linear-gradient(rgba(57, 81, 133, 0.04) 0.28%, #395185 99.67%), url('{{ asset('assets/web/img/team.png') }}')">
         <div class="team-text">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 col-md-12">
                         <div class="middle-div">
-                            <h2 class="team-text-h2">Add Team Members to Use Library with One<br>
+                            <h2 class="team-text-h2">Add Professional Members to Use Library with One<br>
                                 Subscription.</h2>
                             <a href="#" class="sub-btn">Subscribe</a>
                         </div>

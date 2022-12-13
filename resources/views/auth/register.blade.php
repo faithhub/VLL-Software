@@ -139,12 +139,12 @@
                                 </div>
                                 <div class="d-grid gap-2">
                                     <button class="sign-up-form-btn mb-2" type="submit">Sign up</button>
-                                    <a href="{{ route('google.login') }}" class="sign-up-google-form-btn">
+                                    {{-- <a href="{{ route('google.login') }}" class="sign-up-google-form-btn">
                                         <div class="text-center">
                                             <img src="{{ asset('assets/web/img/fa-google.png') }}"> Sign up with
                                             Google
                                         </div>
-                                    </a>
+                                    </a> --}}
                                 </div>
                                 <div class="mb-3 mt-2">
                                     <p class="text-center">Already have an account? <a
@@ -173,7 +173,7 @@
                                             name="type" id="inlineRadio001" value="entity" checked
                                             @if (old('form_type') == 'vendor' && old('type') == 'entity') checked @endif
                                             data-parsley-required-message="Please select what's best describe you">
-                                        <label class="form-check-label" for="inlineRadio001">Entiry</label>
+                                        <label class="form-check-label" for="inlineRadio001">Individual</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="type"
@@ -250,12 +250,12 @@
                                 </div>
                                 <div class="d-grid gap-2">
                                     <button class="sign-up-form-btn mb-2" type="submit">Sign up</button>
-                                    <a href="{{ route('google.login') }}" class="sign-up-google-form-btn">
+                                    {{-- <a href="{{ route('google.login') }}" class="sign-up-google-form-btn">
                                         <div class="text-center">
                                             <img src="{{ asset('assets/web/img/fa-google.png') }}"> Sign up with
                                             Google
                                         </div>
-                                    </a>
+                                    </a> --}}
                                 </div>
                                 <div class="mb-3 mt-2">
                                     <p class="text-center">Already have an account? <a href="">Login</a></p>

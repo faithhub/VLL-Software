@@ -1038,6 +1038,19 @@ samp {
     font-size: 1em;
 }
 
+.book-title h4 {
+    font-weight: 600;
+    color: #1d3557;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+.book-title h5 {
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 5px;
+}
+
 pre {
     margin-top: 0;
     margin-bottom: 1rem;
@@ -1365,6 +1378,20 @@ mark,
 .initialism {
     font-size: 90%;
     text-transform: uppercase;
+}
+
+.editable:focus{
+    outline: none;
+}
+.editable-title{
+margin-bottom: 15px;
+}
+
+[contenteditable][placeholder]:empty:before {
+  content: attr(placeholder);
+  position: absolute;
+  color: gray;
+  background-color: transparent;
 }
 
 .blockquote {
@@ -2331,6 +2358,9 @@ hr.divider:after {
 
 .morris-donut-wrapper-demo {
     height: 270px;
+}
+.card-primary{
+    color: #1D356D !important
 }
 
 .shop-title {
@@ -12048,7 +12078,7 @@ td.fc-today {
     }
 
     #messages-main .ms-body {
-        padding-left: 500px;
+        /* padding-left: 500px; */
     }
 
     .msb-reply {
@@ -12286,7 +12316,7 @@ td.fc-today {
 }
 
 .ms-body {
-    background: #fff;
+    background: #F0F4F9;
     border-radius: 7px;
 }
 
@@ -12462,6 +12492,7 @@ Inbox Message Style
     max-height: 500px;
     background-size: cover;
     background-position: center;
+    min-height: 50vh;
 }
 
 .chat-body-style:after {
@@ -12759,7 +12790,7 @@ Inbox Message Style
     position: relative;
     padding: 15px 13px 15px 17px;
     background: #f3f4f7;
-    border-bottom: 1px solid #e6ebf1;
+    /* border-bottom: 1px solid #e6ebf1; */
     background: #e3e6ef;
 }
 
@@ -53465,6 +53496,10 @@ body.rtl {
 
 .rtl #messages-main .ms-user>div {
     padding: 3px 5px 0 15px;
+}
+
+.messages-mode{
+    background: #F0F4F9 !important;
 }
 
 .rtl #messages-main #ms-compose {
