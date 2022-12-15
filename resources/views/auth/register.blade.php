@@ -118,77 +118,32 @@
                                         @enderror
                                     @endif
                                 </div>
+                                <div class="mb-3" id="country_div">
+                                    <select class="form-control js-example-basic-single-n" name="country" id="country"
+                                        data-parsley-required-message="The Country is required" data-placeholder="Select your Country">
+                                        <option value=""></option>
+                                        @isset($countries)
+                                        @foreach ($countries as $country)
+                                        <option value="{{ $country->id }}"
+                                            @if (old('form_type') == 'user') {{ old('country') == $country->id ? 'selected' : '' }} @endif>
+                                            {{$country->name}}
+                                        </option>
+                                        @endforeach
+                                        @endisset
+                                    </select>
+                                </div>
                                 <div class="mb-3" id="universities_id">
-                                    <select class="form-control" name="universities" id="universities"
-                                        data-parsley-required-message="The University is required">
-                                        <option value="">University or Institution</option>
-                                        {{-- <option value="now"
-                                            @if (old('form_type') == 'user') {{ old('universities') == 'now' ? 'selected' : '' }} @endif>
-                                            University or Now</option> --}}
-                                        <option> ABIA STATE UNIVERSITY</option>
-                                        <option> ACHIEVERS UNIVERSITY </option>
-                                        <option> ADEKUNLE AJASIN UNIVERSITY </option>
-                                        <option> ADELEKE UNIVERSITY </option>
-                                        <option> AFE BABALOLA UNIVERSITY </option>
-                                        <option> AHMADU BELLO UNIVERSITY </option>
-                                        <option> AJAYI CROWTHER UNIVERSITY </option>
-                                        <option> AL-HIKMAH UNIVERSITY </option>
-                                        <option> AMBROSE ALLI UNIVERSITY </option>
-                                        <option> AMERICAN UNIVERSITY OF NIGERIA </option>
-                                        <option> BABCOCK UNIVERSITY </option>
-                                        <option> BAYERO UNIVERSITY </option>
-                                        <option> BAZE UNIVERSITY </option>
-                                        <option> BENSON IDAHOSA UNIVERSITY </option>
-                                        <option> BENUE STATE UNIVERSITY </option>
-                                        <option> BINGHAM UNIVERSITY, KARU </option>
-                                        <option> BOWEN UNIVERSITY </option>
-                                        <option> CHUKWUEMEKA ODUMEGU OJUKWU UNIVERSITY, ULI </option>
-                                        <option> CRESCENT UNIVERSITY </option>
-                                        <option> DELTA STATE UNIVERSITY </option>
-                                        <option> EBONYI STATE UNIVERSITY </option>
-                                        <option> EDO STATE UNIVERSITY, IYAMHO </option>
-                                        <option> EDWIN CLARK UNIVERSITY, KIAGBODO </option>
-                                        <option> EKITI STATE UNIVERSITY </option>
-                                        <option> ELIZADE UNIVERSITY </option>
-                                        <option> ENUGU STATE UNIV. OF SCIENCE AND TECH.
-                                        <option> GODFREY OKOYE UNIVERSITY </option>
-                                        <option> GREGORY UNIVERSITY, UTURU </option>
-                                        <option> IGBINEDION UNIVERSITY </option>
-                                        <option> IMO STATE UNIVERSITY </option>
-                                        <option> JOSEPH AYO BABALOLA UNIVERSITY </option>
-                                        <option> KOGI STATE UNIVERSITY</option>
-                                        <option> KWARA STATE UNIVERSITY </option>
-                                        <option> LAGOS STATE UNIVERSITY </option>
-                                        <option> LEAD CITY UNIVERSITY </option>
-                                        <option> MADONNA UNIVERSITY </option>
-                                        <option> NASARAWA STATE UNIVERSITY, KEFFI </option>
-                                        <option> NATIONAL OPEN UNIVERSITY OF NIGERIA, NOUN</option>
-                                        <option> NIGER DELTA UNIVERSITY </option>
-                                        <option> NIGERIAN LAW SCHOOL</option>
-                                        <option> NILE UNIVERSITY OF NIGERIA </option>
-                                        <option> NNAMDI AZIKIWE UNIVERSITY, AWKA </option>
-                                        <option> OBAFEMI AWOLOWO UNIVERSITY </option>
-                                        <option> OLABISI ONABANJO UNIVERSITY </option>
-                                        <option> OSUN STATE UNIVERSITY, OSOGBO </option>
-                                        <option> PRINCE ABUBAKAR AUDU UNIVERSITY, ANYINGBA </option>
-                                        <option> REDEEMERS UNIVERSITY </option>
-                                        <option> RENAISSANCE UNIVERSITY </option>
-                                        <option> RIVERS STATE UNIV. OF SCI. & TECH. </option>
-                                        <option> SALEM UNIVERSITY </option>
-                                        <option> UMARU MUSA YAR’ADUA UNIVERSITY </option>
-                                        <option> UNIVERSITY OF ABUJA </option>
-                                        <option> UNIVERSITY OF BENIN </option>
-                                        <option> UNIVERSITY OF CALABAR </option>
-                                        <option> UNIVERSITY OF IBADAN </option>
-                                        <option> UNIVERSITY OF ILORIN </option>
-                                        <option> UNIVERSITY OF JOS </option>
-                                        <option> UNIVERSITY OF LAGOS </option>
-                                        <option> UNIVERSITY OF MAIDUGURI </option>
-                                        <option> UNIVERSITY OF NIGERIA </option>
-                                        <option> UNIVERSITY OF PORT HARCOURT </option>
-                                        <option> UNIVERSITY OF UYO </option>
-                                        <option> USMANU DANFODIYO UNIVERSITY </option>
-                                        <option> YOBE STATE UNIVERSITY, DAMATURU </option>
+                                    <select class="form-control js-example-basic-single-uni" name="universities" id="universities"
+                                        data-parsley-required-message="The University is required" data-placeholder="Select your University">
+                                        <option value=""></option>
+                                        @isset($universities)
+                                        @foreach ($universities as $university)
+                                        <option data-value="{{ $university->country_id }}" value="{{ $university->id }}"
+                                            @if (old('form_type') == 'user') {{ old('university') == $university->id ? 'selected' : '' }} @endif>
+                                            {{$university->name}}
+                                        </option>
+                                        @endforeach
+                                        @endisset
                                     </select>
                                     @if (old('form_type') == 'user')
                                         @error('universities')

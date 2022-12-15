@@ -9,9 +9,37 @@
 <script src="{{ asset('assets/web/js/main.js') }}"></script>
 <script src="https://parsleyjs.org/dist/parsley.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script> --}}
 
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('.js-example-basic-single-n').select2({
+            placeholder: function() {
+                $(this).data('placeholder');
+            }
+        });
+
+        $('.js-example-basic-single-uni').select2({
+            placeholder: function() {
+                $(this).data('Select your Country');
+            }
+        });
+
+        $("#country").change(function() {
+            if ($(this).data('options') === undefined) {
+                /*Taking an array of all options-2 and kind of embedding it on the select1*/
+                $(this).data('options', $('#universities option').clone());
+            }
+            var id = $(this).val();
+            var options = $(this).data('options').filter('[data-value=' + id + ']');
+            console.log(options, id)
+            $('#universities').html(options);
+        });
+    });
+
+
     window.Parsley.addValidator("requiredIf", {
         validateString: function(value, requirement) {
             if (jQuery(requirement).val()) {
@@ -65,17 +93,26 @@
         if (data.name == "type" && data.value == "student") {
             // document.getElementById("universities_id").style.display = "block"
             document.getElementById("universities").required = true;
+            document.getElementById("country").required = true;
             document.getElementById("universities").removeAttribute("disabled");
+            document.getElementById("country").removeAttribute("disabled");
         } else if (data.name == "type" && data.value == "professionals") {
             reset = document.getElementById("universities");
             reset.selectedIndex = -1;
             document.getElementById("universities").required = false;
-            // document.getElementById("universities_id").style.display = "none"
+
+            resetCountry = document.getElementById("country");
+            resetCountry.selectedIndex = -1;
+            document.getElementById("country").required = false;
+
             document.getElementById("universities").setAttribute("disabled", "disabled");
+            document.getElementById("country").setAttribute("disabled", "disabled");
         } else {
             document.getElementById("universities").required = false;
+            document.getElementById("country").required = false;
             // document.getElementById("universities_id").style.display = "none"
             document.getElementById("universities").setAttribute("disabled", "disabled");
+            document.getElementById("country").setAttribute("disabled", "disabled");
 
         }
     }

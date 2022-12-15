@@ -13,8 +13,6 @@
 <link href="{{ asset('assets/dashboard/css/icons.css') }}" rel="stylesheet" /> <!-- INTERNAL Switcher css -->
 <link href="{{ asset('assets/dashboard/switcher/css/switcher.css') }}" rel="stylesheet" />
 <link href="{{ asset('assets/dashboard/switcher/demo.css') }}" rel="stylesheet" />
-
-
 <style type="text/css">
     input,
     textarea {

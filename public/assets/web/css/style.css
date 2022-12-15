@@ -365,11 +365,11 @@ fieldset:disabled .btn:hover {
 }
 .section-title {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 .section-title h3 {
     font-size: 28px;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     margin-top: -5px;
 }
 .section-title span {
@@ -483,7 +483,7 @@ fieldset:disabled .btn:hover {
     font-weight: 700 !important;
     color: #1d3557;
     border: 1px solid #1d3557;
-    padding: 18px 40px 18px 40px !important;
+    padding: 13px 30px 13px 30px !important;
     border-radius: 5px;
     font-style: normal;
     line-height: 19px;
@@ -495,7 +495,7 @@ fieldset:disabled .btn:hover {
     font-weight: 700 !important;
     color: #fff;
     border: 1px solid #1d3557;
-    padding: 18px 45px 18px 45px !important;
+    padding: 13px 35px 13px 35px !important;
     border-radius: 5px;
     font-style: normal;
     line-height: 19px;
@@ -689,7 +689,7 @@ fieldset:disabled .btn:hover {
     font-size: 30px !important;
     margin-top: 10px;
     font-weight: 700 !important;
-    margin-bottom: 3%;
+    margin-bottom: 1%;
 }
 
 .legal-article {
@@ -1305,10 +1305,10 @@ fieldset:disabled .btn:hover {
     background-repeat: no-repeat;
     /* position: relative;
     z-index: 1; */
-    min-height: 300px;
+    min-height: 400px;
 }
 
-.mtb-20{
+.mtb-20 {
     padding-top: 30px;
     padding-bottom: 30px;
 }
@@ -2116,15 +2116,17 @@ fieldset:disabled .btn:hover {
     color: #fff;
     font-weight: 600 !important;
     margin-bottom: 15px;
+    word-break: break-all;
 }
 .footer-area h4 {
     color: #fff;
     font-size: 17px;
     font-weight: 600 !important;
     margin-bottom: 15px;
+    word-break: break-all;
 }
 .footer-area {
-    padding: 150px 0;
+    padding: 40px 0;
 }
 .footer-area p {
     font-size: 15px;
@@ -2147,6 +2149,19 @@ fieldset:disabled .btn:hover {
 }
 .footer-area ul li a {
     color: #fff;
+}
+.footer-sm-box {
+    position: relative;
+    top: 40%;
+    text-align: center;
+}
+.footer-sm-box a {
+    color: #fff !important;
+}
+@media only screen and (max-width: 767px) {
+    .footer-sm-box {
+        margin-bottom: 10px;
+    }
 }
 .footer-area ul li::before {
     content: "";
@@ -2205,14 +2220,54 @@ textarea.form-control {
 }
 
 .mat-title {
-    padding: 5px;
+    padding: 4px;
     text-align: left;
+}
+.ptb-50 {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.select2-container--default
+    .select2-results__option--highlighted.select2-results__option--selectable {
+    background-color: #1d3557 !important;
+}
+.select-form-control {
+    padding: 10px !important;
+    font-size: 16px !important;
+    color: #000 !important;
+    font-weight: 600 !important;
+    background-color: transparent !important;
+    border: 1px solid #eee !important;
+    border-radius: 3px !important;
+}
+.select2-container .select2-selection--single {
+    height: 55px !important;
+    padding: 10px !important;
+    font-size: 16px !important;
+    color: #000 !important;
+    font-weight: 600;
+    background-color: transparent !important;
+    border: 1px solid #eee !important;
+    border-radius: 3px !important;
+}
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow
+    b {
+    top: 100% !important;
+}
+
+.select2-container--default.select2-container--disabled
+    .select2-selection--single {
+    /* background-color: #fff !important; */
+    background-color: #80808026 !important;
 }
 
 .mat-title h4 {
     font-size: 20px;
     font-weight: 700;
-    padding-top: 10px;
+    padding-top: 5px;
     color: black;
 }
 .mx-auto {
@@ -2257,4 +2312,3 @@ textarea.form-control {
     position: relative;
     z-index: 2;
 }
-

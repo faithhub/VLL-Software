@@ -8,7 +8,7 @@
             <div class="container">
                 <div class="row">
                     @foreach ($materials as $material)
-                        <div class="col-lg-4 col-md-4 mb-2 justify-content-center">
+                        <div class="col-lg-4 col-md-4 mb-5 justify-content-center">
                             <div class="image">
                                 <a href="{{ $material->link }}">
                                     <img src="{{ $material->img }}" alt="{{ $material->title }}">
@@ -29,7 +29,7 @@
 
 
     <!-- Start Boxes Area -->
-    <section class="home ptb-0 mtb-20">
+    <section class="home ptb-0 mtb-10">
         <div class="container">
             <div class="row align-items-center vll-wel-sec">
                 <div class="col-lg-12 col-md-12">
@@ -39,10 +39,14 @@
                     </div>
 
                     <div class="who-we-are-text">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pulvinar in eu feugiat consequat tellus
-                            adipiscing morbi ultrices. Venenatis, sed nec fermentum, odio volutpat bibendum. Augue dictum
-                            duis nam faucibus nunc vel etiam. Lacus, nunc maecenas arcu morbi mauris eu purus amet. Nisi
-                            habitasse in cursus sit. Amet sem senectus adipiscing ac.
+                        <p>
+                            Create a virtual law library at your workplace by providing answers to questions and
+                            build a set of authoritative materials from primary to secondary sources of law. The
+                            Virtual Law Library provides easy access to laws, Case law, journals, Textbooks, videos,
+                            audio and Legal Opinion. With our law library, you will enjoy seamless connectivity to
+                            any and everything in the industry from service delivery, efficient access to research
+                            resources and speedy accessibility to new laws as they are passed by the legislature.
+                            It is simple to use, feel free to explore Virtual Law Library. Sign-up is free.
                         </p>
                     </div>
                 </div>
@@ -50,7 +54,7 @@
         </div>
     </section>
     <!-- End Boxes Area -->
-    
+
     <!-- Start Why Choose Us Area -->
     <section id="about" class="why-choose-us ptb-0 mtb-20 bg-f9faff">
         <div class="container">
@@ -61,21 +65,23 @@
                             <h3 class="single-box-h2">Get The Newest Legal Articles In The Library</h3>
                         </div>
                         <div class="why-choose-us-text">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh nulla risus, egestas maecenas
-                                ullamcorper aliquam. Vitae, sedrutrum nisi et massa. Integer porttitor sollicitudin quam
-                                urna,
-                                etiam ac tempor cum. Aliquam faucibus gravida pulvinar quis. Velit sollicitudin vitae
-                                imperdiet
-                                ipsum. Quis id turpis porta nec viverra nibh egestas cras condimentum. Odio est eu elit ut
-                                cursus.</p>
+                            <p>
+                                Our Library is updated regularly to bring you updates on new publications and changes
+                                to court decisions. We have partnered with the best in the Legal Industry to bring you
+                                the latest Legal information, giving you an edge in your persuasion journey. At Virtual
+                                Law Library, we inspire confidence through our wide range of subjects, leaving you in
+                                control of conversations and documentation after all law is not about what you know
+                                but what you can prove.
+                            </p>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12">
                     <div class="row about-image">
-                        <div class="col-12 col-lg-12 col-md-6">
-                            <div class="image" style="max-height: 300px">
-                                <img src="{{ asset('assets/web/img/book.png') }}" alt="about" style="max-height: inherit">
+                        <div class="col-12 col-lg-12 col-md-12">
+                            <div class="image text-center" style="max-height: 400px">
+                                <img src="{{ asset('assets/web/img/book.png') }}" alt="about"
+                                    style="max-height: 400px; width:auto">
                             </div>
                         </div>
                     </div>
@@ -86,14 +92,15 @@
     <!-- End Why Choose Us Area -->
 
     <!-- Start Why Choose Us Area -->
-    <section id="about" class="why-choose-us ptb-0 bg-f9faff mtb-20">
+    <section id="about" class="why-choose-us ptb-0 bg-f9faff mtb-20 pb-5">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-12">
                     <div class="row about-image">
-                        <div class="col-12 col-lg-12 col-md-6">
-                            <div class="image" style="max-height: 300px">
-                                <img src="{{ asset('assets/web/img/books.png') }}"  class="img-fluid" alt="about" style="max-height: inherit">
+                        <div class="col-12 col-lg-12 col-md-12">
+                            <div class="image text-center" style="max-height: 400px">
+                                <img src="{{ asset('assets/web/img/books.png') }}" class="img-fluid" alt="about"
+                                    style="max-height: 400px; width:auto">
                             </div>
                         </div>
                     </div>
@@ -104,11 +111,13 @@
                             <h3 class="single-box-h2">Become A Vendor And Buy Books From The Virtual Bookstore</h3>
                         </div>
                         <div class="why-choose-us-text">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh nulla risus, egestas maecenas
-                                ullamcorper aliquam. Vitae, sedrutrum nisi et massa. Integer porttitor sollicitudin quam
-                                urna, etiam ac tempor cum. Aliquam faucibus gravida pulvinar quis. Velit sollicitudin vitae
-                                imperdiet ipsum. Quis id turpis porta nec viverra nibh egestas cras condimentum. Odio est eu
-                                elit ut cursus.</p>
+                            <p>
+                                It is all about that one simple step to better marketing, sales and returns on intellectual
+                                investment. With our low commission rate and zero hidden charges, you stand to
+                                benefit from world-class services.
+                                Our bookstore offers a simple, yet expansive coverage of Categories from Case Law,
+                                Journals, and textbooks to Videos and Audio.
+                            </p>
                         </div>
                     </div>
                 </div>

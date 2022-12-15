@@ -14098,6 +14098,36 @@ Inbox Message Style
 .range.range-success input[type=range] {
     outline-color: #2dce89;
 }
+.settings .form-control {
+    height: 55px;
+    padding: 10px;
+    font-size: 16px;
+    color: gray !important;
+    font-weight: 600;
+    background-color: transparent;
+    border: 1px solid #eee;
+    border-radius: 3px;
+}
+.settings .form-label {
+    font-size: 16px;
+    color: #3b566e !important;
+    font-weight: 700 !important;
+}
+.add-new-member{
+     display: table-cell;
+  vertical-align: middle;
+}
+.add-new-member i{
+    font-size: 18px;
+    cursor: pointer;
+}
+.settings .sub-link{
+    margin-left: 5px;
+    margin-top: 5px;
+    color: #fff !important;
+    font-size: 14px;
+    font-weight: 700 !important;
+}
 
 .range.range-info input[type=range]::-webkit-slider-thumb,
 .range.range-info input[type=range]::-moz-slider-thumb {

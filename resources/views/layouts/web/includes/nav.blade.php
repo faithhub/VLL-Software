@@ -21,11 +21,16 @@
 
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item"><a class="nav-link sign-up-btn" href="{{ route('register') }}">Sign up</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link login-btn" href="{{ route('login') }}">Login</a></li>
-                    </ul>
+                    @if (request()->is('login') || request()->is('register'))
+                    @else
+                        <ul class="navbar-nav mx-auto">
+                            <li class="nav-item"><a class="nav-link sign-up-btn" href="{{ route('register') }}">Sign
+                                    up</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link login-btn" href="{{ route('login') }}">Login</a>
+                            </li>
+                        </ul>
+                    @endif
                 </div>
             </div>
         </div>

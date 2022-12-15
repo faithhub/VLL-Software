@@ -4,12 +4,12 @@
     <!-- Start Why Choose Us Area -->
     <section id="about" class="why-choose-us bg-f9faff">
         <div class="container">
-            <div class="row align-items-center">
+            <div class="row align-items-center ptb-50">
                 <div class="col-lg-6 col-md-6">
                     <div class="row about-image">
                         <div class="col-12 col-lg-12 col-md-12 d-none d-md-block">
                             <div class="image">
-                                <img src="{{ asset('assets/web/img/login.png') }}" alt="about">
+                                <img src="{{ asset('assets/web/img/login.png') }}" alt="about" style="max-height: 60vh">
                             </div>
                         </div>
                     </div>
@@ -59,12 +59,12 @@
                             </div>
                             <div class="d-grid gap-2">
                                 <button class="sign-up-form-btn mb-2" type="submit">Login</button>
-                                <button class="sign-up-google-form-btn" type="button">
+                                {{-- <button class="sign-up-google-form-btn" type="button">
                                     <div class="text-center">
                                         <img src="{{ asset('assets/web/img/fa-google.png') }}"> Login up with
                                         Google
                                     </div>
-                                </button>
+                                </button> --}}
                             </div>
                             <div class="mt-2">
                                 <p class="text-center">I do not have an account? <a href="{{ route('register') }}">Sign
