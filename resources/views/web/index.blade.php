@@ -1,6 +1,10 @@
 @extends('layouts/web/app')
 @section('content')
-
+<style>
+    p{
+        font-size: 18px;
+    }
+    </style>
 
     <!-- Start Why Choose Us Area -->
     @isset($materials)
