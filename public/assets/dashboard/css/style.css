@@ -14099,7 +14099,7 @@ Inbox Message Style
     outline-color: #2dce89;
 }
 .settings .form-control {
-    height: 55px;
+    /* height: 55px; */
     padding: 10px;
     font-size: 16px;
     color: gray !important;
@@ -40752,6 +40752,16 @@ li.ui-timepicker-selected {
 .dark-mode .modal.effect-newspaper.show .modal-dialog {
     transform: scale(1) rotate(0deg);
     opacity: 1;
+}
+@media (min-width: 1200px){
+.modal-xl {
+    max-width: 1140px;
+}
+}
+@media (min-width: 992px){
+.modal-xl {
+    max-width: 800px;
+}
 }
 
 .dark-mode .modal.effect-fall .modal-dialog,

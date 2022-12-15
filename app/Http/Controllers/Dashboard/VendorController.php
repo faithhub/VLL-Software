@@ -202,4 +202,15 @@ class VendorController extends Controller
             //throw $th;
         }
     }
+    public function upload()
+    {
+        # code...
+        try {
+            //code...
+            $data['title'] = "User Dashboard - Upload Material";
+            return View('dashboard.vendor.upload', $data);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
 }
