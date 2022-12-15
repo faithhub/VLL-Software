@@ -11,6 +11,14 @@
             padding: 6px 12px;
             cursor: pointer;
         }
+
+        .sub-btn {
+            margin-top: 3rem;
+        }
+
+        .sub-card {
+            background-color: #F0F4F9
+        }
     </style>
     <div class="main-container container-fluid px-0">
         <div class="row">
@@ -80,7 +88,9 @@
                                     </div>
                                     <div class="col-sm-12 col-md-12">
                                         <div class="form-group"> <label class="form-label">Active Subscription</label>
-                                            <a href="" class="sub-link btn btn-sm btn-primary">Change</a>
+                                            <a href="#" data-bs-effect="effect-scale" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal"
+                                                class="sub-link btn btn-sm btn-primary">Change</a>
                                         </div>
                                     </div>
                                 </div>
@@ -106,6 +116,76 @@
 
                                 <div class="col-lg-12 col-xl-12 text-center">
                                     <button class="btn btn-primary p-3 pt-2 pt-2" style="font-size: 18px">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade effect-scale" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 1140px">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <div class="card border-10 pt-2 card-primary">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <h4 class="font-weight-bold">Subscription</h4>
+                                        <h6 class="font-weight-bold">What plan would you like?</h6>
+                                        <div class="row" style="margin-top: 2rem">
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                                                <div class="card sub-card">
+                                                    <div class="card-body">
+                                                        <h5 class="font-weight-bold">Regular</h5>
+                                                        <ul style="list-style-type:disc; margin-left:1.5rem">
+                                                            <li>Access to All Free books</li>
+                                                            <li>Access to view all books</li>
+                                                            <li>Access to view all books</li>
+                                                        </ul>
+                                                        <div class="text-center sub-btn">
+                                                            <button class="btn btn-primary" disabled>Active</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                                                <div class="card sub-card">
+                                                    <div class="card-body">
+                                                        <h5 class="font-weight-bold">Premium 1</h5>
+                                                        <ul style="list-style-type:disc; margin-left:1.5rem">
+                                                            <li>Access to All Free books</li>
+                                                            <li>Access to view all books</li>
+                                                            <li>Access to view all books</li>
+                                                        </ul>
+                                                        <div class="text-center sub-btn">
+                                                            <button class="btn btn-primary">Upgrade</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                                                <div class="card sub-card">
+                                                    <div class="card-body">
+                                                        <h5 class="font-weight-bold">Premium 2</h5>
+                                                        <ul style="list-style-type:disc; margin-left:1.5rem">
+                                                            <li>Access to All Free books</li>
+                                                            <li>Access to view all books</li>
+                                                            <li>Access to view all books</li>
+                                                        </ul>
+                                                        <div class="text-center sub-btn">
+                                                            <button class="btn btn-primary">Upgrade</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
