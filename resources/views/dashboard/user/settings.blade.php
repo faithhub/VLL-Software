@@ -33,7 +33,7 @@
                                 <div class="box-widget widget-user">
                                     <div class="widget-user-image1 d-xl-flex d-block">
                                         <img alt="User Avatar" class="avatar brround p-0"
-                                            src="https://spruko.com/demo/azea/Azea/assets/images/users/2.jpg">
+                                            src="https://st4.depositphotos.com/14903220/22197/v/450/depositphotos_221970610-stock-illustration-abstract-sign-avatar-icon-profile.jpg">
                                         <div style="display: table">
                                             <div class="mt-1 ms-xl-5 add-new-member">
                                                 <label class="btn btn-sm btn-primary m-3"><input
