@@ -14104,7 +14104,7 @@ Inbox Message Style
     font-size: 16px;
     color: gray !important;
     font-weight: 600;
-    background-color: transparent;
+    background-color: #F0F4F9;
     border: 1px solid #eee;
     border-radius: 3px;
 }

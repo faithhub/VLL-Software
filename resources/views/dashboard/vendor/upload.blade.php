@@ -38,7 +38,7 @@
                 <div class="card border-10 pt-5">
                     <div class="card-header border-bottom-0 mb-1">
                         <h6 class="mb-1 mt-1 font-weight-bold h6">
-                            <a href="{{ route('user.library') }}">
+                            <a href="{{ route('vendor.library') }}">
                                 <i class="fa fa-arrow-left"></i>
                             </a>
                         </h6>
@@ -48,14 +48,14 @@
                             Upload Material Information
                         </h6>
                         <div class="row mt-5 mb-5 settings">
-                            <div class="col-sm- col-md-12 col-lg-12 col-xl-12">
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="form-group">
-                                    <label class="form-label">Name of Material
+                                    <label class="form-label">Title of Material
                                         <span>*<span></label>
                                     <input type="text" class="form-control" placeholder="" value="">
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="form-group">
                                     <label class="form-label">Name of Author <span>*<span></label>
                                     <input type="text" class="form-control" placeholder="" value="">
@@ -70,7 +70,13 @@
                             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="form-group">
                                     <label class="form-label">Price <span>*<span></label>
-                                    <input type="number" class="form-control" placeholder="5000" value="+(63-4567-890)">
+                                    <input type="number" class="form-control" placeholder="5000" value="">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="form-group">
+                                    <label class="form-label">Amount <span>*<span></label>
+                                    <input type="number" class="form-control" placeholder="5000" value="">
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -103,6 +109,11 @@
                                 <div class="form-group">
                                     <label class="form-label">Tags <span>*<span></label>
                                     <input type="text" class="form-control" placeholder="" value="">
+                                    <div class="col-auto">
+                                        <span id="passwordHelpInline" class="form-text">
+                                            Input words to aid search in Bookstore (Law, Legal)
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -115,13 +126,18 @@
                                 <div class="form-group">
                                     <label class="form-label">Privacy Code <span>*<span></label>
                                     <input type="text" class="form-control" placeholder="" value="">
+                                    <div class="col-auto">
+                                        <span id="passwordHelpInline" class="form-text">
+                                            *Privacy codes are required for institution only.
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                 <div class="form-group">
-                                    <label class="form-label">Book Pdf <span>*<span></label>
+                                    <label class="form-label">Material Pdf <span>*<span></label>
                                     <label class="btn btn-primary btn-block custom-file-upload">
-                                        <input type="file" /><i class="fa fa-upload">&nbsp</i> Upload Book in PDF</label>
+                                        <input type="file" /><i class="fa fa-upload">&nbsp</i> Upload Material in PDF</label>
 
                                 </div>
                             </div>
@@ -141,8 +157,11 @@
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                 <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" name="example-checkbox2" value="option2">
-                                    <span class="custom-control-label">I have read and I agree with the <a href="" target="blank"><b style="font-weight: 900">Terms and Conditions</b></a> of Virtual Law Library</span>
+                                    <input type="checkbox" class="custom-control-input" name="example-checkbox2"
+                                        value="option2">
+                                    <span class="custom-control-label">I have read and I agree with the <a href=""
+                                            target="blank"><b style="font-weight: 900">Terms and Conditions</b></a> of
+                                        Virtual Law Library</span>
                                 </label>
                             </div>
                             <div class="col-lg-12 col-xl-12 text-center">

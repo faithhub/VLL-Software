@@ -47,11 +47,11 @@
                                                 <tr role="row">
                                                     <th class="sorting sorting_asc" style="">Invoice ID
                                                     </th>
-                                                    <th scope="row" class="sorting" style="">Customer
-                                                        Name</th>
-                                                    <th class="sorting" tabindex="0" style="">Customer ID
+                                                    <th scope="row" class="sorting" style="">Date of Transaction
+                                                        </th>
+                                                    <th class="sorting" tabindex="0" style="">Transaction Value
                                                     </th>
-                                                    <th class="sorting" tabindex="0" style="">Order Value
+                                                    <th class="sorting" tabindex="0" style="">Net Order Value
                                                     </th>
                                                     <th class="sorting" tabindex="0" style="">Status</th>
                                                 </tr>

@@ -44,28 +44,24 @@
                                 </div>
                             </div>
                             <div class="row mt-5 settings">
-                                <div class="col-sm- col-md-6 col-lg-6 col-xl-6">
+                                <div class="col-lg-6 col-xl-6">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group"> <label class="form-label">Full Name</label> <input
                                             type="text" class="form-control" placeholder="First Name" value="Patrenna">
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="form-group"> <label class="form-label">Last Name</label> <input
-                                            type="text" class="form-control" placeholder="Last Name" value="Schell">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group"> <label class="form-label">Email address</label> <input
                                             type="email" class="form-control" placeholder="Email"
                                             value="patrennaschell@gmail.com"> </div>
                                 </div>
-                                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group"> <label class="form-label">Phone Number</label> <input
                                             type="number" class="form-control" placeholder="+234 905 678 234 "
                                             value="+(63-4567-890)"></div>
                                 </div>
-                                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                    <label class="form-label">Phone Number</label>
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                    <label class="form-label">Gender</label>
                                     <div class="d-flex">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
@@ -84,12 +80,24 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-12">
-                                    <div class="form-group"> <label class="form-label">Active Subscription</label>
-                                        <a href="#" data-bs-effect="effect-scale" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal"
-                                            class="sub-link btn btn-sm btn-primary">Change</a>
+                                </div>
+                                <div class="col-lg-6 col-xl-6">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="form-group"> <label class="form-label">Bank Name</label>
+                                        <select class="form-control"></select>
+                                        <input type="text" class="form-control" placeholder="First Name" value="Patrenna">
                                     </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="form-group"> <label class="form-label">Bank Account Number</label> <input
+                                            type="number" class="form-control" placeholder=""
+                                            value=""> </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="form-group"> <label class="form-label">Bank Account Name</label> <input
+                                            type="" class="form-control" placeholder=""
+                                            value=""></div>
+                                </div>
                                 </div>
                                 <div class="col-lg-12 col-xl-12 text-center">
                                     <button class="btn btn-primary p-3 pt-2 pt-2" style="font-size: 18px">Submit</button>
