@@ -97,7 +97,7 @@
                                                 <div class="fs-13">Profile</div>
                                             </a>
                                         @endif
-                                        <a id="sidebar" class="dropdown-item d-flex" href="{{ route('logout') }}"
+                                        {{-- <a id="sidebar" class="dropdown-item d-flex" href="{{ route('logout') }}"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             <svg class="header-icon me-2" xmlns="http://www.w3.org/2000/svg"
                                                 enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24"
@@ -117,7 +117,7 @@
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                             class="d-none">
                                             @csrf
-                                        </form>
+                                        </form> --}}
                                     </div>
                                 </div>
                             </div>
