@@ -26,6 +26,16 @@
                 $(this).data('Select your Country');
             }
         });
+        $('.js-example-basic-single-v-uni').select2({
+            placeholder: function() {
+                $(this).data('Select your Country');
+            }
+        });
+        $('.js-example-basic-single-v-n').select2({
+            placeholder: function() {
+                $(this).data('Select your Country');
+            }
+        });
 
         $("#country").change(function() {
             if ($(this).data('options') === undefined) {
@@ -36,6 +46,17 @@
             var options = $(this).data('options').filter('[data-value=' + id + ']');
             console.log(options, id)
             $('#universities').html(options);
+        });
+
+        $("#v-country").change(function() {
+            if ($(this).data('options') === undefined) {
+                /*Taking an array of all options-2 and kind of embedding it on the select1*/
+                $(this).data('options', $('#v-universities option').clone());
+            }
+            var id = $(this).val();
+            var options = $(this).data('options').filter('[data-value=' + id + ']');
+            console.log(options, id)
+            $('#v-universities').html(options);
         });
     });
 
@@ -151,10 +172,16 @@
     function checkVendorTypeOnLoad() {
         if (document.getElementById('inlineRadio001').checked) {
             document.getElementById("vendor_name").placeholder = "Full Name";
+            document.getElementById("v-in-name").style.display = "none"; //hide
         } else if (document.getElementById('inlineRadio002').checked) {
             document.getElementById("vendor_name").placeholder = "Company's Name";
+            document.getElementById("v-in-name").style.display = "none"; //hide
+        } else if (document.getElementById('inlineRadio003').checked) {
+            document.getElementById("v-in-name").style.display = "display"; //hide
+            document.getElementById("v-name").style.display = "none"; //hide
         } else {
             document.getElementById("vendor_name").placeholder = "Full Name";
+            document.getElementById("v-in-name").style.display = "none";
 
         }
     }
@@ -163,12 +190,22 @@
         console.log(type.value)
         switch (type.value) {
             case "entity":
+                document.getElementById("v-in-name").style.display = "none";
+                document.getElementById("v-name").style.display = "block";
                 document.getElementById("vendor_name").placeholder = "Full Name";
                 break;
             case "company":
+                document.getElementById("v-in-name").style.display = "none";
+                document.getElementById("v-name").style.display = "block";
                 document.getElementById("vendor_name").placeholder = "Company's Name";
                 break;
+            case "institution":
+                document.getElementById("v-in-name").style.display = "block"; //hide
+                document.getElementById("v-name").style.display = "none"; //hide
+                break;
             default:
+                document.getElementById("v-in-name").style.display = "none";
+                document.getElementById("v-name").style.display = "block";
                 document.getElementById("vendor_name").placeholder = "Full Name";
                 break;
         }

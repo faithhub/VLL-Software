@@ -1,15 +1,15 @@
 @extends('layouts.web.app')
 
 @section('content')
-<style>
-    .navbar.navbar-two{
-        background: #fff !important;
+    <style>
+        .navbar.navbar-two {
+            background: #fff !important;
 
-    }
+        }
 
-.bg-f9faff {
-    background: #fff !important;
-}
+        .bg-f9faff {
+            background: #fff !important;
+        }
     </style>
     <!-- Start Why Choose Us Area -->
     <section id="about" class="why-choose-us bg-f9faff">
@@ -130,29 +130,32 @@
                                 </div>
                                 <div class="mb-3" id="country_div">
                                     <select class="form-control js-example-basic-single-n" name="country" id="country"
-                                        data-parsley-required-message="The Country is required" data-placeholder="Select your Country">
+                                        data-parsley-required-message="The Country is required"
+                                        data-placeholder="Select your Country">
                                         <option value=""></option>
                                         @isset($countries)
-                                        @foreach ($countries as $country)
-                                        <option value="{{ $country->id }}"
-                                            @if (old('form_type') == 'user') {{ old('country') == $country->id ? 'selected' : '' }} @endif>
-                                            {{$country->name}}
-                                        </option>
-                                        @endforeach
+                                            @foreach ($countries as $country)
+                                                <option value="{{ $country->id }}"
+                                                    @if (old('form_type') == 'user') {{ old('country') == $country->id ? 'selected' : '' }} @endif>
+                                                    {{ $country->name }}
+                                                </option>
+                                            @endforeach
                                         @endisset
                                     </select>
                                 </div>
                                 <div class="mb-3" id="universities_id">
-                                    <select class="form-control js-example-basic-single-uni" name="universities" id="universities"
-                                        data-parsley-required-message="The University is required" data-placeholder="Select your University">
+                                    <select class="form-control js-example-basic-single-uni" name="universities"
+                                        id="universities" data-parsley-required-message="The University is required"
+                                        data-placeholder="Select your University">
                                         <option value=""></option>
                                         @isset($universities)
-                                        @foreach ($universities as $university)
-                                        <option data-value="{{ $university->country_id }}" value="{{ $university->id }}"
-                                            @if (old('form_type') == 'user') {{ old('university') == $university->id ? 'selected' : '' }} @endif>
-                                            {{$university->name}}
-                                        </option>
-                                        @endforeach
+                                            @foreach ($universities as $university)
+                                                <option data-value="{{ $university->country_id }}"
+                                                    value="{{ $university->id }}"
+                                                    @if (old('form_type') == 'user') {{ old('university') == $university->id ? 'selected' : '' }} @endif>
+                                                    {{ $university->name }}
+                                                </option>
+                                            @endforeach
                                         @endisset
                                     </select>
                                     @if (old('form_type') == 'user')
@@ -207,6 +210,12 @@
                                             @if (old('form_type') == 'vendor' && old('type') == 'company') checked @endif requiredd="">
                                         <label class="form-check-label" for="inlineRadio002">Company</label>
                                     </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="type"
+                                            onclick="checkVendorType(this)" id="inlineRadio003" value="institution"
+                                            @if (old('form_type') == 'vendor' && old('type') == 'institution') checked @endif requiredd="">
+                                        <label class="form-check-label" for="inlineRadio003">Institution</label>
+                                    </div>
                                     @if (old('form_type') == 'vendor')
                                         @error('type')
                                             <span class="invalid-feedback" role="alert">
@@ -215,7 +224,47 @@
                                         @enderror
                                     @endif
                                 </div>
-                                <div class="mb-3">
+                                <div id="v-in-name" style="display: none">
+                                    <div class="mb-3" id="v-country_div">
+                                        <select class="form-control js-example-basic-single-v-n" name="v-country"
+                                            id="v-country" data-parsley-required-message="The Country is required"
+                                            data-placeholder="Select your Country" style="width: 100%">
+                                            <option value=""></option>
+                                            @isset($countries)
+                                                @foreach ($countries as $country)
+                                                    <option value="{{ $country->id }}"
+                                                        @if (old('form_type') == 'user') {{ old('v-country') == $country->id ? 'selected' : '' }} @endif>
+                                                        {{ $country->name }}
+                                                    </option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
+                                    </div>
+                                    <div class="mb-3" id="v-universities_id">
+                                        <select class="form-control js-example-basic-single-v-uni" name="v-universities"
+                                            id="v-universities" data-parsley-required-message="The University is required"
+                                            data-placeholder="Select your University" style="width: 100%">
+                                            <option value=""></option>
+                                            @isset($universities)
+                                                @foreach ($universities as $university)
+                                                    <option data-value="{{ $university->country_id }}"
+                                                        value="{{ $university->id }}"
+                                                        @if (old('form_type') == 'user') {{ old('v-university') == $university->id ? 'selected' : '' }} @endif>
+                                                        {{ $university->name }}
+                                                    </option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
+                                        @if (old('form_type') == 'user')
+                                            @error('v-universities')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="mb-3" id="v-name">
                                     <input type="text" class="form-control" name="name" id="vendor_name"
                                         placeholder="Full Name" aria-describedby="" requiredd=""
                                         @if (old('form_type') == 'vendor') value="{{ old('name') }}" @endif
