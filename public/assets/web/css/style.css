@@ -32,7 +32,7 @@ p {
     cursor: pointer !important;
 }
 .outerdiv-active {
-    border-bottom: 3px #3b566e solid;
+    border-bottom: 4.5px #3b566e solid;
     cursor: pointer !important;
 }
 
@@ -349,7 +349,7 @@ fieldset:disabled .btn:hover {
     font-size: 16px;
     color: #000 !important;
     font-weight: 600;
-    background-color: transparent;
+    background-color: #F0F4F9;
     border: 1px solid #eee;
     border-radius: 3px;
 }
@@ -359,6 +359,9 @@ fieldset:disabled .btn:hover {
     border-color: #eee;
     outline: 0;
     box-shadow: unset;
+}
+select{
+    background-color: #F0F4F9 !important;
 }
 .form-control::placeholder {
     color: #92a5b8;
@@ -483,7 +486,7 @@ fieldset:disabled .btn:hover {
     font-weight: 700 !important;
     color: #1d3557;
     border: 1px solid #1d3557;
-    padding: 13px 30px 13px 30px !important;
+    padding: 8px 25px 8px 25px !important;
     border-radius: 5px;
     font-style: normal;
     line-height: 19px;
@@ -495,7 +498,7 @@ fieldset:disabled .btn:hover {
     font-weight: 700 !important;
     color: #fff;
     border: 1px solid #1d3557;
-    padding: 13px 35px 13px 35px !important;
+    padding: 8px 25px 8px 25px !important;
     border-radius: 5px;
     font-style: normal;
     line-height: 19px;
@@ -2247,7 +2250,7 @@ textarea.form-control {
     font-size: 16px !important;
     color: #000 !important;
     font-weight: 600;
-    background-color: transparent !important;
+    background-color: #F0F4F9 !important;
     border: 1px solid #eee !important;
     border-radius: 3px !important;
 }

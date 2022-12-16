@@ -47,11 +47,10 @@
                                                 <tr role="row">
                                                     <th class="sorting sorting_asc" style="">Invoice ID
                                                     </th>
-                                                    <th scope="row" class="sorting" style="">Customer
-                                                        Name</th>
-                                                    <th class="sorting" tabindex="0" style="">Customer ID
+                                                    <th scope="row" class="sorting" style="">Date of Transaction
+                                                        </th>
+                                                    <th class="sorting" tabindex="0" style="">Transaction Value
                                                     </th>
-                                                    <th class="sorting" tabindex="0" style="">Order Value
                                                     </th>
                                                     <th class="sorting" tabindex="0" style="">Status</th>
                                                 </tr>
@@ -60,8 +59,7 @@
                                                 <tr class="">
                                                     <td class="sorting_1"> <a class="font-weight-normal1"
                                                             href="">00434567</a> </td>
-                                                    <td>Gabriel</td>
-                                                    <td>JoanPowell@gmail.com</td>
+                                                    <td>22 - 10- 2022</td>
                                                     <td>$230,540</td>
                                                     <td>
                                                         <span class="badge bg-warning-light border-warning fs-11">Pending</span>

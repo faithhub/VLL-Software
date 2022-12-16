@@ -93,6 +93,17 @@
             </div>
         </div>
     </section>
+
+    {{-- <div class="row" style="background-color: #fff">
+        <div class="col-2">
+            <img class="logo" src="{{ asset('assets/web/logo/logo.png') }}" height="100px" width="auto" alt="logo">
+        </div>
+        <div class="col-2">
+        <h2 style="font-weight:900; margin-left:-14.4rem; font-size:14px; margin-top:20px" class="text-left">Virtual <br>Law <br>Library</h2>
+        </div>
+        <div class="col-8">
+        </div>
+    </div> --}}
     <!-- End Why Choose Us Area -->
 
     <!-- Start Why Choose Us Area -->

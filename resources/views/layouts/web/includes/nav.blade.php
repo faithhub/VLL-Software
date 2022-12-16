@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12 col-lg-2 col-md-3">
                 <a class="navbar-brand" href="{{ route('home') }}">
-                    <img class="logo" src="{{ asset('assets/web/logo/vll.png') }}" alt="logo">
+                    <img class="logo" src="{{ asset('assets/web/logo/vll-b.png') }}" alt="logo">
                 </a>
             </div>
 
