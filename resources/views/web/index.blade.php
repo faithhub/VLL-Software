@@ -83,9 +83,8 @@
                 <div class="col-lg-6 col-md-12">
                     <div class="row about-image">
                         <div class="col-12 col-lg-12 col-md-12">
-                            <div class="image text-center" style="max-height: 400px">
-                                <img src="{{ asset('assets/web/img/book.png') }}" alt="about"
-                                    style="max-height: 400px; width:auto">
+                            <div class="image text-center">
+                                <img src="{{ asset('assets/web/img/book001.jpg') }}" alt="about">
                             </div>
                         </div>
                     </div>
@@ -113,9 +112,8 @@
                 <div class="col-lg-6 col-md-12">
                     <div class="row about-image">
                         <div class="col-12 col-lg-12 col-md-12">
-                            <div class="image text-center" style="max-height: 400px">
-                                <img src="{{ asset('assets/web/img/books.png') }}" class="img-fluid" alt="about"
-                                    style="max-height: 400px; width:auto">
+                            <div class="image text-center">
+                                <img src="{{ asset('assets/web/img/book002.jpg') }}" class="img-fluid" alt="about">
                             </div>
                         </div>
                     </div>

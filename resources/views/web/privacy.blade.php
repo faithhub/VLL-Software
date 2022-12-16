@@ -1,7 +1,12 @@
 @extends('layouts/web/app')
 @section('content')
+<style>
+    p{
+        font-size: 18px
+    }
+    </style>
     <!-- Start Boxes Area -->
-    <section class="home ptb-50 privacy">
+    <section class="home ptb-50 privacy" style="min-height: 99vh">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 col-md-12">

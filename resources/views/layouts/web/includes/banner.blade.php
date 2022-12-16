@@ -1,6 +1,6 @@
 <style>
     .main-banner-three {
-        background-image: linear-gradient(269.64deg, rgba(57, 81, 133, 0.03) 0.28%, #395185 99.67%), url({{ asset('assets/web/img/bk.png') }});
+        background-image: linear-gradient(269.64deg, rgba(57, 81, 133, 0.03) 0.28%, #395185 99.67%), url({{ asset('assets/web/img/bg-book002.jpg') }});
         background-repeat: no-repeat !important;
         background-size: cover !important;
         background-position: center !important;

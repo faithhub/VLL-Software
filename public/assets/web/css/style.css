@@ -486,11 +486,18 @@ select{
     font-weight: 700 !important;
     color: #1d3557;
     border: 1px solid #1d3557;
-    padding: 8px 25px 8px 25px !important;
+    /* padding: 8px 25px 8px 25px !important; */
     border-radius: 5px;
     font-style: normal;
     line-height: 19px;
     white-space: nowrap;
+}
+
+.footer-area .link{
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+
 }
 
 .navbar-light .login-btn {
@@ -498,7 +505,7 @@ select{
     font-weight: 700 !important;
     color: #fff;
     border: 1px solid #1d3557;
-    padding: 8px 25px 8px 25px !important;
+    padding: 7px 10px 7px 10px !important;
     border-radius: 5px;
     font-style: normal;
     line-height: 19px;
@@ -2129,7 +2136,7 @@ select{
     word-break: break-all;
 }
 .footer-area {
-    padding: 10px 0;
+    padding: 20px 0;
 }
 .footer-area p {
     font-size: 15px;
