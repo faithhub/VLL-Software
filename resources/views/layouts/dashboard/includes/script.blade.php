@@ -55,3 +55,17 @@
 <script src="{{ asset('assets/dashboard/js/custom.js') }}"></script>
 <script type="text/javascript"></script> <!-- Switcher js -->
 <script src="{{ asset('assets/dashboard/switcher/js/switcher.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script> --}}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $('.js-example-basic-single-bankc').select2({
+            placeholder: function() {
+                $(this).data('Select your Bank');
+            }
+        });
+
+    });
+    </script>

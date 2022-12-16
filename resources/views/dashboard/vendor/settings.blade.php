@@ -84,8 +84,18 @@
                                 <div class="col-lg-6 col-xl-6">
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group"> <label class="form-label">Bank Name</label>
-                                        <select class="form-control"></select>
-                                        <input type="text" class="form-control" placeholder="First Name" value="Patrenna">
+                                    <select class="form-control js-example-basic-single-bank" name="banks" id="banks"
+                                        data-parsley-required-message="The Bank is required" data-placeholder="Select your Bank">
+                                        <option value=""></option>
+                                        @isset($universities)
+                                        @foreach ($universities as $university)
+                                        <option data-value="{{ $university->country_id }}" value="{{ $university->id }}"
+                                            @if (old('form_type') == 'user') {{ old('university') == $university->id ? 'selected' : '' }} @endif>
+                                            {{$university->name}}
+                                        </option>
+                                        @endforeach
+                                        @endisset
+                                    </select>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -100,7 +110,7 @@
                                 </div>
                                 </div>
                                 <div class="col-lg-12 col-xl-12 text-center">
-                                    <button class="btn btn-primary p-3 pt-2 pt-2" style="font-size: 18px">Submit</button>
+                                    <button class="btn btn-primary p-3 pt-2 pt-2" style="font-size: 18px">Save</button>
                                 </div>
                             </div>
                         </div>

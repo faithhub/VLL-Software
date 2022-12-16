@@ -52,11 +52,6 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-12">
-                                        <div class="form-group"> <label class="form-label">Last Name</label> <input
-                                                type="text" class="form-control" placeholder="Last Name" value="Schell">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-12">
                                         <div class="form-group"> <label class="form-label">Email address</label> <input
                                                 type="email" class="form-control" placeholder="Email"
                                                 value="patrennaschell@gmail.com"> </div>
@@ -67,7 +62,7 @@
                                                 value="+(123-4567-890)"> </div>
                                     </div>
                                     <div class="col-sm-12 col-md-12">
-                                        <label class="form-label">Phone Number</label>
+                                        <label class="form-label">Gender</label>
                                         <div class="d-flex">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
@@ -115,7 +110,7 @@
                                 </div>
 
                                 <div class="col-lg-12 col-xl-12 text-center">
-                                    <button class="btn btn-primary p-3 pt-2 pt-2" style="font-size: 18px">Submit</button>
+                                    <button class="btn btn-primary p-3 pt-2 pt-2" style="font-size: 18px">Save</button>
                                 </div>
                             </div>
                         </div>

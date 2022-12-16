@@ -112,12 +112,12 @@
                                                 </g>
                                             </svg>
                                             <div class="fs-13">{{ __('Log Out') }}</div>
-                                        </a>
+                                        </a> --}}
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                             class="d-none">
                                             @csrf
-                                        </form> --}}
+                                        </form>
                                     </div>
                                 </div>
                             </div>
