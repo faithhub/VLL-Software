@@ -70,7 +70,7 @@ p {
 }
 
 .bg-f9faff {
-    background: #f9faff;
+    background: #fff;
 }
 .bg-footer {
     background: #203564;
@@ -1305,7 +1305,7 @@ fieldset:disabled .btn:hover {
     background-repeat: no-repeat;
     /* position: relative;
     z-index: 1; */
-    min-height: 400px;
+    min-height: 700px;
 }
 
 .mtb-20 {
@@ -2126,7 +2126,7 @@ fieldset:disabled .btn:hover {
     word-break: break-all;
 }
 .footer-area {
-    padding: 40px 0;
+    padding: 10px 0;
 }
 .footer-area p {
     font-size: 15px;

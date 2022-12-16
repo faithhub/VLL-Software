@@ -1,10 +1,20 @@
 @extends('layouts.web.app')
 
 @section('content')
+<style>
+    .navbar.navbar-two{
+        background: #fff !important;
+
+    }
+
+.bg-f9faff {
+    background: #fff !important;
+}
+    </style>
     <!-- Start Why Choose Us Area -->
     <section id="about" class="why-choose-us bg-f9faff">
         <div class="container">
-            <div class="row align-items-center ptb-100">
+            <div class="row align-items-center">
                 <div class="col-lg-6 col-md-12 d-none d-lg-block">
                     <div class="row about-image">
                         <div class="col-12 col-lg-12 col-md-12">
