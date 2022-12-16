@@ -14108,6 +14108,11 @@ Inbox Message Style
     border: 1px solid #eee;
     border-radius: 3px;
 }
+
+.msb-reply textarea{
+    border: 1px solid;
+    border-radius: 5px;
+}
 .settings .form-label {
     font-size: 16px;
     color: #3b566e !important;

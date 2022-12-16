@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <div class="messages-mode">
-                            <div class="tile tile-alt mb-0" id="messages-main" style="background: #F0F4F9 !important;">
+                            <div class="tile tile-alt mb-0" id="messages-main">
                                 <div class="ms-body">
                                     <div class="action-header clearfix">
                                         <div class="float-start hidden-xs d-flex ms-0 chat-user">
