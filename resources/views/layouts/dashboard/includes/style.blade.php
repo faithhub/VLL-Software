@@ -13,7 +13,7 @@
 <link href="{{ asset('assets/dashboard/css/icons.css') }}" rel="stylesheet" /> <!-- INTERNAL Switcher css -->
 <link href="{{ asset('assets/dashboard/switcher/css/switcher.css') }}" rel="stylesheet" />
 <link href="{{ asset('assets/dashboard/switcher/demo.css') }}" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
 <style type="text/css">
     input,
     textarea {
@@ -32,5 +32,21 @@
         -moz-user-select: -moz-none;
         -ms-user-select: none;
         user-select: none
+    }
+
+    .field-icon {
+        float: right;
+        margin-right: 10px !important;
+        margin-top: -35px;
+        position: relative;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .fa-fw {
+        text-align: center;
+        width: 1.25em;
+    font-size: 18px;
+    color: black;
     }
 </style>

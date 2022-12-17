@@ -16531,7 +16531,7 @@ input:-ms-input-placeholder {
     box-sizing: border-box;
     cursor: pointer;
     display: block;
-    height: 28px;
+    height: inherit !important;
     user-select: none;
     -webkit-user-select: none;
 }

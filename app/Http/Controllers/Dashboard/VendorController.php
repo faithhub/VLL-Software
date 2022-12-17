@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bank;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class VendorController extends Controller
 {
@@ -196,10 +198,34 @@ class VendorController extends Controller
         # code...
         try {
             //code...
+            $data['banks'] = Bank::all();
+            // $data['banks'] = $response = Http::get("https://api.paystack.co/bank");
+            // $all_banks = $response->json($key = null);
+            // dd($response->body(), $all_banks['data']);
+            // dd($all_banks['data']);
+            // foreach ($all_banks['data'] as $bank) {
+            //     # code...
+            //     Bank::create([
+            //         "name" => $bank['name'],
+            //         "slug" => $bank['slug'],
+            //         "code" => $bank['code'],
+            //         "longcode" => $bank['longcode'],
+            //         "gateway" => $bank['gateway'],
+            //         "pay_with_bank" => $bank['pay_with_bank'],
+            //         "active" => $bank['active'],
+            //         "country" => $bank['country'],
+            //         "currency" => $bank['currency'],
+            //         "type" => $bank['type'],
+            //         "is_deleted" => $bank['is_deleted'],
+            //         "created_at" => $bank['createdAt'],
+            //         "updated_at" => $bank['updatedAt']
+            //     ]);
+            // }
             $data['title'] = "User Dashboard - Settings";
             return View('dashboard.vendor.settings', $data);
         } catch (\Throwable $th) {
             //throw $th;
+            dd($th->getMessage());
         }
     }
     public function upload()
