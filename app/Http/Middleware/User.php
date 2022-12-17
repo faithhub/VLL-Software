@@ -18,7 +18,6 @@ class User
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
         $role = Auth::user()->role;
         if ($role == "user") {
             return $next($request);

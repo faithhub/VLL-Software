@@ -22,7 +22,7 @@
             cursor: pointer;
             color: #3b566e !important;
             font-weight: 700 !important;
-            background-color: transparent !important;
+            background-color: #f0f4f9 !important;
             padding: 12px 12px
         }
 
@@ -87,7 +87,7 @@
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                 <div class="form-group">
-                                    <label class="form-label">Type of Material <span><span></label>
+                                    <label class="form-label">Type of Material <span>*<span></label>
                                     <select onchange="" class="form-control" name="bank" id="search"
                                         data-parsley-required-message="Price is required"
                                         data-placeholder="Select type of material">
@@ -104,7 +104,7 @@
                             </div>
                             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="form-group">
-                                    <label class="form-label">Country of Publication*
+                                    <label class="form-label">Country of Publication
                                         <span>*<span></label>
                                     <input type="text" class="form-control" placeholder="" value="">
                                 </div>

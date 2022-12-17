@@ -31,7 +31,6 @@
     @endisset
     <!-- End Why Choose Us Area -->
 
-
     <!-- Start Boxes Area -->
     <section class="home ptb-0 mtb-10">
         <div class="container">

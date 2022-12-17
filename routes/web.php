@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('home', function () {
-    return view('home');
-});
+// Route::get('home', function () {
+//     return view('home');
+// });
 Route::get('/', function () {
     return view('welcome');
 });
@@ -39,7 +39,7 @@ Route::prefix('google')->name('google.')->group(function () {
 
 //User
 Route::prefix('user')->name('user.')->group(function () {
-    Route::group(['middleware' => ['user', 'auth']], function () {
+    Route::group(['middleware' => ['user', 'auth']], function () { 
         Route::get('/',  [App\Http\Controllers\Dashboard\UserController::class, 'index'])->name('index');
         Route::get('library',  [App\Http\Controllers\Dashboard\UserController::class, 'library'])->name('library');
         Route::get('transactions',  [App\Http\Controllers\Dashboard\UserController::class, 'transactions'])->name('transactions');

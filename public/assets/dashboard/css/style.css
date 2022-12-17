@@ -27187,6 +27187,10 @@ select.form-control-lg:not([size]):not([multiple]) {
     border-color: #f0f4f9 !important;
 }
 
+.tm-tag {
+    background-color: #f0f4f9 !important;
+}
+
 .select2-lg
     .select2-container--default
     .select2-selection--single

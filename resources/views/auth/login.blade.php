@@ -18,7 +18,7 @@
                     <div class="row about-image">
                         <div class="col-12 col-lg-12 col-md-12 d-none d-md-block">
                             <div class="image">
-                                <img src="{{ asset('assets/web/img/login.png') }}" alt="about" style="max-height: 80vh">
+                                <img src="{{ asset('assets/web/img/bg-book003.jpg') }}" alt="about" style="max-height: 90vh">
                             </div>
                         </div>
                     </div>

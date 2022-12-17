@@ -20,7 +20,6 @@ class Vendor
     {
         $role = Auth::user()->role;
         if ($role == "vendor") {
-
             return $next($request);
         } else {
             switch ($role) {
