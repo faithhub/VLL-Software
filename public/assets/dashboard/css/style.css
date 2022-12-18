@@ -9771,6 +9771,30 @@ button.close {
     }
 }
 
+/* Admin Stat */
+.admin-stat .card{
+    background: #F0F4F9;
+    border-radius: 10px;
+}
+.admin-stat .big-col{
+    padding-left: 4%;
+    padding-top: 4%;
+    padding-right: 4%;
+}
+.admin-stat .card-body{
+    padding: 10%;
+}
+.admin-stat h4{
+    font-size: 25px;
+    font-weight: 800;
+    margin-bottom: 6%;
+}
+
+.admin-stat p{
+    font-size: 20px;
+    font-weight: 700;
+}
+
 /*---- Tags-----*/
 .tag {
     font-size: 0.75rem;
