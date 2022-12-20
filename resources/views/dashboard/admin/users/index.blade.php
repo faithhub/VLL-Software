@@ -46,7 +46,7 @@
                                                             <td>{{ $user->phone }}</td>
                                                             <td>Today</td>
                                                             <td>Premium</td>
-                                                            <td>{{ $user->created_at->format('D, M j, Y H:i') ?? '' }}</td>
+                                                            <td>{{ $user->last_login->upadated_at->format('D, M j, Y H:i') ?? '' }}</td>
                                                             <td>{{ $user->last_login->browserFamily ?? "-" }} </td>
                                                             <td>{{ $user->last_login->regionName ?? "-" }} </td>
                                                             {{-- <td>
