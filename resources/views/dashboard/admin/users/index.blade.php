@@ -46,9 +46,17 @@
                                                             <td>{{ $user->phone }}</td>
                                                             <td>Today</td>
                                                             <td>Premium</td>
-                                                            <td>{{ $user->last_login->upadated_at->format('D, M j, Y H:i') ?? '' }}</td>
-                                                            <td>{{ $user->last_login->browserFamily ?? "-" }} </td>
-                                                            <td>{{ $user->last_login->regionName ?? "-" }} </td>
+                                                            <td>
+                                                               @isset($user->last_login)
+                                                                    @if ($user->last_login->updated_at)
+                                                                    {{ $user->last_login->updated_at->format('D, M j, Y H:i') }}
+                                                                @else
+                                                                    "-"
+                                                                @endif
+                                                               @endisset
+                                                            </td>
+                                                            <td>{{ $user->last_login->browserFamily ?? '-' }} </td>
+                                                            <td>{{ $user->last_login->regionName ?? '-' }} </td>
                                                             {{-- <td>
                                                         <span class="badge bg-warning-light border-warning fs-11">Pending</span>
                                                     </td> --}}
