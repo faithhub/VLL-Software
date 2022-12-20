@@ -26631,7 +26631,8 @@ input::-ms-input-placeholder {
 .select2-container--default
     .select2-selection--single
     .select2-selection__arrow {
-    height: 2rem !important;
+    /* height: 2rem !important; */
+    height: 2.875rem;
 }
 
 select.form-control:focus::-ms-value {
@@ -27210,7 +27211,6 @@ select.form-control-lg:not([size]):not([multiple]) {
     background-color: #f0f4f9 !important;
     border-color: #f0f4f9 !important;
 }
-
 .tm-tag {
     background-color: #f0f4f9 !important;
 }

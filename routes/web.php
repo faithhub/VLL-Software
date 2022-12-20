@@ -67,5 +67,10 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::group(['middleware' => ['admin', 'auth']], function () {
         Route::get('/',  [App\Http\Controllers\Dashboard\AdminController::class, 'index'])->name('index');
+        Route::get('/users',  [App\Http\Controllers\Dashboard\AdminController::class, 'users'])->name('users');
+        Route::get('/vendors',  [App\Http\Controllers\Dashboard\AdminController::class, 'vendors'])->name('vendors');
+        Route::get('/library',  [App\Http\Controllers\Dashboard\AdminController::class, 'library'])->name('library');
+        Route::match(['get', 'post'], '/upload',  [App\Http\Controllers\Dashboard\AdminController::class, 'upload'])->name('upload');
+        Route::get('/transactions',  [App\Http\Controllers\Dashboard\AdminController::class, 'transactions'])->name('transactions');
     });
 });

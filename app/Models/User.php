@@ -30,7 +30,9 @@ class User extends Authenticatable
         'gender',
         'phone',
         'avatar',
-        'team_admin'
+        'team_admin',
+        'last_login_at',
+        'last_login_ip',
     ];
 
     /**
@@ -51,4 +53,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // public function last_login()
+    // {
+    //     return $this->hasOne(LastLogin::class, 'id', 'user_id');
+    // }
+    public function last_login()
+    {
+        return $this->hasOne(LastLogin::class, 'user_id');
+    }
 }
