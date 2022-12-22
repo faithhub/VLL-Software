@@ -12470,6 +12470,7 @@ td.fc-today {
     resize: none;
     height: 50px;
     background: 0 0;
+    background-color: transparent !important;
 }
 
 .msb-reply button {
@@ -12729,7 +12730,7 @@ Inbox Message Style
     max-height: 500px;
     background-size: cover;
     background-position: center;
-    min-height: 50vh;
+    min-height: 70vh;
 }
 
 .chat-body-style:after {
@@ -12738,7 +12739,7 @@ Inbox Message Style
 }
 
 .chat-conatct-list {
-    max-height: 555px;
+    max-height: 100%;
     overflow-y: auto;
 }
 
@@ -12982,7 +12983,7 @@ Inbox Message Style
     resize: none;
     height: 44px;
     border: 1px solid #ebeaf1;
-    background: #faf9ff;
+    background: #fff;
     margin-left: -42px;
 }
 
@@ -25326,7 +25327,8 @@ a.chip:hover {
 .tabs-menu1 ul li a {
     padding: 10px 20px 11px 20px;
     display: block;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 15px;
 }
 
 .tabs-menu-body {
@@ -37676,6 +37678,7 @@ a.chip:hover {
 .tabs-menu1 ul li .active {
     border-bottom: 3px solid var(--primary-bg-color);
     color: var(--primary-bg-color);
+    font-weight: 800;
 }
 
 .sub-panel-heading .tabs-menu ul li a.active {
@@ -43074,7 +43077,7 @@ li.ui-timepicker-selected {
 
 .dark-mode .chat .msb-reply textarea {
     border: 1px solid #ebeaf1;
-    background: #faf9ff;
+    background: #fff;
 }
 
 .dark-mode .chat .dropdown-menu li {
@@ -55354,7 +55357,7 @@ body.rtl {
 }
 
 .messages-mode {
-    background: #f0f4f9 !important;
+    background: #f0f4f9;
 }
 
 .rtl #messages-main #ms-compose {

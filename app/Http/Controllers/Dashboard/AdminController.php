@@ -142,4 +142,28 @@ class AdminController extends Controller
             //throw $th;
         }
     }
+    public function messages()
+    {
+        # code...
+        try {
+            //code...
+            $data['title'] = "Messages";
+            return View('dashboard.admin.messages.index', $data);
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            //throw $th;
+        }
+    }
+    public function settings()
+    {
+        # code...
+        try {
+            //code...
+            $data['title'] = "General Settings";
+            return View('dashboard.admin.settings.index', $data);
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            //throw $th;
+        }
+    }
 }

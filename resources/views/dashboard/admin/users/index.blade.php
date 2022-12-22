@@ -31,6 +31,7 @@
                                                     <th class="sorting" tabindex="0" style="">Last Subcription</th>
                                                     <th class="sorting" tabindex="0" style="">Active Plan</th>
                                                     <th class="sorting" tabindex="0" style="">Last Login</th>
+                                                    <th class="sorting" tabindex="0" style="">Device Type</th>
                                                     <th class="sorting" tabindex="0" style="">Browser Type</th>
                                                     <th class="sorting" tabindex="0" style="">Location</th>
                                                 </tr>
@@ -55,6 +56,7 @@
                                                                 @endif
                                                                @endisset
                                                             </td>
+                                                            <td>-</td>
                                                             <td>{{ $user->last_login->browserFamily ?? '-' }} </td>
                                                             <td>{{ $user->last_login->regionName ?? '-' }} </td>
                                                             {{-- <td>

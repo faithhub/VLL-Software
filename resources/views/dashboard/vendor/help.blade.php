@@ -6,6 +6,16 @@
             padding: 10px 5px 5px 15px;
             border-radius: 10px
         }
+        .main-chat-footer{
+            padding: 0px;
+        }
+        .main-chat-footer .form-control{
+            margin: 0px;
+            height: 50px;
+        }
+        .main-chat-footer .main-msg-send{
+            height: 50px;
+        }
     </style>
     <div class="main-container container-fluid px-0">
         <div class="row">
@@ -18,7 +28,7 @@
                         <div class="row">
                             <div class="col-12 help-email-div">
                                 <h6 class="mb-1 mt-1 font-weight-bold h6">Email Us</h6>
-                                <p>{{ $email ?? "virtuallawlibrary@gmail.com" }}</p>
+                                <p>{{ $email ?? 'virtuallawlibrary@gmail.com' }}</p>
                             </div>
                         </div>
                         <div class="messages-mode">
@@ -33,7 +43,8 @@
                                     </div>
                                     <div class="chat-body-style ps ps--active-y" id="ChatBody">
                                         <div class="message-feed media mt-0">
-                                            <div class="float-startpe-2"> <img src="{{ asset('assets/dashboard/images/photos/22.jpg') }}"
+                                            <div class="float-startpe-2"> <img
+                                                    src="{{ asset('assets/dashboard/images/photos/22.jpg') }}"
                                                     alt="" class="avatar avatar-md brround"> </div>
                                             <div class="media-body">
                                                 <div class="mf-content"> Quisque consequat arcu eget odio cursus, ut tempor
@@ -46,7 +57,8 @@
                                             </div>
                                         </div>
                                         <div class="message-feed right">
-                                            <div class="float-end ps-2"> <img src="{{ asset('assets/dashboard/images/photos/thumb3.jpg') }}"
+                                            <div class="float-end ps-2"> <img
+                                                    src="{{ asset('assets/dashboard/images/photos/thumb3.jpg') }}"
                                                     alt="" class="avatar avatar-md brround"> </div>
                                             <div class="media-body">
                                                 <div class="mf-content"> Etiam nec facilisis lacus. Nulla imperdiet augue
@@ -66,33 +78,19 @@
                                             <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 391px;"></div>
                                         </div>
                                     </div>
-                                    <div class="msb-reply">
+                                    <div class="main-chat-footer">
+                                        <input class="form-control" placeholder="Type your message here..." type="text">
+                                        <button class="main-msg-send btn btn-primary">
+                                            <i class="fa fa-paper-plane-o text-muted"></i>&nbsp;&nbsp;&nbsp;
+                                            Send
+                                        </button>
+                                    </div>
+                                    {{-- <div class="msb-reply">
                                         <textarea placeholder="What's on your mind..."></textarea> <button class="btn br-7"><i
                                                 class="fa fa-paper-plane-o text-muted"></i></button>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            @isset($materials)
-                                @foreach (array_slice($materials, 0, 4) as $material)
-                                    <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
-                                        <div class="image">
-                                            <a href="{{ $material->link }}">
-                                                <img src="{{ $material->img }}" alt="{{ $material->title }}">
-                                            </a>
-                                        </div>
-                                        <div class="mat-title">
-                                            <div class="mt-2">
-                                            </div>
-                                            <a href="{{ $material->link }}" class="book-title">
-                                                <h4>{{ $material->title }} ({{ $material->year }})</h4>
-                                                <h5>{{ $material->author }}</h5>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @endisset
                         </div>
                     </div>
                 </div>

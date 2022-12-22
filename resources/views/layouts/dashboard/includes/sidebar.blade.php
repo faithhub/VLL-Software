@@ -247,12 +247,12 @@
                     </li>
 
                     <li class="slide is-expanded" id="sidebar">
-                        <a class="side-menu__item side_menus" href="">
+                        <a class="side-menu__item side_menus {{ request()->is('admin/messages') ? 'active' : '' }}"  href="{{ route('admin.messages') }}">
                             <svg width="23" height="20" viewBox="0 0 23 20" fill="none"
                                 xmlns="http://www.w3.org/2000/svg" class="side-menu__icon">
                                 <path
                                     d="M20.333 8.52078V17.6074L15.4263 12.7008L14.4863 13.6408L19.3063 18.4674H2.77301L7.43967 13.6408L6.47967 12.7141L1.66634 17.6941V6.14745L9.95301 14.3941C10.2028 14.6424 10.5408 14.7818 10.893 14.7818C11.2453 14.7818 11.5832 14.6424 11.833 14.3941L17.7197 8.54078C17.2499 8.41817 16.8007 8.22724 16.3863 7.97411L10.8797 13.4474L2.53967 5.13411H14.2063C14.0774 4.70107 14.0079 4.25253 13.9997 3.80078H1.66634C1.31272 3.80078 0.973581 3.94126 0.723532 4.19131C0.473484 4.44135 0.333008 4.78049 0.333008 5.13411V18.4674C0.333008 18.8211 0.473484 19.1602 0.723532 19.4103C0.973581 19.6603 1.31272 19.8008 1.66634 19.8008H20.333C20.6866 19.8008 21.0258 19.6603 21.2758 19.4103C21.5259 19.1602 21.6663 18.8211 21.6663 18.4674V7.93411C21.2531 8.19414 20.8039 8.39182 20.333 8.52078Z"
-                                    fill="#1D3557" />
+                                    fill="{{ request()->is('admin/messages') ? '#fff' : '#1D3557' }}" />
                                 <path
                                     d="M19.0003 7.04167C20.8413 7.04167 22.3337 5.54928 22.3337 3.70833C22.3337 1.86738 20.8413 0.375 19.0003 0.375C17.1594 0.375 15.667 1.86738 15.667 3.70833C15.667 5.54928 17.1594 7.04167 19.0003 7.04167Z"
                                     fill="{{ request()->is('admin/messages') ? '#fff' : '#1D3557' }}" />
@@ -262,7 +262,7 @@
                         </a>
                     </li>
                     <li class="slide is-expanded" id="sidebar">
-                        <a class="side-menu__item side_menus" href="">
+                        <a class="side-menu__item side_menus {{ request()->is('admin/settings') ? 'active' : '' }}"  href="{{ route('admin.settings') }}">
                             <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                 xmlns="http://www.w3.org/2000/svg" class="side-menu__icon">
                                 <path

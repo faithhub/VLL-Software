@@ -52,16 +52,40 @@
 <script type="text/javascript"></script> <!-- Switcher js -->
 <script src="{{ asset('assets/dashboard/switcher/js/switcher.js') }}"></script>
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script> --}}
-
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.js"></script>
+<script src="https://spruko.com/demo/azea/Azea/assets/js/form-editor2.js"></script>
+<script src="https://spruko.com/demo/azea/Azea/assets/js/form-editor.js"></script>
+<script src="https://spruko.com/demo/azea/Azea/assets/plugins/wysiwyag/jquery.richtext.js"></script>
+<script src="jsdjksjkds"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.js"></script>
 
 
 <script type="text/javascript">
+    $(function() {
+        'use strict'
+        const ps = new PerfectScrollbar('#ChatList', {
+            useBothWheelAxes: false,
+            suppressScrollX: false,
+        });
+        const ps2 = new PerfectScrollbar('#ChatList2', {
+            useBothWheelAxes: false,
+            suppressScrollX: false,
+        });
+        const ps1 = new PerfectScrollbar('#ChatBody', {
+            useBothWheelAxes: false,
+            suppressScrollX: false,
+        });
+
+        $('[data-bs-toggle="tooltip"]').tooltip();
+
+    });
+
+
     $(document).ready(function() {
         $("select").select2({});
 
-		$(".tm-input").tagsManager({
-    tagsContainer: '.tags-show',});
+        $(".tm-input").tagsManager({
+            tagsContainer: '.tags-show',
+        });
     });
 
 

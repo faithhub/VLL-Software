@@ -25,14 +25,28 @@
                                             <thead>
                                                 <tr role="row">
                                                     <th class="sorting sorting_asc" style="">No</th>
-                                                    <th scope="row" class="sorting" style="">Date</th>
+                                                    <th class="sorting sorting_asc" style="">Invoice No</th>
+                                                    <th scope="row" class="sorting" style="">Date & Time</th>
                                                     <th class="sorting" tabindex="0" style="">User name</th>
                                                     <th class="sorting" tabindex="0" style="">Email Address</th>
                                                     <th class="sorting" tabindex="0" style="">Material</th>
                                                     <th class="sorting" tabindex="0" style="">Amount</th>
+                                                    <th class="sorting" tabindex="0" style="">Currency</th>
+                                                    <th class="sorting" tabindex="0" style="">Type of transaction</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>JDS876SHJDGHJ</td>
+                                                    <td>Wed, Dec 21, 2022 22:33</td>
+                                                    <td>Olawale</td>
+                                                    <td>Ola@gmail.com</td>
+                                                    <td>Civil Law.pdf</td>
+                                                    <td>₦{{ number_format(4500, 2) }}</td>
+                                                    <td>NGN</td>
+                                                    <td>Purchase</td>
+                                                </tr>
                                                 @isset($vendors)
                                                     @foreach ($vendors as $vendor)
                                                         <tr class="">

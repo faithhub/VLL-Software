@@ -72,5 +72,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/library',  [App\Http\Controllers\Dashboard\AdminController::class, 'library'])->name('library');
         Route::match(['get', 'post'], '/upload',  [App\Http\Controllers\Dashboard\AdminController::class, 'upload'])->name('upload');
         Route::get('/transactions',  [App\Http\Controllers\Dashboard\AdminController::class, 'transactions'])->name('transactions');
+        Route::get('/messages',  [App\Http\Controllers\Dashboard\AdminController::class, 'messages'])->name('messages');
+        Route::match(['get', 'post'], '/settings',  [App\Http\Controllers\Dashboard\AdminController::class, 'settings'])->name('settings');
     });
 });

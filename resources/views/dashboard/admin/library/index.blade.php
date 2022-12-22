@@ -6,8 +6,10 @@
                 <div class="card border-10">
                     <div class="card-header border-bottom-0 mb-4 mt-3">
                         <h6 class="mb-1 mt-1 font-weight-bold h3">Material List</h6>
-                        <div class="card-options" style="margin-right:2.5%"> <a href="{{ route('admin.upload') }}"
-                                class="btn btn-bg btn-primary p-3"><b>Upload a Material</b></a> </div>
+                        <div class="card-options" style="margin-right:2.5%">
+                            <a href="{{ route('admin.upload') }}"
+                                class="btn btn-bg btn-primary p-3"><b>Upload a Material</b></a>
+                            </div>
                     </div>
                     <div class="card-body pt-0">
                         <div class="table-responsive">
@@ -41,14 +43,15 @@
                                                             </td>
                                                             <td class="sorting_1"><a class="font-weight-bold"
                                                                     href="">{{ $material->title }}</a></td>
-                                                            <td>{{ $material->type ?? "-" }}</td>
+                                                            <td>{{ $material->type ?? '-' }}</td>
                                                             <td>{{ $material->author }}</td>
-                                                            <td>{{ $material->vendor ?? "-" }}</td>
-                                                            <td>{{ $material->desc ?? "-" }}</td>
+                                                            <td>{{ $material->vendor ?? '-' }}</td>
+                                                            <td>{{ $material->desc ?? '-' }}</td>
                                                             <td>₦{{ number_format($material->price ?? 0, 2) }}</td>
                                                             <td><a class="font-weight-bold"
-                                                                href="{{ $material->link }}">{{ $material->title }}.pdf</a></td>
-                                                                <td><a href=""><i class="fa fa-trash"></i></a></td>
+                                                                    href="{{ $material->link }}">{{ $material->title }}.pdf</a>
+                                                            </td>
+                                                            <td><a href=""><i class="fa fa-trash"></i></a></td>
                                                             {{-- <td>{{ $material->created_at->format('D, M j, Y') ?? '' }}</td> --}}
                                                             {{-- <td>
                                                         <span class="badge bg-warning-light border-warning fs-11">Pending</span>
