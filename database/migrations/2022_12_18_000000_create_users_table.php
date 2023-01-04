@@ -16,21 +16,30 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->id();
-            $table->unsignedBigInteger('team_id')->nullable();
-            // $table->foreign('team_id')
-            //     ->references('id')->on('teams')
-            //     ->onDelete('cascade');
-            $table->unsignedBigInteger('subs_id')->nullable();
-            // $table->foreign('subs_id')
-            //     ->references('id')->on('subscriptions')
-            //     ->onDelete('cascade');
-            $table->string('google_id')->unique()->nullable();
-            $table->string('name');
+            $table->foreignId('country_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('set null');
+            $table->foreignId('university_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('set null');
+            $table->foreignId('team_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('set null');
+            $table->foreignId('subscription_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('set null');
+            Schema::disableForeignKeyConstraints();
+            $table->string('name')->nullable();
             $table->string('email')->unique();
             $table->string('password');
+            $table->enum('status', ['active', 'disabled']);
             $table->enum('role', ['admin', 'user', 'vendor']);
             $table->enum('user_type', ['student', 'professionals'])->nullable();
-            $table->enum('vendor_type', ['entity', 'company'])->nullable();
+            $table->enum('vendor_type', ['entity', 'company', 'institution'])->nullable();
             $table->enum('gender', ['male', 'female', 'entity'])->nullable();
             $table->string('phone')->nullable();
             $table->string('avatar')->nullable();
@@ -38,11 +47,6 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
-        });
-
-        Schema::table('users', function (Blueprint $table) {
-            // $table->foreign('team_id')->references('id')->on('teams')->onDelete('cascade');
-            // $table->foreign('subs_id')->references('id')->on('subscriptions')->onDelete('cascade');
         });
     }
 
@@ -53,6 +57,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('users');
     }
 };

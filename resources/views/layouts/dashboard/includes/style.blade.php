@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 <!--Favicon -->
 <link rel="icon" href="" type="image/x-icon" />
 <!--Bootstrap css -->
@@ -13,8 +13,28 @@
 <link href="{{ asset('assets/dashboard/css/icons.css') }}" rel="stylesheet" /> <!-- INTERNAL Switcher css -->
 <link href="{{ asset('assets/dashboard/switcher/css/switcher.css') }}" rel="stylesheet" />
 <link href="{{ asset('assets/dashboard/switcher/demo.css') }}" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
 {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
 <style type="text/css">
+    .invalid-feedback {
+        color: red !important;
+        letter-spacing: 2px !important;
+        display: block !important;
+        font-weight: 800 !important;
+    }
+
+    .form-check-input:checked {
+        background-color: var(--primary-bg-color);
+        border-color: var(--primary-bg-color);
+    }
+
+    .parsley-required {
+        color: red !important;
+        letter-spacing: 2px !important;
+        display: block !important;
+        font-weight: 800 !important;
+    }
+
     input,
     textarea {
         -webkit-touch-callout: default;
@@ -46,7 +66,7 @@
     .fa-fw {
         text-align: center;
         width: 1.25em;
-    font-size: 18px;
-    color: black;
+        font-size: 18px;
+        color: black;
     }
 </style>

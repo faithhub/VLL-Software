@@ -81,11 +81,14 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="col-sm-12 col-md-12">
-                                        <div class="form-group"> <label class="form-label">Active Subscription</label>
-                                            <a href="#" data-bs-effect="effect-scale" data-bs-toggle="modal"
-                                                data-bs-target="#exampleModal"
-                                                class="sub-link btn btn-sm btn-primary">Change</a>
+                                        <div class="form-group">
+                                            <label class="form-label">Subscriptions</label>
+                                            <button onclick="shiNew(event)" data-type="dark" data-size="l"
+                                                data-title="Subscriptions"
+                                                href="{{ route('user.subscriptions') }}"
+                                                class="sub-link btn btn-sm btn-primary">Change</button>
                                         </div>
                                     </div>
                                 </div>

@@ -48,15 +48,15 @@
                                                             <td>Today</td>
                                                             <td>Premium</td>
                                                             <td>
-                                                               @isset($user->last_login)
+                                                                @isset($user->last_login)
                                                                     @if ($user->last_login->updated_at)
-                                                                    {{ $user->last_login->updated_at->format('D, M j, Y H:i') }}
-                                                                @else
-                                                                    "-"
-                                                                @endif
-                                                               @endisset
+                                                                        {{ $user->last_login->updated_at->format('D, M j, Y H:i') }}
+                                                                    @else
+                                                                        "-"
+                                                                    @endif
+                                                                @endisset
                                                             </td>
-                                                            <td>-</td>
+                                                            <td>{{ $user->last_login->deviceType ?? '-' }} </td>
                                                             <td>{{ $user->last_login->browserFamily ?? '-' }} </td>
                                                             <td>{{ $user->last_login->regionName ?? '-' }} </td>
                                                             {{-- <td>

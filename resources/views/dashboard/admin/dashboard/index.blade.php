@@ -14,7 +14,7 @@
                             </div>
                         </div>
                         <div class="card-options" style="margin-right:2.5%">
-                            <select class="form-control" style="min-width: 120% !important">
+                            <select class="form-control select" style="min-width: 120% !important">
                                 <option>Last 7 Days</option>
                                 <option>Last 30 Days</option>
                                 <option>Last 12 Month</option>

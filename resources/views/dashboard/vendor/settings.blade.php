@@ -51,16 +51,19 @@
                                                 value="Patrenna">
                                         </div>
                                     </div>
+
                                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="form-group"> <label class="form-label">Email address</label> <input
                                                 type="email" class="form-control" placeholder="Email"
                                                 value="patrennaschell@gmail.com"> </div>
                                     </div>
+
                                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                         <div class="form-group"> <label class="form-label">Phone Number</label> <input
                                                 type="number" class="form-control" placeholder="+234 905 678 234 "
                                                 value="+(63-4567-890)"></div>
                                     </div>
+
                                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                         <label class="form-label">Gender</label>
                                         <div class="d-flex">
@@ -81,10 +84,22 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Subscriptions</label>
+                                            <button onclick="shiNew(event)" data-type="dark" data-size="l"
+                                                data-title="Subscriptions"
+                                                href="{{ route('vendor.subscriptions') }}"
+                                                class="sub-link btn btn-sm btn-primary">Change</button>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="col-lg-6 col-xl-6">
                                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                        <div class="form-group"> <label class="form-label">Bank Namee</label>
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Namee</label>
                                             <select class="form-control" name="bank"
                                                 id="search" data-parsley-required-message="The Bank is required"
                                                 data-placeholder="Select your Bank">

@@ -47,6 +47,7 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::get('summary/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'summary_material'])->name('summary');
         Route::get('help',  [App\Http\Controllers\Dashboard\UserController::class, 'help'])->name('help');
         Route::get('settings',  [App\Http\Controllers\Dashboard\UserController::class, 'settings'])->name('settings');
+        Route::get('subscriptions',  [App\Http\Controllers\Dashboard\UserController::class, 'subscriptions'])->name('subscriptions');
     });
 });
 
@@ -60,6 +61,7 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
         Route::get('transactions',  [App\Http\Controllers\Dashboard\VendorController::class, 'transactions'])->name('transactions');
         Route::get('summary/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'summary'])->name('summary');
         Route::get('upload',  [App\Http\Controllers\Dashboard\VendorController::class, 'upload'])->name('upload');
+        Route::get('subscriptions',  [App\Http\Controllers\Dashboard\VendorController::class, 'subscriptions'])->name('subscriptions');
     });
 });
 
@@ -74,5 +76,23 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/transactions',  [App\Http\Controllers\Dashboard\AdminController::class, 'transactions'])->name('transactions');
         Route::get('/messages',  [App\Http\Controllers\Dashboard\AdminController::class, 'messages'])->name('messages');
         Route::match(['get', 'post'], '/settings',  [App\Http\Controllers\Dashboard\AdminController::class, 'settings'])->name('settings');
+
+        // Material Type
+        Route::match(['get', 'post'], '/add_material',  [App\Http\Controllers\Admin\MaterialController::class, 'add_material'])->name('add_material');
+        Route::match(['get'], '/view_material/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'view_material'])->name('view_material');
+        Route::get('/delete_material/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'delete_material'])->name('delete_material');
+        // Route::get('/update_material_status/{id}/{value}',  [App\Http\Controllers\Dashboard\AdminController::class, 'update_material_status'])->name('update_material_status');
+
+        Route::get('/test',  [App\Http\Controllers\Dashboard\AdminController::class, 'test'])->name('test');
+        // Subject Type
+        Route::match(['get', 'post'], '/add_subject',  [App\Http\Controllers\Admin\MaterialController::class, 'add_subject'])->name('add_subject');
+        Route::match(['get'], '/view_subject/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'view_subject'])->name('view_subject');
+        Route::get('/delete_subject/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'delete_subject'])->name('delete_subject');
+
+        //Subscription
+        Route::match(['get', 'post'], '/edit_subscription/{id}',  [App\Http\Controllers\Admin\SubscriptionController::class, 'edit_subscription'])->name('edit_subscription');
+        Route::match(['get'], '/view_subscription/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'view_subscription'])->name('view_subscription');
+        Route::get('/delete_subscription/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'delete_subscription'])->name('delete_subscription');
+        // Route::get('/update_subject_status/{id}/{value}',  [App\Http\Controllers\Admin\SubscriptionController::class, 'update_subject_status'])->name('update_subject_status');
     });
 });

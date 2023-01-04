@@ -69987,7 +69987,7 @@ body.rtl {
 }
 
 .panel-body .lead strong {
-    font-size: 40px;
+    font-size: 20px;
     margin-bottom: 0;
 }
 
@@ -70004,6 +70004,12 @@ body.rtl {
     border: 0px;
     border-radius: 25px;
 }
+
+
+        .panel.price{
+            border-radius: 15px;
+            box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+        }
 
 /*right of pricing*/
 @media (min-width: 992px) {

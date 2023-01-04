@@ -51,25 +51,45 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        // dd($data);
         if ($data['form_type'] == "vendor") {
             Session::flash('warning', __('All fields are required'));
-            return Validator::make($data, [
-                'name' => ['required', 'string', 'max:255'],
-                'type' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'password' => ['required', 'string', 'min:8', 'confirmed'],
-            ]);
+            return Validator::make(
+                $data,
+                [
+                    'type' => ['required', 'string', 'max:255'],
+                    'terms' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'password' => ['required', 'string', 'min:8', 'confirmed'],
+                    'v-country' => ['required_if:type,==,institution'],
+                    'name' => ['required_if:type,==,company,entity'],
+                    'v-university' => ['required_if:type,==,institution'],
+                ],
+                [
+                    'required_if' => 'The :attribute field is required.',
+                    'v-country.required_if' => __('The country field is required'),
+                    'v-university.required_if' => __('The university field is required')
+                ]
+            );
         }
 
         if ($data['form_type'] == "user") {
             Session::flash('warning', __('All fields are required'));
-            return Validator::make($data, [
-                'name' => ['required', 'string', 'max:255'],
-                'type' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'password' => ['required', 'string', 'min:8', 'confirmed'],
-                'universities' => ['required_if:type,==,student'],
-            ]);
+            return Validator::make(
+                $data,
+                [
+                    'name' => ['required', 'string', 'max:255'],
+                    'type' => ['required', 'string', 'max:255'],
+                    'terms' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'password' => ['required', 'string', 'min:8', 'confirmed'],
+                    'university' => ['required_if:type,==,student'],
+                    'country' => ['required_if:type,==,student'],
+                ],
+                [
+                    'required_if' => 'The :attribute field is required.'
+                ]
+            );
         }
         return back();
     }
@@ -91,18 +111,20 @@ class RegisterController extends Controller
                 'email' => $data['email'],
                 'role' => $data['form_type'],
                 'user_type' => $data['type'],
-                'universities' => $data['universities'] ?? null,
+                'university_id' => $data['university'] ?? null,
+                'country_id' => $data['country'] ?? null,
                 'password' => Hash::make($data['password']),
             ]);
         }
 
         if ($data['form_type'] == "vendor") {
             return User::create([
-                'name' => $data['name'],
+                'name' => $data['name'] ?? null,
                 'email' => $data['email'],
                 'role' => $data['form_type'],
                 'vendor_type' => $data['type'],
-                'universities' => $data['universities'] ?? null,
+                'university_id' => $data['v-university'] ?? null,
+                'country_id' => $data['v-country'] ?? null,
                 'password' => Hash::make($data['password']),
             ]);
         }

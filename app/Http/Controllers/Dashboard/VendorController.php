@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bank;
+use App\Models\Country;
+use App\Models\MaterialType;
+use App\Models\Subject;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -228,14 +232,33 @@ class VendorController extends Controller
             dd($th->getMessage());
         }
     }
+
+    public function subscriptions()
+    {
+        # code...
+        try {
+            //code...
+            $data['title'] = "Subsciptions";
+            $data['subs'] = Subscription::all();
+            return View('dashboard.vendor.subscriptions', $data);
+        } catch (\Throwable $th) {
+            dD($th->getMessage());
+            //throw $th;
+        }
+    }
+
     public function upload()
     {
         # code...
         try {
             //code...
             $data['title'] = "User Dashboard - Upload Material";
+            $data['material_types'] = MaterialType::where("status", "active")->get();
+            $data['subjects'] = Subject::where("status", "active")->get();
+            $data['countries'] = Country::all();
             return View('dashboard.vendor.upload', $data);
         } catch (\Throwable $th) {
+            dD($th->getMessage());
             //throw $th;
         }
     }

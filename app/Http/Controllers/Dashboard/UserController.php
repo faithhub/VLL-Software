@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -180,6 +181,21 @@ class UserController extends Controller
             //throw $th;
         }
     }
+
+    public function subscriptions()
+    {
+        # code...
+        try {
+            //code...
+            $data['title'] = "Subsciptions";
+            $data['subs'] = Subscription::all();
+            return View('dashboard.user.subscriptions', $data);
+        } catch (\Throwable $th) {
+            dD($th->getMessage());
+            //throw $th;
+        }
+    }
+
     public function help()
     {
         # code...

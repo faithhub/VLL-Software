@@ -131,7 +131,7 @@
                                 <div class="mb-3" id="country_div">
                                     <select class="form-control js-example-basic-single-n" name="country" id="country"
                                         data-parsley-required-message="The Country is required"
-                                        data-placeholder="Select your Country">
+                                        data-placeholder="Select your Country" style="width: 100%">
                                         <option value=""></option>
                                         @isset($countries)
                                             @foreach ($countries as $country)
@@ -142,11 +142,18 @@
                                             @endforeach
                                         @endisset
                                     </select>
+                                    @if (old('form_type') == 'user')
+                                        @error('country')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    @endif
                                 </div>
                                 <div class="mb-3" id="universities_id">
-                                    <select class="form-control js-example-basic-single-uni" name="universities"
+                                    <select class="form-control js-example-basic-single-uni" name="university"
                                         id="universities" data-parsley-required-message="The University is required"
-                                        data-placeholder="Select your University">
+                                        data-placeholder="Select your University" style="width: 100%">
                                         <option value=""></option>
                                         @isset($universities)
                                             @foreach ($universities as $university)
@@ -159,7 +166,7 @@
                                         @endisset
                                     </select>
                                     @if (old('form_type') == 'user')
-                                        @error('universities')
+                                        @error('university')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -180,7 +187,7 @@
                                             href="{{ route('login') }}">Login</a></p>
                                 </div>
                                 <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input">
+                                    <input type="checkbox" name="terms" class="form-check-input" @if (old('form_type') == 'user') {{ old('terms') == 'on' ? 'checked' : '' }} @endif>
                                     <label class="form-check-label user-form-text" for="">
                                         I have read and I agree with the <a class="user-form-a"
                                             href="{{ route('privacy') }}">Terms and
@@ -188,6 +195,13 @@
                                             Policy</a> of Virtual Law
                                         Library
                                     </label>
+                                    @if (old('form_type') == 'user')
+                                        @error('terms')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    @endif
                                 </div>
                             </form>
                         </div>
@@ -233,15 +247,22 @@
                                             @isset($countries)
                                                 @foreach ($countries as $country)
                                                     <option value="{{ $country->id }}"
-                                                        @if (old('form_type') == 'user') {{ old('v-country') == $country->id ? 'selected' : '' }} @endif>
+                                                        @if (old('form_type') == 'vendor') {{ old('v-country') == $country->id ? 'selected' : '' }} @endif>
                                                         {{ $country->name }}
                                                     </option>
                                                 @endforeach
                                             @endisset
                                         </select>
+                                    @if (old('form_type') == 'vendor')
+                                        @error('v-country')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    @endif
                                     </div>
                                     <div class="mb-3" id="v-universities_id">
-                                        <select class="form-control js-example-basic-single-v-uni" name="v-universities"
+                                        <select class="form-control js-example-basic-single-v-uni" name="v-university"
                                             id="v-universities" data-parsley-required-message="The University is required"
                                             data-placeholder="Select your University" style="width: 100%">
                                             <option value=""></option>
@@ -249,14 +270,14 @@
                                                 @foreach ($universities as $university)
                                                     <option data-value="{{ $university->country_id }}"
                                                         value="{{ $university->id }}"
-                                                        @if (old('form_type') == 'user') {{ old('v-university') == $university->id ? 'selected' : '' }} @endif>
+                                                        @if (old('form_type') == 'vendor') {{ old('v-university') == $university->id ? 'selected' : '' }} @endif>
                                                         {{ $university->name }}
                                                     </option>
                                                 @endforeach
                                             @endisset
                                         </select>
-                                        @if (old('form_type') == 'user')
-                                            @error('v-universities')
+                                        @if (old('form_type') == 'vendor')
+                                            @error('v-university')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -336,7 +357,7 @@
                                     <p class="text-center">Already have an account? <a href="">Login</a></p>
                                 </div>
                                 <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input">
+                                    <input type="checkbox" name="terms" class="form-check-input" @if (old('form_type') == 'vendor') {{ old('terms') == 'on' ? 'checked' : '' }} @endif>
                                     <label class="form-check-label user-form-text" for="">
                                         I have read and I agree with the <a class="user-form-a"
                                             href="{{ route('privacy') }}">Terms and
@@ -344,6 +365,13 @@
                                             Policy</a> of Virtual Law
                                         Library
                                     </label>
+                                    @if (old('form_type') == 'vendor')
+                                        @error('terms')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    @endif
                                 </div>
                             </form>
                         </div>
@@ -353,4 +381,5 @@
         </div>
     </section>
     <!-- End Why Choose Us Area -->
+    @include('layouts.web.includes.signup')
 @endsection

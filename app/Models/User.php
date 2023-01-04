@@ -21,18 +21,20 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'team_id',
-        'subs_id',
-        'google_id',
         'role',
         'user_type',
         'vendor_type',
         'gender',
         'phone',
         'avatar',
+        'status',
         'team_admin',
         'last_login_at',
         'last_login_ip',
+        'country_id',
+        'university_id',
+        'subscription_id',
+        'team_id'
     ];
 
     /**
@@ -60,6 +62,6 @@ class User extends Authenticatable
     // }
     public function last_login()
     {
-        return $this->hasOne(LastLogin::class, 'user_id');
+        return $this->hasOne(LoginHistory::class, 'user_id');
     }
 }

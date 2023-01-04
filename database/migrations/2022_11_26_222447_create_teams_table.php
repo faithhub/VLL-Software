@@ -15,6 +15,14 @@ return new class extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('subscription_id')
+            ->nullable()
+            ->constrained();
+            $table->text('teammates');
+            $table->text('materials');
+            $table->enum('sub_status', ['active', 'expired']);
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +34,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('teams');
     }
 };

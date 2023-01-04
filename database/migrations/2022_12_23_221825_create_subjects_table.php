@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('universities', function (Blueprint $table) {
+        Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('country_id')
+            $table->string("name");
+            $table->string("description")->nullable();
+            $table->foreignId('material_type_id')
                 ->nullable()
                 ->constrained()
                 ->cascadeOnDelete();
-            $table->string('name');
+            $table->enum('status', ['active', 'disabled']);
             $table->timestamps();
         });
     }
@@ -31,7 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('universities');
+        Schema::dropIfExists('subjects');
     }
 };

@@ -8,12 +8,11 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
     <meta content="VLL Dashboard" name="description">
     <meta content="" name="author">
-    <meta name="keywords"
-        content="VLL dashboard">
+    <meta name="keywords" content="VLL dashboard">
     <!-- Title -->
     <title>VLL dashboard</title>
-
     @include('layouts.dashboard.includes.style')
+
 </head>
 
 <body class="app sidebar-mini ltr" data-new-gr-c-s-check-loaded="14.1087.0" data-gr-ext-installed="">
@@ -35,6 +34,7 @@
                     <!-- app-Header -->
                     @include('layouts.dashboard.includes.header')
                     <!-- /app-Header -->
+                    @include('layouts.dashboard.includes.alert')
                     <!--aside open-->
                     @include('layouts.dashboard.includes.sidebar')
                     <!--aside closed-->
@@ -50,11 +50,10 @@
                     <!-- End Footer-->
                 </div>
             </div> <!-- End Page -->
-            <!-- Back to top --> 
+            <!-- Back to top -->
             {{-- <a href="#top" id="back-to-top"><i class="fe fe-chevron-up"></i></a> --}}
             <!-- Jquery js-->
-            @include('layouts.dashboard.includes.script')
     </div>
 </body>
-
+@include('layouts.dashboard.includes.script')
 </html>

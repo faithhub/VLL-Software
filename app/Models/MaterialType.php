@@ -5,11 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class University extends Model
+class MaterialType extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'name',
-        'country_id'
+        "name",
+        "description",
+        "status",
+        "role"
+    ];
+
+    protected $casts = [
+        'role' => 'array'
     ];
 }
