@@ -1,5 +1,6 @@
 <div class="card border-10 pt-2 card-primary">
     <div class="card-body">
+       @if (Auth::user()->user_type == "student")
         <div class="row mb-4">
             <h5 class="font-weight-bold">Student Subscription</h5>
             @isset($subs)
@@ -19,15 +20,12 @@
                                 </div>
                                 <ul class="text-center">
                                     <li class="mb-4">
-
                                         @isset($sub->session)
                                             <strong class="font-weight-bold">₦{{ number_format($sub->session, 2) }}
                                             </strong>/ {{ $sub->name }}
                                         @endisset
-
                                     </li>
                                     <li class="mb-4">
-
                                         @isset($sub->system)
                                             <strong class="font-weight-bold">₦{{ number_format($sub->system, 2) }}
                                             </strong>/ {{ $sub->name }}
@@ -52,8 +50,10 @@
                 @endforeach
             @endisset
         </div>
+        @endif
 
-        <div class="row">
+       @if (Auth::user()->user_type == "professionals")
+            <div class="row">
             <h5 class="font-weight-bold">Professional Subscription</h5>
             @isset($subs)
                 @foreach ($subs as $sub)
@@ -116,5 +116,6 @@
                 @endforeach
             @endisset
         </div>
+       @endif
     </div>
 </div>

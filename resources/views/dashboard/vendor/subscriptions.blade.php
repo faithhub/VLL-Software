@@ -1,5 +1,6 @@
 <div class="card border-10 pt-2 card-primary">
     <div class="card-body">
+       @if (Auth::user()->user_type == "student")
         <div class="row mb-4">
             <h5 class="font-weight-bold">Student Subscription</h5>
             @isset($subs)
@@ -49,8 +50,10 @@
                 @endforeach
             @endisset
         </div>
+        @endif
 
-        <div class="row">
+       {{-- @if (Auth::user()->user_type == "professionals") --}}
+            <div class="row">
             <h5 class="font-weight-bold">Professional Subscription</h5>
             @isset($subs)
                 @foreach ($subs as $sub)
@@ -113,5 +116,6 @@
                 @endforeach
             @endisset
         </div>
+       {{-- @endif --}}
     </div>
 </div>
