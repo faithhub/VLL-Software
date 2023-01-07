@@ -24,11 +24,11 @@ class Vendor
         } else {
             switch ($role) {
                 case "admin":
-                    Session::flash('permission_warning', 'You no not have access to this page');
+                    // Session::flash('permission_warning', 'You no not have access to this page');
                     return redirect('/admin');
                     break;
                 case "user":
-                    Session::flash('permission_warning', 'You no not have access to this page');
+                    // Session::flash('permission_warning', 'You no not have access to this page');
                     return redirect('/user');
                     break;
                 default:

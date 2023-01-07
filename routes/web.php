@@ -60,7 +60,7 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
         Route::get('help',  [App\Http\Controllers\Dashboard\VendorController::class, 'help'])->name('help');
         Route::get('transactions',  [App\Http\Controllers\Dashboard\VendorController::class, 'transactions'])->name('transactions');
         Route::get('summary/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'summary'])->name('summary');
-        Route::get('upload',  [App\Http\Controllers\Dashboard\VendorController::class, 'upload'])->name('upload');
+        Route::match(['get', 'post'], 'upload',  [App\Http\Controllers\Dashboard\VendorController::class, 'upload'])->name('upload');
         Route::get('subscriptions',  [App\Http\Controllers\Dashboard\VendorController::class, 'subscriptions'])->name('subscriptions');
     });
 });

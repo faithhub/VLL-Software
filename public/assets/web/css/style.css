@@ -555,9 +555,9 @@ select{
 }
 .navbar.navbar-two {
     position: relative;
-    /* background: #fff !important; */
-    background: #f9faff !important;
-    background: #e5e7ee !important;
+    background: #fff !important;
+    /* background: #f9faff !important;
+    background: #e5e7ee !important; */
 }
 .navbar.navbar-two.is-sticky {
     position: fixed;

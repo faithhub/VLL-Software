@@ -10,6 +10,8 @@ use App\Models\Subject;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class VendorController extends Controller
 {
@@ -239,7 +241,7 @@ class VendorController extends Controller
         try {
             //code...
             $data['title'] = "Subsciptions";
-            $data['subs'] = Subscription::all();
+            $data['subs'] = Subscription::where('type', 'professional')->get();
             return View('dashboard.vendor.subscriptions', $data);
         } catch (\Throwable $th) {
             dD($th->getMessage());
@@ -247,13 +249,32 @@ class VendorController extends Controller
         }
     }
 
-    public function upload()
+    public function upload(Request $request)
     {
         # code...
         try {
             //code...
+            if ($_POST) {
+
+                $rules = array(
+                    'title' => ['required', 'string', 'max:255'],
+                    'description' => ['required', 'string', 'max:255'],
+                    'material_type' => ['required', 'max:255']
+                );
+
+                $messages = [];
+
+                // dd($request->all());
+                $validator = Validator::make($request->all(), $rules, $messages);
+
+                if ($validator->fails()) {
+                    Session::flash('warning', __('All fields are required'));
+                    return back()->withErrors($validator)->withInput();
+                }
+            }
             $data['title'] = "User Dashboard - Upload Material";
-            $data['material_types'] = MaterialType::where("status", "active")->get();
+            $role = ['vendor'];
+            $data['material_types'] = $m = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
             $data['subjects'] = Subject::where("status", "active")->get();
             $data['countries'] = Country::all();
             return View('dashboard.vendor.upload', $data);

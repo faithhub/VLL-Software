@@ -47,14 +47,16 @@
                         <h6 class="mb-1 mt-1 font-weight-bold h4">
                             Upload Material Information
                         </h6>
-                        <form method="POST" action="" class="validate-form" >
+                        <form method="POST" action="{{ route('vendor.upload') }}" class="validate-form"
+                            enctype="multipart/form-data">
+                            @csrf
                             <div class="row mt-5 mb-5 settings">
                                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                     <div class="form-group">
                                         <label class="form-label">Title of Material
                                             <span>*<span></label>
                                         <input type="text" class="form-control" name="title"
-                                            value="{{ old('title') }}" required
+                                            value="{{ old('title') }}" requiredd=""
                                             data-parsley-required-message="Title of Material is required" placeholder="">
                                         @error('title')
                                             <span class="invalid-feedback" role="alert">
@@ -66,10 +68,10 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                     <div class="form-group">
                                         <label class="form-label">Name of Author <span>*<span></label>
-                                        <input type="text" class="form-control" name="title"
-                                            value="{{ old('title') }}" required
+                                        <input type="text" class="form-control" name="name_of_author"
+                                            value="{{ old('name_of_author') }}" requiredd=""
                                             data-parsley-required-message="Name of Author is required" placeholder="">
-                                        @error('title')
+                                        @error('name_of_author')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -79,10 +81,10 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                     <div class="form-group">
                                         <label class="form-label">Version <span>*<span></label>
-                                        <input type="email" class="form-control" placeholder="2nd Version" name="title"
-                                            value="{{ old('title') }}" required
+                                        <input type="email" class="form-control" placeholder="2nd Version" name="version"
+                                            value="{{ old('version') }}" requiredd=""
                                             data-parsley-required-message="Version is required">
-                                        @error('title')
+                                        @error('version')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -92,22 +94,24 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                     <div class="form-group settings">
                                         <label class="form-label">Price <span>*<span></label>
-                                        <select onchange="bookPrice(this.value)" required class="form-control" name="bank"
-                                            id="search" data-parsley-required-message="Price is required"
+                                        <select onchange="bookPrice(this.value)" requiredd="" class="form-control select"
+                                            data-parsley-errors-container="#price-error" name="bank" id="search"
+                                            data-parsley-required-message="Price is required"
                                             data-placeholder="Select Price">
                                             <option value=""></option>
                                             <option value="Paid">Paid</option>
                                             <option value="Free">Free</option>
                                         </select>
+                                        <span class="invalid-feedback" id="price-error" role="alert">
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="paidDiv" style="display: none">
                                     <div class="form-group">
                                         <label class="form-label">Amount <span>*<span></label>
                                         <input type="number" class="form-control" placeholder="5000" min="1"
-                                            name="title" value="{{ old('title') }}"
+                                            name="amount" value="{{ old('amount') }}" requiredd=""
                                             data-parsley-required-message="Title of Material is required">
-                                        @error('title')
+                                        @error('amount')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -117,8 +121,9 @@
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Type of Material <span>*<span></label>
-                                        <select onchange="" class="form-control" name="material_type" id="material_type"
-                                            data-parsley-required-message="Type of Material is required" required
+                                        <select onchange="" class="form-control select" name="material_type"
+                                            id="material_type" data-parsley-required-message="Type of Material is required"
+                                            requiredd="" data-parsley-errors-container="#material_type-error"
                                             data-placeholder="Select type of material">
                                             <option value="">Select Type of Material</option>
                                             @isset($material_types)
@@ -130,21 +135,23 @@
                                                 @endforeach
                                             @endisset
                                         </select>
-                                        @error('material_type')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <span class="invalid-feedback" id="material_type-error" role="alert">
+                                            @error('material_type')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                     <div class="form-group">
                                         <label class="form-label">Year of Publication
                                             <span>*<span></label>
-                                        <input type="text" class="form-control" name="title"
-                                            value="{{ old('title') }}" required
-                                            data-parsley-required-message="Year of Publication is required" placeholder="">
-                                        @error('title')
+                                        <input type="text" class="form-control" name="year_of_publication"
+                                            value="{{ old('year_of_publication') }}" requiredd=""
+                                            data-parsley-required-message="Year of Publication is required"
+                                            placeholder="">
+                                        @error('year_of_publication')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -155,8 +162,9 @@
                                     <div class="form-group">
                                         <label class="form-label">Country of Publication
                                             <span>*<span></label>
-                                        <select onchange="" class="form-control" name="country_of_publication"
-                                            id="material_type" required
+                                        <select onchange="" class="form-control select" name="country_of_publication"
+                                            id="material_type" requiredd=""
+                                            data-parsley-errors-container="#country_of_publication-error"
                                             data-parsley-required-message="Country of Publication is required">
                                             <option value="">Select Country</option>
                                             @isset($countries)
@@ -168,20 +176,21 @@
                                                 @endforeach
                                             @endisset
                                         </select>
-                                        @error('country_of_publication')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <span class="invalid-feedback" id="country_of_publication-error" role="alert">
+                                            @error('country_of_publication')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Publishers <span>*<span></label>
-                                        <input type="text" class="form-control" name="title"
-                                            value="{{ old('title') }}"
+                                        <input type="text" class="form-control" name="publisher"
+                                            value="{{ old('publisher') }}" requiredd=""
                                             data-parsley-required-message="Title of Material is required" placeholder="">
-                                        @error('title')
+                                        @error('publisher')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -193,14 +202,15 @@
                                         <label class="form-label">Tags <span>*<span></label>
                                         <div class="tags-show"></div>
                                         <input type="text" multiple class="form-control tm-input tm-input-inf"
-                                            placeholder="Input material tags" name="title" value="{{ old('title') }}"
+                                            placeholder="Input material tags" requiredd="" name="tags"
+                                            value="{{ old('tags') }}"
                                             data-parsley-required-message="Title of Material is required" placeholder="">
                                         <div class="col-auto">
                                             <span id="passwordHelpInline" class="form-text">
                                                 Input words to aid search in Bookstore (Law, Legal)
                                             </span>
                                         </div>
-                                        @error('title')
+                                        @error('tags')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -210,8 +220,9 @@
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Subject <span>*<span></label>
-                                        <select onchange="" class="form-control" name="subject" id="subject"
-                                            data-parsley-required-message="Price is required"
+                                        <select onchange="" class="form-control select" name="subject" id="subject"
+                                            data-parsley-required-message="Subject is required" requiredd=""
+                                            data-parsley-errors-container="#subject-error"
                                             data-placeholder="Select subject of material">
                                             <option value="">Select Type of Material</option>
                                             @isset($subjects)
@@ -224,18 +235,20 @@
                                                 @endforeach
                                             @endisset
                                         </select>
-                                        @error('subject')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <span class="invalid-feedback" id="subject-error" role="alert">
+                                            @error('subject')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3">
                                     <div class="form-group">
                                         <label class="form-label">Privacy Code <span>*<span></label>
                                         <input type="password" id="password789767868" class="form-control"
-                                            placeholder="*****" name="privacy_code" value="">
+                                            placeholder="*****" name="privacy_code" value="{{ old('privacy_code') }}"
+                                            requiredd="">
                                         <span toggle="#password-field" onclick="viewPassword(this)"
                                             class="fa fa-fw fa-eye field-icon"></span>
                                         <div class="col-auto">
@@ -243,7 +256,7 @@
                                                 *Privacy codes are required for institution only.
                                             </span>
                                         </div>
-                                        @error('title')
+                                        @error('privacy_code')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -252,35 +265,43 @@
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
-                                        <label class="form-label">Material Pdf <span>*<span></label>
+                                        <label class="form-label">Material PDF <span>*<span></label>
                                         <label class="btn btn-primary btn-block custom-file-upload">
-                                            <input type="file" /><i class="fa fa-upload">&nbsp</i> Upload Material in
+                                            <input requiredd="" name="material_file" data-parsley-errors-container="#material-file-error"
+                                                type="file" />
+                                            <i class="fa fa-upload">&nbsp</i> Upload Material
+                                            in
                                             PDF</label>
-                                        @error('title')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <span class="invalid-feedback" id="material-file-error" role="alert">
+                                            @error('material_file')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Material Cover <span>*<span></label>
                                         <label class="btn btn-primary btn-block custom-file-upload">
-                                            <input type="file" /><i class="fa fa-upload">&nbsp</i> Upload Book Cover(
+                                            <input type="file" name="material_cover" requiredd=""
+                                                data-parsley-errors-container="#material-cover-error" />
+                                            <i class="fa fa-upload">&nbsp</i> Upload Book Cover(
                                             PNG,
                                             JPEG and PDF)</label>
-                                        @error('title')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <span class="invalid-feedback" id="material-cover-error" role="alert">
+                                            @error('material_cover')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Material Description <span>*<span></label>
-                                        <textarea class="form-control" name="material_desc" rows="8">{{ old('material_desc') }}</textarea>
+                                        <textarea class="form-control" data-parsley-required-message="Material Description is required" requiredd=""
+                                            name="material_desc" rows="8">{{ old('material_desc') }}</textarea>
                                         @error('material_desc')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -290,8 +311,9 @@
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <label class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" name="terms"
-                                            value="option2">
+                                        <input requiredd="" type="checkbox"
+                                            data-parsley-required-message="Terms and Conditions is required"
+                                            class="custom-control-input" name="terms" value="option2">
                                         <span class="custom-control-label">I have read and I agree with the <a
                                                 href="" target="blank"><b style="font-weight: 900">Terms and
                                                     Conditions</b></a> of
@@ -304,7 +326,8 @@
                                     @enderror
                                 </div>
                                 <div class="col-lg-12 col-xl-12 text-center">
-                                    <button type="submit" class="btn btn-primary p-3 pt-3 pt-2" style="font-size: 18px">Submit</button>
+                                    <button type="submit" class="btn btn-primary p-3 pt-3 pt-2"
+                                        style="font-size: 18px">Submit</button>
                                 </div>
                             </div>
                         </form>
