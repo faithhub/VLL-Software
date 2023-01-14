@@ -5,9 +5,19 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="card border-10">
                     <div class="card-header border-bottom-0 mb-4 mt-3">
-                        <h6 class="mb-1 mt-1 font-weight-bold h3">Textboooks</h6>
+                        <div class="card-options" style="margin-left:2.5%">
+                            <select class="form-control select2" style="min-width: 10% !important">
+                                @isset($material_types)
+                                    @foreach ($material_types as $type)
+                                        <option>{{ $type->name }}</option>
+                                    @endforeach
+                                @endisset
+                            </select>
+                        </div>
+
                         <div class="card-options" style="margin-right:2.5%"> <a href="{{ route('vendor.upload') }}"
-                                class="btn btn-bg btn-primary p-3"><i class="fa fa-upload"></i>&nbsp&nbspUpload a Material</a> </div>
+                                class="btn btn-bg btn-primary p-3"><i class="fa fa-upload"></i>&nbsp&nbspUpload a
+                                Material</a> </div>
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
@@ -24,7 +34,8 @@
                                         <div class="mat-title">
                                             <div class="mt-2">
                                             </div>
-                                            <a onclick="shiNew(event)" data-type="dark" data-size="l" data-title="{{ $material->title }}"
+                                            <a onclick="shiNew(event)" data-type="dark" data-size="l"
+                                                data-title="{{ $material->title }}"
                                                 href="{{ route('vendor.view_material', $material->id) }}" class="book-title">
                                                 <h4>{{ $material->title }} ({{ $material->year_of_publication }})</h4>
                                                 <h5>{{ $material->name_of_author }}</h5>

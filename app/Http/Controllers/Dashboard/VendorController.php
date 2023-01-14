@@ -138,6 +138,7 @@ class VendorController extends Controller
             $data['materials'] = $this->materials;
             $data['videos'] = $this->videos;
             $data['materials'] = $this->materials;
+            $data['material_types'] = MaterialType::OrderBy('name', 'ASC')->get();
             // $data['materialss'] = $m = Material::where('user_id', Auth::user()->id)->OrderBy('material_type_id')->selectRaw('material_type_id, count(*) as total')->groupBy('material_type_id')->get();
             $data['all_materials'] = $m = Material::where('user_id', Auth::user()->id)->with('type')->get();
             // $grp = $m->groupBy('material_type_id');
