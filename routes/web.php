@@ -46,8 +46,9 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::get('view/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'view_material'])->name('view');
         Route::get('summary/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'summary_material'])->name('summary');
         Route::get('help',  [App\Http\Controllers\Dashboard\UserController::class, 'help'])->name('help');
-        Route::get('settings',  [App\Http\Controllers\Dashboard\UserController::class, 'settings'])->name('settings');
+        Route::match(['get', 'post'], 'settings',  [App\Http\Controllers\Dashboard\UserController::class, 'settings'])->name('settings');
         Route::get('subscriptions',  [App\Http\Controllers\Dashboard\UserController::class, 'subscriptions'])->name('subscriptions');
+        Route::match(['get'], 'view_material/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'view_material'])->name('view_material');
     });
 });
 
@@ -56,12 +57,15 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
     Route::group(['middleware' => ['vendor', 'auth']], function () {
         Route::get('/',  [App\Http\Controllers\Dashboard\VendorController::class, 'index'])->name('index');
         Route::get('library',  [App\Http\Controllers\Dashboard\VendorController::class, 'library'])->name('library');
-        Route::get('settings',  [App\Http\Controllers\Dashboard\VendorController::class, 'settings'])->name('settings');
+        Route::match(['get', 'post'], 'settings',  [App\Http\Controllers\Dashboard\VendorController::class, 'settings'])->name('settings');
         Route::get('help',  [App\Http\Controllers\Dashboard\VendorController::class, 'help'])->name('help');
         Route::get('transactions',  [App\Http\Controllers\Dashboard\VendorController::class, 'transactions'])->name('transactions');
         Route::get('summary/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'summary'])->name('summary');
         Route::match(['get', 'post'], 'upload',  [App\Http\Controllers\Dashboard\VendorController::class, 'upload'])->name('upload');
         Route::get('subscriptions',  [App\Http\Controllers\Dashboard\VendorController::class, 'subscriptions'])->name('subscriptions');
+        Route::match(['get', 'post'], 'add_folder',  [App\Http\Controllers\Dashboard\VendorController::class, 'add_folder'])->name('add_folder');
+        Route::match(['get', 'post'], 'verifyBank',  [App\Http\Controllers\Dashboard\VendorController::class, 'verifyBank'])->name('verifyBank');
+        Route::match(['get'], 'view_material/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'view_material'])->name('view_material');
     });
 });
 

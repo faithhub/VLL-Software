@@ -3,9 +3,15 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\File;
+use App\Models\Material;
 use App\Models\Subscription;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -125,10 +131,49 @@ class UserController extends Controller
             $data['title'] = "User Dashboard - Bookstore";
             $data['materials'] = $this->materials;
             $data['videos'] = $this->videos;
+            $data['all_materials3'] = $m = Material::with('type')->get();
+            $data['all_materials3'] = $m->groupBy('material_type_id');
+            // foreach ($grp as $key => $value) {
+            //     # code...
+            //     // dd($value[0]->type->name);
+            //     foreach ($value as $key => $value) {
+            //         # code...
+            //         dd($key, $value);
+            //     }
+            // }
+            // dd($m);
             return View('dashboard.user.bookstore', $data);
         } catch (\Throwable $th) {
             //throw $th;
             dd($th->getMessage());
+        }
+    }
+
+    public function view_material($id)
+    {
+        function countPages($path)
+        {
+            $pdftext = file_get_contents($path);
+            $num = preg_match_all("/\/Page\W/", $pdftext, $dummy);
+            return $num;
+        }
+        # code...
+        try {
+            //code...
+            $data['title'] = "Vnedor Dashboard - My Library";
+            $data['material'] = $m = Material::where(['id' => $id])->with(['type', 'cover', 'country', 'folder', 'subject'])->first();
+            if (!$m) {
+                # code...
+                Session::flash('warning', "No material found");
+                return back();
+            }
+            $data['typeName'] = '';
+            $data['totalRented'] = 0;
+            $data['totalBought'] = 0;
+            $data['pageCount'] = countPages(public_path($m->file->url));
+            return View('dashboard.user.view', $data);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 
@@ -157,18 +202,7 @@ class UserController extends Controller
             //throw $th;
         }
     }
-    public function view_material($id)
-    {
-        # code...
-        try {
-            //code...
-            $data['title'] = "User Dashboard - My Library";
-            $data['transactions'] = $this->materials;
-            return View('dashboard.user.view-material', $data);
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-    }
+
     public function summary_material($id)
     {
         # code...
@@ -208,15 +242,64 @@ class UserController extends Controller
             //throw $th;
         }
     }
-    public function settings()
+    public function settings(Request $request)
     {
         # code...
         try {
             //code...
+            if ($_POST) {
+                $rules = array(
+                    'name' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'max:255'],
+                    'gender' => ['string', 'max:255'],
+                    'phone' => ['nullable', 'string', 'max:255'],
+                    'avatar' => ['nullable', 'max:5000']
+                );
+
+                $validator = Validator::make($request->all(), $rules);
+
+                if ($validator->fails()) {
+                    dd($validator->errors());
+                    Session::flash('warning', __('All fields are required'));
+                    return back()->withErrors($validator)->withInput();
+                }
+
+                // dd($request->all());
+                if ($request->hasFile('avatar')) {
+                    $profile_pics = $request->file('avatar');
+                    $profile_pics_name = 'MaterialCover' . time() . '.' . $profile_pics->getClientOriginalExtension();
+                    Storage::disk('profile_pics')->put($profile_pics_name, file_get_contents($profile_pics));
+                    $save_cover = File::create([
+                        'name' => $profile_pics_name,
+                        'url' => 'storage/avatars/' . $profile_pics_name
+                    ]);
+                }
+
+                $update_user = User::where('id', Auth::user()->id)->update([
+                    'name' => $request->name ?? Auth::user()->name,
+                    'email' => $request->email ?? Auth::user()->email,
+                    'gender' => $request->gender ?? Auth::user()->gender,
+                    'phone' => $request->phone ?? Auth::user()->phone,
+                    'avatar' => $save_cover->id ?? Auth::user()->profile_pics->id,
+                ]);
+
+                if (!$update_user) {
+                    # code...
+                    Session::flash('error', "An error occur when update profile, try again");
+                    return back();
+                }
+
+
+                Session::flash('success', "Profile updated successfully");
+                return redirect()->route('user.settings');
+            }
+
+
             $data['title'] = "User Dashboard - Settings";
             return View('dashboard.user.settings', $data);
         } catch (\Throwable $th) {
             //throw $th;
+            dd($th->getMessage());
         }
     }
 }

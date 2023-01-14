@@ -12,6 +12,7 @@
     <!-- Title -->
     <title>VLL dashboard</title>
     @include('layouts.dashboard.includes.style')
+    @include('layouts.dashboard.includes.paystack')
 
 </head>
 

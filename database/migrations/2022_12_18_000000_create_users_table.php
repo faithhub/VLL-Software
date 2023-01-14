@@ -20,6 +20,10 @@ return new class extends Migration
                 ->nullable()
                 ->constrained()
                 ->onDelete('set null');
+            $table->foreignId('bank_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('set null');
             $table->foreignId('university_id')
                 ->nullable()
                 ->constrained()
@@ -43,7 +47,10 @@ return new class extends Migration
             $table->enum('gender', ['male', 'female', 'entity'])->nullable();
             $table->string('phone')->nullable();
             $table->string('avatar')->nullable();
+            $table->string('acc_number')->nullable();
+            $table->string('acc_name')->nullable();
             $table->boolean('team_admin')->default(false);
+            $table->boolean('acc_verified')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

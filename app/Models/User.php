@@ -34,7 +34,11 @@ class User extends Authenticatable
         'country_id',
         'university_id',
         'subscription_id',
-        'team_id'
+        'team_id',
+        'bank_id',
+        'acc_name',
+        'acc_number',
+        'acc_verified'
     ];
 
     /**
@@ -63,5 +67,10 @@ class User extends Authenticatable
     public function last_login()
     {
         return $this->hasOne(LoginHistory::class, 'user_id');
+    }
+
+    public function profile_pics()
+    {
+        return $this->hasOne(File::class, 'id', 'avatar')->withDefault();
     }
 }

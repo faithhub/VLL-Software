@@ -56,6 +56,27 @@ return [
             'throw' => false,
         ],
 
+        'material_file' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/materials/files'),
+            'url' => env('APP_URL') . '/storage/materials/files',
+            'visibility' => 'public',
+        ],
+
+        'material_cover' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/materials/covers'),
+            'url' => env('APP_URL') . '/storage/materials/covers',
+            'visibility' => 'public',
+        ],
+
+        'profile_pics' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/avatars'),
+            'url' => env('APP_URL') . '/storage/avatars',
+            'visibility' => 'public',
+        ],
+
     ],
 
     /*

@@ -29,93 +29,148 @@
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
-                            <div class="col-lg-12 col-xl-12">
-                                <div class="box-widget widget-user">
-                                    <div class="widget-user-image1 d-xl-flex d-block">
-                                        <img alt="User Avatar" class="avatar brround p-0"
-                                            src="https://st4.depositphotos.com/14903220/22197/v/450/depositphotos_221970610-stock-illustration-abstract-sign-avatar-icon-profile.jpg">
-                                        <div style="display: table">
-                                            <div class="mt-1 ms-xl-5 add-new-member">
-                                                <label class="btn btn-sm btn-primary m-3"><input
-                                                        type="file" />Upload</label>
+
+                            <form class="validate-form" action="{{ route('user.settings') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+
+                                <div class="col-lg-12 col-xl-12">
+                                    <div class="box-widget widget-user">
+                                        <div class="widget-user-image1 d-xl-flex d-block">
+                                            <img alt="User Avatar" class="avatar brround p-0"
+                                                src="{{ asset(Auth::user()->profile_pics->url ?? 'assets/dashboard/images/photos/22.jpg') }}">
+                                            <div style="display: table">
+                                                <div class="mt-1 ms-xl-5 add-new-member">
+                                                    <label class="btn btn-sm btn-primary m-3">
+                                                        <input name="avatar" accept="image/*"
+                                                            type="file" />Upload</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row mt-5 settings">
-                                <div class="col-lg-6 col-xl-6">
-                                    <div class="col-sm-12 col-md-12">
-                                        <div class="form-group"> <label class="form-label">Full Name</label> <input
-                                                type="text" class="form-control" placeholder="First Name"
-                                                value="Patrenna">
+
+                                <div class="row mt-5 settings">
+
+                                    @if (Auth::user()->user_type == 'student')
+                                    <div class="col-lg-12 col-xl-12">
+                                        @else
+                                    <div class="col-lg-6 col-xl-6">
+                                        @endif
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Full Name</label>
+                                                <input name="name" type="text" class="form-control" required=""
+                                                    data-parsley-required-message="Full name is required"
+                                                    placeholder="First Name" value="{{ Auth::user()->name }}">
+                                                @error('name')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-12">
-                                        <div class="form-group"> <label class="form-label">Email address</label> <input
-                                                type="email" class="form-control" placeholder="Email"
-                                                value="patrennaschell@gmail.com"> </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-12">
-                                        <div class="form-group"> <label class="form-label">Phone Number</label> <input
-                                                type="number" class="form-control" placeholder="+234 905 678 234 "
-                                                value="+(123-4567-890)"> </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-12">
-                                        <label class="form-label">Gender</label>
-                                        <div class="d-flex">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
-                                                    value="option1">
-                                                <label class="form-check-label" for="inlineCheckbox1">Female</label>
+
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Email address</label>
+                                                <input name="email" type="email" class="form-control"
+                                                    placeholder="Email" required=""
+                                                    data-parsley-required-message="Email is required"
+                                                    value="{{ Auth::user()->email }}">
+                                                @error('name')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
-                                                    value="option2">
-                                                <label class="form-check-label" for="inlineCheckbox2">Male</label>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Phone Number</label>
+                                                <input name="phone" type="number" class="form-control"
+                                                    placeholder="+234 905 678 234 " value="{{ Auth::user()->phone }}">
+                                                @error('phone')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3"
-                                                    value="option3">
-                                                <label class="form-check-label" for="inlineCheckbox3">Entity</label>
+                                        </div>
+
+
+                                        <div class="col-sm-12 col-md-12 mb-4">
+                                            <label class='form-label'>Gneder</label>
+                                            <div class='d-flex' style='margin-bottom:-10px'>
+                                                <div class='form-check form-check-inline'>
+                                                    <input class='form-check-input' name='gender' type='radio'
+                                                        id='inlineCheckbox1' value='male' required=''
+                                                        {{ Auth::user()->gender == 'male' ? 'checked' : '' }}
+                                                        data-parsley-errors-container='#gender-error'
+                                                        data-parsley-required-message='Status is required'>
+                                                    <label class='form-check-label' for='inlineCheckbox1'>Male</label>
+                                                </div>
+                                                <div class='form-check form-check-inline'>
+                                                    <input class='form-check-input'
+                                                        {{ Auth::user()->gender == 'female' ? 'checked' : '' }}
+                                                        name='gender' type='radio' id='inlineCheckbox2' value='female'>
+                                                    <label class='form-check-label' for='inlineCheckbox2'>Female</label>
+                                                </div>
+                                                <div class='form-check form-check-inline'>
+                                                    <input class='form-check-input'
+                                                        {{ Auth::user()->gender == 'entity' ? 'checked' : '' }}
+                                                        name='gender' type='radio' id='inlineCheckbox3' value='entity'>
+                                                    <label class='form-check-label' for='inlineCheckbox3'>Entity</label>
+                                                </div>
+                                            </div>
+                                            @error('gender')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                            <span class='invalid-feedback' id='gender-error' role='alert'></span>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Subscriptions</label>
+                                                <button onclick="shiNew(event)" data-type="dark" data-size="l"
+                                                    data-title="Subscriptions" href="{{ route('user.subscriptions') }}"
+                                                    class="sub-link btn btn-sm btn-primary">Change</button>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-12 col-md-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Subscriptions</label>
-                                            <button onclick="shiNew(event)" data-type="dark" data-size="l"
-                                                data-title="Subscriptions"
-                                                href="{{ route('user.subscriptions') }}"
-                                                class="sub-link btn btn-sm btn-primary">Change</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-xl-6">
-                                    <div class="col-sm-12 col-md-12">
-                                        <div class="form-group"> <label class="form-label">Team Members(Max. 10)</label>
-                                            <div class="d-flex">
-                                                <div class="col-11" style="padding-left: 0px">
-                                                    <input type="text" class="form-control" placeholder="First Name"
-                                                        value="Patrenna">
-                                                </div>
-                                                <div class="col-sm-1 col-md-1" style="display: table">
-                                                    <div class="add-new-member">
-                                                        <i class="fa fa-plus" onclick="addNewMember()"></i>
+                                    @if (Auth::user()->user_type == 'professionals')
+                                        <div class="col-lg-6 col-xl-6">
+                                            <div class="col-sm-12 col-md-12">
+                                                <div class="form-group"> <label class="form-label">Team Members(Max.
+                                                        10)</label>
+                                                    <div class="d-flex">
+                                                        <div class="col-11" style="padding-left: 0px">
+                                                            <input type="text" class="form-control"
+                                                                placeholder="First Name" value="Patrenna">
+                                                        </div>
+                                                        <div class="col-sm-1 col-md-1" style="display: table">
+                                                            <div class="add-new-member">
+                                                                <i class="fa fa-plus" onclick="addNewMember()"></i>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="teammembers" id="teammembers">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="teammembers" id="teammembers">
-                                    </div>
-                                </div>
+                                    @endif
 
-                                <div class="col-lg-12 col-xl-12 text-center">
-                                    <button class="btn btn-primary p-3 pt-2 pt-2" style="font-size: 18px">Save</button>
+                                    <div class="col-lg-12 col-xl-12 text-center">
+                                        <button class="btn btn-primary p-3 pt-2 pt-2"
+                                            style="font-size: 18px">Save</button>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -123,75 +178,6 @@
         </div>
     </div>
 
-
-    <div class="modal fade effect-scale" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 1140px">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                            <div class="card border-10 pt-2 card-primary">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <h4 class="font-weight-bold">Subscription</h4>
-                                        <h6 class="font-weight-bold">What plan would you like?</h6>
-                                        <div class="row" style="margin-top: 2rem">
-                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                                                <div class="card sub-card">
-                                                    <div class="card-body">
-                                                        <h5 class="font-weight-bold">Regular</h5>
-                                                        <ul style="list-style-type:disc; margin-left:1.5rem">
-                                                            <li>Access to All Free books</li>
-                                                            <li>Access to view all books</li>
-                                                            <li>Access to view all books</li>
-                                                        </ul>
-                                                        <div class="text-center sub-btn">
-                                                            <button class="btn btn-primary" disabled>Active</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                                                <div class="card sub-card">
-                                                    <div class="card-body">
-                                                        <h5 class="font-weight-bold">Premium 1</h5>
-                                                        <ul style="list-style-type:disc; margin-left:1.5rem">
-                                                            <li>Access to All Free books</li>
-                                                            <li>Access to view all books</li>
-                                                            <li>Access to view all books</li>
-                                                        </ul>
-                                                        <div class="text-center sub-btn">
-                                                            <button class="btn btn-primary">Upgrade</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                                                <div class="card sub-card">
-                                                    <div class="card-body">
-                                                        <h5 class="font-weight-bold">Premium 2</h5>
-                                                        <ul style="list-style-type:disc; margin-left:1.5rem">
-                                                            <li>Access to All Free books</li>
-                                                            <li>Access to view all books</li>
-                                                            <li>Access to view all books</li>
-                                                        </ul>
-                                                        <div class="text-center sub-btn">
-                                                            <button class="btn btn-primary">Upgrade</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <script>
         function addNewMember() {
             var card = document.createElement("div");

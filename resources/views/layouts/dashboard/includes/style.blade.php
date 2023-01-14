@@ -16,13 +16,6 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
 {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
 <style type="text/css">
-    .invalid-feedback {
-        color: red !important;
-        letter-spacing: 2px !important;
-        display: block !important;
-        font-weight: 800 !important;
-    }
-
     .form-check-input:checked {
         background-color: var(--primary-bg-color);
         border-color: var(--primary-bg-color);

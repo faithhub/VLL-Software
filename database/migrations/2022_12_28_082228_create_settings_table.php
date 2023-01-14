@@ -14,7 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('settings', function (Blueprint $table) {
-            $table->id();
+            $table->string('dashboad_logo')->nullable();
+            $table->string('web_logo')->nullable();
+            $table->integer('USD')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('linkedin')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('paystack_public_key')->nullable();
+            $table->string('email')->nullable();
+            $table->string('alt_email')->nullable();
+            $table->longText('privacy')->nullable();
             $table->timestamps();
         });
     }

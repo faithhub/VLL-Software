@@ -6,7 +6,7 @@
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="form-group">
                         <label class="form-label">Material Type</label>
-                        <select class="form-control select" name="material_type" required
+                        <select class="form-control select2" name="material_type" required
                             data-parsley-required-message="Material Type is required">
                             <option value="">Select Material</option>
                             @isset($material_types_sub)

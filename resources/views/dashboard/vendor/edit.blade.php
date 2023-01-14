@@ -511,55 +511,5 @@
                 }
             }).change();
         });
-
-
-
-
-        // function materialType(id) {
-        //     if (id == '2') {
-        //         document.getElementById('citation').style.display = 'block';
-        //     } else {
-        //         document.getElementById('citation').style.display = 'none';
-        //     }
-        //     switch (id) {
-        //         case "5":
-        //             document.getElementById('videoUpload').style.display = 'block';
-        //             document.getElementById('pdfUpload').style.display = 'none';
-        //             break;
-        //         default:
-        //             document.getElementById('videoUpload').style.display = 'none';
-        //             document.getElementById('pdfUpload').style.display = 'block';
-        //             break;
-        //     }
-        // }
-
-        // function coverType(id) {
-        //     switch (id) {
-        //         case "Book Cover":
-        //             document.getElementById('bookCover').style.display = 'block';
-        //             document.getElementById('videoCover').style.display = 'none';
-        //             break;
-        //         case "Video Cover":
-        //             document.getElementById('videoCover').style.display = 'block';
-        //             document.getElementById('bookCover').style.display = 'none';
-        //             break;
-        //         default:
-        //             document.getElementById('videoCover').style.display = 'none';
-        //             document.getElementById('bookCover').style.display = 'none';
-        //             break;
-        //     }
-        // }
-
-        // document.onreadystatechange = function() {
-        //     bookPriceValue = document.getElementById('bookPrice').value
-        //     bookPrice(bookPriceValue)
-
-        // materialTypeID = document.getElementById('materialTypeID').value
-        // materialType(materialTypeID)
-        // coverTypeID = document.getElementById('coverTypeID').value
-        // coverType(coverTypeID)
-        // bookPriceID = document.getElementById('bookPriceID').value
-        // bookPrice(bookPriceID)
-        // }
     </script>
 @endsection

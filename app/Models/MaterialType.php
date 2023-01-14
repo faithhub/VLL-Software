@@ -11,6 +11,7 @@ class MaterialType extends Model
 
     protected $fillable = [
         "name",
+        "mat_unique_id",
         "description",
         "status",
         "role"

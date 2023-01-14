@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('material_types', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("mat_unique_id")->unique();
-            $table->string("description")->nullable();
-            $table->text("role");
-            $table->enum('status', ['active', 'disabled']);
+            $table->string("url");
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('material_types');
+        Schema::dropIfExists('files');
     }
 };

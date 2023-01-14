@@ -52,12 +52,12 @@
                                 <div class="dropdown profile-dropdown d-flex"> <a href="javascript:void(0);"
                                         class="nav-link pe-0 leading-none" data-bs-toggle="dropdown"> <span
                                             class="header-avatar1"> <img
-                                                src="{{ asset('assets/dashboard/images/photos/22.jpg') }}"
+                                                src="{{ asset(Auth::user()->profile_pics->url ?? 'assets/dashboard/images/photos/22.jpg') }}"
                                                 alt="img" class="avatar avatar-md brround"> </span> </a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow animated">
                                         <div class="text-center mb-2 mt-2">
                                             <div class="text-center user pb-0 font-weight-bold">
-                                                Dara Faith
+                                                {{ Auth::user()->name }}
                                             </div>
                                             <div class="dropdown-divider"></div>
                                         </div>

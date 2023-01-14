@@ -33,7 +33,7 @@
                                     </li>
                                 </ul>
                                 <div class="panel-footer text-center border-top-0 mb-4">
-                                    <a class="btn btn-lg text-white font-weight-bold
+                                    <a onclick="payWithPaystack(this)" class="btn btn-lg text-white font-weight-bold
                                     @if ($sub->name == 'SINGLE USER') bg-warning  @endif
                                     @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
                                     @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif
