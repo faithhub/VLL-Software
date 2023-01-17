@@ -58,7 +58,7 @@ Route::prefix('user')->name('user.')->group(function () {
 //Vendor
 Route::prefix('vendor')->name('vendor.')->group(function () {
     Route::group(['middleware' => ['vendor', 'auth']], function () {
-        Route::match(['get', 'post'], '/',  [App\Http\Controllers\Dashboard\VendorController::class, 'index'])->name('index');
+        Route::match(['get'], '/',  [App\Http\Controllers\Dashboard\VendorController::class, 'index'])->name('index');
         // Route::get('library',  [App\Http\Controllers\Dashboard\VendorController::class, 'library'])->name('library');
         Route::match(['get', 'post'], 'settings',  [App\Http\Controllers\Dashboard\VendorController::class, 'settings'])->name('settings');
         Route::get('help',  [App\Http\Controllers\Dashboard\VendorController::class, 'help'])->name('help');

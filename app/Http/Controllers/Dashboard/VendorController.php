@@ -140,7 +140,7 @@ class VendorController extends Controller
         return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
     }
 
-    public function index(Request $request)
+    public function index()
     {
         # code...
         try {
@@ -151,11 +151,15 @@ class VendorController extends Controller
             // $data['materialss'] = $m = Material::where('user_id', Auth::user()->id)->OrderBy('material_type_id')->selectRaw('material_type_id, count(*) as total')->groupBy('material_type_id')->get();
             $data['all_materials'] = $m = Material::where('user_id', Auth::user()->id)->with(['type', 'folder'])->get();
 
-            if ($_POST) {
-                $material_type_id = $request->material_type_id;
-                if ($material_type_id !== "all" && !empty($material_type_id)) {
-                    $data['mt'] = MaterialType::where('id', $material_type_id)->first();
-                    $data['all_materials'] = $m = Material::where(['user_id' => Auth::user()->id, 'material_type_id' => $material_type_id])->with(['type', 'folder'])->get();
+            if ($_GET) {
+                if (isset($_GET['mat_unique_id'])) {
+                    $mat_unique_id = $_GET['mat_unique_id'];
+                    if (
+                        $mat_unique_id !== "all" && !empty($mat_unique_id)
+                    ) {
+                        $data['mt'] = $mt = MaterialType::where('mat_unique_id', $mat_unique_id)->first();
+                        $data['all_materials'] = $m = Material::where(['user_id' => Auth::user()->id, 'material_type_id' => $mt->id])->with(['type', 'folder'])->get();
+                    }
                 }
             }
             // $grp = $m->groupBy('material_type_id');

@@ -11,15 +11,15 @@
                 <div class="card border-10">
                     <div class="card-header border-bottom-0 mb-4 mt-3">
                         <div class="card-options" style="margin-left:2.5%">
-                            <form method="POST" id="selectMaterialForm" action="">
-                                @csrf
-                                <select class="form-control select2" onchange="selectMat()" name="material_type_id"
+                            <form method="GET" id="selectMaterialForm" action="">
+                                {{-- @csrf --}}
+                                <select class="form-control select2" onchange="selectMat()" name="mat_unique_id"
                                     id="selectMaterial" style="min-width: 10% !important">
                                     <option value="all">All</option>
                                     @isset($material_types)
                                         @foreach ($material_types as $type)
-                                            <option value="{{ $type->id }}"
-                                                {{ ($mt->id ?? '') == $type->id ? 'selected' : '' }}>{{ $type->name }}
+                                            <option value="{{ $type->mat_unique_id }}"
+                                              @selected(Request::get('material_type_id') == $type->mat_unique_id)>{{ $type->name }}
                                             </option>
                                         @endforeach
                                     @endisset
