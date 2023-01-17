@@ -31,13 +31,13 @@
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
-                            @isset($materials)
+                            {{-- @isset($materials)
                                 @foreach ($materials as $material)
                                     <div class="col-lg-4 col-md-4 mb-5 justify-content-center">
                                         <div class="image">
-                                            {{-- <div class="ribbon ribbon-top-left"><span>ribbon</span></div> --}}
+                                            <div class="ribb/on ribbon-top-left"><span>ribbon</span></div>
                                             <div>
-                                                {{-- <div class="ribbon-1 left">Rotated Ribbon</div> --}}
+                                                <div class="ribbon-1 left">Rotated Ribbon</div>
                                             </div>
                                             <a href="{{ route('user.view', $material->id) }}">
                                                 <img src="{{ $material->img }}" alt="{{ $material->title }}">
@@ -45,21 +45,21 @@
                                         </div>
                                         <div class="mat-title">
                                             <div class="mt-2">
-                                                {{-- <input type="range" class="range-input" name="rangeInput" min="0"
+                                                <input type="range" class="range-input" name="rangeInput" min="0"
                                                     max="100" value="20" disabled>
                                                 <input type="text" id="textInput" value="">
 
                                                 <input type="range" min="1" max="100" value="50"
                                                     class="slider" id="myRange">
                                                     <input type="range" class="form-range" id="customRange1" value="30"
-                                                    disabled> --}}
+                                                    disabled>
 
-                                                {{-- <div class="d-flex book-con">
+                                                <div class="d-flex book-con">
                                                     <div class="loader-con">
                                                         <div class="book-pages-loader newww"></div>
                                                     </div>
                                                     <span class="book-count">45/78</span>
-                                                </div> --}}
+                                                </div>
                                             </div>
                                             <a href="{{ $material->link }}" class="book-title">
                                                 <h4>{{ $material->title }} ({{ $material->year }})</h4>
@@ -68,7 +68,7 @@
                                         </div>
                                     </div>
                                 @endforeach
-                            @endisset
+                            @endisset --}}
                         </div>
                     </div>
                 </div>
@@ -138,7 +138,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card text-card">
+               @unless (Auth::user()->user_type == "professionals")
+                    <div class="card text-card">
                     <div class="card-header border-bottom-0 mt-3 text-white">
                         <h3 class="card-title font-weight-bold h2">Test</h3>
                         <div class="card-options">
@@ -184,6 +185,7 @@
                         </div>
                     </div>
                 </div>
+               @endunless
             </div>
         </div>
     </div>

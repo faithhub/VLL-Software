@@ -9,15 +9,20 @@ use App\Models\File;
 use App\Models\Folder;
 use App\Models\Material;
 use App\Models\MaterialType;
+use App\Models\SubHistory;
 use App\Models\Subject;
 use App\Models\Subscription;
+use App\Models\Transaction;
+use App\Models\University;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Image;
 
 class VendorController extends Controller
@@ -129,18 +134,30 @@ class VendorController extends Controller
             ],
         );
     }
-    public function index()
+
+    private function unique_code($limit)
+    {
+        return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
+    }
+
+    public function index(Request $request)
     {
         # code...
         try {
             //code...
             $data['title'] = "Vnedor Dashboard - My Library";
-            $data['materials'] = $this->materials;
-            $data['videos'] = $this->videos;
-            $data['materials'] = $this->materials;
-            $data['material_types'] = MaterialType::OrderBy('name', 'ASC')->get();
+            $role = ['vendor'];
+            $data['material_types'] = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
             // $data['materialss'] = $m = Material::where('user_id', Auth::user()->id)->OrderBy('material_type_id')->selectRaw('material_type_id, count(*) as total')->groupBy('material_type_id')->get();
-            $data['all_materials'] = $m = Material::where('user_id', Auth::user()->id)->with('type')->get();
+            $data['all_materials'] = $m = Material::where('user_id', Auth::user()->id)->with(['type', 'folder'])->get();
+
+            if ($_POST) {
+                $material_type_id = $request->material_type_id;
+                if ($material_type_id !== "all" && !empty($material_type_id)) {
+                    $data['mt'] = MaterialType::where('id', $material_type_id)->first();
+                    $data['all_materials'] = $m = Material::where(['user_id' => Auth::user()->id, 'material_type_id' => $material_type_id])->with(['type', 'folder'])->get();
+                }
+            }
             // $grp = $m->groupBy('material_type_id');
             // foreach ($grp as $key => $value) {
             //     # code...
@@ -160,14 +177,13 @@ class VendorController extends Controller
         }
     }
 
-    public function library()
+    public function view_folder($id)
     {
         # code...
         try {
             //code...
-            $data['title'] = "Vnedor Dashboard - My Library";
-            $data['materials'] = $this->materials;
-            return View('dashboard.vendor.library', $data);
+            $data['all_materials'] = Material::where(['user_id' => Auth::user()->id, 'folder_id' => $id])->with(['type', 'folder'])->get();
+            return View('dashboard.vendor.view-folder', $data);
         } catch (\Throwable $th) {
             //throw $th;
             dd($th->getMessage());
@@ -179,25 +195,15 @@ class VendorController extends Controller
         # code...
         try {
             //code...
-            $data['title'] = "Vnedor Dashboard - My Library";
-            $data['transactions'] = $this->materials;
+            $data['title'] = "Vnedor Dashboard - Transactions";
+            $data['transactions'] = Transaction::where('user_id', Auth::user()->id)->get();
             return View('dashboard.vendor.transactions', $data);
         } catch (\Throwable $th) {
             //throw $th;
+            dd($th->getMessage());
         }
     }
-    // public function view_material($id)
-    // {
-    //     # code...
-    //     try {
-    //         //code...
-    //         $data['title'] = "Vnedor Dashboard - My Library";
-    //         $data['transactions'] = $this->materials;
-    //         return View('dashboard.vendor.view-material', $data);
-    //     } catch (\Throwable $th) {
-    //         //throw $th;
-    //     }
-    // }
+
     public function summary($id)
     {
         # code...
@@ -210,6 +216,7 @@ class VendorController extends Controller
             //throw $th;
         }
     }
+
     public function view_material($id)
     {
         function countPages($path)
@@ -222,7 +229,7 @@ class VendorController extends Controller
         try {
             //code...
             $data['title'] = "Vnedor Dashboard - My Library";
-            $data['material'] = $m = Material::where(['user_id' => Auth::user()->id, 'id' => $id])->with(['type', 'file', 'cover', 'country', 'folder', 'subject'])->first();
+            $data['material'] = $m = Material::where(['user_id' => Auth::user()->id, 'id' => $id])->with(['type', 'file', 'cover', 'country', 'folder', 'subject', 'test_country', 'university'])->first();
             // dd($m);
             if (!$m) {
                 # code...
@@ -250,6 +257,7 @@ class VendorController extends Controller
             //throw $th;
         }
     }
+
     public function settings(Request $request)
     {
         # code...
@@ -308,10 +316,7 @@ class VendorController extends Controller
             }
 
             $data['banks'] = $b = Bank::orderBy('name', 'ASC')->get(['id', 'name', 'code']);
-            // dd($b);
-            // $data['banks'] = $response = Http::get("https://api.paystack.co/bank");
-            // $all_banks = $response->json($key = null);
-            
+            $data['sub'] = SubHistory::where('id', Auth::user()->sub_id)->with('sub')->first();
             $data['title'] = "User Dashboard - Settings";
             return View('dashboard.vendor.settings', $data);
         } catch (\Throwable $th) {
@@ -331,6 +336,104 @@ class VendorController extends Controller
         } catch (\Throwable $th) {
             dD($th->getMessage());
             //throw $th;
+        }
+    }
+
+    public function subscribe(Request $request)
+    {
+        try {
+            //code...
+            $data['status'] = true;
+            $subscription_id = $request->sub_id;
+            $type = $request->type;
+            $reference = $request->reference;
+            $status = $request->status;
+            $trxref = $request->trxref;
+
+            if (!($subscription_id && $type)) {
+                $data['status'] = false;
+                return $data;
+            }
+            $sub = Subscription::find($subscription_id);
+            $amount = null;
+            $date = Carbon::now();
+            $invoice_id = Str::upper("TRX" . $this->unique_code(12));
+            $end_date = null;
+
+            if ($sub->type == 'student') {
+                switch ($type) {
+                    case 'session':
+                        $amount = $sub->session;
+                        $end_date = Carbon::now()->addMonths($sub->session_duration);
+                        # code...
+                        break;
+                    case 'system':
+                        $amount = $sub->system;
+                        $end_date = Carbon::now()->addMonths($sub->system_duration);
+                        # code...
+                        break;
+
+                    default:
+                        # code...
+                        break;
+                }
+            }
+
+            if ($sub->type == 'professional') {
+                switch ($type) {
+                    case 'annual':
+                        $amount = $sub->annual;
+                        $end_date = Carbon::now()->addMonths(12);
+                        # code...
+                        break;
+                    case 'quarterly':
+                        $amount = $sub->quarterly;
+                        $end_date = Carbon::now()->addMonths(4);
+                        # code...
+                        break;
+                    case 'monthly':
+                        $amount = $sub->monthly;
+                        $end_date = Carbon::now()->addMonths(1);
+                        # code...
+                        break;
+                    case 'weekly':
+                        $amount = $sub->weekly;
+                        $end_date = Carbon::now()->addWeek();
+                        # code...
+                        break;
+
+                    default:
+                        # code...
+                        break;
+                }
+            }
+
+            // dd($data);
+            $save_sub = SubHistory::create([
+                'user_id' => Auth::user()->id,
+                'plan_id' => $sub->id,
+                'subscription_id' => $sub->id,
+                'date_subscribed' => $date,
+                'start_date' => $date,
+                'expired_date' => $end_date,
+                'isActive' => true
+            ]);
+
+            Transaction::create([
+                'user_id' => Auth::user()->id,
+                'invoice_id' => $invoice_id,
+                'date' => $date,
+                'amount' => $amount,
+                'status' => $status,
+                'reference' => $reference,
+                'trxref' => $trxref,
+                'type' => 'subscription'
+            ]);
+            User::where('id', Auth::user()->id)->update(['sub_id' => $save_sub->id]);
+            return $data;
+        } catch (\Throwable $th) {
+            //throw $th;
+            return $th->getMessage();
         }
     }
 
@@ -389,27 +492,178 @@ class VendorController extends Controller
         try {
             //code...
             if ($_POST) {
+                // dd($request->all());
                 $rules = array(
                     'title' => ['required', 'string', 'max:255'],
                     'name_of_author' => ['required', 'string', 'max:255'],
                     'version' => ['required', 'string', 'max:255'],
                     'price' => ['required', 'string', 'max:255'],
-                    'amount' => ['required_if:price,==,Paid'],
+                    'amount' => ['required_if:price,Paid'],
                     'material_type_id' => ['required', 'max:255'],
-                    'folder_id' => ['required_if:material_type,==,4'],
-                    'year_of_publication' => ['required', 'string', 'max:255'],
-                    'country_id' => ['required', 'string', 'max:255'],
+                    'folder_id' => ['required_if:material_type_value,CSL'],
+                    'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
+                    'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
+                    // 'test_country_id' => ['required_if:material_type_value,TAA'],
+                    // 'university_id' => ['required_if:material_type_value,TAA'],
                     'publisher' => ['required', 'string', 'max:255'],
                     'tags' => ['required', 'string', 'max:255'],
-                    'subject_id' => ['required_if:material_type,==,4'],
-                    'privacy_code' => ['required_if:material_type,==,4'],
-                    'material_file_id' => ['required', 'max:50000'],
-                    'material_cover_id' => ['required', 'max:5000'],
+                    'subject_id' => ['required_if:material_type_value,5'],
+                    'privacy_code' => ['required_if:material_type_value,TAA'],
+                    'material_file_id' => ['required', 'mimes:pdf', 'max:50000'],
+                    'material_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
                     'material_desc' => ['required'],
                     'terms' => ['required', 'max:255']
                 );
 
                 $messages = [
+                    'privacy_code.required_if' => __('Test privacy code is required'),
+                    'amount.required_if' => __('Amount is required'),
+                    'year_of_publication.required_if' => __('Year of Publication is required'),
+                    'country_id.required_if' => __('Country of Publication is required'),
+                    'test_country_id.required_if' => __('Country is required'),
+                    'university_id.required_if' => __('The University is required'),
+                    'material_type_id.required' => __('The Material Type is required'),
+                    'country_id.required' => __('Country of Publication is required'),
+                    'subject_id.required' => __('The Subject name is required'),
+                    'folder_id.required_if' => __('The Folder name is required'),
+                    'material_file_id.required' => __('The Material File is required'),
+                    'material_file_id.max' => __('The Material File size must not more than 50MB'),
+                    'material_cover_id.required' => __('The Material Cover is required'),
+                    'material_cover_id.max' => __('The Material Cover size must not more that 5MB')
+                ];
+
+                $validator = Validator::make($request->all(), $rules, $messages);
+
+                if ($validator->fails()) {
+                    // dd($request->all(), $validator->errors());
+                    Session::flash('warning', __('All fields are required'));
+                    return back()->withErrors($validator)->withInput();
+                }
+
+                $tags = explode(",", $request->tags);
+
+                if ($request->hasFile('material_file_id')) {
+                    $material_file = $request->file('material_file_id');
+                    $material_file_name = 'MaterialFile' . time() . '.' . $material_file->getClientOriginalExtension();
+                    Storage::disk('material_file')->put($material_file_name, file_get_contents($material_file));
+                    $save_file = File::create([
+                        'name' => $material_file_name,
+                        'url' => 'storage/materials/files/' . $material_file_name
+                    ]);
+                }
+
+                if ($request->hasFile('material_cover_id')) {
+                    $material_cover = $request->file('material_cover_id');
+                    $material_cover_name = 'MaterialCover' . time() . '.' . $material_cover->getClientOriginalExtension();
+                    $destinationPath = public_path('/storage/materials/covers');
+                    $img = Image::make($material_cover->path());
+                    $img->resize(600, 300, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath . '/' . $material_cover_name);
+                    $save_cover = File::create([
+                        'name' => $material_cover_name,
+                        'url' => 'storage/materials/covers/' . $material_cover_name
+                    ]);
+                }
+
+                Material::create([
+                    'user_id' => Auth::user()->id,
+                    'title' => $request->title ?? null,
+                    'name_of_author' => $request->name_of_author ?? null,
+                    'version' => $request->version ?? null,
+                    'price' => $request->price ?? null,
+                    'amount' => $request->amount ?? null,
+                    'material_type_id' => $request->material_type_id ?? null,
+                    'folder_id' => $request->folder_id ?? null,
+                    'year_of_publication' => $request->year_of_publication ?? null,
+                    'test_country_id' => Auth::user()->country_id,
+                    'university_id' => Auth::user()->university_id,
+                    'country_id' => $request->country_id ?? null,
+                    'publisher' => $request->publisher ?? null,
+                    'tags' => $tags,
+                    'subject_id' => $request->subject_id ?? null,
+                    'privacy_code' => $request->privacy_code ?? null,
+                    'material_file_id' => $save_file->id,
+                    'material_cover_id' => $save_cover->id,
+                    'material_desc' => $request->material_desc ?? null
+                ]);
+
+                Session::flash('success', 'Material uploaded successfully');
+                return redirect()->route('vendor.index');
+            }
+            $data['title'] = "User Dashboard - Upload Material";
+            $role = ['vendor'];
+            $data['material_types'] = $m = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
+            $data['subjects'] = Subject::where("status", "active")->get();
+            $data['countries'] = Country::all();
+            $material_type_id = MaterialType::where(["status" => "active", "name" => "Case Law"])->whereJsonContains('role', $role)->get();
+            $data['material_type_id'] = $mat_id = $material_type_id[0]['id'];
+            $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id, 'material_type_id' => $mat_id])->get();
+            $data['universities'] = University::Orderby('name', 'ASC')->get();
+            return View('dashboard.vendor.upload', $data);
+        } catch (\Throwable $th) {
+            dD($th->getMessage());
+            //throw $th;
+        }
+    }
+
+    public function edit(Request $request, $id)
+    {
+        # code...
+        try {
+            //code...
+            if ($_POST) {
+                $material = Material::find($request->id);
+                if (!$material) {
+                    Session::flash('warning', 'No record found for this material');
+                    return redirect()->back();
+                }
+                $rules = array(
+                    // 'title' => ['required', 'string', 'max:255'],
+                    // 'name_of_author' => ['required', 'string', 'max:255'],
+                    // 'version' => ['required', 'string', 'max:255'],
+                    // 'price' => ['required', 'string', 'max:255'],
+                    // 'amount' => ['required_if:price,==,Paid'],
+                    // 'material_type_id' => ['required', 'max:255'],
+                    // 'folder_id' => ['required_if:material_type,==,4'],
+                    // 'year_of_publication' => ['required', 'string', 'max:255'],
+                    // 'country_id' => ['required', 'string', 'max:255'],
+                    // 'publisher' => ['required', 'string', 'max:255'],
+                    // 'tags' => ['required', 'string', 'max:255'],
+                    // 'subject_id' => ['required_if:material_type,==,4'],
+                    // 'privacy_code' => ['required_if:material_type,==,4'],
+                    // 'material_file_id' => ['mimes:pdf', 'max:50000'],
+                    // 'material_cover_id' => ['mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
+                    // 'material_desc' => ['required'],
+                    // 'terms' => ['required', 'max:255']
+
+                    'title' => ['required', 'string', 'max:255'],
+                    'name_of_author' => ['required', 'string', 'max:255'],
+                    'version' => ['required', 'string', 'max:255'],
+                    'price' => ['required', 'string', 'max:255'],
+                    'amount' => ['required_if:price,Paid'],
+                    'material_type_id' => ['required', 'max:255'],
+                    'folder_id' => ['required_if:material_type_value,CSL'],
+                    'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
+                    'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
+                    // 'test_country_id' => ['required_if:material_type_value,TAA'],
+                    // 'university_id' => ['required_if:material_type_value,TAA'],
+                    'publisher' => ['required', 'string', 'max:255'],
+                    'tags' => ['required', 'string', 'max:255'],
+                    'subject_id' => ['required_if:material_type_value,5'],
+                    'privacy_code' => ['required_if:material_type_value,TAA'],
+                    'material_file_id' => ['mimes:pdf', 'max:50000'],
+                    'material_cover_id' => ['mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
+                    'material_desc' => ['required'],
+                );
+
+                $messages = [
+                    'privacy_code.required_if' => __('Test privacy code is required'),
+                    'amount.required_if' => __('Amount is required'),
+                    'year_of_publication.required_if' => __('Year of Publication is required'),
+                    'country_id.required_if' => __('Country of Publication is required'),
+                    'test_country_id.required_if' => __('Country is required'),
+                    'university_id.required_if' => __('The University is required'),
                     'material_type_id.required' => __('The Material Type is required'),
                     'country_id.required' => __('Country of Publication is required'),
                     'subject_id.required' => __('The Subject name is required'),
@@ -431,7 +685,6 @@ class VendorController extends Controller
 
                 if ($request->hasFile('material_file_id')) {
                     $material_file = $request->file('material_file_id');
-                    $resize = Image::make($material_file)->fit(300);
                     $material_file_name = 'MaterialFile' . time() . '.' . $material_file->getClientOriginalExtension();
                     Storage::disk('material_file')->put($material_file_name, file_get_contents($material_file));
                     $save_file = File::create([
@@ -443,45 +696,66 @@ class VendorController extends Controller
                 if ($request->hasFile('material_cover_id')) {
                     $material_cover = $request->file('material_cover_id');
                     $material_cover_name = 'MaterialCover' . time() . '.' . $material_cover->getClientOriginalExtension();
-                    Storage::disk('material_cover')->put($material_cover_name, file_get_contents($material_cover));
+                    $destinationPath = public_path('/storage/materials/covers');
+                    $img = Image::make($material_cover->path());
+                    $img->resize(700, 300, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath . '/' . $material_cover_name);
+
+                    // $destinationPath = public_path('/images');
+                    // $image->move($destinationPath, $input['imagename']);
+
+                    // Storage::disk('material_cover')->put($material_cover_name, $img);
+
+                    // dd($destinationPath);
+                    // Storage::disk('material_cover')->put($material_cover_name, file_get_contents($material_cover));
                     $save_cover = File::create([
                         'name' => $material_cover_name,
                         'url' => 'storage/materials/covers/' . $material_cover_name
                     ]);
                 }
 
-                Material::create([
+                Material::where(['user_id' => Auth::user()->id, 'id' => $request->id])->update([
                     'user_id' => Auth::user()->id,
-                    'title' => $request->title ?? null,
-                    'name_of_author' => $request->name_of_author ?? null,
-                    'version' => $request->version ?? null,
-                    'price' => $request->price ?? null,
-                    'amount' => $request->amount ?? null,
-                    'material_type_id' => $request->material_type_id ?? null,
-                    'folder_id' => $request->folder_id ?? null,
-                    'year_of_publication' => $request->year_of_publication ?? null,
-                    'country_id' => $request->country_id ?? null,
-                    'publisher' => $request->publisher ?? null,
-                    'tags' => $tags,
-                    'subject_id' => $request->subject_id ?? null,
-                    'privacy_code' => $request->privacy_code ?? null,
-                    'material_file_id' => $save_file->id,
-                    'material_cover_id' => $save_cover->id,
-                    'material_desc' => $request->material_desc ?? null
+                    'title' => $request->title ?? $material['title'],
+                    'name_of_author' => $request->name_of_author ?? $material['name_of_author'],
+                    'version' => $request->version ?? $material['version'],
+                    'price' => $request->price ?? $material['price'],
+                    'amount' => $request->amount ?? $material['amount'],
+                    'material_type_id' => $request->material_type_id ?? $material['material_type_id'],
+                    'folder_id' => $request->folder_id ?? $material['folder_id'],
+                    'year_of_publication' => $request->year_of_publication ?? $material['year_of_publication'],
+                    'country_id' => Auth::user()->country_id,
+                    'test_country_id' => Auth::user()->university_id,
+                    'university_id' => $request->university_id ?? $material['university_id'],
+                    'publisher' => $request->publisher ?? $material['publisher'],
+                    'tags' => $tags ?? $material['tags'],
+                    'subject_id' => $request->subject_id ?? $material['subject_id'],
+                    'privacy_code' => $request->privacy_code ?? $material['privacy_code'],
+                    'material_file_id' => $save_file->id ?? $material['material_file_id'],
+                    'material_cover_id' => $save_cover->id ?? $material['material_cover_id'],
+                    'material_desc' => $request->material_desc ?? $material['material_desc']
                 ]);
 
-                Session::flash('success', 'Material uploaded successfully');
-                return redirect()->route('vendor.settings');
+                Session::flash('success', 'Material updated successfully');
+                return redirect()->route('vendor.index');
             }
-            $data['title'] = "User Dashboard - Upload Material";
+
+            $data['material'] = $material = Material::where(['user_id' => Auth::user()->id, 'id' => $id])->with('type')->first();
+            if ($material->count() == 0) {
+                Session::flash('warning', 'No record found');
+                return redirect()->route('vendor.index');
+            }
+            $data['title'] = "User Dashboard - Edit Material";
             $role = ['vendor'];
-            $data['material_types'] = $m = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
+            $data['material_types'] = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
             $data['subjects'] = Subject::where("status", "active")->get();
             $data['countries'] = Country::all();
             $material_type_id = MaterialType::where(["status" => "active", "name" => "Case Law"])->whereJsonContains('role', $role)->get();
             $data['material_type_id'] = $mat_id = $material_type_id[0]['id'];
             $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id, 'material_type_id' => $mat_id])->get();
-            return View('dashboard.vendor.upload', $data);
+            $data['universities'] = University::Orderby('name', 'ASC')->get();
+            return View('dashboard.vendor.edit', $data);
         } catch (\Throwable $th) {
             dD($th->getMessage());
             //throw $th;
@@ -496,21 +770,41 @@ class VendorController extends Controller
             if ($_POST) {
                 $rules = array(
                     'name' => ['required', 'string', 'max:255'],
+                    'folder_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:50000'],
                 );
 
-                $messages = [];
+                $messages = [
+                    'folder_cover_id.required_if' => __('The Folder cover is required'),
+                ];
 
                 // dd($request->all());
                 $validator = Validator::make($request->all(), $rules, $messages);
 
                 if ($validator->fails()) {
+                    dd($validator->errors());
                     Session::flash('warning', __('All fields are required'));
                     return back()->withErrors($validator)->withInput();
                 }
 
+                if ($request->hasFile('folder_cover_id')) {
+                    $folder_cover = $request->file('folder_cover_id');
+                    $folder_cover_name = 'FolderCover' . time() . '.' . $folder_cover->getClientOriginalExtension();
+                    $destinationPath = public_path('/storage/materials/covers');
+                    $img = Image::make($folder_cover->path());
+                    $img->resize(600, 300, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath . '/' . $folder_cover_name);
+                    $save_cover = File::create([
+                        'name' => $folder_cover_name,
+                        'url' => 'storage/materials/covers/' . $folder_cover_name
+                    ]);
+                }
+
+
                 Folder::create([
                     "material_type_id" => $request->material_type_id,
                     "name" => $request->name,
+                    "folder_cover_id" => $save_cover->id,
                     "user_id" => Auth::user()->id
                 ]);
                 Session::flash('success', __('Folder added successfully'));
@@ -526,6 +820,25 @@ class VendorController extends Controller
             $data['material_type_id'] = $mat_id = $material_type_id[0]['id'];
             $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id, 'material_type_id' => $mat_id])->get();
             return View('dashboard.vendor.add-material-folder', $data);
+        } catch (\Throwable $th) {
+            dD($th->getMessage());
+            //throw $th;
+        }
+    }
+
+    public function delete($id)
+    {
+        # code...
+        try {
+            //code...
+            $material = Material::find($id);
+            if (!$material) {
+                Session::flash('warning', 'No record found for this material');
+                return redirect()->back();
+            }
+            $material->delete();
+            Session::flash('success', 'Material deleted successfully');
+            return redirect()->route('vendor.index');
         } catch (\Throwable $th) {
             dD($th->getMessage());
             //throw $th;

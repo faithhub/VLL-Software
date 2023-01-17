@@ -37,6 +37,13 @@
             width: 700px !important
         }
 
+        .select2-container {
+            width: 100% !important;
+        }
+        .select2-container .select2-selection--single{
+            height: 55px;
+        }
+
 
 
         .bootstrap-tagsinput .tag {
@@ -44,7 +51,7 @@
             color: #ffffff;
             background: var(--primary-bg-color);
             /* padding: 3px 7px;
-                                                                                        border-radius: 3px; */
+                                                                                                    border-radius: 3px; */
         }
 
         .bootstrap-tagsinput {
@@ -70,7 +77,7 @@
                 <div class="card border-10 pt-5">
                     <div class="card-header border-bottom-0 mb-1">
                         <h6 class="mb-1 mt-1 font-weight-bold h6">
-                            <a href="{{ route('vendor.library') }}">
+                            <a href="{{ route('vendor.index') }}">
                                 <i class="fa fa-arrow-left"></i>
                             </a>
                         </h6>
@@ -82,6 +89,7 @@
                         <form method="POST" action="{{ route('vendor.upload') }}" class="validate-form"
                             enctype="multipart/form-data">
                             @csrf
+                            <input type="hidden" name="material_type_value" value="" id="material_type_value">
                             <div class="row mt-5 mb-5 settings">
                                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                     <div class="form-group">
@@ -131,9 +139,9 @@
                                             data-parsley-required-message="Price is required"
                                             data-placeholder="Select Price">
                                             <option value=""></option>
-                                            <option value="Paid" {{ old('price') == 'Paid' ? 'selected' : '' }}>Paid
+                                            <option value="Paid" @selected(old('price') == 'Paid')>Paid
                                             </option>
-                                            <option value="Free" {{ old('price') == 'Free' ? 'selected' : '' }}>Free
+                                            <option value="Free" @selected(old('price') == 'Free')>Free
                                             </option>
                                         </select>
                                         @error('price')
@@ -168,8 +176,9 @@
                                             <option value="">Select Type of Material</option>
                                             @isset($material_types)
                                                 @foreach ($material_types as $item)
-                                                    <option data-matId="{{ $item->mat_unique_id }}" data-text="{{ $item->name }}" value="{{ $item->id }}"
-                                                        {{ old('material_type_id') == $item->id ? 'selected' : '' }}>
+                                                    <option data-matId="{{ $item->mat_unique_id }}"
+                                                        data-text="{{ $item->name }}" value="{{ $item->id }}"
+                                                        @selected(old('material_type_id') == $item->id)>
                                                         {{ $item->name }}</option>
                                                 @endforeach
                                             @endisset
@@ -186,15 +195,14 @@
                                     <div class="form-group">
                                         <label class="form-label">Folder <span>*<span></label>
                                         <div class="d-flex">
-                                            <select class="form-control select2 select" name="folder_id"
+                                            <select class="form-control select" name="folder_id"
                                                 data-parsley-required-message="Subject is required" requiredd=""
                                                 data-parsley-errors-container="#folder-error"
                                                 data-placeholder="Select folder">
                                                 <option value="">Select folder</option>
                                                 @isset($folders)
                                                     @foreach ($folders as $item)
-                                                        <option value="{{ $item->id }}"
-                                                            {{ old('folder_id') == $item->id ? 'selected' : '' }}>
+                                                        <option value="{{ $item->id }}" @selected(old('folder_id') == $item->id)>
                                                             {{ $item->name }}
                                                         </option>
                                                     @endforeach
@@ -213,7 +221,7 @@
                                             @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" id="TAA-data-no1">
                                     <div class="form-group">
                                         <label class="form-label">Year of Publication
                                             <span>*<span></label>
@@ -228,19 +236,18 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" id="TAA-data-no2">
                                     <div class="form-group">
                                         <label class="form-label">Country of Publication
                                             <span>*<span></label>
                                         <select onchange="" class="form-control select" name="country_id"
-                                            id="material_type" requiredd=""
+                                            id="" requiredd=""
                                             data-parsley-errors-container="#country_of_publication-error"
                                             data-parsley-required-message="Country of Publication is required">
                                             <option value="">Select Country</option>
                                             @isset($countries)
                                                 @foreach ($countries as $item)
-                                                    <option value="{{ $item->id }}"
-                                                        {{ old('country_id') == $item->id ? 'selected' : '' }}>
+                                                    <option value="{{ $item->id }}" @selected(old('country_id') == $item->id)>
                                                         {{ $item->name }}
                                                     </option>
                                                 @endforeach
@@ -248,6 +255,54 @@
                                         </select>
                                         <span class="invalid-feedback" id="country_of_publication-error" role="alert">
                                             @error('country_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="TAA-data1" style="display: none">
+                                    <div class="form-group">
+                                        <label class="form-label">Country of University
+                                            <span>*<span></label>
+                                        <select class="form-control select" name="test_country_id" id="test_country_id"
+                                            requiredd="" data-parsley-errors-container="#text-country-error"
+                                            data-parsley-required-message="Country of Publication is required" disabled>
+                                            <option value="">Select Country</option>
+                                            @isset($countries)
+                                                @foreach ($countries as $item)
+                                                    <option  value="{{ $item->id }}" @selected(Auth::user()->country_id == $item->id)>
+                                                        {{ $item->name }}
+                                                    </option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
+                                        <span class="invalid-feedback" id="text-country-error" role="alert">
+                                            @error('test_country_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="TAA-data2" style="display: none">
+                                    <div class="form-group">
+                                        <label class="form-label">Universities
+                                            <span>*<span></label>
+                                        <select class="form-control select" name="university_id" id="university_id"
+                                            requiredd="" data-parsley-errors-container="#university-error"
+                                            data-parsley-required-message="University is required" disabled>
+                                            <option value="">Select Univerty</option>
+                                            @isset($universities)
+                                                @foreach ($universities as $item)
+                                                    <option value="{{ $item->id }}" @selected(Auth::user()->university_id == $item->id)>
+                                                        {{ $item->name }}
+                                                    </option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
+                                        <span class="invalid-feedback" id="university-error" role="alert">
+                                            @error('university_id')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -293,12 +348,11 @@
                                             id="subject_select" data-parsley-required-message="Subject is required"
                                             requiredd="" data-parsley-errors-container="#subject-error"
                                             data-placeholder="Select subject of material">
-                                            <option value="">Select Type of Material</option>
+                                            <option value="">Select Subject</option>
                                             @isset($subjects)
                                                 @foreach ($subjects as $item)
                                                     <option data-value="{{ $item->material_type_id }}"
-                                                        value="{{ $item->id }}"
-                                                        {{ old('subject_id') == $item->id ? 'selected' : '' }}>
+                                                        value="{{ $item->id }}" @selected(old('subject_id') == $item->id)>
                                                         {{ $item->name }}</option>
                                                 @endforeach
                                             @endisset
@@ -453,7 +507,8 @@
                 var id = $(this).val();
                 var text = $(this).find(':selected').attr('data-text');
                 var matId = $(this).find(':selected').attr('data-matId');
-                var uniqueId = matId.substring(0,3)
+                var uniqueId = matId.substring(0, 3);
+                document.getElementById("material_type_value").value = uniqueId
 
                 if (uniqueId == "TXT") {
                     console.log(id, text);
@@ -465,10 +520,17 @@
                 }
 
                 if (uniqueId == "TAA") {
-                    console.log(id, text);
                     document.getElementById('privacy_div').style.display = 'block';
+                    document.getElementById('TAA-data1').style.display = 'block';
+                    document.getElementById('TAA-data2').style.display = 'block';
+                    document.getElementById('TAA-data-no1').style.display = 'none';
+                    document.getElementById('TAA-data-no2').style.display = 'none';
                 } else {
+                    document.getElementById('TAA-data-no2').style.display = 'block';
+                    document.getElementById('TAA-data-no1').style.display = 'block';
                     document.getElementById('privacy_div').style.display = 'none';
+                    document.getElementById('TAA-data2').style.display = 'none';
+                    document.getElementById('TAA-data1').style.display = 'none';
                 }
 
                 if (uniqueId == "CSL") {
@@ -494,6 +556,19 @@
 
         });
 
+
+        $(document).ready(function() {
+            $("#test_country_id").change(function() {
+                if ($(this).data('options') === undefined) {
+                    /*Taking an array of all options-2 and kind of embedding it on the select1*/
+                    $(this).data('options', $('#university_id option').clone());
+                }
+                var id = $(this).val();
+                var options = $(this).data('options').filter('[data-value=' + id + ']');
+                console.log(options, id)
+                $('#university_id').html(options);
+            });
+        });
 
         $(document).ready(function() {
             $("#bookPriceSelect").change(function() {

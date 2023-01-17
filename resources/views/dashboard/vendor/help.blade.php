@@ -19,8 +19,6 @@
     </style>
     <div class="main-container container-fluid px-0">
         <div class="row">
-            <img src="{{ asset('storage/materials/covers/MaterialCover1673467501.png') }}">
-            <img src="{{ asset('material/covers/7-days-confirm.jpg') }}">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="card border-10 pt-5">
                     <div class="card-header border-bottom-0 mb-4">

@@ -82,6 +82,7 @@
         }
     });
 
+
     $('#material_file').bind('change', function() {
         if (this.files[0]) {
             var fileName = this.files[0].name;

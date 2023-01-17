@@ -29,6 +29,8 @@ class Material extends Model
         "material_file_id",
         "material_cover_id",
         "material_desc",
+        "test_country_id",
+        "university_id"
     ];
     protected $casts = [
         'tags' => 'array'
@@ -63,6 +65,16 @@ class Material extends Model
     public function country()
     {
         return $this->hasOne(Country::class, 'id', 'country_id');
+    }
+
+    public function test_country()
+    {
+        return $this->hasOne(Country::class, 'id', 'test_country_id');
+    }
+
+    public function university()
+    {
+        return $this->hasOne(University::class, 'id', 'university_id');
     }
 
     public function folder()

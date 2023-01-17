@@ -5,13 +5,18 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\File;
 use App\Models\Material;
+use App\Models\MaterialType;
+use App\Models\SubHistory;
 use App\Models\Subscription;
+use App\Models\Transaction;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -123,26 +128,62 @@ class UserController extends Controller
         );
     }
 
+    private function unique_code($limit)
+    {
+        return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
+    }
+    
     public function index()
     {
         # code...
         try {
             //code...
+            $data['limit_mat'] = [0, 1, 2, 3];
+            $data['limit_folder'] = [1, 2, 3, 4];
             $data['title'] = "User Dashboard - Bookstore";
-            $data['materials'] = $this->materials;
-            $data['videos'] = $this->videos;
             $data['all_materials3'] = $m = Material::with('type')->get();
             $data['all_materials3'] = $m->groupBy('material_type_id');
-            // foreach ($grp as $key => $value) {
-            //     # code...
-            //     // dd($value[0]->type->name);
-            //     foreach ($value as $key => $value) {
-            //         # code...
-            //         dd($key, $value);
-            //     }
-            // }
-            // dd($m);
             return View('dashboard.user.bookstore', $data);
+        } catch (\Throwable $th) {
+            //throw $th;
+            dd($th->getMessage());
+        }
+    }
+
+    public function view_folder($id)
+    {
+        # code...
+        try {
+            //code...
+            $data['all_materials'] = Material::where(['folder_id' => $id])->with(['type', 'folder'])->get();
+            return View('dashboard.user.view-folder', $data);
+        } catch (\Throwable $th) {
+            //throw $th;
+            dd($th->getMessage());
+        }
+    }
+    public function view_material_type($id)
+    {
+        # code...
+        try {
+            //code...
+            $data['limit_folder'] = [1, 2, 3, 4];
+            $data['type'] = 'Material';
+            $data['material_type'] = $mt = MaterialType::where(['id' => $id])->first();
+            if (!$mt) {
+                # code...
+                Session::flash('warning', "No record found");
+                return back();
+            }
+            if (substr($mt->mat_unique_id, 0, 3) == "CSL") {
+                $data['t_materials'] = $tm = Material::where(['material_type_id' => $mt->id])->with(['type', 'folder'])->get();
+                $data['t_materials'] = $tm->groupBy('folder_id');
+                $data['type'] = 'Folder';
+            }
+            $data['materials'] = $m = Material::where(['material_type_id' => $mt->id])->with(['type', 'folder'])->get();
+            // dd($data);
+            $data['title'] = $mt->name;
+            return View('dashboard.user.view-all-material-type', $data);
         } catch (\Throwable $th) {
             //throw $th;
             dd($th->getMessage());
@@ -160,8 +201,9 @@ class UserController extends Controller
         # code...
         try {
             //code...
-            $data['title'] = "Vnedor Dashboard - My Library";
-            $data['material'] = $m = Material::where(['id' => $id])->with(['type', 'cover', 'country', 'folder', 'subject'])->first();
+            $data['rent'] = 700;
+            $data['title'] = "Vnedor Dashboard - Bookstore";
+            $data['material'] = $m = Material::where(['id' => $id])->with(['type', 'cover', 'country', 'folder', 'subject', 'test_country', 'university'])->first();
             if (!$m) {
                 # code...
                 Session::flash('warning', "No material found");
@@ -195,11 +237,12 @@ class UserController extends Controller
         # code...
         try {
             //code...
-            $data['title'] = "User Dashboard - My Library";
-            $data['transactions'] = $this->materials;
+            $data['title'] = "User Dashboard - Transactions";
+            $data['transactions'] = Transaction::where('user_id', Auth::user()->id)->get();
             return View('dashboard.user.transactions', $data);
         } catch (\Throwable $th) {
             //throw $th;
+            dd($th->getMessage());
         }
     }
 
@@ -215,6 +258,104 @@ class UserController extends Controller
             //throw $th;
         }
     }
+    public function subscribe(Request $request)
+    {
+        try {
+            //code...
+            $data['status'] = true;
+            $subscription_id = $request->sub_id;
+            $type = $request->type;
+            $reference = $request->reference;
+            $status = $request->status;
+            $trxref = $request->trxref;
+
+            if (!($subscription_id && $type)) {
+                $data['status'] = false;
+                return $data;
+            }
+
+            $sub = Subscription::find($subscription_id);
+            $amount = null;
+            $date = Carbon::now();
+            $invoice_id = Str::upper("TRX" . $this->unique_code(12));
+            $end_date = null;
+
+            if ($sub->type == 'student') {
+                switch ($type) {
+                    case 'session':
+                        $amount = $sub->session;
+                        $end_date = Carbon::now()->addMonths($sub->session_duration);
+                        # code...
+                        break;
+                    case 'system':
+                        $amount = $sub->system;
+                        $end_date = Carbon::now()->addMonths($sub->system_duration);
+                        # code...
+                        break;
+
+                    default:
+                        # code...
+                        break;
+                }
+            }
+
+            if ($sub->type == 'professional') {
+                switch ($type) {
+                    case 'annual':
+                        $amount = $sub->annual;
+                        $end_date = Carbon::now()->addMonths(12);
+                        # code...
+                        break;
+                    case 'quarterly':
+                        $amount = $sub->quarterly;
+                        $end_date = Carbon::now()->addMonths(4);
+                        # code...
+                        break;
+                    case 'monthly':
+                        $amount = $sub->monthly;
+                        $end_date = Carbon::now()->addMonths(1);
+                        # code...
+                        break;
+                    case 'weekly':
+                        $amount = $sub->weekly;
+                        $end_date = Carbon::now()->addWeek();
+                        # code...
+                        break;
+
+                    default:
+                        # code...
+                        break;
+                }
+            }
+
+            $save_sub = SubHistory::create([
+                'user_id' => Auth::user()->id,
+                'plan_id' => $sub->id,
+                'subscription_id' => $sub->id,
+                'date_subscribed' => $date,
+                'start_date' => $date,
+                'expired_date' => $end_date,
+                'isActive' => true
+            ]);
+
+            Transaction::create([
+                'user_id' => Auth::user()->id,
+                'invoice_id' => $invoice_id,
+                'date' => $date,
+                'amount' => $amount,
+                'status' => $status,
+                'reference' => $reference,
+                'trxref' => $trxref,
+                'type' => 'subscription'
+            ]);
+            User::where('id', Auth::user()->id)->update(['sub_id' => $save_sub->id]);
+            return $data;
+        } catch (\Throwable $th) {
+            //throw $th;
+            return $th->getMessage();
+        }
+    }
+
 
     public function subscriptions()
     {
@@ -294,7 +435,7 @@ class UserController extends Controller
                 return redirect()->route('user.settings');
             }
 
-
+            $data['sub'] = SubHistory::where('id', Auth::user()->sub_id)->with('sub')->first();
             $data['title'] = "User Dashboard - Settings";
             return View('dashboard.user.settings', $data);
         } catch (\Throwable $th) {

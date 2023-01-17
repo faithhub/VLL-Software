@@ -129,6 +129,17 @@
                                                 <button onclick="shiNew(event)" data-type="dark" data-size="l"
                                                     data-title="Subscriptions" href="{{ route('vendor.subscriptions') }}"
                                                     class="sub-link btn btn-sm btn-primary">Change</button>
+                                                @isset($sub)
+                                                    <div class="mat-title pl-3 mt-3">
+                                                        <h6><b class="font-weight-bold">Plan: {{ $sub->sub->name }} </b></h6>
+                                                        <h6><b class="font-weight-bold">Subscribed On:
+                                                            </b>{{ $sub->start_date }}</h6>
+                                                        <h6><b class="font-weight-bold">Expired On:
+                                                            </b>{{ $sub->expired_date }}</h6>
+                                                        <h6><b class="font-weight-bold">Status: </b><span
+                                                                class="badge badge-gradient-success">Active</span></h6>
+                                                    </div>
+                                                @endisset
                                             </div>
                                         </div>
 

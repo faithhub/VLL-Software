@@ -15,27 +15,6 @@
                         </div>
                     </div>
                     <div class="card-body pt-0">
-                        <div class="row">
-                            @isset($materials)
-                                @foreach (array_slice($materials, 0, 4) as $material)
-                                    <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
-                                        <div class="image">
-                                            <a href="{{ $material->link }}">
-                                                <img src="{{ $material->img }}" alt="{{ $material->title }}">
-                                            </a>
-                                        </div>
-                                        <div class="mat-title">
-                                            <div class="mt-2">
-                                            </div>
-                                            <a href="{{ $material->link }}" class="book-title">
-                                                <h4>{{ $material->title }} ({{ $material->year }})</h4>
-                                                <h5>{{ $material->author }}</h5>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @endisset
-                        </div>
                         <div class="table-responsive">
                             <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                                 <div class="row">
@@ -56,15 +35,22 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr class="">
-                                                    <td class="sorting_1"> <a class="font-weight-normal1"
-                                                            href="">00434567</a> </td>
-                                                    <td>22 - 10- 2022</td>
-                                                    <td>$230,540</td>
-                                                    <td>
-                                                        <span class="badge bg-warning-light border-warning fs-11">Pending</span>
-                                                    </td>
-                                                </tr>
+                                                @isset($transactions)
+                                                    @foreach ($transactions as $transaction)
+                                                        <tr class="">
+                                                            <td class="sorting_1">
+                                                                <a class="font-weight-normal1"
+                                                                    href="#">{{$transaction->invoice_id}}</a>
+                                                                </td>
+                                                            <td>{{$transaction->date}}</td>
+                                                            <td>₦{{number_format($transaction->amount, 2)}}</td>
+                                                            <td>
+                                                                <span
+                                                                    class="badge bg-success-light border-success fs-11">{{$transaction->status}}</span>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endisset
                                             </tbody>
                                         </table>
                                     </div>

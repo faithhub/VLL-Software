@@ -1039,7 +1039,7 @@ samp {
 }
 
 .book-title h4 {
-    font-weight: 600;
+    font-weight: 550;
     color: #1d3557;
     font-family: sans-serif;
     font-size: 16px;
@@ -14372,7 +14372,7 @@ Inbox Message Style
     outline-color: #2dce89;
 }
 .settings .form-control {
-    /* height: 55px; */
+    height: 55px;
     padding: 10px;
     font-size: 16px;
     color: gray !important;

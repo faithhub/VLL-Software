@@ -11,6 +11,12 @@ class Folder extends Model
     protected $fillable = [
         'name',
         'material_type_id',
-        'user_id'
+        'user_id',
+        'folder_cover_id'
     ];
+
+    public function folder_cover()
+    {
+        return $this->hasOne(File::class, 'id', 'folder_cover_id')->withDefault();
+    }
 }

@@ -42,7 +42,14 @@
                                             </li>
                                         </ul>
                                         <div class="panel-footer text-center border-top-0 mb-4">
-                                            <a class="btn btn-lg btn-warning" href="#">Subscribe</a>
+                                            <a class="btn btn-lg btn-warning"
+                                                @isset($sub->session)
+                                                onclick="payWithPaystack('{{ $sub->session }}', '{{ $sub->id }}', 'session')"
+                                                @endisset
+                                                @isset($sub->system)
+                                                onclick="payWithPaystack('{{ $sub->system }}', '{{ $sub->id }}', 'system')"
+                                                @endisset
+                                                {{-- onclick="payWithPaystack('{{ $sub->amount }}', '{{ Auth::user()->email }}')" --}}>Subscribe</a>
                                         </div>
                                     </div>
                                 </div>
@@ -85,7 +92,13 @@
                                             </li>
                                         </ul>
                                         <div class="panel-footer text-center border-top-0 mb-4">
-                                            <a class="btn btn-lg btn-success" href="#">Subscribe</a>
+                                            <a class="btn btn-lg btn-success"
+                                                @isset($sub->session)
+                                                onclick="payWithPaystack('{{ $sub->session }}', '{{ $sub->id }}', 'session')"
+                                                @endisset
+                                                @isset($sub->system)
+                                                onclick="payWithPaystack('{{ $sub->system }}', '{{ $sub->id }}', 'system')"
+                                                @endisset>Subscribe</a>
                                         </div>
                                     </div>
                                 </div>
@@ -101,7 +114,7 @@
                 @foreach ($subs as $sub)
                     <div class="row mb-5">
                         @isset($sub->annual)
-                            <h5 class="font-weight-bold mb-4">{{ $sub->name }}</h5>
+                            <h5 class="font-weight-bold mb-4 mt-5">{{ $sub->name }}</h5>
                             <div class="col-sm-6 col-xl-3 ">
                                 <div class="panel price panel-color">
                                     <div class="panel-heading p-0 pb-0 fs-30 text-center mt-5 mb-3">
@@ -130,7 +143,8 @@
                                         </li>
                                     </ul>
                                     <div class="panel-footer text-center border-top-0 mb-4">
-                                        <a class="btn btn-lg text-white font-weight-bold
+                                        <a onclick="payWithPaystack('{{ $sub->annual }}', '{{ $sub->id }}', 'annual')"
+                                            class="btn btn-lg text-white font-weight-bold
                                     @if ($sub->name == 'SINGLE USER') bg-warning @endif
                                     @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
                                     @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif
@@ -168,7 +182,8 @@
                                         </li>
                                     </ul>
                                     <div class="panel-footer text-center border-top-0 mb-4">
-                                        <a class="btn btn-lg text-white font-weight-bold
+                                        <a onclick="payWithPaystack('{{ $sub->quarterly }}', '{{ $sub->id }}', 'quarterly')"
+                                            class="btn btn-lg text-white font-weight-bold
                                     @if ($sub->name == 'SINGLE USER') bg-warning @endif
                                     @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
                                     @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif
@@ -206,7 +221,8 @@
                                         </li>
                                     </ul>
                                     <div class="panel-footer text-center border-top-0 mb-4">
-                                        <a class="btn btn-lg text-white font-weight-bold
+                                        <a onclick="payWithPaystack('{{ $sub->monthly }}', '{{ $sub->id }}', 'monthly')"
+                                            class="btn btn-lg text-white font-weight-bold
                                     @if ($sub->name == 'SINGLE USER') bg-warning @endif
                                     @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
                                     @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif
@@ -244,7 +260,8 @@
                                         </li>
                                     </ul>
                                     <div class="panel-footer text-center border-top-0 mb-4">
-                                        <a class="btn btn-lg text-white font-weight-bold
+                                        <a onclick="payWithPaystack('{{ $sub->weekly }}', '{{ $sub->id }}', 'weekly')"
+                                            class="btn btn-lg text-white font-weight-bold
                                     @if ($sub->name == 'SINGLE USER') bg-warning @endif
                                     @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
                                     @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif
@@ -260,3 +277,4 @@
         @endif
     </div>
 </div>
+{{-- rgb(0 0 0 / 30%) 0px 19px 38px, rgb(0 0 0 / 22%) 0px 15px 12px --}}
