@@ -76,7 +76,7 @@
                                             <input name="email" type="email" class="form-control" placeholder="Email"
                                                 required="" data-parsley-required-message="Email is required"
                                                 value="{{ Auth::user()->email }}">
-                                            @error('name')
+                                            @error('email')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -135,7 +135,13 @@
                                             <label class="form-label">Subscriptions</label>
                                             <button onclick="shiNew(event)" data-type="dark" data-size="l"
                                                 data-title="Subscriptions" href="{{ route('user.subscriptions') }}"
-                                                class="sub-link btn btn-sm btn-primary">Change</button>
+                                                class="sub-link btn btn-sm btn-primary">
+                                            @if (Auth::user()->sub->subscription_id)
+                                            Change
+                                            @else
+                                            Subcribe
+                                            @endif
+                                            </button>
 
                                             @isset($sub)
                                                 <div class="mat-title pl-3 mt-3">

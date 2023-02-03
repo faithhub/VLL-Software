@@ -2,7 +2,6 @@
 <script>
     function payWithPaystack(amount, sub_id, type) {
         // e.preventDefault();
-
         let handler = PaystackPop.setup({
             key: 'pk_test_93253e4094828ef15dfd864b9decb3dfceb75a8f', // Replace with your public key
             // email: document.getElementById("email-address").value,

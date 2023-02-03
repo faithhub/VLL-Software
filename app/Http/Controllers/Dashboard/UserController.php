@@ -336,9 +336,9 @@ class UserController extends Controller
             $data['user_sub'] = $user_sub = SubHistory::find(Auth::user()->sub->id);
             // dd($user_sub->sub);
             $trans = Transaction::where(['user_id' => Auth::user()->id, 'type' => 'subscription'])->latest()->first();
-            $data['sub_name'] = $user_sub->sub->id;
-            $data['sub_amount'] = $trans->amount;
-            $data['sub_id'] = $user_sub->sub;
+            $data['sub_name'] = $user_sub->sub->id ?? null;
+            $data['sub_amount'] = $trans->amount ?? null;
+            $data['sub_id'] = $user_sub->sub ?? null;
             // dd($trans->amount);
             return View('dashboard.user.subscriptions', $data);
         } catch (\Throwable $th) {
