@@ -8,7 +8,9 @@ use App\Models\Country;
 use App\Models\File;
 use App\Models\Folder;
 use App\Models\Material;
+use App\Models\MaterialHistory;
 use App\Models\MaterialType;
+use App\Models\Messages;
 use App\Models\SubHistory;
 use App\Models\Subject;
 use App\Models\Subscription;
@@ -30,109 +32,6 @@ class VendorController extends Controller
 
     public function __construct()
     {
-
-        $this->materials = array(
-            (object) [
-                'id' => 7879,
-                'title' => 'Constitutional Law',
-                'link' => '#',
-                'author' => "Daniel Febrigez",
-                'year' => '2002',
-                'img' => asset('materials/img/001.png')
-            ],
-            (object) [
-                'id' => 7880,
-                'title' => 'Introduction to Business Laws',
-                'link' => '#',
-                'author' => "Daniel Febrigez",
-                'year' => '2002',
-                'img' => asset('materials/img/002.png')
-            ],
-            (object) [
-                'id' => 7881,
-                'title' => 'Constitutional Law',
-                'link' => '#',
-                'author' => "Daniel Febrigez",
-                'year' => '2002',
-                'img' => asset('materials/img/003.png')
-            ],
-            (object) [
-                'id' => 7882,
-                'title' => 'Constitutional Law',
-                'link' => '#',
-                'author' => "Daniel Febrigez",
-                'year' => '2002',
-                'img' => asset('materials/img/004.png')
-            ],
-            (object) [
-                'id' => 7883,
-                'title' => 'Introduction to Business Laws',
-                'link' => '#',
-                'author' => "Daniel Febrigez",
-                'year' => '2002',
-                'img' => asset('materials/img/005.png')
-            ],
-            (object) [
-                'id' => 7884,
-                'title' => 'Constitutional Law',
-                'link' => '#',
-                'author' => "Daniel Febrigez",
-                'year' => '2002',
-                'img' => asset('materials/img/006.png')
-            ]
-        );
-        $this->transactions = array(
-            (object) [
-                'id' => 7879,
-                'type' => 'Subscription',
-                'price' => '6700',
-                'author' => "Daniel Febrigez",
-                'year' => '2002',
-                'img' => asset('materials/img/001.png')
-            ],
-            (object) [
-                'id' => 7879,
-                'title' => 'Constitutional Law',
-                'price' => '6700',
-                'author' => "Daniel Febrigez",
-                'year' => '2002',
-                'img' => asset('materials/img/001.png')
-            ],
-        );
-        $this->videos = array(
-            (object) [
-                'id' => 7879,
-                'title' => 'Law of Counsel(2002)',
-                'link' => '#',
-                'author' => "Daniel Febrigez",
-                'year' => '2002',
-                'img' => asset('materials/img/v-001.png')
-            ],
-            (object) [
-                'id' => 7880,
-                'title' => 'Law of Counsel(2002)',
-                'link' => '#',
-                'author' => "Daniel Febrigez",
-                'year' => '2002',
-                'img' => asset('materials/img/v-002.png')
-            ],
-            (object) [
-                'id' => 7881,
-                'title' => 'Law of Counsel(2002)',
-                'link' => '#',
-                'author' => "Daniel Febrigez",
-                'year' => '2002',
-                'img' => asset('materials/img/v-003.png')
-            ],
-            (object) [
-                'id' => 7882,
-                'title' => 'Law of Counsel(2002)',
-                'link' => '#',
-                'author' => "Daniel Febrigez",
-                'year' => '2002',
-                'img' => asset('materials/img/v-004.png')
-            ],
-        );
     }
 
     private function unique_code($limit)
@@ -200,7 +99,20 @@ class VendorController extends Controller
         try {
             //code...
             $data['title'] = "Vnedor Dashboard - Transactions";
-            $data['transactions'] = Transaction::where('user_id', Auth::user()->id)->get();
+            $data['sn'] = 1;
+            $matHis = MaterialHistory::with(['trans', 'mat'])->get();
+            $mats_arr3 = [];
+
+            foreach ($matHis as $key => $mat_h) {
+                # code...
+                if ($mat_h->mat->user_id == Auth::user()->id && $mat_h->transaction_id != null) {
+                    array_push($mats_arr3, $mat_h->transaction_id);
+                }
+            }
+
+            // dd($mats_arr3);
+            $data['transactions']  = Transaction::whereIn('id', $mats_arr3)->orderBy('created_at', 'DESC')->get();
+            // $data['transactions'] = $mats_arr2;
             return View('dashboard.vendor.transactions', $data);
         } catch (\Throwable $th) {
             //throw $th;
@@ -240,21 +152,58 @@ class VendorController extends Controller
                 Session::flash('warning', "No material found");
                 return back();
             }
-            $data['totalRented'] = 0;
-            $data['totalBought'] = 0;
+            $data['totalRented'] = MaterialHistory::where(['material_id' => $m->id, 'type' => 'rented'])->get()->count();
+            $data['totalBought'] = MaterialHistory::where(['material_id' => $m->id, 'type' => 'bought'])->get()->count();
             $data['pageCount'] = countPages(public_path($m->file->url));
             return View('dashboard.vendor.view', $data);
         } catch (\Throwable $th) {
             //throw $th;
+            dd($th->getMessage());
         }
     }
 
-    public function help()
+    public function help(Request $request)
     {
         # code...
+        if ($_POST) {
+
+            $msg_file = null;
+            $isMedia = false;
+
+            if ($request->hasFile('save_file')) {
+                $msg_file = $request->file('save_file');
+                $msg_org_name = $request->file('save_file')->getClientOriginalName();
+                $msg_file_name = 'MSGFile' . time() . '.' . $msg_file->getClientOriginalExtension();
+                Storage::disk('msg_file')->put($msg_file_name, file_get_contents($msg_file));
+                $isMedia = true;
+                $save_cover = File::create([
+                    'name' => $msg_file_name,
+                    'url' => 'storage/message_file/' . $msg_file_name
+                ]);
+            }
+
+            Messages::create([
+                'user_id' => Auth::user()->id,
+                'msg' => $request->msg ?? null,
+                'file_name' => $msg_org_name ?? null,
+                'isMedia' => $isMedia,
+                'media_id' => $save_cover->id ?? null
+            ]);
+
+            $data = [
+                // 'msg_file' => $msg_file,
+                // 'msg_org_name' => $msg_org_name,
+                // 'msg_file_name' => $msg_file_name,
+                // 'save_cover' => $save_cover,
+                'isMedia' => $isMedia,
+            ];
+
+            return $data;
+        }
         try {
             //code...
             $data['title'] = "Vnedor Dashboard - Help";
+            $data['messages'] = Messages::where('user_id', Auth::user()->id)->with(['file', 'user', 'admin'])->orderBy('created_at', 'ASC')->get();
             $data['email'] = "virtuallawlibrary@gmail.com";
             return View('dashboard.vendor.help', $data);
         } catch (\Throwable $th) {
@@ -270,7 +219,7 @@ class VendorController extends Controller
             if ($_POST) {
                 $rules = array(
                     'name' => ['required', 'string', 'max:255'],
-                    'email' => ['required', 'max:255'],
+                    'email' => ['required', 'max:255', 'unique:users,email,' . Auth::user()->id],
                     'gender' => ['string', 'max:255'],
                     'phone' => ['nullable', 'string', 'max:255'],
                     'bank_id' => ['nullable', 'string', 'max:255'],
@@ -447,6 +396,7 @@ class VendorController extends Controller
             # code...
             $curl = curl_init();
 
+            $type = $request->type;
             $bank = $request->bank;
             $account_number = $request->account_number;
             $bank_code = $request->bank_code;
@@ -475,12 +425,22 @@ class VendorController extends Controller
             } else {
                 $response = json_decode($response);
                 if ($response->status) {
-                    User::where('id', Auth::user()->id)->update([
-                        'bank_id' => $bank,
-                        'acc_number' => $account_number,
-                        'acc_name' => $response->data->account_name,
-                        'acc_verified' => true
-                    ]);
+                    if ($type == "NGN") {
+                        User::where('id', Auth::user()->id)->update([
+                            'bank_id' => $bank,
+                            'acc_number' => $account_number,
+                            'acc_name' => $response->data->account_name,
+                            'acc_verified' => true
+                        ]);
+                    }
+                    if ($type == "USD") {
+                        User::where('id', Auth::user()->id)->update([
+                            'dom_bank_id' => $bank,
+                            'dom_acc_number' => $account_number,
+                            'dom_acc_name' => $response->data->account_name,
+                            'dom_acc_verified' => true
+                        ]);
+                    }
                 }
                 return $response;
             }
@@ -499,27 +459,37 @@ class VendorController extends Controller
                 // dd($request->all());
                 $rules = array(
                     'title' => ['required', 'string', 'max:255'],
-                    'name_of_author' => ['required', 'string', 'max:255'],
-                    'version' => ['required', 'string', 'max:255'],
+                    // 'name_of_author' => ['required', 'string', 'max:255'],
+                    'name_of_author' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                    'version' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                    // 'version' => ['required', 'string', 'max:255'],
                     'price' => ['required', 'string', 'max:255'],
                     'amount' => ['required_if:price,Paid'],
                     'material_type_id' => ['required', 'max:255'],
                     'folder_id' => ['required_if:material_type_value,CSL'],
+                    'name_of_party' => ['required_if:material_type_value,CSL'],
+                    // 'name_of_court' => ['required_if:material_type_value,CSL'],
+                    'citation' => ['required_if:material_type_value,CSL'],
                     'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
                     'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
-                    // 'test_country_id' => ['required_if:material_type_value,TAA'],
-                    // 'university_id' => ['required_if:material_type_value,TAA'],
-                    'publisher' => ['required', 'string', 'max:255'],
+                    'test_country_id' => ['required_if:material_type_value,TAA'],
+                    'university_id' => ['required_if:material_type_value,TAA'],
+                    // 'publisher' => ['required', 'string', 'max:255'],
+                    'publisher' => ['required_if:material_type_value,TXT,LOJ,VAA'],
                     'tags' => ['required', 'string', 'max:255'],
                     'subject_id' => ['required_if:material_type_value,5'],
                     'privacy_code' => ['required_if:material_type_value,TAA'],
-                    'material_file_id' => ['required', 'mimes:pdf', 'max:50000'],
+                    // 'material_file_id.*' => ['required', 'mimes:pdf', 'max:100'],
+                    'material_file_id' => ['required', 'mimes:pdf,mp4,mov,ogg,qt', 'max:100000'],
                     'material_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
                     'material_desc' => ['required'],
                     'terms' => ['required', 'max:255']
                 );
 
                 $messages = [
+                    'name_of_party.required_if' => __('Name of Party is required'),
+                    'name_of_court.required_if' => __('Name of Court is required'),
+                    'citation.required_if' => __('Citation is required'),
                     'privacy_code.required_if' => __('Test privacy code is required'),
                     'amount.required_if' => __('Amount is required'),
                     'year_of_publication.required_if' => __('Year of Publication is required'),
@@ -573,18 +543,23 @@ class VendorController extends Controller
                 Material::create([
                     'user_id' => Auth::user()->id,
                     'title' => $request->title ?? null,
+                    'currency_id' => $request->currency_id ?? Auth::user()->currency->id,
                     'name_of_author' => $request->name_of_author ?? null,
+                    'name_of_court' => $request->name_of_court ?? null,
+                    'name_of_party' => $request->name_of_party ?? null,
+                    'citation' => $request->citation ?? null,
                     'version' => $request->version ?? null,
                     'price' => $request->price ?? null,
                     'amount' => $request->amount ?? null,
                     'material_type_id' => $request->material_type_id ?? null,
                     'folder_id' => $request->folder_id ?? null,
                     'year_of_publication' => $request->year_of_publication ?? null,
-                    'test_country_id' => Auth::user()->country_id,
-                    'university_id' => Auth::user()->university_id,
+                    'test_country_id' => $request->test_country_id ?? null,
+                    'university_id' => $request->university_id ?? null,
                     'country_id' => $request->country_id ?? null,
                     'publisher' => $request->publisher ?? null,
                     'tags' => $tags,
+                    'uploaded_by' => 'vendor',
                     'subject_id' => $request->subject_id ?? null,
                     'privacy_code' => $request->privacy_code ?? null,
                     'material_file_id' => $save_file->id,
@@ -600,7 +575,7 @@ class VendorController extends Controller
             $data['material_types'] = $m = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
             $data['subjects'] = Subject::where("status", "active")->get();
             $data['countries'] = Country::all();
-            $material_type_id = MaterialType::where(["status" => "active", "name" => "Case Law"])->whereJsonContains('role', $role)->get();
+            $material_type_id = MaterialType::where(["status" => "active", "mat_unique_id" => "CSL786746357"])->whereJsonContains('role', $role)->get();
             $data['material_type_id'] = $mat_id = $material_type_id[0]['id'];
             $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id, 'material_type_id' => $mat_id])->get();
             $data['universities'] = University::Orderby('name', 'ASC')->get();
@@ -623,45 +598,37 @@ class VendorController extends Controller
                     return redirect()->back();
                 }
                 $rules = array(
-                    // 'title' => ['required', 'string', 'max:255'],
-                    // 'name_of_author' => ['required', 'string', 'max:255'],
-                    // 'version' => ['required', 'string', 'max:255'],
-                    // 'price' => ['required', 'string', 'max:255'],
-                    // 'amount' => ['required_if:price,==,Paid'],
-                    // 'material_type_id' => ['required', 'max:255'],
-                    // 'folder_id' => ['required_if:material_type,==,4'],
-                    // 'year_of_publication' => ['required', 'string', 'max:255'],
-                    // 'country_id' => ['required', 'string', 'max:255'],
-                    // 'publisher' => ['required', 'string', 'max:255'],
-                    // 'tags' => ['required', 'string', 'max:255'],
-                    // 'subject_id' => ['required_if:material_type,==,4'],
-                    // 'privacy_code' => ['required_if:material_type,==,4'],
-                    // 'material_file_id' => ['mimes:pdf', 'max:50000'],
-                    // 'material_cover_id' => ['mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
-                    // 'material_desc' => ['required'],
-                    // 'terms' => ['required', 'max:255']
-
                     'title' => ['required', 'string', 'max:255'],
-                    'name_of_author' => ['required', 'string', 'max:255'],
-                    'version' => ['required', 'string', 'max:255'],
+                    // 'name_of_author' => ['required', 'string', 'max:255'],
+                    'name_of_author' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                    'version' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                    // 'version' => ['required', 'string', 'max:255'],
                     'price' => ['required', 'string', 'max:255'],
                     'amount' => ['required_if:price,Paid'],
                     'material_type_id' => ['required', 'max:255'],
                     'folder_id' => ['required_if:material_type_value,CSL'],
+                    'name_of_party' => ['required_if:material_type_value,CSL'],
+                    // 'name_of_court' => ['required_if:material_type_value,CSL'],
+                    'citation' => ['required_if:material_type_value,CSL'],
                     'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
                     'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
-                    // 'test_country_id' => ['required_if:material_type_value,TAA'],
-                    // 'university_id' => ['required_if:material_type_value,TAA'],
-                    'publisher' => ['required', 'string', 'max:255'],
+                    'test_country_id' => ['required_if:material_type_value,TAA'],
+                    'university_id' => ['required_if:material_type_value,TAA'],
+                    // 'publisher' => ['required', 'string', 'max:255'],
+                    'publisher' => ['required_if:material_type_value,TXT,LOJ,VAA'],
                     'tags' => ['required', 'string', 'max:255'],
                     'subject_id' => ['required_if:material_type_value,5'],
                     'privacy_code' => ['required_if:material_type_value,TAA'],
-                    'material_file_id' => ['mimes:pdf', 'max:50000'],
+                    'material_file_id' => ['mimes:pdf,mp4,mov,ogg,qt', 'max:50000'],
                     'material_cover_id' => ['mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
                     'material_desc' => ['required'],
                 );
 
+
                 $messages = [
+                    'name_of_party.required_if' => __('Name of Party is required'),
+                    'name_of_court.required_if' => __('Name of Court is required'),
+                    'citation.required_if' => __('Citation is required'),
                     'privacy_code.required_if' => __('Test privacy code is required'),
                     'amount.required_if' => __('Amount is required'),
                     'year_of_publication.required_if' => __('Year of Publication is required'),
@@ -722,15 +689,19 @@ class VendorController extends Controller
                 Material::where(['user_id' => Auth::user()->id, 'id' => $request->id])->update([
                     'user_id' => Auth::user()->id,
                     'title' => $request->title ?? $material['title'],
+                    'currency_id' => $request->currency_id ?? $material['currency_id'],
                     'name_of_author' => $request->name_of_author ?? $material['name_of_author'],
+                    'name_of_party' => $request->name_of_party ?? $material['name_of_party'],
+                    'name_of_court' => $request->name_of_court ?? $material['name_of_court'],
+                    'citation' => $request->citation ?? $material['citation'],
                     'version' => $request->version ?? $material['version'],
                     'price' => $request->price ?? $material['price'],
                     'amount' => $request->amount ?? $material['amount'],
                     'material_type_id' => $request->material_type_id ?? $material['material_type_id'],
                     'folder_id' => $request->folder_id ?? $material['folder_id'],
                     'year_of_publication' => $request->year_of_publication ?? $material['year_of_publication'],
-                    'country_id' => Auth::user()->country_id,
-                    'test_country_id' => Auth::user()->university_id,
+                    'country_id' => $request->country_id ?? $material['country_id'],
+                    'test_country_id' => $request->test_country_id ?? $material['test_country_id'],
                     'university_id' => $request->university_id ?? $material['university_id'],
                     'publisher' => $request->publisher ?? $material['publisher'],
                     'tags' => $tags ?? $material['tags'],
@@ -755,7 +726,7 @@ class VendorController extends Controller
             $data['material_types'] = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
             $data['subjects'] = Subject::where("status", "active")->get();
             $data['countries'] = Country::all();
-            $material_type_id = MaterialType::where(["status" => "active", "name" => "Case Law"])->whereJsonContains('role', $role)->get();
+            $material_type_id = MaterialType::where(["status" => "active", "mat_unique_id" => "CSL786746357"])->whereJsonContains('role', $role)->get();
             $data['material_type_id'] = $mat_id = $material_type_id[0]['id'];
             $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id, 'material_type_id' => $mat_id])->get();
             $data['universities'] = University::Orderby('name', 'ASC')->get();
@@ -818,7 +789,7 @@ class VendorController extends Controller
             $data['title'] = "User Dashboard - Create New Folder";
             $role = ['vendor'];
             $data['material_types'] = $m = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
-            $material_type_id = MaterialType::where(["status" => "active", "name" => "Case Law"])->whereJsonContains('role', $role)->get();
+            $material_type_id = MaterialType::where(["status" => "active", "mat_unique_id" => "CSL786746357"])->whereJsonContains('role', $role)->get();
             $data['subjects'] = Subject::where("status", "active")->get();
             $data['countries'] = Country::all();
             $data['material_type_id'] = $mat_id = $material_type_id[0]['id'];

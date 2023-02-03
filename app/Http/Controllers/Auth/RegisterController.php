@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\UserWelcomeEmail;
+use App\Mail\VendorWelcomeEmail;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -53,7 +56,6 @@ class RegisterController extends Controller
     {
         // dd($data);
         if ($data['form_type'] == "vendor") {
-            Session::flash('warning', __('All fields are required'));
             return Validator::make(
                 $data,
                 [
@@ -73,8 +75,8 @@ class RegisterController extends Controller
             );
         }
 
-        if ($data['form_type'] == "user") {
-            Session::flash('warning', __('All fields are required'));
+        if ($data['form_type'] == "user"
+        ) {
             return Validator::make(
                 $data,
                 [
@@ -106,6 +108,7 @@ class RegisterController extends Controller
         // return back();
         if ($data['form_type'] == "user") {
             # code...
+            Mail::to($data['email'])->send(new UserWelcomeEmail($data['name']));
             return User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
@@ -118,6 +121,7 @@ class RegisterController extends Controller
         }
 
         if ($data['form_type'] == "vendor") {
+            Mail::to($data['email'])->send(new VendorWelcomeEmail($data['name']));
             return User::create([
                 'name' => $data['name'] ?? null,
                 'email' => $data['email'],

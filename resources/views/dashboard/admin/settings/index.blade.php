@@ -67,11 +67,20 @@
                             <div class="tabs-menu1">
                                 <!-- Tabs -->
                                 <ul class="nav nav-tabs" id="myTab">
-                                    <li class=""><a href="#general"
-                                            class="{{ empty(old('tabName')) || old('tabName') == 'general' ? 'active' : '' }}">General</a>
+                                    <li class=""><a href="#myProfile"
+                                            class="{{ empty(old('tabName')) || old('tabName') == 'myProfile' ? 'active' : '' }}">Profile</a>
+                                    </li>
+                                    <li><a href="#general"
+                                            class="{{ !empty(old('tabName')) && old('tabName') == 'general' ? 'active' : '' }}">General</a>
                                     </li>
                                     <li><a href="#privacy"
                                             class="{{ !empty(old('tabName')) && old('tabName') == 'privacy' ? 'active' : '' }}">Privacy</a>
+                                    </li>
+                                    <li><a href="#about_us"
+                                            class="{{ !empty(old('tabName')) && old('tabName') == 'about_us' ? 'active' : '' }}">About Us</a>
+                                    </li>
+                                    <li><a href="#faqDiv"
+                                            class="{{ !empty(old('tabName')) && old('tabName') == 'faqDiv' ? 'active' : '' }}">FAQ</a>
                                     </li>
                                     <li><a href="#materialType"
                                             class="{{ !empty(old('tabName')) && old('tabName') == 'materialType' ? 'active' : '' }}">Material
@@ -87,127 +96,233 @@
                         </div>
                         {{-- <div class="panel-body tabs-menu-body"> --}}
                         <div class="tab-content">
-                            <div class="tab-pane {{ empty(old('tabName')) || old('tabName') == 'general' ? 'active' : '' }}"
-                                id="general">
+                            <div class="tab-pane {{ empty(old('tabName')) || old('tabName') == 'myProfile' ? 'active' : '' }}"
+                                id="myProfile">
                                 <div class="row pt-4 mt-3">
-                                    <div class="col-lg-12 col-xl-12">
-                                        <div class="box-widget widget-user">
-                                            <div class="widget-user-image1 d-xl-flex d-block">
-                                                <img alt="User Avatar" class="avatar brround p-0"
-                                                    src="https://st4.depositphotos.com/14903220/22197/v/450/depositphotos_221970610-stock-illustration-abstract-sign-avatar-icon-profile.jpg">
-                                                <div style="display: table">
-                                                    <div class="mt-1 ms-xl-5 add-new-member">
-                                                        <label class="btn btn-sm btn-primary m-3"><input
-                                                                type="file" />Upload</label>
+                                    <form class="validate-form" action="{{ route('admin.profile') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="col-lg-12 col-xl-12">
+                                            <div class="box-widget widget-user">
+                                                <div class="widget-user-image1 d-xl-flex d-block">
+                                                    <img alt="User Avatar" class="avatar brround p-0"
+                                                        src="{{ asset(Auth::user()->profile_pics->url ?? 'assets/dashboard/images/photos/22.jpg') }}">
+                                                    <div style="display: table">
+                                                        <div class="mt-1 ms-xl-5 add-new-member">
+                                                            <label class="btn btn-sm btn-primary m-3">
+                                                                <input name="avatar" accept="image/*"
+                                                                    type="file" />Upload</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row mt-5 settings">
-                                        <form>
-                                            <div class="row">
-                                                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="form-group"> <label class="form-label">Email
-                                                            address</label>
-                                                        <input type="email" class="form-control" placeholder="Email"
-                                                            value="patrennaschell@gmail.com">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="form-group"> <label class="form-label">Phone
-                                                            Number</label>
-                                                        <input type="number" class="form-control"
-                                                            placeholder="+234 905 678 234 " value="+(63-4567-890)">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="form-group"> <label class="form-label">Aiternate Email
-                                                            Address</label>
-                                                        <input type="email" class="form-control" placeholder="Email"
-                                                            value="patrennaschell@gmail.com">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row mt-4">
-                                                <h4 class="font-weight-semibold mb-4">Social Media</h4>
-                                                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="form-group"> <label class="form-label">Instagram</label>
-                                                        <input type="text" class="form-control" placeholder="Instagram"
-                                                            value="Instagram">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="form-group"> <label class="form-label">Linkedin</label>
-                                                        <input type="text" class="form-control" placeholder="Linkedin"
-                                                            value="Linkedin">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="form-group"> <label class="form-label">Facebook</label>
-                                                        <input type="text" class="form-control" placeholder="Facebook"
-                                                            value="Facebook">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="form-group"> <label class="form-label">Twitter</label>
-                                                        <input type="text" class="form-control" placeholder="Twitter"
-                                                            value="Twitter">
-                                                    </div>
-                                                </div>
-                                                {{-- <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="form-group"> <label class="form-label">Bank Namee</label>
-                                                        <select class="form-control" name="bank" id="search"
-                                                            data-parsley-required-message="The Bank is required"
-                                                            data-placeholder="Select your Bank">
-                                                            @isset($banks)
-                                                                @foreach ($banks as $bank)
-                                                                    <option data-value="{{ $bank->id }}"
-                                                                        value="{{ $bank->id }}"
-                                                                        @if (old('form_type') == 'vendor') {{ old('bank') == $bank->id ? 'selected' : '' }} @endif>
-                                                                        {{ $bank->name }}
-                                                                    </option>
-                                                                @endforeach
-                                                            @endisset
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="form-group"> <label class="form-label">Bank Account
-                                                            Number</label>
-                                                        <input type="number" class="form-control" placeholder=""
-                                                            value="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="form-group"> <label class="form-label">Bank Account
-                                                            Name</label>
-                                                        <input type="" class="form-control" placeholder=""
-                                                            value="">
-                                                    </div>
-                                                </div> --}}
-                                            </div>
 
-                                            <div class="row mt-4">
-                                                <h4 class="font-weight-semibold mb-4">Payment Integration</h4>
-                                                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                                                    <div class="form-group"> <label class="form-label">Paystack Public
-                                                            Key</label>
-                                                        <input type="text" class="form-control" placeholder="Public KEy"
-                                                            value="">
+                                        <div class="row mt-5 settings">
+                                            <div class="col-lg-12 col-xl-12">
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Full Name</label>
+                                                        <input name="name" type="text" class="form-control"
+                                                            required=""
+                                                            data-parsley-required-message="Full name is required"
+                                                            placeholder="First Name" value="{{ Auth::user()->name }}">
+                                                        @error('name')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+
+                                                <div class="col-sm-12 col-md-12">
                                                     <div class="form-group">
-                                                        <label class="form-label">USD Rate in Naira</label>
-                                                        <input type="number" class="form-control" placeholder="₦500"
-                                                            value="">
+                                                        <label class="form-label">Email address</label>
+                                                        <input name="email" type="email" class="form-control"
+                                                            placeholder="Email" required=""
+                                                            data-parsley-required-message="Email is required"
+                                                            value="{{ Auth::user()->email }}">
+                                                        @error('name')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
                                                     </div>
+                                                </div>
+
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Phone Number</label>
+                                                        <input name="phone" type="number" class="form-control"
+                                                            placeholder="+234 905 678 234 "
+                                                            value="{{ Auth::user()->phone }}">
+                                                        @error('phone')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-sm-12 col-md-12 mb-4">
+                                                    <label class='form-label'>Gneder</label>
+                                                    <div class='d-flex' style='margin-bottom:-10px'>
+                                                        <div class='form-check form-check-inline'>
+                                                            <input class='form-check-input' name='gender' type='radio'
+                                                                id='inlineCheckbox1' value='male' required=''
+                                                                {{ Auth::user()->gender == 'male' ? 'checked' : '' }}
+                                                                data-parsley-errors-container='#gender-error'
+                                                                data-parsley-required-message='Status is required'>
+                                                            <label class='form-check-label'
+                                                                for='inlineCheckbox1'>Male</label>
+                                                        </div>
+                                                        <div class='form-check form-check-inline'>
+                                                            <input class='form-check-input'
+                                                                {{ Auth::user()->gender == 'female' ? 'checked' : '' }}
+                                                                name='gender' type='radio' id='inlineCheckbox2'
+                                                                value='female'>
+                                                            <label class='form-check-label'
+                                                                for='inlineCheckbox2'>Female</label>
+                                                        </div>
+                                                        <div class='form-check form-check-inline'>
+                                                            <input class='form-check-input'
+                                                                {{ Auth::user()->gender == 'entity' ? 'checked' : '' }}
+                                                                name='gender' type='radio' id='inlineCheckbox3'
+                                                                value='entity'>
+                                                            <label class='form-check-label'
+                                                                for='inlineCheckbox3'>Entity</label>
+                                                        </div>
+                                                    </div>
+                                                    @error('gender')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                    <span class='invalid-feedback' id='gender-error'
+                                                        role='alert'></span>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-12 col-xl-12 text-center mt-4">
-                                                <button class="btn btn-primary p-3 pt-2 pt-2" style="font-size: 18px">Save
-                                                    Changes</button>
+                                            <div class="col-lg-12 col-xl-12 text-center">
+                                                <button class="btn btn-primary p-3 pt-2 pt-2"
+                                                    style="font-size: 18px">Save</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{ !empty(old('tabName')) && old('tabName') == 'general' ? 'active' : '' }}"
+                                id="general">
+                                <div class="row pt-4 mt-3">
+                                    <div class="row mt-5 settings">
+                                        <form method="POST" action="{{ route('admin.settings') }}">
+                                            @csrf
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Email address</label>
+                                                        <input name="email" type="email" class="form-control"
+                                                            placeholder="Email Address" required=""
+                                                            data-parsley-required-message="Email is required"
+                                                            value="{{ $settings['email'] ?? '' }}">
+                                                        @error('name')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-4">
+                                                    <h4 class="font-weight-semibold mb-4">Social Media</h4>
+                                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                                        <div class="form-group"> <label
+                                                                class="form-label">Instagram</label>
+                                                            <input type="text" name="instagram" class="form-control"
+                                                                placeholder="Instagram"
+                                                                value="{{ $settings['instagram'] ?? '' }}">
+                                                            @error('instagram')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                                        <div class="form-group"> <label
+                                                                class="form-label">Linkedin</label>
+                                                            <input type="text" name="linkedIn" class="form-control"
+                                                                placeholder="LinkedIn"
+                                                                value="{{ $settings['linkedIn'] ?? '' }}">
+                                                            @error('linkedIn')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                                        <div class="form-group"> <label
+                                                                class="form-label">Facebook</label>
+                                                            <input type="text" name="facebook" class="form-control"
+                                                                placeholder="Facebook"
+                                                                value="{{ $settings['facebook'] ?? '' }}">
+                                                            @error('facebook')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                                        <div class="form-group"> <label class="form-label">Twitter</label>
+                                                            <input type="text" name="twitter" class="form-control"
+                                                                placeholder="Twitter"
+                                                                value="{{ $settings['twitter'] ?? '' }}">
+                                                            @error('twitter')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-4">
+                                                    <h4 class="font-weight-semibold mb-4">Payment Integration</h4>
+                                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                                        <div class="form-group"> <label class="form-label">Paystack Public
+                                                                Key</label>
+                                                            <input type="text" name="paystack_public_key"
+                                                                class="form-control"
+                                                                value="{{ $settings['paystack_public_key'] ?? '' }}">
+                                                            @error('paystack_public_key')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Book Rent</label>
+                                                            <input type="text" name="rent" class="form-control"
+                                                                placeholder="rent" value="{{ $settings['rent'] ?? '' }}">
+                                                            @error('rent')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-12 col-xl-12 text-center mt-4">
+                                                    <button class="btn btn-primary p-3 pt-2 pt-2"
+                                                        style="font-size: 18px">Save
+                                                        Changes</button>
+                                                </div>
+
                                             </div>
                                         </form>
                                     </div>
@@ -215,13 +330,103 @@
                             </div>
                             <div class="tab-pane {{ !empty(old('tabName')) && old('tabName') == 'privacy' ? 'active' : '' }}"
                                 id="privacy">
-                             <div class="mt-5 pt-4">
-                                   <textarea class="content richText-initial" name="example" style="display: none;"></textarea>
-                                <div class="col-lg-12 col-xl-12 text-center mt-4">
-                                    <button class="btn btn-primary p-3 pt-2 pt-2" style="font-size: 18px">Save
-                                        Changes</button>
+                                <div class="mt-5 pt-4">
+                                    <form method="POST" action="{{ route('admin.settings') }}">
+                                        @csrf
+                                        <textarea class="content richText-initial" id="privacy" name="privacy" style="display: none;">{{ $settings['privacy'] ?? '' }}</textarea>
+                                        @error('privacy')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                        <div class="col-lg-12 col-xl-12 text-center mt-4">
+                                            <button class="btn btn-primary p-3 pt-2 pt-2" style="font-size: 18px">Save
+                                                Changes</button>
+                                        </div>
+                                    </form>
                                 </div>
-                             </div>
+                            </div>
+                            <div class="tab-pane {{ !empty(old('tabName')) && old('tabName') == 'about_us' ? 'active' : '' }}"
+                                id="about_us">
+                                <div class="mt-5 pt-4">
+                                    <form method="POST" action="{{ route('admin.settings') }}">
+                                        @csrf
+                                        <div class="ql-wrapper ql-wrapper-demo" id="quillEditor" contenteditable="true" style="min-height: 400px">{!! $settings['about_us'] ?? '' !!}</div>
+                                        <textarea id="about_us_edit" name="about_us" style="display: none"></textarea>
+                                        @error('about_us')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                        <div class="col-lg-12 col-xl-12 text-center mt-4">
+                                            <button class="btn btn-primary p-3 pt-2 pt-2" id="submitAboutUs" type="submit" style="font-size: 18px">Save
+                                                Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{ !empty(old('tabName')) && old('tabName') == 'faqDiv' ? 'active' : '' }}"
+                                id="faqDiv">
+                                <div class="card border-0" style="box-shadow:none">
+                                    <div class="card-header border-bottom-0">
+                                        <div class="card-options" style="margin-right:2.5%">
+                                            <button class="btn btn-primary m-b-15 p-2 font-weight-bold" type="button"
+                                                onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                data-title="Add New FAQ"
+                                                href="{{ route('admin.add_faq') }}">+
+                                                Add New FAQ</button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <div class="table-responsive">
+                                            <div id="datatable_wrapper"
+                                                class="dataTables_wrapper dt-bootstrap5 no-footer">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <table
+                                                            class="table table-bordere card-table table-vcenter dataTable no-footer"
+                                                            id="" role="grid">
+                                                            <thead>
+                                                                <tr role="row">
+                                                                    <th class="sorting font-weight-bold sorting_asc"
+                                                                        style="width:30%">
+                                                                        Question</th>
+                                                                    <th class="sorting font-weight-bold" tabindex="0"
+                                                                        style="width:60%">
+                                                                        Answer</th>
+                                                                    <th class="sorting font-weight-bold" tabindex="0"
+                                                                        style="width:10%">
+                                                                        Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @isset($faqs)
+                                                                    @foreach ($faqs as $faq)
+                                                                        <tr>
+                                                                            <td>{{ $faq->question }}</td>
+                                                                            <td>{{ $faq->answer }}</td>
+                                                                            <td class="align-middle">
+                                                                                <button class="btn btn-sm btn-secondary"
+                                                                                    type="button" data-type="dark"
+                                                                                    data-size="m" onclick="shiNew(event)"
+                                                                                    data-title="Edit Subject Type"
+                                                                                    href="{{ route('admin.view_faq', $faq->id) }}">Edit</button>
+                                                                                <a onclick="return confirm('Do you want to delete this Subject Type?')"
+                                                                                    href="{{ route('admin.delete_faq', $faq->id) }}"
+                                                                                    class="btn btn-sm btn-danger">
+                                                                                    <i class="fe fe-trash-2"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                @endisset
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane {{ !empty(old('tabName')) && old('tabName') == 'materialType' ? 'active' : '' }}"
                                 id="materialType">
@@ -440,7 +645,8 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="panel-heading p-0 pb-0 text-center">
-                                                                            <h4 class="font-weight-bold">Student {{ $sub->name }}</h4>
+                                                                            <h4 class="font-weight-bold">Student
+                                                                                {{ $sub->name }}</h4>
                                                                         </div>
                                                                         <div class="panel-body text-center">
                                                                         </div>
@@ -448,7 +654,8 @@
                                                                             <li class="mb-4">
 
                                                                                 @isset($sub->session)
-                                                                                    <strong class="font-weight-bold">₦{{ number_format($sub->session, 2) }}
+                                                                                    <strong
+                                                                                        class="font-weight-bold">₦{{ number_format($sub->session, 2) }}
                                                                                     </strong>/ {{ $sub->name }}
                                                                                 @endisset
 
@@ -456,16 +663,19 @@
                                                                             <li class="mb-4">
 
                                                                                 @isset($sub->system)
-                                                                                    <strong class="font-weight-bold">₦{{ number_format($sub->system, 2) }}
+                                                                                    <strong
+                                                                                        class="font-weight-bold">₦{{ number_format($sub->system, 2) }}
                                                                                     </strong>/ {{ $sub->name }}
                                                                                 @endisset
                                                                             </li>
                                                                             <li class="mb-4">
                                                                                 @isset($sub->session)
-                                                                                    <strong>{{ $sub->session_duration }} months</strong>
+                                                                                    <strong>{{ $sub->session_duration }}
+                                                                                        months</strong>
                                                                                 @endisset
                                                                                 @isset($sub->system)
-                                                                                    <strong>{{ $sub->system_duration }} months</strong>
+                                                                                    <strong>{{ $sub->system_duration }}
+                                                                                        months</strong>
                                                                                 @endisset
                                                                             </li>
                                                                         </ul>
@@ -508,31 +718,36 @@
                                                                         <ul class="text-center">
                                                                             <li class="mb-4">
                                                                                 @isset($sub->annual)
-                                                                                    <strong class="font-weight-bold">₦{{ number_format($sub->annual, 2) }}
+                                                                                    <strong
+                                                                                        class="font-weight-bold">₦{{ number_format($sub->annual, 2) }}
                                                                                     </strong>/ annual
                                                                                 @endisset
                                                                             </li>
                                                                             <li class="mb-4">
                                                                                 @isset($sub->weekly)
-                                                                                    <strong class="font-weight-bold">₦{{ number_format($sub->weekly, 2) }}
+                                                                                    <strong
+                                                                                        class="font-weight-bold">₦{{ number_format($sub->weekly, 2) }}
                                                                                     </strong>/ weekly
                                                                                 @endisset
                                                                             </li>
                                                                             <li class="mb-4">
                                                                                 @isset($sub->quarterly)
-                                                                                    <strong class="font-weight-bold">₦{{ number_format($sub->quarterly, 2) }}
+                                                                                    <strong
+                                                                                        class="font-weight-bold">₦{{ number_format($sub->quarterly, 2) }}
                                                                                     </strong>/ quarterly
                                                                                 @endisset
                                                                             </li>
                                                                             <li class="mb-4">
                                                                                 @isset($sub->monthly)
-                                                                                    <strong class="font-weight-bold">₦{{ number_format($sub->monthly, 2) }}
+                                                                                    <strong
+                                                                                        class="font-weight-bold">₦{{ number_format($sub->monthly, 2) }}
                                                                                     </strong>/ monthly
                                                                                 @endisset
                                                                             </li>
                                                                             <li class="mb-4">
                                                                                 @isset($sub->weekly)
-                                                                                    <strong class="font-weight-bold">₦{{ number_format($sub->weekly, 2) }}
+                                                                                    <strong
+                                                                                        class="font-weight-bold">₦{{ number_format($sub->weekly, 2) }}
                                                                                     </strong>/ weekly
                                                                                 @endisset
                                                                             </li>
@@ -568,4 +783,10 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+            $("#submitAboutUs").click(function() {
+                $("#about_us_edit").val($(".ql-editor").html());
+            });
+        </script>
 @endsection

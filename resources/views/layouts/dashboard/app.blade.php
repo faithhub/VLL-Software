@@ -10,7 +10,7 @@
     <meta content="" name="author">
     <meta name="keywords" content="VLL dashboard">
     <!-- Title -->
-    <title>VLL dashboard</title>
+    <title>VLL dashboard - {{ $title ?? '' }}</title>
     @include('layouts.dashboard.includes.style')
     @include('layouts.dashboard.includes.paystack')
 

@@ -62,7 +62,7 @@ class SubscriptionController extends Controller
             $data['subject_type'] = $s = $subject_type = Subject::where('id', $id)->with('material')->first();
             // dd($s);
             if (!$subject_type) {
-                Session::flash('error', "No record fund");
+                Session::flash('error', "No record found");
                 return redirect()->back();
             }
             return View('dashboard.admin.modals.edit-sub', $data);

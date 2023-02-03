@@ -12714,9 +12714,20 @@ Inbox Message Style
     }
 }
 
+        .currency-btn{
+            background-color: #f0f4f9;
+            border: 1px solid #eee;
+        }
+
+        
 .list-icons i {
     font-size: 56px;
 }
+        .mat_img {
+            width: 280px;
+            height: 280px;
+            object-fit: cover;
+        }
 
 .font-dot {
     margin-top: -12px;
@@ -12726,11 +12737,21 @@ Inbox Message Style
     font-size: 14px;
 }
 
+.type-text{
+    font-size: 13px;
+}
+
+.money{
+    color: green;
+    font-weight: 800;
+}
+
 .chat-body-style {
     max-height: 500px;
     background-size: cover;
     background-position: center;
-    min-height: 70vh;
+    min-height: 60vh;
+    overflow-x: scroll !important;
 }
 
 .chat-body-style:after {
@@ -14341,8 +14362,9 @@ Inbox Message Style
     border: 1px solid #eee !important;
     border-radius: 3px !important;
 }
+
 .select2-container .select2-selection--single {
-    /* height: 2px !important; */
+    /* height: 55px !important; */
     padding: 10px !important;
     font-size: 16px !important;
     color: #000 !important;
@@ -14371,6 +14393,13 @@ Inbox Message Style
 .range.range-success input[type="range"] {
     outline-color: #2dce89;
 }
+.textarea {
+    min-height: 200px !important;
+}
+.jconfirm .jconfirm-box div.jconfirm-content-pane .jconfirm-content{
+    overflow:hidden;
+}
+
 .settings .form-control {
     height: 55px;
     padding: 10px;

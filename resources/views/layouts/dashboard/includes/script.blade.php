@@ -29,18 +29,11 @@
 <script src="{{ asset('assets/dashboard/js/themeColors.js') }}"></script>
 <script src="{{ asset('assets/dashboard/js/custom.js') }}"></script>
 <script src="{{ asset('assets/dashboard/switcher/js/switcher.js') }}"></script>
-{{-- <script src="{{ asset('assets/js/file-upload.js') }}"></script>
-<script src="{{ asset('assets/dashboard/plugins/fancyuploder/jquery.fancy-fileupload.js') }}"></script>
-<script src="{{ asset('assets/dashboard/plugins/fancyuploder/fancy-uploader.js') }}"></script>
-<script src="{{ asset('assets/dashboard/plugins/fileupload/js/dropify.js') }}"></script>
-<script src="{{ asset('assets/js/filupload.js') }}"></script> --}}
-{{-- <script src="{{ asset('assets/hkbfgjdbhjfbdfb') }}"></script> --}}
 <script src="{{ asset('assets/dashboard/js/shi.js') }}"></script>
+{{-- <script src="{{ asset('assets/plugins/quill/quill.min.js') }}"></script> --}}
 
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-
-{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script> --}}
 <script src="https://spruko.com/demo/azea/Azea/assets/js/form-editor2.js"></script>
 <script src="https://spruko.com/demo/azea/Azea/assets/js/form-editor.js"></script>
 <script src="https://spruko.com/demo/azea/Azea/assets/plugins/wysiwyag/jquery.richtext.js"></script>
@@ -50,8 +43,11 @@
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.js"></script>
-
+<!-- Main Quill library -->
+{{-- <script src="//cdn.quilljs.com/1.0.0/quill.js"></script> --}}
+<script src="//cdn.quilljs.com/1.0.0/quill.min.js"></script>
 <script type="text/javascript">
+
     $(document).ready(function() {
 
         if (location.hash) {
@@ -68,33 +64,6 @@
         $("a[href='" + anchor + "']").tab("show");
     });
 
-    $('#material_cover').bind('change', function() {
-        if (this.files[0]) {
-            var fileName = this.files[0].name;
-            var fileSize = this.files[0].size;
-            var size = parseFloat(fileSize / 1000).toFixed(0);
-            document.getElementById('material_cover_img').src = window.URL.createObjectURL(this.files[0])
-            $("#material_cover_name").text(fileName);
-            $("#material_cover_size").text(`${size} KB`);
-            document.getElementById('material_cover_preview').style.display = 'block';
-        } else {
-            document.getElementById('material_cover_preview').style.display = 'none';
-        }
-    });
-
-
-    $('#material_file').bind('change', function() {
-        if (this.files[0]) {
-            var fileName = this.files[0].name;
-            var fileSize = this.files[0].size;
-            var size = parseFloat(fileSize / 1000).toFixed(0);
-            $("#material_file_name").text(fileName);
-            $("#material_file_size").text(`${size} KB`);
-            document.getElementById('material_file_preview').style.display = 'block';
-        } else {
-            document.getElementById('material_file_preview').style.display = 'none';
-        }
-    });
 
     $(function() {
         'use strict'
@@ -307,61 +276,4 @@
         });
 
     });
-
-    function verifyAccount() {
-        document.getElementById("spinner").className = 'fa fa-spinner fa-spin';
-        document.getElementById("verify-btn").innerText = 'Verifying';
-        setTimeout(function() {
-            const accountNumber = document.getElementById('acc_number').value
-            const bank = document.getElementById('bank_id').value
-            const bankCode = $('select#bank_id').find(':selected').data('code');
-
-            console.log(accountNumber, bank, bankCode);
-            if (!bank) {
-                document.getElementById("spinner").className = '';
-                document.getElementById("verify-btn").innerText = 'Verify';
-                return toastr.warning("{{ session('warning') }}", "Please select your bank");
-            }
-            if (!accountNumber) {
-                document.getElementById("spinner").className = '';
-                document.getElementById("verify-btn").innerText = 'Verify';
-                return toastr.warning("{{ session('warning') }}", "Please input your account number");
-            }
-
-            $.ajax({
-                url: '{{ route('vendor.verifyBank') }}',
-                type: 'POST',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    account_number: accountNumber,
-                    bank: bank,
-                    bank_code: bankCode
-                },
-
-                success: function(response) {
-                    if (!response.status) {
-                        document.getElementById("spinner").className = '';
-                        document.getElementById("verify-btn").innerText = 'Verify';
-                        return toastr.warning("{{ session('error') }}", "Invalid account details");
-                    }
-
-                    document.getElementById("spinner").className = 'fa fa-lock';
-                    document.getElementById("verify-btn").innerText = 'Verified';
-                    document.getElementById("verify-me").disabled = true;
-                    document.getElementById('bank_id').disabled = true;
-                    document.getElementById('acc_number').readOnly = true;
-                    document.getElementById('acc_name').value = response.data.account_name
-                    return toastr.success("{{ session('success') }}", "Account verified");
-                },
-                error: function(err) {
-                    document.getElementById("spinner").className = '';
-                    document.getElementById("verify-btn").innerText = 'Verify';
-                    console.log(err);
-                }
-            });
-        }, 4000);
-    }
-
-    // jQuery plugin to display a custom jQuery File Uploader interface.
-    // (C) 2017 CubicleSoft.  All Rights Reserved.
 </script>

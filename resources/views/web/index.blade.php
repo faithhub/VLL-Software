@@ -1,9 +1,16 @@
 @extends('layouts/web/app')
 @section('content')
-<style>
-    p{
-        font-size: 18px;
-    }
+    <style>
+        p {
+            font-size: 18px;
+        }
+
+        .mat_img {
+            float: left;
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+        }
     </style>
 
     <!-- Start Why Choose Us Area -->
@@ -12,18 +19,20 @@
             <div class="container">
                 <div class="row">
                     @foreach ($materials as $material)
-                        <div class="col-lg-4 col-md-4 mb-5 justify-content-center">
-                            <div class="image">
-                                <a href="{{ $material->link }}">
-                                    <img src="{{ $material->img }}" alt="{{ $material->title }}">
-                                </a>
-                            </div>
-                            <div class="mat-title">
-                                <a href="{{ $material->link }}">
-                                    <h4>{{ $material->title }}</h4>
-                                </a>
-                            </div>
+                    @if (substr($material->type->at_unique_id, 0, 3) != "TAA")  
+                    <div class="col-lg-4 col-md-4 mb-5 p-2 justify-content-center">
+                        <div class="image">
+                            <a href="{{ route('user.index') }}">
+                                <img src="{{ asset($material->cover->url) }}" class="mat_img" alt="{{ $material->title }}">
+                            </a>
                         </div>
+                        <div class="mat-title">
+                            <a href="{{ route('user.index') }}">
+                                <h4>{{ $material->title }}</h4>
+                            </a>
+                        </div>
+                    </div>
+                    @endif
                     @endforeach
                 </div>
             </div>
@@ -92,19 +101,6 @@
         </div>
     </section>
 
-    {{-- <div class="row" style="background-color: #fff">
-        <div class="col-2">
-            <img class="logo" src="{{ asset('assets/web/logo/logo.png') }}" height="100px" width="auto" alt="logo">
-        </div>
-        <div class="col-2">
-        <h2 style="font-weight:900; margin-left:-14.4rem; font-size:14px; margin-top:20px" class="text-left">Virtual <br>Law <br>Library</h2>
-        </div>
-        <div class="col-8">
-        </div>
-    </div> --}}
-    <!-- End Why Choose Us Area -->
-
-    <!-- Start Why Choose Us Area -->
     <section id="about" class="why-choose-us ptb-0 bg-f9faff mtb-20 pb-5">
         <div class="container">
             <div class="row align-items-center">

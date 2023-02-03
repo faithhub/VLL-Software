@@ -19,4 +19,19 @@ class MaterialHistory extends Model
         "date",
         "type"
     ];
+
+    public function trans()
+    {
+        return $this->hasOne(Transaction::class, 'id', 'transaction_id');
+    }
+
+    public function mat()
+    {
+        return $this->hasOne(Material::class, 'id', 'material_id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

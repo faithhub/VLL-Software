@@ -58,6 +58,7 @@ return [
 
         'material_file' => [
             'driver' => 'local',
+            // 'root' => env('APP_URL') . '/storage/materials/files',
             'root' => storage_path('app/public/materials/files'),
             'url' => env('APP_URL') . '/storage/materials/files',
             'visibility' => 'public',
@@ -65,6 +66,7 @@ return [
 
         'material_cover' => [
             'driver' => 'local',
+            // 'root' =>  env('APP_URL') . '/storage/materials/covers',
             'root' => storage_path('app/public/materials/covers'),
             'url' => env('APP_URL') . '/storage/materials/covers',
             'visibility' => 'public',
@@ -74,6 +76,13 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/public/avatars'),
             'url' => env('APP_URL') . '/storage/avatars',
+            'visibility' => 'public',
+        ],
+
+        'msg_file' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/message_file'),
+            'url' => env('APP_URL') . '/storage/message_file',
             'visibility' => 'public',
         ],
 

@@ -30,6 +30,10 @@ class Material extends Model
         "material_cover_id",
         "material_desc",
         "test_country_id",
+        "name_of_party",
+        "name_of_court",
+        "citation",
+        "uploaded_by",
         "university_id"
     ];
     protected $casts = [
@@ -38,6 +42,11 @@ class Material extends Model
 
 
     public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function vendor()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }

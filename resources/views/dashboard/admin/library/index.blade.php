@@ -39,19 +39,25 @@
                                                         <tr class="">
                                                             <td class="sorting_1">{{ $sn++ }}</td>
                                                             <td class="sorting_1">
-                                                                <img src="{{ $material->img }}" style="max-height:60px">
+                                                                <img src="{{ asset($material->cover->url ?? "") }}" style="max-height:60px">
                                                             </td>
                                                             <td class="sorting_1"><a class="font-weight-bold"
                                                                     href="">{{ $material->title }}</a></td>
-                                                            <td>{{ $material->type ?? '-' }}</td>
-                                                            <td>{{ $material->author }}</td>
-                                                            <td>{{ $material->vendor ?? '-' }}</td>
-                                                            <td>{{ $material->desc ?? '-' }}</td>
-                                                            <td>₦{{ number_format($material->price ?? 0, 2) }}</td>
+                                                            <td>{{ $material->type->name ?? '-' }}</td>
+                                                            <td>{{ $material->name_of_author ?? '-' }}</td>
+                                                            <td>{{ $material->vendor->name ?? '-' }}</td>
+                                                            <td>{{ $material->material_desc ?? '-' }}</td>
+                                                            <td>₦{{ number_format($material->amount ?? 0, 2) }}</td>
                                                             <td><a class="font-weight-bold"
-                                                                    href="{{ $material->link }}">{{ $material->title }}.pdf</a>
+                                                                    href="{{ asset($material->file->url ?? "") }}">{{ $material->title }}.pdf</a>
                                                             </td>
-                                                            <td><a href=""><i class="fa fa-trash"></i></a></td>
+                                                            <td>
+                                                            <div class="d-flex">
+                                                                <a href="" class="p-2"><i class="fa fa-trash"></i></a>
+                                                                <a href="{{ route('admin.edit.library', $material->id) }}" class="p-2"><i class="fa fa-pencil"></i></a>
+                                                                <a href="{{ route('admin.view.library', $material->id) }}" class="p-2"><i class="fa fa-eye"></i></a>
+                                                            </div>
+                                                            </td>
                                                             {{-- <td>{{ $material->created_at->format('D, M j, Y') ?? '' }}</td> --}}
                                                             {{-- <td>
                                                         <span class="badge bg-warning-light border-warning fs-11">Pending</span>

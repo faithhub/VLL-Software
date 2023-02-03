@@ -23,16 +23,40 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     @if (request()->is('login') || request()->is('register'))
                     @else
-                        <ul class="navbar-nav mx-auto">
-                            <li class="nav-item"><a class="nav-link sign-up-btn" href="{{ route('register') }}">Sign
-                                    up</a>
-                            </li>
-                            <li class="nav-item"><a class="nav-link login-btn" href="{{ route('login') }}">Login</a>
-                            </li>
-                        </ul>
-                    @endif
+                        @auth
+                            @if (Auth::user()->role == 'user')
+                                <ul class="navbar-nav mx-auto">
+                                    <li class="nav-item"><a class="nav-link login-btn"
+                                            href="{{ route('user.index') }}">Dashboard</a>
+                                    </li>
+                                </ul>
+                            @endif
+                            @if (Auth::user()->role == 'vendor')
+                                <ul class="navbar-nav mx-auto">
+                                    <li class="nav-item"><a class="nav-link login-btn"
+                                            href="{{ route('vendor.index') }}">Dashboard</a>
+                                    </li>
+                                </ul>
+                            @endif
+                            @if (Auth::user()->role == 'admin')
+                                <ul class="navbar-nav mx-auto">
+                                    <li class="nav-item"><a class="nav-link login-btn"
+                                            href="{{ route('admin.index') }}">Dashboard</a>
+                                    </li>
+                                </ul>
+                            @endif
+                        @else
+                            <ul class="navbar-nav mx-auto">
+                                <li class="nav-item"><a class="nav-link sign-up-btn" href="{{ route('register') }}">Sign
+                                        up</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link login-btn" href="{{ route('login') }}">Login</a>
+                                </li>
+                            </ul>
+                        @endif
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>

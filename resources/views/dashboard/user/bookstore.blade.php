@@ -36,7 +36,81 @@
                         </div>
                     </div>
 
-                    @isset($all_materials3)
+                    @isset($material_array)
+                        @foreach ($material_array as $material_arr)
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <div class="card-header border-bottom-0 mb-4">
+                                    <h6 class="mb-1 mt-1 font-weight-bold h3">{{ $material_arr->type->name }}</h6>
+                                    <div class="card-options" style="margin-right:2.5%"> <a
+                                            href="{{ route('user.view_material_type', $material_arr->type->id) }}"
+                                            class="btn btn-sm btn-primary">View All</a> </div>
+                                </div>
+                                <div class="card-body pt-0">
+                                    <div class="row">
+                                        @isset($material_arr->materials)
+                                            @foreach ($material_arr->materials as $key => $material)
+                                                @if ($material_arr->type->mat_unique_id == 'CSL786746357')
+                                                    @if (in_array($key, $limit_folder))
+                                                        <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
+                                                            <div class="image">
+                                                                <a onclick="shiNew(event)" data-type="dark" data-size="xl"
+                                                                    data-title="{{ $material[0]['folder']['name'] }}"
+                                                                    href="{{ route('user.view_folder', $material[0]['folder']['id']) }}">
+                                                                    <img src="{{ asset($material[0]['folder']['folder_cover']['url']) }}"
+                                                                        alt="{{ $material[0]['folder']['name'] }}" class="mat_img">
+                                                                </a>
+                                                            </div>
+                                                            <div class="mat-title">
+                                                                <div class="mt-2">
+                                                                </div>
+                                                                <a onclick="shiNew(event)" data-type="dark" data-size="xl"
+                                                                    data-title="{{ $material[0]['folder']['name'] }}"
+                                                                    href="{{ route('user.view_folder', $material[0]['folder']['id']) }}"
+                                                                    class="book-title mt-2">
+                                                                    <h4 class="text-capitalize">
+                                                                        {{ $material[0]['folder']['name'] }}
+                                                                    </h4>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                @else
+                                                    <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
+                                                        <div class="image">
+                                                            <a onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                                data-title="{{ $material->title }}"
+                                                                href="{{ route('user.view_material', $material->id) }}">
+                                                                <img src="{{ asset($material->cover->url) }}"
+                                                                    alt="{{ $material->title }}" class="mat_img">
+                                                            </a>
+                                                        </div>
+                                                        <div class="mat-title">
+                                                            <div class="mt-2">
+                                                            </div>
+                                                            <a onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                                data-title="{{ $material->title }}"
+                                                                href="{{ route('user.view_material', $material->id) }}"
+                                                                class="book-title mt-2">
+                                                                <h4 class="text-capitalize">{{ $material->title }}
+                                                                    ({{ $material->year_of_publication }})
+                                                                </h4>
+                                                                <h5 class="text-capitalize">
+                                                                    {{ $material->name_of_author }}
+                                                                </h5>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                        @endisset
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endisset
+
+
+                    {{-- @isset($all_materials3)
                         @foreach ($all_materials3 as $materials_types)
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -52,135 +126,140 @@
                                                 @foreach ($materials_types->groupBy('folder_id') as $key => $materiall)
                                                     @isset($materiall[0]->folder)
                                                         @if (in_array($key, $limit_folder))
-                                                        <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
-                                                            <div class="image">
-                                                                <a onclick="shiNew(event)" data-type="dark" data-size="xl"
-                                                                    data-title="{{ $materiall[0]['folder']['name'] }}"
-                                                                    href="{{ route('user.view_folder', $materiall[0]['folder']['id']) }}">
-                                                                    <img src="{{ asset($materiall[0]['folder']['folder_cover']['url']) }}"
-                                                                        alt="{{ $materiall[0]['folder']['name'] }}">
-                                                                </a>
-                                                            </div>
-                                                            <div class="mat-title">
-                                                                <div class="mt-2">
+                                                            <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
+                                                                <div class="image">
+                                                                    <a onclick="shiNew(event)" data-type="dark" data-size="xl"
+                                                                        data-title="{{ $materiall[0]['folder']['name'] }}"
+                                                                        href="{{ route('user.view_folder', $materiall[0]['folder']['id']) }}">
+                                                                        <img src="{{ asset($materiall[0]['folder']['folder_cover']['url']) }}"
+                                                                            alt="{{ $materiall[0]['folder']['name'] }}">
+                                                                    </a>
                                                                 </div>
-                                                                <a onclick="shiNew(event)" data-type="dark" data-size="xl"
-                                                                    data-title="{{ $materiall[0]['folder']['name'] }}"
-                                                                    href="{{ route('user.view_folder', $materiall[0]['folder']['id']) }}"
-                                                                    class="book-title mt-2">
-                                                                    <h4 class="text-capitalize">
-                                                                        {{ $materiall[0]['folder']['name'] }}
-                                                                    </h4>
-                                                                </a>
+                                                                <div class="mat-title">
+                                                                    <div class="mt-2">
+                                                                    </div>
+                                                                    <a onclick="shiNew(event)" data-type="dark" data-size="xl"
+                                                                        data-title="{{ $materiall[0]['folder']['name'] }}"
+                                                                        href="{{ route('user.view_folder', $materiall[0]['folder']['id']) }}"
+                                                                        class="book-title mt-2">
+                                                                        <h4 class="text-capitalize">
+                                                                            {{ $materiall[0]['folder']['name'] }}
+                                                                        </h4>
+                                                                    </a>
+                                                                </div>
                                                             </div>
-                                                        </div>
                                                         @endif
                                                     @else
                                                         @foreach ($materiall as $key => $material)
-                                                        @if (in_array($key, $limit_mat))
-                                                                @if(substr($material->type->mat_unique_id, 0, 3) == "TAA")
-                                                                @if($material->university_id == Auth::user()->university_id)
-                                                                                     <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
-                                                                @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
-                                                                    <div class="image">
-                                                                        <a onclick="shiNew(event)" data-type="dark" data-size="m"
-                                                                            data-title="{{ $material->title }}"
-                                                                            href="{{ route('user.view_material', $material->id) }}">
-                                                                            <img src="{{ asset($material->cover->url) }}"
-                                                                                alt="{{ $material->title }}" width="100%"
-                                                                                height="auto">
-                                                                            <img id="img-2"
-                                                                                src="{{ asset('materials/icon/v-play.png') }}"
-                                                                                alt="{{ $material->title }}" align="middle"
-                                                                                style="color: black">
-                                                                        </a>
-                                                                    </div>
+                                                            @if (in_array($key, $limit_mat))
+                                                                @if (substr($material->type->mat_unique_id, 0, 3) == 'TAA')
+                                                                    @if ($material->university_id == Auth::user()->university_id)
+                                                                        <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
+                                                                            @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
+                                                                                <div class="image">
+                                                                                    <a onclick="shiNew(event)" data-type="dark"
+                                                                                        data-size="m"
+                                                                                        data-title="{{ $material->title }}"
+                                                                                        href="{{ route('user.view_material', $material->id) }}">
+                                                                                        <img src="{{ asset($material->cover->url) }}"
+                                                                                            alt="{{ $material->title }}" width="100%"
+                                                                                            height="auto">
+                                                                                        <img id="img-2"
+                                                                                            src="{{ asset('materials/icon/v-play.png') }}"
+                                                                                            alt="{{ $material->title }}" align="middle"
+                                                                                            style="color: black">
+                                                                                    </a>
+                                                                                </div>
+                                                                            @else
+                                                                                <div class="image">
+                                                                                    <a onclick="shiNew(event)" data-type="dark"
+                                                                                        data-size="m"
+                                                                                        data-title="{{ $material->title }}"
+                                                                                        href="{{ route('user.view_material', $material->id) }}">
+                                                                                        <img src="{{ asset($material->cover->url) }}"
+                                                                                            alt="{{ $material->title }}">
+                                                                                    </a>
+                                                                                </div>
+                                                                            @endif
+                                                                            <div class="mat-title">
+                                                                                <div class="mt-2">
+                                                                                </div>
+                                                                                <a onclick="shiNew(event)" data-type="dark"
+                                                                                    data-size="m" data-title="{{ $material->title }}"
+                                                                                    href="{{ route('user.view_material', $material->id) }}"
+                                                                                    class="book-title mt-2">
+                                                                                    <h4 class="text-capitalize">{{ $material->title }}
+                                                                                        ({{ $material->year_of_publication }})
+                                                                                    </h4>
+                                                                                    <h5 class="text-capitalize">
+                                                                                        {{ $material->name_of_author }}
+                                                                                    </h5>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
                                                                 @else
-                                                                    <div class="image">
-                                                                        <a onclick="shiNew(event)" data-type="dark" data-size="m"
-                                                                            data-title="{{ $material->title }}"
-                                                                            href="{{ route('user.view_material', $material->id) }}">
-                                                                            <img src="{{ asset($material->cover->url) }}"
-                                                                                alt="{{ $material->title }}">
-                                                                        </a>
+                                                                    <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
+                                                                        @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
+                                                                            <div class="image">
+                                                                                <a onclick="shiNew(event)" data-type="dark"
+                                                                                    data-size="m" data-title="{{ $material->title }}"
+                                                                                    href="{{ route('user.view_material', $material->id) }}">
+                                                                                    <img src="{{ asset($material->cover->url) }}"
+                                                                                        alt="{{ $material->title }}" width="100%"
+                                                                                        height="auto">
+                                                                                    <img id="img-2"
+                                                                                        src="{{ asset('materials/icon/v-play.png') }}"
+                                                                                        alt="{{ $material->title }}" align="middle"
+                                                                                        style="color: black">
+                                                                                </a>
+                                                                            </div>
+                                                                        @else
+                                                                            <div class="image">
+                                                                                <a onclick="shiNew(event)" data-type="dark"
+                                                                                    data-size="m"
+                                                                                    data-title="{{ $material->title }}"
+                                                                                    href="{{ route('user.view_material', $material->id) }}">
+                                                                                    <img src="{{ asset($material->cover->url) }}"
+                                                                                        alt="{{ $material->title }}">
+                                                                                </a>
+                                                                            </div>
+                                                                        @endif
+                                                                        <div class="mat-title">
+                                                                            <div class="mt-2">
+                                                                            </div>
+                                                                            <a onclick="shiNew(event)" data-type="dark"
+                                                                                data-size="m" data-title="{{ $material->title }}"
+                                                                                href="{{ route('user.view_material', $material->id) }}"
+                                                                                class="book-title mt-2">
+                                                                                <h4 class="text-capitalize">{{ $material->title }}
+                                                                                    ({{ $material->year_of_publication }})
+                                                                                </h4>
+                                                                                <h5 class="text-capitalize">
+                                                                                    {{ $material->name_of_author }}
+                                                                                </h5>
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
                                                                 @endif
-                                                                <div class="mat-title">
-                                                                    <div class="mt-2">
-                                                                    </div>
-                                                                    <a onclick="shiNew(event)" data-type="dark" data-size="m"
-                                                                        data-title="{{ $material->title }}"
-                                                                        href="{{ route('user.view_material', $material->id) }}"
-                                                                        class="book-title mt-2">
-                                                                        <h4 class="text-capitalize">{{ $material->title }}
-                                                                            ({{ $material->year_of_publication }})
-                                                                        </h4>
-                                                                        <h5 class="text-capitalize">{{ $material->name_of_author }}
-                                                                        </h5>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                                @endif
-                                                                @else
-                                                                                     <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
-                                                                @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
-                                                                    <div class="image">
-                                                                        <a onclick="shiNew(event)" data-type="dark" data-size="m"
-                                                                            data-title="{{ $material->title }}"
-                                                                            href="{{ route('user.view_material', $material->id) }}">
-                                                                            <img src="{{ asset($material->cover->url) }}"
-                                                                                alt="{{ $material->title }}" width="100%"
-                                                                                height="auto">
-                                                                            <img id="img-2"
-                                                                                src="{{ asset('materials/icon/v-play.png') }}"
-                                                                                alt="{{ $material->title }}" align="middle"
-                                                                                style="color: black">
-                                                                        </a>
-                                                                    </div>
-                                                                @else
-                                                                    <div class="image">
-                                                                        <a onclick="shiNew(event)" data-type="dark" data-size="m"
-                                                                            data-title="{{ $material->title }}"
-                                                                            href="{{ route('user.view_material', $material->id) }}">
-                                                                            <img src="{{ asset($material->cover->url) }}"
-                                                                                alt="{{ $material->title }}">
-                                                                        </a>
-                                                                    </div>
-                                                                @endif
-                                                                <div class="mat-title">
-                                                                    <div class="mt-2">
-                                                                    </div>
-                                                                    <a onclick="shiNew(event)" data-type="dark" data-size="m"
-                                                                        data-title="{{ $material->title }}"
-                                                                        href="{{ route('user.view_material', $material->id) }}"
-                                                                        class="book-title mt-2">
-                                                                        <h4 class="text-capitalize">{{ $material->title }}
-                                                                            ({{ $material->year_of_publication }})
-                                                                        </h4>
-                                                                        <h5 class="text-capitalize">{{ $material->name_of_author }}
-                                                                        </h5>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                                @endif
-                                                        @endif
-                                                    @endforeach
-                                                @endisset
-                                            @endforeach
-                                        @endisset
+                                                            @endif
+                                                        @endforeach
+                                                    @endisset
+                                                @endforeach
+                                            @endisset
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
-                @endisset
+                        @endforeach
+                    @endisset --}}
 
+                </div>
             </div>
         </div>
-    </div>
 
 
-    {{-- <div class="row">
+        {{-- <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="card border-10 pt-5">
                     <div class="card-header border-bottom-0 mb-4">
@@ -215,7 +294,7 @@
             </div>
         </div> --}}
 
-    {{-- <div class="row">
+        {{-- <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="card border-10 pt-5">
                     <div class="card-header border-bottom-0 mb-4">
@@ -255,7 +334,7 @@
             </div>
         </div> --}}
 
-    {{-- <div class="row">
+        {{-- <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="card border-10 pt-5">
                     <div class="card-header border-bottom-0 mb-4">
@@ -293,5 +372,5 @@
             </div>
         </div> --}}
 
-</div>
+    </div>
 @endsection

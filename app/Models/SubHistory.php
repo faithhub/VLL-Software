@@ -22,6 +22,11 @@ class SubHistory extends Model
 
     public function sub()
     {
-        return $this->hasOne(Subscription::class, 'id', 'subscription_id');
+        return $this->hasOne(Subscription::class, 'id', 'subscription_id')->withDefault();
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 }

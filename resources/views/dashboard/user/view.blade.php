@@ -37,7 +37,7 @@
                         @endisset
                         <h5><b class="font-weight-bold">Amount:
                                 @if ($material->price == 'Paid')
-                                    ₦{{ number_format($material->amount, 2) }}
+                                    {{ money($material->amount) }}
                                 @else
                                     Free
                                 @endif
@@ -54,30 +54,51 @@
                             {{ $material->material_desc }}
                         </p>
 
-                        @if(!isset(Auth::user()->sub_id))
-                            <button onclick="shiNew(event)" data-type="dark" data-size="l" data-title="Subscriptions"
-                                href="{{ route('user.subscriptions') }}"
-                                class="sub-link btn p-2 font-weight-bold h4 btn-primary">Subscribe</button>
-                        @else
-                            @if ($material->price == 'Free')
-                                <a href="" class="btn btn-primary p-3">
-                                    Add To Library
+                        @if (!Auth::user()->sub->isActive)
+                            @if (in_array($material->id, $my_materials_arr))
+                                <a href="{{ route('user.access_material', $material->id) }}"
+                                    class="btn btn-primary p-3">
+                                    Access Material
                                 </a>
+                            @else
+                                <button onclick="shiSub(event)" data-type="dark" data-size="s" data-title="Subscribe"
+                                    href="{{ route('user.sub.text', $material->id) }}"
+                                    class="sub-link btn p-2 font-weight-bold h4 btn-primary">Subscribe</button>
                             @endif
-                            @if ($material->price == 'Paid')
-                                <a class="btn m-2 btn-dark p-2 btn-outline-primary"
-                                    onclick="payWithPaystack('{{ $rent }}', '{{ Auth::user()->email }}')">
-                                    Rent Book
+                        @else
+                            @if (in_array($material->id, $my_materials_arr))
+                                <a href="{{ route('user.access_material', $material->id) }}"
+                                    class="btn btn-primary p-3">
+                                    Access Material
                                 </a>
-                                <a onclick="payWithPaystack('{{ $material->amount }}', '{{ Auth::user()->email }}')"
-                                    class="btn m-2 btn-primary p-2">
-                                    Buy Book
-                                </a>
+                            @else
+                                @if ($material->price == 'Free')
+                                    <a href="{{ route('user.add_to_library', $material->id) }}"
+                                        class="btn btn-primary p-3">
+                                        Add To Library
+                                    </a>
+                                @endif
+                                @if ($material->price == 'Paid')
+                                    @if ($rentedMatCount >= 2)
+                                        <a aria-readonly="true" class="btn m-2 btn-primary p-2" @disabled(true) style="cursor: no-drop">
+                                            Maximum rent reached
+                                        </a>
+                                    @else
+                                        <a class="btn m-2 btn-dark p-2 btn-outline-primary"
+                                            onclick="material('{{ $settings['rent'] ?? 700 }}', '{{ $material->id }}', 'rented')">
+                                            Rent Book
+                                        </a>
+                                    @endif
+                                    <a onclick="material('{{ $material->amount }}', '{{ $material->id }}', 'bought')"
+                                        class="btn m-2 btn-primary p-2">
+                                        Buy Book
+                                    </a>
+                                @endif
                             @endif
                         @endisset
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>

@@ -29,36 +29,27 @@
                                                     <th scope="row" class="sorting" style="">Date & Time</th>
                                                     <th class="sorting" tabindex="0" style="">User name</th>
                                                     <th class="sorting" tabindex="0" style="">Email Address</th>
-                                                    <th class="sorting" tabindex="0" style="">Material</th>
+                                                    {{-- <th class="sorting" tabindex="0" style="">Material</th> --}}
                                                     <th class="sorting" tabindex="0" style="">Amount</th>
                                                     <th class="sorting" tabindex="0" style="">Currency</th>
                                                     <th class="sorting" tabindex="0" style="">Type of transaction</th>
+                                                    <th class="sorting" tabindex="0" style=""></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>JDS876SHJDGHJ</td>
-                                                    <td>Wed, Dec 21, 2022 22:33</td>
-                                                    <td>Olawale</td>
-                                                    <td>Ola@gmail.com</td>
-                                                    <td>Civil Law.pdf</td>
-                                                    <td>₦{{ number_format(4500, 2) }}</td>
-                                                    <td>NGN</td>
-                                                    <td>Purchase</td>
-                                                </tr>
-                                                @isset($vendors)
-                                                    @foreach ($vendors as $vendor)
+                                                @isset($transactions)
+                                                    @foreach ($transactions as $transaction)
                                                         <tr class="">
                                                             <td class="sorting_1">{{ $sn++ }}</td>
                                                             <td class="sorting_1"><a class="font-weight-bold"
-                                                                    href="">{{ $vendor->name }}</a></td>
-                                                            <td>{{ $vendor->email }}</td>
-                                                            <td>{{ $vendor->phone }}</td>
-                                                            <td>{{ $vendor->created_at->format('D, M j, Y') ?? '' }}</td>
-                                                            <td>{{ 'GTBank' ?? '-' }}</td>
-                                                            <td>{{ '0211929219' ?? '-' }}</td>
-                                                            <td>{{ 'Faith Dara' ?? '-' }}</td>
+                                                                    href="">{{ $transaction->invoice_id }}</a></td>
+                                                            <td>{{ $transaction->created_at->format('D, M j, Y H:i:s') ?? '' }}</td>
+                                                            <td class="sorting_1"><a class="font-weight-bold"
+                                                                    href="">{{ $transaction->user->name }}</a></td>
+                                                            <td>{{ $transaction->user->email }}</td>
+                                                            <td><b class="money">{{ money($transaction->amount) }}</b></td>
+                                                            <td>NGN</td>
+                                                            <td><b class="text-capitalize">{{ $transaction->type }}</b></td>
                                                             <td><a href=""><i class="fa fa-trash"></i></a></td>
                                                         </tr>
                                                     @endforeach

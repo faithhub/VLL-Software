@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\LastLogin;
+use App\Models\LoginHistory;
+use App\Models\Material;
+use App\Models\MaterialHistory;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+
+class VendorController extends Controller
+{
+    public function index()
+    {
+        # code...
+        try {
+            //code...
+            $data['title'] = "All Vendors";
+            $data['sn'] = 1;
+            $data['vendors'] = $v = User::where("role", "vendor")->with('bank')->get();
+            return View('dashboard.admin.vendors.index', $data);
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            //throw $th;
+        }
+    }
+
+    public function view($id)
+    {
+        # code...
+        try {
+            //code...
+            $data['vendor'] = $vendor = User::where(["role" => "vendor", 'id' => $id])->with(['bank', 'country', 'profile_pics'])->first();
+            if (!$vendor) {
+                Session::flash('warning', 'No record found');
+                return redirect()->route('admin.vendors');
+            }
+            $data['title'] = $vendor->name;
+            $data['materials'] = Material::where('user_id', $vendor->id)->with(['type', 'file', 'cover', 'vendor'])->get();
+            $data['sn'] = 1;
+
+
+            $mats = Material::where(['user_id' => $vendor->id, 'price' => 'Paid'])->get();
+            $mats_arr = [];
+            foreach ($mats as $key => $mat) {
+                # code...
+                $mat_his = MaterialHistory::where('material_id', $mat->id)->with('trans')->first();
+
+                if ($mat_his) {
+                    $object = new \stdClass();
+                    $object->mat_his = $mat_his;
+
+                    array_push($mats_arr, $object);
+                }
+            }
+            $data['login_histories'] = LoginHistory::where('user_id', $vendor->id)->get();
+            $data['transactions'] = $mats_arr;
+            return View('dashboard.admin.vendors.view', $data);
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            //throw $th;
+        }
+    }
+}

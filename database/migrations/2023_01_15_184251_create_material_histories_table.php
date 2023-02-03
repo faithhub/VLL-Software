@@ -29,7 +29,9 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('invoice_id')->nullable();
             $table->date('date');
-            $table->enum('type', ['rented', 'bought']);
+            $table->date('date_rented_expired');
+            $table->boolean('is_rent_expired')->default(false);
+            $table->enum('type', ['rented', 'bought', 'free']);
             $table->softDeletes();
             $table->timestamps();
         });

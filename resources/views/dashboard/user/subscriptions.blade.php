@@ -42,14 +42,20 @@
                                             </li>
                                         </ul>
                                         <div class="panel-footer text-center border-top-0 mb-4">
-                                            <a class="btn btn-lg btn-warning"
-                                                @isset($sub->session)
+                                            @if (Auth::user()->sub->subscription_id == $sub->id)
+                                                <a class="btn btn-lg btn-gray text-white" @disabled(true)
+                                                    style="cursor: no-drop">Subcribed</a>
+                                            @else
+                                                <a class="btn btn-lg btn-warning"
+                                                    @isset($sub->session)
                                                 onclick="payWithPaystack('{{ $sub->session }}', '{{ $sub->id }}', 'session')"
                                                 @endisset
-                                                @isset($sub->system)
+                                                    @isset($sub->system)
                                                 onclick="payWithPaystack('{{ $sub->system }}', '{{ $sub->id }}', 'system')"
-                                                @endisset
-                                                {{-- onclick="payWithPaystack('{{ $sub->amount }}', '{{ Auth::user()->email }}')" --}}>Subscribe</a>
+                                                @endisset>
+                                                    Change
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -92,13 +98,20 @@
                                             </li>
                                         </ul>
                                         <div class="panel-footer text-center border-top-0 mb-4">
-                                            <a class="btn btn-lg btn-success"
-                                                @isset($sub->session)
+                                            @if (Auth::user()->sub->subscription_id == $sub->id)
+                                                <a class="btn btn-lg btn-gray text-white" @disabled(true)
+                                                    style="cursor: no-drop">Subcribed</a>
+                                            @else
+                                                <a class="btn btn-lg btn-success"
+                                                    @isset($sub->session)
                                                 onclick="payWithPaystack('{{ $sub->session }}', '{{ $sub->id }}', 'session')"
                                                 @endisset
-                                                @isset($sub->system)
+                                                    @isset($sub->system)
                                                 onclick="payWithPaystack('{{ $sub->system }}', '{{ $sub->id }}', 'system')"
-                                                @endisset>Subscribe</a>
+                                                @endisset>
+                                                    {{-- Subscribe --}} </a>
+                                                Change
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -143,13 +156,19 @@
                                         </li>
                                     </ul>
                                     <div class="panel-footer text-center border-top-0 mb-4">
-                                        <a onclick="payWithPaystack('{{ $sub->annual }}', '{{ $sub->id }}', 'annual')"
-                                            class="btn btn-lg text-white font-weight-bold
-                                    @if ($sub->name == 'SINGLE USER') bg-warning @endif
-                                    @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
-                                    @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif
-                                    "
-                                            href="#">Subscribe</a>
+                                        @if (Auth::user()->sub->subscription_id == $sub->id && $sub_amount == $sub->annual)
+                                            <a class="btn btn-lg btn-gray text-white" @disabled(true)
+                                                style="cursor: no-drop">Subcribed</a>
+                                        @else
+                                            <a onclick="payWithPaystack('{{ $sub->annual }}', '{{ $sub->id }}', 'annual')"
+                                                class="btn btn-lg text-white font-weight-bold
+                                            @if ($sub->name == 'SINGLE USER') bg-warning @endif
+                                            @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
+                                            @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif "
+                                                href="#">
+                                                Change
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -182,13 +201,19 @@
                                         </li>
                                     </ul>
                                     <div class="panel-footer text-center border-top-0 mb-4">
-                                        <a onclick="payWithPaystack('{{ $sub->quarterly }}', '{{ $sub->id }}', 'quarterly')"
-                                            class="btn btn-lg text-white font-weight-bold
-                                    @if ($sub->name == 'SINGLE USER') bg-warning @endif
-                                    @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
-                                    @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif
-                                    "
-                                            href="#">Subscribe</a>
+                                        @if (Auth::user()->sub->subscription_id == $sub->id && $sub_amount == $sub->quarterly)
+                                            <a class="btn btn-lg btn-gray text-white" @disabled(true)
+                                                style="cursor: no-drop">Subcribed</a>
+                                        @else
+                                            <a onclick="payWithPaystack('{{ $sub->quarterly }}', '{{ $sub->id }}', 'quarterly')"
+                                                class="btn btn-lg text-white font-weight-bold
+                                            @if ($sub->name == 'SINGLE USER') bg-warning @endif
+                                            @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
+                                            @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif "
+                                                href="#">
+                                                Change
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -221,13 +246,19 @@
                                         </li>
                                     </ul>
                                     <div class="panel-footer text-center border-top-0 mb-4">
-                                        <a onclick="payWithPaystack('{{ $sub->monthly }}', '{{ $sub->id }}', 'monthly')"
-                                            class="btn btn-lg text-white font-weight-bold
-                                    @if ($sub->name == 'SINGLE USER') bg-warning @endif
-                                    @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
-                                    @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif
-                                    "
-                                            href="#">Subscribe</a>
+                                        @if (Auth::user()->sub->subscription_id == $sub->id && $sub_amount == $sub->monthly)
+                                            <a class="btn btn-lg btn-gray text-white" @disabled(true)
+                                                style="cursor: no-drop">Subcribed</a>
+                                        @else
+                                            <a onclick="payWithPaystack('{{ $sub->monthly }}', '{{ $sub->id }}', 'monthly')"
+                                                class="btn btn-lg text-white font-weight-bold
+                                            @if ($sub->name == 'SINGLE USER') bg-warning @endif
+                                            @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
+                                            @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif "
+                                                href="#">
+                                                Change
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -260,13 +291,19 @@
                                         </li>
                                     </ul>
                                     <div class="panel-footer text-center border-top-0 mb-4">
-                                        <a onclick="payWithPaystack('{{ $sub->weekly }}', '{{ $sub->id }}', 'weekly')"
-                                            class="btn btn-lg text-white font-weight-bold
-                                    @if ($sub->name == 'SINGLE USER') bg-warning @endif
-                                    @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
-                                    @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif
-                                    "
-                                            href="#">Subscribe</a>
+                                        @if (Auth::user()->sub->subscription_id == $sub->id && $sub_amount == $sub->weekly)
+                                            <a class="btn btn-lg btn-gray text-white" @disabled(true)
+                                                style="cursor: no-drop">Subcribed</a>
+                                        @else
+                                            <a onclick="payWithPaystack('{{ $sub->weekly }}', '{{ $sub->id }}', 'weekly')"
+                                                class="btn btn-lg text-white font-weight-bold
+                                            @if ($sub->name == 'SINGLE USER') bg-warning @endif
+                                            @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
+                                            @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif "
+                                                href="#">
+                                                Change
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

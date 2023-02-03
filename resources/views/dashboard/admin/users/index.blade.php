@@ -45,20 +45,24 @@
                                                                     href="">{{ $user->name }}</a></td>
                                                             <td>{{ $user->email }}</td>
                                                             <td>{{ $user->phone }}</td>
-                                                            <td>Today</td>
-                                                            <td>Premium</td>
+                                                            <td>
+                                                                @if ($user->sub->created_at)
+                                                                     {{ $user->sub->created_at->diffForHumans() }}
+                                                                @else
+                                                                    --
+                                                                @endif
+                                                               </td>
+                                                            <td><b>{{ $user->sub->sub->name ?? "--" }}</b></td>
                                                             <td>
                                                                 @isset($user->last_login)
-                                                                    @if ($user->last_login->updated_at)
-                                                                        {{ $user->last_login->updated_at->format('D, M j, Y H:i') }}
-                                                                    @else
-                                                                        "-"
-                                                                    @endif
+                                                                   {{ $user->last_login->last()->updated_at->format('D, M j, Y h:i a') ?? '-' }}
+                                                                   @else
+                                                                   --
                                                                 @endisset
                                                             </td>
-                                                            <td>{{ $user->last_login->deviceType ?? '-' }} </td>
-                                                            <td>{{ $user->last_login->browserFamily ?? '-' }} </td>
-                                                            <td>{{ $user->last_login->regionName ?? '-' }} </td>
+                                                            <td>{{ $user->last_login->last()->deviceType ?? '--' }} </td>
+                                                            <td>{{ $user->last_login->last()->browserFamily ?? '--' }} </td>
+                                                            <td>{{ $user->last_login->last()->regionName ?? '--' }} </td>
                                                             {{-- <td>
                                                         <span class="badge bg-warning-light border-warning fs-11">Pending</span>
                                                     </td> --}}

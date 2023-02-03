@@ -29,6 +29,48 @@
                     <div class="navbar navbar-expand-lg navbar-collapse responsive-navbar p-0">
                         <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
                             <div class="d-flex order-lg-2">
+                                <div class="dropdown country-selector d-flex"> <a href="javascript:void(0);"
+                                        class="nav-link leading-none" data-bs-toggle="dropdown" aria-expanded="true">
+                                        <span class="header-avatar1">
+                                            <img
+                                            @if (Auth::user()->currency->id)
+                                                src="{{
+                                                 asset(Auth::user()->currency->flag) }}" 
+                                            @elseif ($app_default_currency)
+                                                src="{{
+                                                 asset($app_default_currency->flag) }}"
+                                            @endif 
+                                            alt="img"
+                                                class="mb-1 country">&nbsp;
+                                            <span class="fs-14 font-weight-semibold country-text">
+                                                @isset(Auth::user()->currency->id)
+                                                    {{ Auth::user()->currency->name . ' (' . Auth::user()->currency->symbol . ')' }}
+                                                @else
+                                                @isset($app_default_currency)
+                                                {{ $app_default_currency->code . ' (' . $app_default_currency->symbol . ')' }}
+                                                @else
+                                                {{ 'NGN' . ' (' . '₦' . ')' }}
+                                                @endisset
+                                                @endisset
+                                            </span>
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow animated"
+                                        data-bs-popper="static">
+                                        @isset($app_currencies)
+                                            @foreach ($app_currencies as $app_currency)
+                                                <a data-value="{{ $app_currency->id }}" class="dropdown-item d-flex"
+                                                    onclick="selectDefaultCurrency(this)" href="javascript:void(0);">
+                                                    <img src="{{  asset($app_currency->flag) }}" alt="img"
+                                                class="me-2 country mt-1">
+                                                    <span class="fs-13 text-wrap">
+                                                        {{ $app_currency->code }} ({{ $app_currency->symbol }})
+                                                    </span>
+                                                </a>
+                                            @endforeach
+                                        @endisset
+                                    </div>
+                                </div>
                                 <div class="dropdown d-lg-none d-flex responsive-search"> <a href="javascript:void(0);"
                                         class="nav-link icon" data-bs-toggle="dropdown"> <svg
                                             xmlns="http://www.w3.org/2000/svg" class="header-icon search-icon"
@@ -74,8 +116,8 @@
                                             </a>
                                         @endif
                                         @if (Auth::user()->role == 'vendor')
-                                            <a class="dropdown-item d-flex" href="{{ route('vendor.settings') }}"> <svg
-                                                    class="header-icon me-2" xmlns="http://www.w3.org/2000/svg"
+                                            <a class="dropdown-item d-flex" href="{{ route('vendor.settings') }}">
+                                                <svg class="header-icon me-2" xmlns="http://www.w3.org/2000/svg"
                                                     height="24" viewBox="0 0 24 24" width="24">
                                                     <path d="M0 0h24v24H0V0z" fill="none"></path>
                                                     <path
@@ -86,8 +128,8 @@
                                             </a>
                                         @endif
                                         @if (Auth::user()->role == 'admin')
-                                            <a class="dropdown-item d-flex" href="{{ route('admin.settings') }}"> <svg
-                                                    class="header-icon me-2" xmlns="http://www.w3.org/2000/svg"
+                                            <a class="dropdown-item d-flex" href="{{ route('admin.settings') }}">
+                                                <svg class="header-icon me-2" xmlns="http://www.w3.org/2000/svg"
                                                     height="24" viewBox="0 0 24 24" width="24">
                                                     <path d="M0 0h24v24H0V0z" fill="none"></path>
                                                     <path
@@ -136,3 +178,39 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function selectDefaultCurrency(data) {
+        try {
+            console.log(data, data.getAttribute('data-value'));
+            var curr_id = data.getAttribute('data-value');
+            url = "{{ route('change_currency') }}";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    curr_id: curr_id,
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (!response) {
+                        toastr.error("{{ session('error') }}", "Something went wrong");
+                        return false
+                    }
+
+                    toastr.success("{{ session('success') }}", "Default currency changed successfully");
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                },
+                error: function(err) {
+                    console.log(err);
+                    return toastr.error("{{ session('error') }}", "Something went wrong");
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+</script>

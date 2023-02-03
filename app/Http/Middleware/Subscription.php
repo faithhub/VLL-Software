@@ -18,22 +18,9 @@ class Subscription
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!isset(Auth::user()->sub_id)) {
-            switch (Auth::user()->role) {
-                case 'user':
-                    # code...
-                    Session::flash('permission_warning', 'Yo do not have an active subscription, please subscribe and try again!');
-                    return redirect('/user/settings');
-                    break;
-                case 'vendor':
-                    # code...
-                    Session::flash('permission_warning', 'Yo do not have an active subscription, please subscribe and try again!');
-                    return redirect('/vendor/settings');
-                    break;
-                default:
-                    # code...
-                    break;
-            }
+        if (!Auth::user()->sub->isActive) {
+            Session::flash('permission_warning', 'Yo do not have an active subscription, please subscribe and try again!');
+            return redirect('/user/settings');
         }
         return $next($request);
     }

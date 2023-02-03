@@ -14,7 +14,6 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
             $table->foreignId('sub_id')
                 ->nullable()
                 ->constrained('sub_histories')

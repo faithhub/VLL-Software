@@ -19,6 +19,10 @@
         .sub-card {
             background-color: #F0F4F9
         }
+
+        .country-settings{
+            width: 35px
+        }
     </style>
     <div class="main-container container-fluid px-0">
         <div class="row">
@@ -48,7 +52,7 @@
                                     </div>
                                 </div>
                                 <div class="row mt-5 settings">
-                                    <div class="col-lg-6 col-xl-6">
+                                    <div class="col-lg-12 col-xl-12">
                                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                             <div class="form-group">
                                                 <label class="form-label">Full Name</label>
@@ -123,7 +127,7 @@
                                             <span class='invalid-feedback' id='gender-error' role='alert'></span>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-12">
+                                        {{-- <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
                                                 <label class="form-label">Subscriptions</label>
                                                 <button onclick="shiNew(event)" data-type="dark" data-size="l"
@@ -141,72 +145,8 @@
                                                     </div>
                                                 @endisset
                                             </div>
-                                        </div>
+                                        </div> --}}
 
-                                    </div>
-                                    <div class="col-lg-6 col-xl-6">
-                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                            <div class="form-group">
-                                                <label class="form-label">Bank Name</label>
-                                                <select class="form-control select" name="bank_id" id="bank_id"
-                                                    data-parsley-required-message="The Bank is required"
-                                                    data-placeholder="Select your Bank"
-                                                    @if (Auth::user()->acc_verified) disabled @endif>
-                                                    <option value="">Select your Bank</option>
-                                                    @isset($banks)
-                                                        @foreach ($banks as $bank)
-                                                            <option data-code="{{ $bank->code }}"
-                                                                data-value="{{ $bank->id }}" value="{{ $bank->id }}"
-                                                                {{ Auth::user()->bank_id == $bank->id ? 'selected' : '' }}>
-                                                                {{ $bank->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    @endisset
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                            <div class="form-group">
-                                                <label class="form-label">Bank Account Number</label>
-                                                <div class="d-flex">
-                                                    <input type="number" name="acc_number" class="form-control"
-                                                        id="acc_number" placeholder=""
-                                                        @if (Auth::user()->acc_verified) disabled @endif
-                                                        value="{{ Auth::user()->acc_number }}">
-                                                    @if (Auth::user()->acc_verified)
-                                                        <button type="button" class="btn btn-primary" disabled>
-                                                            <i class="fa fa-lock"></i>
-                                                            <b class="verify-btn">Verified</b>
-                                                        </button>
-                                                    @else
-                                                        <button type="button" id="verify-me" class="btn btn-primary"
-                                                            onclick="verifyAccount()">
-                                                            <i class="" id="spinner"></i>
-                                                            <b id="verify-btn">Verify</b>
-                                                        </button>
-                                                    @endif
-                                                </div>
-                                                @error('acc_number')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                            <div class="form-group">
-                                                <label class="form-label">Bank Account Name</label>
-                                                <input type="text" name="acc_name" id="acc_name" readonly
-                                                    class="form-control" placeholder=""
-                                                    @if (Auth::user()->acc_verified) disabled @endif
-                                                    value="{{ Auth::user()->acc_name }}">
-                                                @error('acc_name')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="col-lg-12 col-xl-12 text-center">
                                         <button type="submit" class="btn btn-primary p-3 pt-2 pt-2"
@@ -217,7 +157,167 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-xl-6">
+                        <div class="card border-10 p-4">
+                            <div class="card-header border-bottom-0 mb-0">
+                                <h6 class="mb-1 mt-1 font-weight-bold h4">
+                                    <img src="{{ asset('assets/dashboard/images/flags/NGN.png') }}"
+                                        alt="USD" class="mb-1 country-settings">
+                                        Naira (NGN) Account</h6>
+                            </div>
+                            <div class="row mt-5 settings">
+                                <div class="col-lg-12 col-md-12 col-xl-12">
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Name</label>
+                                            <select class="form-control select" name="bank_id" id="bank_id"
+                                                data-parsley-required-message="The Bank is required"
+                                                data-placeholder="Select your Bank"
+                                                @if (Auth::user()->acc_verified) disabled @endif>
+                                                <option value="">Select your Bank</option>
+                                                @isset($banks)
+                                                    @foreach ($banks as $bank)
+                                                        <option data-code="{{ $bank->code }}"
+                                                            data-value="{{ $bank->id }}" value="{{ $bank->id }}"
+                                                            {{ Auth::user()->bank_id == $bank->id ? 'selected' : '' }}>
+                                                            {{ $bank->name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endisset
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Account Number</label>
+                                            <div class="d-flex">
+                                                <input type="number" name="acc_number" class="form-control"
+                                                    id="acc_number" placeholder=""
+                                                    @if (Auth::user()->acc_verified) disabled @endif
+                                                    value="{{ Auth::user()->acc_number }}">
+                                                @if (Auth::user()->acc_verified)
+                                                    <button type="button" class="btn btn-primary" disabled>
+                                                        <i class="fa fa-lock"></i>
+                                                        <b class="verify-btn">Verified</b>
+                                                    </button>
+                                                @else
+                                                    <button type="button" id="verify-me" class="btn btn-primary"
+                                                        onclick="verifyAccount()">
+                                                        <i class="" id="spinner"></i>
+                                                        <b id="verify-btn">Verify</b>
+                                                    </button>
+                                                @endif
+                                            </div>
+                                            @error('acc_number')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Account Name</label>
+                                            <input type="text" name="acc_name" id="acc_name" readonly
+                                                class="form-control" placeholder=""
+                                                @if (Auth::user()->acc_verified) disabled @endif
+                                                value="{{ Auth::user()->acc_name }}">
+                                            @error('acc_name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-6 col-md-6 col-xl-6">
+                        <div class="card border-10 p-4">
+                            <div class="card-header border-bottom-0 mb-0">
+                                <h6 class="mb-1 mt-1 font-weight-bold h4">
+                                    <img src="{{ asset('assets/dashboard/images/flags/USD.png') }}"
+                                        alt="USD" class="mb-1 country-settings">
+                                    Dollar (USD) Account
+                                </h6>
+                            </div>
+                            <div class="row mt-5 settings">
+                                <div class="col-lg-12 col-md-12 col-xl-12">
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Name</label>
+                                            <select class="form-control select" name="dom_bank_id" id="dom_bank_id"
+                                                data-parsley-required-message="The Bank is required"
+                                                data-placeholder="Select your Bank"
+                                                @if (Auth::user()->dom_acc_verified) disabled @endif>
+                                                <option value="">Select your Bank</option>
+                                                @isset($banks)
+                                                    @foreach ($banks as $bank)
+                                                        <option data-code="{{ $bank->code }}"
+                                                            data-value="{{ $bank->id }}" value="{{ $bank->id }}"
+                                                            {{ Auth::user()->dom_bank_id == $bank->id ? 'selected' : '' }}>
+                                                            {{ $bank->name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endisset
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Account Number</label>
+                                            <div class="d-flex">
+                                                <input type="number" name="dom_acc_number" class="form-control"
+                                                    id="dom_acc_number" placeholder=""
+                                                    @if (Auth::user()->dom_acc_verified) disabled @endif
+                                                    value="{{ Auth::user()->dom_acc_number }}">
+                                                @if (Auth::user()->dom_acc_verified)
+                                                    <button type="button" class="btn btn-primary" disabled>
+                                                        <i class="fa fa-lock"></i>
+                                                        <b class="dom_verify-btn">Verified</b>
+                                                    </button>
+                                                @else
+                                                    <button type="button" id="dom_verify-me" class="btn btn-primary"
+                                                        onclick="verifyDomAccount()">
+                                                        <i class="" id="dom_spinner"></i>
+                                                        <b id="dom_verify-btn">Verify</b>
+                                                    </button>
+                                                @endif
+                                            </div>
+                                            @error('dom_acc_number')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Account Name</label>
+                                            <input type="text" name="dom_acc_name" id="dom_acc_name" readonly
+                                                class="form-control" placeholder=""
+                                                @if (Auth::user()->dom_acc_verified) disabled @endif
+                                                value="{{ Auth::user()->dom_acc_name }}">
+                                            @error('dom_acc_name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+    @include('layouts.dashboard.includes.vendor-verify-acc')
 @endsection

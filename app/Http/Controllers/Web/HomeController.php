@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -13,46 +14,9 @@ class HomeController extends Controller
     public function index()
     {
         # code...
-        $data['materials'] = array(
-            (object) [
-                'id' => 7879,
-                'title' => 'Constitutional Law',
-                'link' => '#',
-                'img' => asset('materials/img/001.png')
-            ],
-            (object) [
-                'id' => 7880,
-                'title' => 'Introduction to Business Laws',
-                'link' => '#',
-                'img' => asset('materials/img/002.png')
-            ],
-            (object) [
-                'id' => 7881,
-                'title' => 'Constitutional Law',
-                'link' => '#',
-                'img' => asset('materials/img/003.png')
-            ],
-            (object) [
-                'id' => 7882,
-                'title' => 'Constitutional Law',
-                'link' => '#',
-                'img' => asset('materials/img/004.png')
-            ],
-            (object) [
-                'id' => 7883,
-                'title' => 'Introduction to Business Laws',
-                'link' => '#',
-                'img' => asset('materials/img/005.png')
-            ],
-            (object) [
-                'id' => 7884,
-                'title' => 'Constitutional Law',
-                'link' => '#',
-                'img' => asset('materials/img/006.png')
-            ]
-        );
         $data['title'] = "Home";
         $data['banner'] = true;
+        $data['materials'] = Material::with(['type', 'cover'])->where('status', 'active')->inRandomOrder()->limit(9)->get();
         return View('web.index', $data);
     }
 

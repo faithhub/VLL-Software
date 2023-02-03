@@ -19,7 +19,7 @@
                                     @isset($material_types)
                                         @foreach ($material_types as $type)
                                             <option value="{{ $type->mat_unique_id }}"
-                                              @selected(Request::get('material_type_id') == $type->mat_unique_id)>{{ $type->name }}
+                                              @selected(Request::get('mat_unique_id') == $type->mat_unique_id)>{{ $type->name }}
                                             </option>
                                         @endforeach
                                     @endisset
@@ -49,12 +49,12 @@
                             @isset($all_materials)
                                 @foreach ($all_materials->groupBy('folder_id') as $materiall)
                                     @isset($materiall[0]->folder)
-                                        <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
+                                        <div class="col-lg-3 col-md-4 mb-5 justify-content-center">
                                             <div class="image">
                                                 <a onclick="shiNew(event)" data-type="dark" data-size="xl"
                                                     data-title="{{ $materiall[0]['folder']['name'] }}"
                                                     href="{{ route('vendor.view_folder', $materiall[0]['folder']['id']) }}">
-                                                    <img src="{{ $materiall[0]['folder']['folder_cover']['url'] }}"
+                                                    <img src="{{ $materiall[0]['folder']['folder_cover']['url'] }}" class="mat_img"
                                                         alt="{{ $materiall[0]['folder']['name'] }}">
                                                 </a>
                                             </div>
@@ -71,12 +71,12 @@
                                         </div>
                                     @else
                                         @foreach ($materiall as $material)
-                                            <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
+                                            <div class="col-lg-3 col-md-4 mb-5 justify-content-center">
                                                 <div class="image">
                                                     <a onclick="shiNew(event)" data-type="dark" data-size="m"
                                                         data-title="{{ $material->title }}"
                                                         href="{{ route('vendor.view_material', $material->id) }}">
-                                                        <img src="{{ $material->cover->url }}" alt="{{ $material->title }}">
+                                                        <img src="{{ $material->cover->url }}" alt="{{ $material->title }}" class="mat_img">
                                                     </a>
                                                 </div>
                                                 <div class="mat-title">

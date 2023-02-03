@@ -38,6 +38,8 @@ class User extends Authenticatable
         'bank_id',
         'acc_name',
         'acc_number',
+        'sub_id',
+        'default_currency_id',
         'acc_verified'
     ];
 
@@ -66,11 +68,31 @@ class User extends Authenticatable
     // }
     public function last_login()
     {
-        return $this->hasOne(LoginHistory::class, 'user_id');
+        return $this->hasMany(LoginHistory::class);
+    }
+
+    public function bank()
+    {
+        return $this->hasOne(Bank::class, 'id', 'bank_id');
+    }
+
+    public function country()
+    {
+        return $this->hasOne(Country::class, 'id', 'country_id');
     }
 
     public function profile_pics()
     {
         return $this->hasOne(File::class, 'id', 'avatar')->withDefault();
+    }
+
+    public function sub()
+    {
+        return $this->hasOne(SubHistory::class, 'id', 'sub_id')->withDefault();
+    }
+
+    public function currency()
+    {
+        return $this->hasOne(Currency::class, 'id', 'default_currency_id')->withDefault();
     }
 }

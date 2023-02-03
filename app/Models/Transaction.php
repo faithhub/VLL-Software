@@ -22,4 +22,10 @@ class Transaction extends Model
         'reference',
         'trxref'
     ];
+
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

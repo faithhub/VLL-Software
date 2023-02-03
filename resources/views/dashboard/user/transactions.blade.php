@@ -8,7 +8,7 @@
                         <div class="d-flex">
                             <div class="media mt-4">
                                 <div class="media-body">
-                                    <h6 class="mb-1 mt-1 font-weight-bold h3">Transactions</h6>
+                                    <h6 class="mb-1 mt-1 font-weight-bold h3">Transactions </h6>
                                     <small class="h5"></small>
                                 </div>
                             </div>
@@ -20,33 +20,48 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <table
-                                            class="table table-bordere card-table table-vcenter text-nowrap dataTable no-footer"
+                                            class="table card-table table-vcenter text-nowrap dataTable no-footer"
                                             id="datatable" role="grid" aria-describedby="datatable_info">
                                             <thead>
                                                 <tr role="row">
-                                                    <th class="sorting sorting_asc" style="">Invoice ID
+                                                    <th class="" style="">Invoice ID
                                                     </th>
-                                                    <th scope="row" class="sorting" style="">Date of Transaction
+                                                    <th scope="row" class="" style="">Date of Transaction
                                                         </th>
-                                                    <th class="sorting" tabindex="0" style="">Transaction Value
+                                                        <th class="" tabindex="0" style="">Transaction Type</th>
+                                                    <th class="" tabindex="0" style="">Transaction Value</th>
                                                     </th>
-                                                    </th>
-                                                    <th class="sorting" tabindex="0" style="">Status</th>
+                                                    <th class="" tabindex="0" style="">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @isset($transactions)
                                                     @foreach ($transactions as $transaction)
                                                         <tr class="">
-                                                            <td class="sorting_1">
+                                                            <td class="">
                                                                 <a class="font-weight-normal1"
                                                                     href="#">{{$transaction->invoice_id}}</a>
                                                                 </td>
-                                                            <td>{{$transaction->date}}</td>
-                                                            <td>₦{{number_format($transaction->amount, 2)}}</td>
+                                                            <td>{{$transaction->created_at->format('D, M j, Y h:i a')}}</td>
                                                             <td>
-                                                                <span
-                                                                    class="badge bg-success-light border-success fs-11">{{$transaction->status}}</span>
+                                                                @if ($transaction->type == 'bought')
+                                                                    <span
+                                                                        class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->type }}</span>
+                                                                @endif
+                                                                @if ($transaction->type == 'rented')
+                                                                    <span
+                                                                        class="badge bg-warning-light border-warning text-capitalize type-text">{{ $transaction->type }}</span>
+                                                                @endif
+                                                                @if ($transaction->type == 'subscription')
+                                                                    <span
+                                                                        class="badge bg-secondary-light border-secondary text-capitalize type-text">{{ $transaction->type }}</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                <span class="money">{{ money($transaction->amount) }}</span>
+                                                            </td>
+                                                            <td>
+                                                                <span class="badge bg-success-light border-success text-capitalize type-text">{{$transaction->status}}</span>
                                                             </td>
                                                         </tr>
                                                     @endforeach

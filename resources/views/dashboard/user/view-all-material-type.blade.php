@@ -134,7 +134,7 @@
                                 <div class="media mt-4">
                                     <div class="media-body">
                                         <h6 class="mb-1 mt-1 font-weight-bold h3">{{ $material_type->name }}</h6>
-                                        <small class="h5">{{ $materials->count() }} Folder(s)</small>
+                                        <small class="h5">{{ $materials->count() }} Material(s)</small>
                                     </div>
                                 </div>
                             </div>

@@ -15,8 +15,6 @@
                         </div>
                     </div>
                     <div class="card-body pt-0">
-                        <div class="row">
-                        </div>
                         <div class="table-responsive">
                             <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                                 <div class="row">
@@ -26,9 +24,13 @@
                                             id="datatable" role="grid" aria-describedby="datatable_info">
                                             <thead>
                                                 <tr role="row">
+                                                    <th class="sorting sorting_asc" style="">S/N
+                                                    </th>
                                                     <th class="sorting sorting_asc" style="">Invoice ID
                                                     </th>
                                                     <th scope="row" class="sorting" style="">Date of Transaction
+                                                    </th>
+                                                    <th class="sorting" tabindex="0" style="">Transaction Type
                                                     </th>
                                                     <th class="sorting" tabindex="0" style="">Transaction Value
                                                     </th>
@@ -41,16 +43,47 @@
                                                 @isset($transactions)
                                                     @foreach ($transactions as $transaction)
                                                         <tr class="">
+                                                            <td>{{ $sn++ }}</td>
                                                             <td class="sorting_1">
                                                                 <a class="font-weight-normal1"
-                                                                    href="#">{{$transaction->invoice_id}}</a>
+                                                                    href="#">{{ $transaction->invoice_id }}</a>
+                                                            </td>
+                                                            <td>{{ $transaction->created_at->format('D, M j, Y h:i a') }}
+                                                            </td>
+                                                            <td>
+                                                                @if ($transaction->type == 'bought')
+                                                                    <span
+                                                                        class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->type }}</span>
+                                                                @endif
+                                                                @if ($transaction->type == 'rented')
+                                                                    <span
+                                                                        class="badge bg-warning-light border-warning text-capitalize type-text">{{ $transaction->type }}</span>
+                                                                @endif
+                                                            </td>
+
+                                                            @if ($transaction->type == 'bought')
+                                                                <td><span
+                                                                        class="money">{{ money($transaction->amount) }}</span>
                                                                 </td>
-                                                            <td>{{$transaction->date}}</td>
-                                                            <td>₦{{number_format($transaction->amount, 2)}}</td>
-                                                            <td>-</td>
+                                                                <td><span
+                                                                        class="money">{{ money((80.5 / 100) * $transaction->amount) }}</span>
+                                                                </td>
+                                                            @endif
+                                                            @if ($transaction->type == 'rented')
+                                                                <td>
+                                                                    --
+                                                                    {{-- <span
+                                                                        class="money">{{ money($transaction->amount) }}</span> --}}
+                                                                </td>
+                                                                <td>
+                                                                    --
+                                                                    {{-- <span
+                                                                        class="money">{{ money((80.5 / 100) * $transaction->amount) }}</span> --}}
+                                                                </td>
+                                                            @endif
                                                             <td>
                                                                 <span
-                                                                    class="badge bg-success-light border-success fs-11">{{$transaction->status}}</span>
+                                                                    class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->status }}</span>
                                                             </td>
                                                         </tr>
                                                     @endforeach

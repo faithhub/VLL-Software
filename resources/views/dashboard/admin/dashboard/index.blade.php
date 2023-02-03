@@ -27,8 +27,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h4>Number of Materials</h4>
-                                        <p>Rented Book: 45,456</p>
-                                        <p>Rented Book: 45,456</p>
+                                        <p>Rented Book: {{ $rented_count ?? 0 }}</p>
+                                        <p>Bought Book: {{ $bought_count ?? 0 }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -36,8 +36,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h4>Number of Upload</h4>
-                                        <p>Rented Book: 45,456</p>
-                                        <p>Rented Book: 45,456</p>
+                                        <p>Admin Uploads: {{$admin_upload ?? 0}}</p>
+                                        <p>Vendor Uploads: {{$vendor_upload ?? 0}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -47,8 +47,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h4>Net Amount</h4>
-                                        <p>Rented Book: ₦{{ number_format(34678, 2) }}</p>
-                                        <p>Purchased Book: ₦{{ number_format(78678, 2) }}</p>
+                                        <p>Rented Book: ₦{{ number_format($rented_amt ?? 0, 2) }}</p>
+                                        <p>Purchased Book: ₦{{ number_format($bought_amt ?? 0, 2) }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -56,8 +56,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h4>Number of Users</h4>
-                                        <p>Number of  Vendors: 60</p>
-                                        <p>Number of Other users: 30</p>
+                                        <p>Number of  Vendors: {{$user_count ?? 0}}</p>
+                                        <p>Number of Other users: {{$vendor_count ?? 0}}</p>
                                     </div>
                                 </div>
                             </div>

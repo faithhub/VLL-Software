@@ -41,14 +41,16 @@
                                                         <tr class="">
                                                             <td class="sorting_1">{{ $sn++ }}</td>
                                                             <td class="sorting_1"><a class="font-weight-bold"
-                                                                    href="">{{ $vendor->name }}</a></td>
+                                                                    href="{{ route('admin.vendor', $vendor->id) }}">{{ $vendor->name }}</a></td>
                                                             <td>{{ $vendor->email }}</td>
                                                             <td>{{ $vendor->phone }}</td>
                                                             <td>{{ $vendor->created_at->format('D, M j, Y') ?? '' }}</td>
-                                                            <td>{{ 'GTBank' ?? '-' }}</td>
-                                                            <td>{{ '0211929219' ?? '-' }}</td>
-                                                            <td>{{ 'Faith Dara' ?? '-' }}</td>
-                                                            <td><a href=""><i class="fa fa-trash"></i></a></td>
+                                                            <td>{{ $vendor->bank->name ?? '-' }}</td>
+                                                            <td>{{ $vendor->acc_number ?? '-' }}</td>
+                                                            <td>{{ $vendor->acc_name ?? '-' }}</td>
+                                                            <td>
+                                                                <a href="{{ route('admin.vendor', $vendor->id) }}" class="btn btn-sm btn-primary">View</i></a>
+                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset

@@ -24,4 +24,9 @@ class LoginHistory extends Model
         "longitude",
         "timezone",
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

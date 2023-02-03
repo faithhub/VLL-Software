@@ -35,6 +35,23 @@ function shiEdit(event) {
 
     dialog(url, title, size, type);
 }
+function shiSub(event) {
+    event.preventDefault();
+
+    /*var element = $(event.target).is('a') ? $(event.target) : $(event.target).parents('a');*/
+    var element = $(event.currentTarget);
+    var url = element.attr("href");
+    var title = element.data("title");
+    var type = element.data("type");
+    var size = element.data("size");
+
+    title = title ? title : "Edit entity";
+    size = size ? size : "m";
+    type = type ? type : "";
+    // console.log(size);
+
+    dialog(url, title, size, type);
+}
 
 function dialog(url, title = "Operation", size, type = "") {
     var jesus = $.confirm({

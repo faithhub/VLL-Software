@@ -16,4 +16,9 @@ class Team extends Model
         'start_date',
         'end_date'
     ];
+
+    protected $casts = [
+        'teammates' => 'array',
+        'materials' => 'array',
+    ];
 }

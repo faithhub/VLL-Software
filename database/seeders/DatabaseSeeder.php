@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Setting;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,6 +21,21 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
+        // ]);
+
+        // Setting::create([
+        //     // [
+        //     'key' => 'rent',
+        //     'value' => 700,
+        //     // ],
+        //     // [
+        //     //     'key' => 'paystack_public_key',
+        //     //     'value' => 'pk_test_93253e4094828ef15dfd864b9decb3dfceb75a8f',
+        //     // ],
+        //     // [
+        //     //     'key' => 'usd_rate',
+        //     //     'value' => 650,
+        //     // ]
         // ]);
     }
 }
