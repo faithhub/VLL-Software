@@ -519,11 +519,6 @@ class VendorController extends Controller
                 if ($request->hasFile('material_file_id')) {
                     $material_file = $request->file('material_file_id');
                     $material_file_name = 'MaterialFile' . time() . '.' . $material_file->getClientOriginalExtension();
-
-                    if (!file_exists(public_path('/storage/materials/covers'))) {
-                        mkdir(public_path('/storage/materials/covers'), 0775, true);
-                    }
-
                     Storage::disk('material_file')->put($material_file_name, file_get_contents($material_file));
                     $save_file = File::create([
                         'name' => $material_file_name,
