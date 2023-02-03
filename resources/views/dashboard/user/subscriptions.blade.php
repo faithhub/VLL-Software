@@ -53,7 +53,11 @@
                                                     @isset($sub->system)
                                                 onclick="payWithPaystack('{{ $sub->system }}', '{{ $sub->id }}', 'system')"
                                                 @endisset>
-                                                    Change
+                                                    @if (Auth::user()->sub->subscription_id)
+                                                        Change
+                                                    @else
+                                                        Subscribe
+                                                    @endif
                                                 </a>
                                             @endif
                                         </div>
@@ -109,8 +113,12 @@
                                                     @isset($sub->system)
                                                 onclick="payWithPaystack('{{ $sub->system }}', '{{ $sub->id }}', 'system')"
                                                 @endisset>
-                                                    {{-- Subscribe --}} </a>
-                                                Change
+                                                    @if (Auth::user()->sub->subscription_id)
+                                                        Change
+                                                    @else
+                                                        Subscribe
+                                                    @endif
+                                                </a>
                                             @endif
                                         </div>
                                     </div>
@@ -166,7 +174,11 @@
                                             @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
                                             @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif "
                                                 href="#">
-                                                Change
+                                                @if (Auth::user()->sub->subscription_id)
+                                                    Change
+                                                @else
+                                                    Subscribe
+                                                @endif
                                             </a>
                                         @endif
                                     </div>
@@ -211,7 +223,11 @@
                                             @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
                                             @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif "
                                                 href="#">
-                                                Change
+                                                @if (Auth::user()->sub->subscription_id)
+                                                    Change
+                                                @else
+                                                    Subscribe
+                                                @endif
                                             </a>
                                         @endif
                                     </div>
@@ -256,7 +272,11 @@
                                             @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
                                             @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif "
                                                 href="#">
-                                                Change
+                                                @if (Auth::user()->sub->subscription_id)
+                                                    Change
+                                                @else
+                                                    Subscribe
+                                                @endif
                                             </a>
                                         @endif
                                     </div>
@@ -301,7 +321,11 @@
                                             @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
                                             @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif "
                                                 href="#">
-                                                Change
+                                                @if (Auth::user()->sub->subscription_id)
+                                                    Change
+                                                @else
+                                                    Subscribe
+                                                @endif
                                             </a>
                                         @endif
                                     </div>
