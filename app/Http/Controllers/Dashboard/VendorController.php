@@ -529,11 +529,13 @@ class VendorController extends Controller
                 if ($request->hasFile('material_cover_id')) {
                     $material_cover = $request->file('material_cover_id');
                     $material_cover_name = 'MaterialCover' . time() . '.' . $material_cover->getClientOriginalExtension();
-                    $destinationPath = public_path('/storage/materials/covers');
-                    $img = Image::make($material_cover->path());
-                    $img->resize(600, 300, function ($constraint) {
-                        $constraint->aspectRatio();
-                    })->save($destinationPath . '/' . $material_cover_name);
+                    // $destinationPath = public_path('/storage/materials/covers');
+                    // $img = Image::make($material_cover->path());
+                    // $img->resize(600, 300, function ($constraint) {
+                    //     $constraint->aspectRatio();
+                    // })->save($destinationPath . '/' . $material_cover_name);
+
+                    Storage::disk('material_cover')->put($material_cover_name, file_get_contents($material_cover));
                     $save_cover = File::create([
                         'name' => $material_cover_name,
                         'url' => 'storage/materials/covers/' . $material_cover_name
