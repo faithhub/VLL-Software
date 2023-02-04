@@ -110,6 +110,7 @@
         {{-- {{ asset($material->file->url) }} --}}
         <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
         <script type="text/javascript">
+        window.history.forward(1);
             const previewConfig = {
                 showAnnotationTools: false,
                 showDownloadPDF: false,
