@@ -54,7 +54,7 @@
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
-                            {{-- <div id="adobe-dc-view" style="height: 80vh"></div> --}}
+                            <div id="adobe-dc-view" style="height: 80vh"></div>
                         </div>
                     </div>
                 </div>
