@@ -142,7 +142,7 @@
                     adobeViewer.getAPIs().then(apis => {
                         apis.enableTextSelection(allowTextSelection)
                             .then(() => console.log("Success"))
-                            .catch(error => console.log(error));
+                            .catch(error => console.log(error, "error"));
                     });
                 });
 
