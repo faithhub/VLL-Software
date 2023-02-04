@@ -119,7 +119,8 @@
             }
             const allowTextSelection = false;
 
-            document.addEventListener("adobe_dc_view_sdk.ready", function() {
+           try {
+             document.addEventListener("adobe_dc_view_sdk.ready", function() {
                 var adobeDCView = new AdobeDC.View({
                     clientId: "{{ env('ADOBECLIENTID') }}",
                     divId: "adobe-dc-view"
@@ -147,6 +148,9 @@
                 });
 
             });
+           } catch (error) {
+            console.log(error, "err 888");
+           }
 
             function saveNote(params) {
                 const content = sessionStorage.getItem('note-content');
