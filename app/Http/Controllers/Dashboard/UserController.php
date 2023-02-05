@@ -600,7 +600,7 @@ class UserController extends Controller
                 return redirect()->route('user.index');
             }
             $data['title'] = "User Dashboard - " . $material->title;
-            return View('dashboard.user.view-material', $data);
+            return view('dashboard.user.view-material', $data)->header('Cache-Control', 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0');;
         } catch (\Throwable $th) {
             dd($th->getMessage());
             //throw $th;

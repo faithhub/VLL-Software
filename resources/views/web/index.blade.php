@@ -7,9 +7,9 @@
 
         .mat_img {
             float: left;
-            width: 300px;
+            width: auto;
             height: 300px;
-            object-fit: cover;
+            /* object-fit: cover; */
         }
     </style>
 
@@ -20,7 +20,7 @@
                 <div class="row">
                     @foreach ($materials as $material)
                     @if (substr($material->type->at_unique_id, 0, 3) != "TAA")  
-                    <div class="col-lg-4 col-md-4 mb-5 p-2 justify-content-center">
+                    <div class="col-lg-4 col-md-4 mb-5 p-2 justify-content-center text-center">
                         <div class="image">
                             <a href="{{ route('user.index') }}">
                                 <img src="{{ asset($material->cover->url) }}" class="mat_img" alt="{{ $material->title }}">

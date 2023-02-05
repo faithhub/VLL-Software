@@ -34,12 +34,15 @@
                         @isset($material->country)
                             <h5><b class="font-weight-bold">Country Of Publication: </b>{{ $material->country->name }}</h5>
                         @endisset
-                        @isset($material->test_country_id)
-                            <h5><b class="font-weight-bold">Country: </b>{{ $material->test_country->name }}</h5>
-                        @endisset
-                        @isset($material->university_id)
-                            <h5><b class="font-weight-bold">University: </b>{{ $material->university->name }}</h5>
-                        @endisset
+
+                        @if (substr($material->type->mat_unique_id, 0, 3) == 'TAA')
+                            @isset($material->test_country_id)
+                                <h5><b class="font-weight-bold">Country: </b>{{ $material->test_country->name }}</h5>
+                            @endisset
+                            @isset($material->university_id)
+                                <h5><b class="font-weight-bold">University: </b>{{ $material->university->name }}</h5>
+                            @endisset
+                        @endif
                         <h5><b class="font-weight-bold">Price:</b>
                             @if ($material->price == 'Paid')
                                 ₦{{ number_format($material->amount, 2) }}

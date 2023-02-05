@@ -12724,9 +12724,9 @@ Inbox Message Style
     font-size: 56px;
 }
         .mat_img {
-            width: 280px;
-            height: 280px;
-            object-fit: cover;
+            width: auto;
+            max-height: 280px;
+            /* object-fit: cover; */
         }
 
 .font-dot {
