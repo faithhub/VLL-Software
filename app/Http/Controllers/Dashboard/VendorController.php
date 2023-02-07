@@ -111,8 +111,9 @@ class VendorController extends Controller
             }
 
             // dd($mats_arr3);
-            $data['transactions']  = Transaction::whereIn('id', $mats_arr3)->orderBy('created_at', 'DESC')->get();
+            $data['transactions'] = Transaction::whereIn('id', $mats_arr3)->with('mat_his')->orderBy('created_at', 'DESC')->get();
             // $data['transactions'] = $mats_arr2;
+            // dd($data['transactions']);
             return View('dashboard.vendor.transactions', $data);
         } catch (\Throwable $th) {
             //throw $th;

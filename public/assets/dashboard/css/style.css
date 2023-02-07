@@ -37720,6 +37720,11 @@ a.chip:hover {
     color: var(--primary-bg-color);
     font-weight: 800;
 }
+.tabs-menu1 ul li .active2 {
+    border-bottom: 3px solid var(--primary-bg-color);
+    color: white;
+    font-weight: 800;
+}
 
 .sub-panel-heading .tabs-menu ul li a.active {
     color: var(--primary-bg-color) !important;

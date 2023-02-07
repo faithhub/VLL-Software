@@ -28,4 +28,9 @@ class Transaction extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    public function mat_his()
+    {
+        return $this->hasOne(MaterialHistory::class);
+    }
 }

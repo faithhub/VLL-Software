@@ -15,6 +15,7 @@
             border: 0px;
             min-height: 150px;
             border-radius: 2px;
+            width: 100%;
             /* background-color: #f0f4f9 */
         }
 
@@ -62,45 +63,114 @@
             </div>
 
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                <div class="card text-card">
-                    <div class="card-header border-bottom-0 mt-3">
-                        <h3 class="card-title font-weight-bold h2 text-white">Note</h3>
-                        <div class="card-options">
-                            <a href="#" id="save_note_btn" class="btn btn-sm btn-white text-black font-weight-bold"
-                                style="margin-right: 7px">Save
-                                Note</a>
-                            <a href="{{ route('user.send_note', $material->id) }}" onclick="shiNew(event)" data-type="dark" data-size="s"
-                                data-title="Send Note" class="btn btn-sm btn-white text-black font-weight-bold">Send
-                                Note</a>
+                <div class="card" id="note_div_section">
+                    <div class="card-body">
+                        <div class="tab-menu-heading p-0 bg-white">
+                            <div class="tabs-menu1">
+                                <!-- Tabs -->
+                                <ul class="nav nav-tabs" id="myTab">
+                                    <li class=""><a href="#myProfile"
+                                            class="{{ empty(old('tabName')) || old('tabName') == 'myProfile' ? 'active' : '' }}">New
+                                            Note</a>
+                                    </li>
+                                    <li><a href="#general"
+                                            class="{{ !empty(old('tabName')) && old('tabName') == 'general' ? 'active' : '' }}">My
+                                            Notes</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-body p-0 card-margin">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header border-bottom-0 pb-1">
-                                    {{-- <h4 class="card-title font-weight-bold h2" style="text-transform:initial;">Note One</h4> --}}
-                                    <div class="card-options">
-                                        <a href="javascript:void(0);"
-                                            class="btn btn-sm font-weight-bold">{{ date('d M, Y') }}</a>
+                        <div class="tab-content">
+                            <div class="tab-pane {{ empty(old('tabName')) || old('tabName') == 'myProfile' ? 'active' : '' }}"
+                                id="myProfile">
+                                <div class="row pt-4 text-card">
+                                    <div class="card text-card">
+                                        <div class="card-header border-bottom-0">
+                                            {{-- <h3 class="card-title font-weight-bold h2 text-white">Note</h3> --}}
+                                            <div class="card-options">
+                                                <a href="#" onclick="viewNote({{ $note->id ?? 0 }}, 'new')"
+                                                    class="btn btn-sm btn-white text-black font-weight-bold"
+                                                    style="margin-right: 7px">New Note</a>
+                                                <a href="#" id="save_note_btn" onclick="saveNote()"
+                                                    class="btn btn-sm btn-white text-black font-weight-bold"
+                                                    style="margin-right: 7px">Save
+                                                    Note</a>
+                                                <a href="{{ route('user.send_note', $material->id) }}"
+                                                    onclick="shiNew(event)" data-type="dark" data-size="s"
+                                                    data-title="Send Note"
+                                                    class="btn btn-sm btn-white text-black font-weight-bold">Send
+                                                    Note</a>
+                                            </div>
+                                        </div>
+                                        <div class="card-body p-0 card-margin">
+                                            <div class="col-lg-12">
+                                                <div class="card">
+                                                    <div class="card-header border-bottom-0 pb-1">
+                                                        <div class="card-options">
+                                                            <a href="javascript:void(0);"
+                                                                class="btn btn-sm font-weight-bold">{{ date('d M, Y') }}</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body pt-2">
+                                                        <form class="validate-form" id="save_note_form" method="POST"
+                                                            action="">
+                                                            @csrf
+                                                            <input type="text" class="note-input" id="note-title"
+                                                                value="{{ $note->title ?? null }}" name="title"
+                                                                placeholder="Note Title...." required
+                                                                data-parsley-required-message="Note title is required">
+                                                            @error('title')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                            @enderror
+                                                            <textarea class="note-textarea" required id="note-content" name="content" placeholder="Write note...."
+                                                                data-parsley-required-message="Note content is required">{{ $note->content ?? null }}</textarea>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="card-body pt-2">
-                                    {{-- <h4 class="font-weight-bold h5">The Introduction to Business Law</h4> --}}
-                                    {{-- <div class="editable editable-title h5 font-weight-bold" contenteditable="true"
-                                        placeholder="Note Title...." id="note-title"></div>
-                                    <div class="editable" contenteditable="true" id="note-content"
-                                        placeholder="Write note...."></div> --}}
-                                    <form class="validate-form" id="save_note_form" method="POST" action="">
-                                        @csrf
-                                        <input type="text" class="note-input" id="note-title" value="{{ $note->title ?? null }}" name="title"
-                                            placeholder="Note Title...." required>
-                                            @error('title')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        <textarea class="note-textarea" required id="note-content" name="content" placeholder="Write note....">{{ $note->content ?? null }}</textarea>
-                                    </form>
+                            </div>
+                            <div class="tab-pane {{ !empty(old('tabName')) && old('tabName') == 'general' ? 'active' : '' }}"
+                                id="general">
+                                <div class="row mt-5 settings">
+                                    <div class="card-body p-0 card-margin">
+                                        @isset($notes)
+                                            @if ($notes->count() > 0)
+                                                @foreach ($notes as $note)
+                                                    <div class="col-12">
+                                                        <div class="card">
+                                                            <div class="card-header border-bottom-0">
+                                                                <h4 class="card-title font-weight-bold h2"
+                                                                    style="text-transform:initial;">
+                                                                </h4>
+                                                                <div class="card-options">
+                                                                    <a href="javascript:void(0);"
+                                                                        class="btn btn-sm font-weight-bold">{{ $note->created_at->format('D j, Y') }}</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-body pt-0">
+                                                                <h4 onclick="viewNote({{ $note->id ?? 0 }}, 'view')"
+                                                                    class="font-weight-bold h5" style="cursor: pointer">
+                                                                    {{ $note->title ?? '' }}
+                                                                </h4>
+                                                                <p>
+                                                                    {{ $note->content ?? '' }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            @else
+                                                <div class="text-center pb-2 text-black">
+                                                    <h4>No notes available yet</h4>
+                                                </div>
+                                            @endif
+                                        @endisset
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -108,9 +178,27 @@
                 </div>
             </div>
         </div>
-        {{-- {{ asset($material->file->url) }} --}}
         <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
         <script type="text/javascript">
+            function viewNote(id, type) {
+                var url = "{{ route('user.set.current.note') }}";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        note_id: id,
+                        type: type,
+                    },
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+                $("#note_div_section").load(window.location.href + " #note_div_section");
+            }
             const previewConfig = {
                 showAnnotationTools: false,
                 showDownloadPDF: false,
@@ -120,44 +208,44 @@
             }
             const allowTextSelection = false;
 
-           try {
-             document.addEventListener("adobe_dc_view_sdk.ready", function() {
-                var adobeDCView = new AdobeDC.View({
-                    clientId: "{{ env('ADOBECLIENTID') }}",
-                    divId: "adobe-dc-view"
-                });
-
-                var previewFilePromise = adobeDCView.previewFile({
-                    content: {
-                        location: {
-                            url: " {{ asset($material->file->url) }}"
-                        }
-                    },
-                    metaData: {
-                        fileName: "{{ $material->title }}"
-                    }
-                }, previewConfig);
-
-
-
-                previewFilePromise.then(adobeViewer => {
-                    adobeViewer.getAPIs().then(apis => {
-                        apis.enableTextSelection(allowTextSelection)
-                            .then(() => console.log("Success"))
-                            .catch(error => console.log(error, "error"));
+            try {
+                document.addEventListener("adobe_dc_view_sdk.ready", function() {
+                    var adobeDCView = new AdobeDC.View({
+                        clientId: "{{ env('ADOBECLIENTID') }}",
+                        divId: "adobe-dc-view"
                     });
+
+                    var previewFilePromise = adobeDCView.previewFile({
+                        content: {
+                            location: {
+                                url: " {{ asset($material->file->url) }}"
+                            }
+                        },
+                        metaData: {
+                            fileName: "{{ $material->title }}"
+                        }
+                    }, previewConfig);
+
+
+
+                    previewFilePromise.then(adobeViewer => {
+                        adobeViewer.getAPIs().then(apis => {
+                            apis.enableTextSelection(allowTextSelection)
+                                .then(() => console.log("Success"))
+                                .catch(error => console.log(error, "error"));
+                        });
+                    });
+
                 });
-
-            });
-           } catch (error) {
-            console.log(error, "err 888");
-           }
-
-            function saveNote(params) {
-                const content = sessionStorage.getItem('note-content');
-                const title = sessionStorage.getItem('note-title');
-                console.log(content, title);
+            } catch (error) {
+                console.log(error, "err 888");
             }
+
+            // function saveNote(params) {
+            //     const content = sessionStorage.getItem('note-content');
+            //     const title = sessionStorage.getItem('note-title');
+            //     console.log(content, title);
+            // }
 
 
             // window.onload = function() {
@@ -176,17 +264,33 @@
             //     sessionStorage.setItem("note-title", document.getElementById("note-title").value);
             // }
 
-            var noteForm = document.getElementById("save_note_form");
-            document.getElementById("save_note_btn").addEventListener("click", function() {
-                noteForm.submit();
-            });
+            function saveNote() {
+                console.log("bad");
+                if (!($('#save_note_form').parsley().validate())) {
+                    return false;
+                }
+                console.log("good");
+
+                var form = $('#save_note_form');
+                var actionUrl = form.attr('action');
+                $.ajax({
+                    type: 'POST',
+                    url: actionUrl,
+                    data: form.serialize(),
+                    success: function(response) {
+                        console.log(response);
+                        return toastr.success("{{ session('success') }}", "Note Saved Successfully");
+                        $("#note_div_section").load(window.location.href + " #note_div_section");
+                    },
+                    error: function(err) {
+                        console.log(err);
+                        return toastr.error("{{ session('error') }}", "Note not saved");
+                    }
+                });
+            }
 
             $(function() {
-                $('.validate-form').parsley().on('field:validated', function() {
-                    var ok = $('.parsley-error').length === 0;
-                    $('.bs-callout-info').toggleClass('hidden', !ok);
-                    $('.bs-callout-warning').toggleClass('hidden', ok);
-                })
+
             });
         </script>
     @endsection

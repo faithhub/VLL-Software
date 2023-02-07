@@ -64,6 +64,7 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::match(['get', 'post'], 'invite_teammate',  [App\Http\Controllers\Dashboard\UserController::class, 'invite_teammate'])->name('invite_teammate');
         Route::match(['get', 'post'], 'accept/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'accept_invite'])->name('accept_invite');
         Route::match(['get', 'post'], 'decline/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'decline_invite'])->name('decline_invite');
+        Route::match(['get', 'post'], 'set-current-note',  [App\Http\Controllers\Dashboard\UserController::class, 'set_current_note'])->name('set.current.note');
     });
 });
 

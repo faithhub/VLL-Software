@@ -33,9 +33,10 @@ use Smalot\PdfParser\Parser;
 
 class UserController extends Controller
 {
+    private $my_materials_arr;
+
     public function __construct()
     {
-        // dd(Auth::user());
     }
 
     private function unique_code($limit)
@@ -76,7 +77,6 @@ class UserController extends Controller
             }
 
             $data['material_array'] = $material_array;
-
             // dd($material_array);
             return View('dashboard.user.bookstore', $data);
         } catch (\Throwable $th) {
@@ -482,7 +482,6 @@ class UserController extends Controller
         # code...
         try {
             //code...
-
             $data['status'] = true;
             $data['mat_id'] = $mat_id = $request->mat_id;
             $data['reference'] = $reference =  $request->reference;
@@ -494,10 +493,27 @@ class UserController extends Controller
             if ($type == "rented") {
                 # code...
                 $date_rented_expired = Carbon::now()->addDays(2);
+                $rent_pending = MaterialHistory::where(['user_id' => Auth::user()->id, 'type' => 'rented', 'is_rent_expired' => false])->where('rent_count', '<', 2)->latest()->first();;
+                if ($rent_pending) {
+                    MaterialHistory::where(['user_id' => Auth::user()->id, 'type' => 'rented', 'is_rent_expired' => false, 'id' => $rent_pending->id, 'rent_unique_id' => $rent_pending->rent_unique_id])->update(['rent_count' => 2]);
+                    $rent_count = 2;
+                    $rent_unique_id = $rent_pending->rent_unique_id;
+                } else {
+                    $rent_count = 0;
+                    $rent_unique_id = Str::upper("TRX" . $this->unique_code(17));
+                }
             }
             $data['invoice_id'] = $invoice_id = Str::upper("TRX" . $this->unique_code(12));
             $data['date'] = $date = Carbon::now();
 
+
+
+            $my_materials_arr = [];
+            $my_materials = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false])->get('material_id');
+            foreach ($my_materials as $key => $value) {
+                # code...
+                array_push($my_materials_arr, $value->material_id);
+            }
 
             $trans = Transaction::create([
                 'user_id' => Auth::user()->id,
@@ -515,7 +531,8 @@ class UserController extends Controller
                 'material_id' => $mat_id,
                 'transaction_id' => $trans->id,
                 'invoice_id' => $invoice_id,
-                'date' => $date,
+                'rent_count' => $rent_count ?? 1,
+                'rent_unique_id' => $rent_unique_id ?? null,
                 'date_rented_expired' => $date_rented_expired,
                 'type' => $type
             ]);
@@ -549,16 +566,47 @@ class UserController extends Controller
         }
     }
 
+    public function set_current_note(Request $request)
+    {
+        # code...
+        if ($_POST) {
+            $note_id = $request->note_id;
+            $type = $request->type;
+            if ($type == "new") {
+                Session::forget('current_note');
+                Session::put('new_note', true);
+                return true;
+            }
+            Session::put('new_note', false);
+            Session::put('current_note', $note_id);
+            return true;
+        }
+        return redirect()->back();
+    }
+
     public function access_material(Request $request, $id)
     {
         try {
+            // $current_note = Session::put('current_note', $value);
+            $current_note = Session::get('current_note');
+            $new_note = Session::get('new_note');
+            $note = null;
 
-            $data['note'] = $note = Note::where(['material_id' => $id, 'user_id' => Auth::user()->id])->first();
+            if ($current_note) {
+                $note = Note::where(['id' => $current_note, 'user_id' => Auth::user()->id])->first();
+            } elseif ($new_note) {
+                $note = null;
+            } else {
+                $note = Note::where(['material_id' => $id, 'user_id' => Auth::user()->id])->first();
+            }
+
+            $data['note'] = $note;
+            // dd($note, $current_note);
+            $data['notes'] = Note::where(['user_id' => Auth::user()->id])->limit(7)->get();
             // dd($note);
 
             if ($_POST) {
                 # code...
-
                 $rules = array(
                     'title' => ['required', 'string', 'max:255'],
                 );
@@ -577,14 +625,16 @@ class UserController extends Controller
                         'title' => $request->title,
                         'content' => $request->content,
                     ]);
+                    return true;
                 }
 
-                Note::where(['material_id' => $id, 'user_id' => Auth::user()->id])->update([
+                Note::where(['material_id' => $id, 'user_id' => Auth::user()->id, 'id' => $note->id])->update([
                     'title' => $request->title ?? $note->title,
                     'content' => $request->content ?? $note->content
                 ]);
 
                 Session::flash('success', "Note Saved successfully");
+                return true;
                 return redirect()->back();
             }
 
@@ -600,7 +650,7 @@ class UserController extends Controller
                 return redirect()->route('user.index');
             }
             $data['title'] = "User Dashboard - " . $material->title;
-            return view('dashboard.user.view-material', $data)->header('Cache-Control', 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0');;
+            return view('dashboard.user.view-material', $data);
         } catch (\Throwable $th) {
             dd($th->getMessage());
             //throw $th;
@@ -612,6 +662,7 @@ class UserController extends Controller
 
         try {
             //code...
+            $current_note = Session::get('current_note');
 
             if ($_POST) {
                 $rules = array(
@@ -626,7 +677,7 @@ class UserController extends Controller
                     return back()->withErrors($validator)->withInput();
                 }
 
-                $note = Note::where(['material_id' => $request->material_id, 'user_id' => Auth::user()->id])->first();
+                $note = Note::where(['material_id' => $request->material_id, 'user_id' => Auth::user()->id, 'id' => $current_note])->first();
 
                 if (!$note) {
                     Session::flash('error', "Note not found");

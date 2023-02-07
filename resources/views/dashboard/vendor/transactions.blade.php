@@ -71,20 +71,47 @@
                                                             @endif
                                                             @if ($transaction->type == 'rented')
                                                                 <td>
-                                                                    --
-                                                                    {{-- <span
-                                                                        class="money">{{ money($transaction->amount) }}</span> --}}
+                                                                    @if ($transaction->mat_his->is_rent_expired)
+                                                                        <span
+                                                                            class="money">{{ money($transaction->amount) }}</span>
+                                                                    @else
+                                                                        --
+                                                                    @endif
                                                                 </td>
                                                                 <td>
-                                                                    --
-                                                                    {{-- <span
-                                                                        class="money">{{ money((80.5 / 100) * $transaction->amount) }}</span> --}}
+                                                                    @if ($transaction->mat_his->is_rent_expired)
+                                                                        @switch($transaction->mat_his->rent_count)
+                                                                            @case(2)
+                                                                                <span
+                                                                                    class="money">{{ money((60 / 100) * $transaction->amount/2) }}</span>
+                                                                            @break
+                                                                            @case(1)
+                                                                                <span
+                                                                                    class="money">{{ money((60 / 100) * $transaction->amount) }}</span>
+                                                                            @break
+
+                                                                            @default
+                                                                        --
+                                                                        @endswitch
+                                                                    @else
+                                                                        --
+                                                                    @endif
                                                                 </td>
                                                             @endif
                                                             <td>
+                                                               @if ($transaction->type == 'rented')
+                                                                    @if ($transaction->mat_his->is_rent_expired)
                                                                 <span
                                                                     class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->status }}</span>
-                                                            </td>
+                                                                @else
+                                                                <span
+                                                               class="badge bg-warning-light border-warning text-capitalize type-text">Pending</span>
+                                                                @endif
+                                                               @else
+                                                                <span
+                                                                    class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->status }}</span>
+                                                               @endif
+                                                               </td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
