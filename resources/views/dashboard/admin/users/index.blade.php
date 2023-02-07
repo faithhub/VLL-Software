@@ -55,7 +55,7 @@
                                                             <td><b>{{ $user->sub->sub->name ?? "--" }}</b></td>
                                                             <td>
                                                                 @isset($user->last_login)
-                                                                   {{ $user->last_login->last()->updated_at->format('D, M j, Y h:i a') ?? '-' }}
+                                                                   {{-- {{ $user->last_login->last()->updated_at->format('D, M j, Y h:i a') ?? '-' }} --}}
                                                                    @else
                                                                    --
                                                                 @endisset

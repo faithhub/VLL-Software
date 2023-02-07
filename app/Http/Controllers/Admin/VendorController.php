@@ -20,7 +20,7 @@ class VendorController extends Controller
             //code...
             $data['title'] = "All Vendors";
             $data['sn'] = 1;
-            $data['vendors'] = $v = User::where("role", "vendor")->with('bank')->get();
+            $data['vendors'] = $v = User::where("role", "vendor")->with('bank')->orderBy('created_at', 'DESC')->get();
             return View('dashboard.admin.vendors.index', $data);
         } catch (\Throwable $th) {
             dd($th->getMessage());

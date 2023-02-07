@@ -1,86 +1,12 @@
 @extends('layouts/dashboard/app')
 @section('content')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet" />
-    <style>
-        #img-2 {
-            position: absolute;
-            justify-content: center;
-            width: 10%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%)
-        }
-
-        input[type="file"] {
-            display: none;
-        }
-
-        .custom-file-upload {
-            border: 1px solid #eee;
-            display: inline-block;
-            height: 50px;
-            cursor: pointer;
-            color: #3b566e !important;
-            font-weight: 700 !important;
-            background-color: #f0f4f9 !important;
-            padding: 12px 12px
-        }
-
-        .custom-file-upload:hover {
-            color: #3b566e !important;
-            font-weight: 700 !important;
-            background-color: transparent !important
-        }
-
-        .select_folder {
-            width: 700px !important
-        }
-
-        .select2-container {
-            width: 100% !important;
-        }
-       
-        .select2-container .select2-selection--single{
-            height: 55px !important;
-        }
-
-
-
-
-        .bootstrap-tagsinput .tag {
-            /* margin-right: 2px; */
-            color: #ffffff;
-            background: var(--primary-bg-color);
-            /* margin-bottom: 108px; */
-            /* padding: 3px 7px; */
-                                                                                                    border-radius: 3px; */
-        }
-
-        .bootstrap-tagsinput {
-            height: 55px;
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            color: gray !important;
-            font-weight: 600;
-            background-color: #f0f4f9;
-            border: 1px solid #eee;
-            border-radius: 3px;
-        }
-
-        .avatar-md {
-            width: 5rem;
-            height: 5rem;
-        }
-    </style>
     <div class="main-container container-fluid px-0">
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="card border-10 pt-5">
                     <div class="card-header border-bottom-0 mb-1">
                         <h6 class="mb-1 mt-1 font-weight-bold h6">
-                            <a href="{{ route('admin.library') }}">
+                            <a href="{{ route('vendor.index') }}">
                                 <i class="fa fa-arrow-left"></i>
                             </a>
                         </h6>
@@ -89,11 +15,11 @@
                         <h6 class="mb-1 mt-1 font-weight-bold h4">
                             Edit Material Information
                         </h6>
-                        <form method="POST" action="{{ route('admin.edit.library', $material['id']) }}" class="validate-form"
+                        <form method="POST" action="{{ route('admin.edit', $material['id']) }}" class="validate-form"
                             enctype="multipart/form-data">
                             <input type="hidden" name="id" value="{{ $material['id'] }}">
                             @csrf
-                            <input type="hiddenn" name="material_type_value" value="" id="material_type_value">
+                            <input type="hidden" name="material_type_value" value="" id="material_type_value">
                             <div class="row mt-5 mb-5 settings">
                                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                     <div class="form-group">
@@ -109,7 +35,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6"  id="name_of_author">
                                     <div class="form-group">
                                         <label class="form-label">Name of Author <span>*<span></label>
                                         <input type="text" class="form-control" name="name_of_author"
@@ -122,7 +48,33 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" id="name_of_party" style="display: none">
+                                    <div class="form-group">
+                                        <label class="form-label">Name of Party <span>*<span></label>
+                                        <input type="text" class="form-control" name="name_of_party"
+                                            value="{{ $material['name_of_party'] }}" requiredd=""
+                                            data-parsley-required-message="Name of Author is required" placeholder="">
+                                        @error('name_of_party')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" id="citation" style="display: none">
+                                    <div class="form-group">
+                                        <label class="form-label">Citation <span>*<span></label>
+                                        <input type="text" class="form-control" name="citation"
+                                            value="{{ $material['citation'] }}" requiredd=""
+                                            data-parsley-required-message="Name of Author is required" placeholder="">
+                                        @error('citation')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" id="version">
                                     <div class="form-group">
                                         <label class="form-label">Version <span>*<span></label>
                                         <input type="text" class="form-control" placeholder="2nd Version" name="version"
@@ -135,59 +87,55 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="form-group settings">
-                                        <label class="form-label">Price <span>*<span></label>
-                                        <select requiredd="" class="form-control select2"
-                                            data-parsley-errors-container="#price-error" id="bookPriceSelect" name="price"
-                                            data-parsley-required-message="Price is required"
-                                            data-placeholder="Select Price">
-                                            <option value=""></option>
-                                            <option value="Paid"
-                                                {{ $material['price'] ?? '' == 'Paid' ? 'selected' : '' }}>Paid
-                                            </option>
-                                            <option value="Free"
-                                                {{ $material['price'] ?? '' == 'Free' ? 'selected' : '' }}>Free
-                                            </option>
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" id="TAA-data-no2">
+                                    <div class="form-group">
+                                        <label class="form-label">Country of Publication
+                                            <span>*<span></label>
+                                        <select onchange="" class="form-control select" name="country_id"
+                                            id="material_type" requiredd=""
+                                            data-parsley-errors-container="#country_of_publication-error"
+                                            data-parsley-required-message="Country of Publication is required">
+                                            <option value="">Select Country</option>
+                                            @isset($countries)
+                                                @foreach ($countries as $item)
+                                                    <option value="{{ $item->id }}"
+                                                        {{ $material['country_id'] == $item->id ? 'selected' : '' }}>
+                                                        {{ $item->name }}
+                                                    </option>
+                                                @endforeach
+                                            @endisset
                                         </select>
-                                        @error('price')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                        <span class="invalid-feedback" id="price-error" role="alert">
+                                        <span class="invalid-feedback" id="country_of_publication-error" role="alert">
+                                            @error('country_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="paidDiv" style="display: none">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="name_of_court"
+                                    style="display: none">
                                     <div class="form-group">
-                                        <label class="form-label">Amount <span>*<span></label>
-                                            <div class="d-flex">
-                                            <button disabled class="btn currency-btn" type="button">
-                                            <img
-                                            @if (Auth::user()->currency->id)
-                                                src="{{
-                                                 asset(Auth::user()->currency->flag) }}" 
-                                            @elseif ($app_default_currency)
-                                                src="{{
-                                                 asset($app_default_currency->flag) }}"
-                                            @endif 
-                                            alt="img"
-                                                class="mb-1 country">
-                                                 @if (Auth::user()->currency->id)
-                                                 {{Auth::user()->currency->code }}
-                                            @elseif ($app_default_currency)
-                                                {{ $app_default_currency->code }}
-                                            @endif 
-                                        </button>
-                                        <input type="number" class="form-control" placeholder="5000" min="1"
-                                            name="amount" value="{{ $material['amount'] }}" requiredd=""
-                                            data-parsley-required-message="Title of Material is required">
-                                    </div>
-                                        @error('amount')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <label class="form-label">Name of Court <span>*<span></label>
+                                        <select class="form-control select" name="name_of_court"
+                                            data-parsley-required-message="Name of Court is required" requiredd=""
+                                            data-parsley-errors-container="#court-name-error" id="select_name_of_court"
+                                            data-placeholder="Select Court">
+                                            <option data-value="153" value="">Select Court</option>
+                                            <option data-value="153" value="Supreme Court" @selected($material['name_of_court'] == "Supreme Court" )>Supreme Court</option>
+                                            <option data-value="153" value="Court of Appeal" @selected($material['name_of_court'] == "Court of Appeal" )>Court of Appeal</option>
+                                            <option data-value="153" value="Federal High Court" @selected($material['name_of_court'] == "Federal High Court" )>Federal High Court</option>
+                                            <option data-value="153" value="National Industrial Court" @selected($material['name_of_court'] == "National Industrial Court" )>National Industrial Court</option>
+                                            <option data-value="153" value="State High Court" @selected($material['name_of_court'] == "State High Court" )>State High Court</option>
+                                            <option data-value="153" value="Tax Tribunal/ Tax Appeal Tribunal" @selected($material['name_of_court'] == "Tax Tribunal/ Tax Appeal Tribunal" )>Tax Tribunal/ Tax Appeal Tribunal</option>
+                                            <option data-value="153" value="Election Tribunal" @selected($material['name_of_court'] == "Election Tribunal" )>Election Tribunal</option>
+                                        </select>
+                                        <span class="invalid-feedback" id="court-name-error" role="alert">
+                                            @error('name_of_court')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -227,7 +175,7 @@
                                                 <option value="">Select folder</option>
                                                 @isset($folders)
                                                     @foreach ($folders as $item)
-                                                        <option  data-value="{{ $item->material_type_id }}" value="{{ $item->id }}"
+                                                        <option value="{{ $item->id }}"
                                                             {{ $material['folder_id'] == $item->id ? 'selected' : '' }}>
                                                             {{ $item->name }}
                                                         </option>
@@ -236,7 +184,7 @@
                                             </select>
                                             <button type="button" onclick="shiNew(event)" data-type="dark"
                                                 data-size="m" data-title="Add New Folder"
-                                                href="{{ route('admin.add_folder') }}" class="btn btn-primary">Add
+                                                href="{{ route('vendor.add_folder') }}" class="btn btn-primary">Add
                                                 New</button>
                                         </div>
                                         <span class="invalid-feedback" id="folder-error" role="alert">
@@ -262,33 +210,57 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" id="TAA-data-no2">
-                                    <div class="form-group">
-                                        <label class="form-label">Country of Publication
-                                            <span>*<span></label>
-                                        <select onchange="" class="form-control select" name="country_id"
-                                            id="material_type" requiredd=""
-                                            data-parsley-errors-container="#country_of_publication-error"
-                                            data-parsley-required-message="Country of Publication is required">
-                                            <option value="">Select Country</option>
-                                            @isset($countries)
-                                                @foreach ($countries as $item)
-                                                    <option value="{{ $item->id }}"
-                                                        {{ $material['country_id'] == $item->id ? 'selected' : '' }}>
-                                                        {{ $item->name }}
-                                                    </option>
-                                                @endforeach
-                                            @endisset
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" id="priceDiv">
+                                    <div class="form-group settings">
+                                        <label class="form-label">Price <span>*<span></label>
+                                        <select requiredd="" class="form-control select2"
+                                            data-parsley-errors-container="#price-error" id="bookPriceSelect" name="price"
+                                            data-parsley-required-message="Price is required"
+                                            data-placeholder="Select Price">
+                                            <option value=""></option>
+                                            <option value="Paid"
+                                                @selected($material['price'] == 'Paid')>Paid
+                                            </option>
+                                            <option value="Free"
+                                                @selected($material['price'] == 'Free')>Free
+                                            </option>
                                         </select>
-                                        <span class="invalid-feedback" id="country_of_publication-error" role="alert">
-                                            @error('country_id')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
+                                        @error('price')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                        <span class="invalid-feedback" id="price-error" role="alert">
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="TAA-data1" style="display: none">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="paidDiv" style="display: none">
+                                    <div class="form-group">
+                                        <label class="form-label">Amount <span>*<span></label>
+                                        <div class="d-flex">
+                                            <select class="form-control" name="currency_id" id="currency_id"
+                                                style="width: fit-content !important">
+                                                @isset($app_currencies)
+                                                    @foreach ($app_currencies as $app_currency)
+                                                        <option value="{{ $app_currency->id }}" @selected($material['currency_id'] == $app_currency->id) 
+                                                             style="background-image:url('{{ asset($app_currency->flag) }}');">
+                                                             {{ $app_currency->name }} ({{ $app_currency->symbol }})
+                                                        </option>
+                                                    @endforeach
+                                                @endisset
+                                            </select>
+                                            <input type="number" class="form-control" placeholder="5000" min="1"
+                                                name="amount" value="{{ $material['amount'] }}" requiredd=""
+                                                data-parsley-required-message="Title of Material is required">
+                                        </div>
+                                        @error('amount')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="TAA-data1"
+                                    style="display: none">
                                     <div class="form-group">
                                         <label class="form-label">Country of University
                                             <span>*<span></label>
@@ -298,7 +270,8 @@
                                             <option value="">Select Country</option>
                                             @isset($countries)
                                                 @foreach ($countries as $item)
-                                                    <option value="{{ $item->id }}" @selected($material->country_id == $item->id)>
+                                                    <option value="{{ $item->id }}" @selected(Auth::user()->country_id == $item->id)>
+                                                        
                                                         {{ $item->name }}
                                                     </option>
                                                 @endforeach
@@ -312,7 +285,8 @@
                                             @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="TAA-data2" style="display: none">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="TAA-data2"
+                                    style="display: none">
                                     <div class="form-group">
                                         <label class="form-label">Universities
                                             <span>*<span></label>
@@ -322,7 +296,8 @@
                                             <option value="">Select Univerty</option>
                                             @isset($universities)
                                                 @foreach ($universities as $item)
-                                                    <option data-value="{{ $item->country_id }}" value="{{ $item->id }}" @selected($material->university_id == $item->id)>
+                                                    <option data-value="{{ $item->country_id }}" value="{{ $item->id }}"
+                                                        @selected(Auth::user()->university_id == $item->id)>
                                                         {{ $item->name }}
                                                     </option>
                                                 @endforeach
@@ -336,7 +311,7 @@
                                             @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="publishers">
                                     <div class="form-group">
                                         <label class="form-label">Publishers <span>*<span></label>
                                         <input type="text" class="form-control" name="publisher"
@@ -481,8 +456,8 @@
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Material Description <span>*<span></label>
-                                        <textarea class="form-control" data-parsley-required-message="Material Description is required" requiredd=""
-                                            name="material_desc" rows="8">{{ $material['material_desc'] }}</textarea>
+                                        <textarea class="form-control textarea" data-parsley-required-message="Material Description is required" requiredd=""
+                                            name="material_desc" rows="10">{{ $material['material_desc'] }}</textarea>
                                         @error('material_desc')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -523,103 +498,5 @@
             </div>
         </div>
     </div>
-
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-
-            $("#material_type_select").change(function() {
-
-                if ($(this).data('options') === undefined) {
-                    /*Taking an array of all options-2 and kind of embedding it on the select1*/
-                    $(this).data('options', $('#subject_select option').clone());
-                }
-                var id = $(this).val();
-                var text = $(this).find(':selected').attr('data-text');
-                var matId = $(this).find(':selected').attr('data-matId');
-                var uniqueId = matId.substring(0, 3)
-                document.getElementById("material_type_value").value  = uniqueId
-
-                if (uniqueId == "TXT") {
-                    console.log(id, text);
-                    document.getElementById('subject_div').style.display = 'block';
-                    document.getElementById('subject_div').style.display = 'block';
-                } else {
-                    document.getElementById('subject_div').style.display = 'none';
-                    document.getElementById('subject_div').style.display = 'none';
-                }
-
-                if (uniqueId == "TAA") {
-                    document.getElementById('privacy_div').style.display = 'block';
-                    document.getElementById('TAA-data1').style.display = 'block';
-                    document.getElementById('TAA-data2').style.display = 'block';
-                    document.getElementById('TAA-data-no1').style.display = 'none';
-                    document.getElementById('TAA-data-no2').style.display = 'none';
-                } else {
-                    document.getElementById('TAA-data-no2').style.display = 'block';
-                    document.getElementById('TAA-data-no1').style.display = 'block';
-                    document.getElementById('privacy_div').style.display = 'none';
-                    document.getElementById('TAA-data2').style.display = 'none';
-                    document.getElementById('TAA-data1').style.display = 'none';
-                }
-
-                if (uniqueId == "CSL") {
-                    console.log(id, text);
-                    document.getElementById('folder_div').style.display = 'block';
-                } else {
-                    document.getElementById('folder_div').style.display = 'none';
-                }
-
-                if (uniqueId == "VAA") {
-                    $("#material_file_text").text("Video/Audio");
-                    $("#file_text").text("Upload Material in Video or Audio format");
-                    $('#material_file').attr("accept", ".mp4,.mp3");
-                } else {
-                    $('#material_file').attr("accept", ".pdf");
-                    $("#material_file_text").text("PDF");
-                    $("#file_text").text("Upload Material in PDF");
-                }
-
-                var options = $(this).data('options').filter('[data-value=' + id + ']');
-                $('#subject_select').html(options);
-            }).change();
-
-        });
-
-
-     
-        $(document).ready(function() {
-            $("#test_country_id").change(function() {
-                if ($(this).data('options') === undefined) {
-                    /*Taking an array of all options-2 and kind of embedding it on the select1*/
-                    $(this).data('options', $('#university_id option').clone());
-                }
-                var id = $(this).val();
-                var options = $(this).data('options').filter('[data-value=' + id + ']');
-                console.log(options, id)
-                $('#university_id').html(options);
-            });
-        });
-        
-
-        $(document).ready(function() {
-            $("#bookPriceSelect").change(function() {
-                var value = $(this).val()
-                switch (value) {
-                    case "Paid":
-                        document.getElementById('paidDiv').style.display = 'block';
-                        break;
-                    case "Free":
-                        document.getElementById('paidDiv').style.display = 'none';
-                        break;
-                    default:
-                        document.getElementById('paidDiv').style.display = 'none';
-                        break;
-                }
-            }).change();
-        });
-    </script>
+    @include('layouts.dashboard.includes.material')
 @endsection

@@ -28,7 +28,7 @@ class MaterialController extends Controller
             //code...
             $data['title'] = "All Materials";
             $data['sn'] = 1;
-            $data['materials'] = Material::with(['type', 'file', 'cover', 'vendor'])->get();
+            $data['materials'] = Material::with(['type', 'file', 'cover', 'vendor'])->orderBy('created_at', 'DESC')->get();
             return View('dashboard.admin.library.index', $data);
         } catch (\Throwable $th) {
             dd($th->getMessage());
@@ -117,7 +117,7 @@ class MaterialController extends Controller
                     'material_type_id' => ['required', 'max:255'],
                     'folder_id' => ['required_if:material_type_value,CSL'],
                     'name_of_party' => ['required_if:material_type_value,CSL'],
-                    'name_of_court' => ['required_if:material_type_value,CSL'],
+                    // 'name_of_court' => ['required_if:material_type_value,CSL'],
                     'citation' => ['required_if:material_type_value,CSL'],
                     'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
                     'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
@@ -128,7 +128,8 @@ class MaterialController extends Controller
                     'tags' => ['required', 'string', 'max:255'],
                     'subject_id' => ['required_if:material_type_value,5'],
                     'privacy_code' => ['required_if:material_type_value,TAA'],
-                    'material_file_id' => ['required', 'mimes:pdf,mp4,mov,ogg,qt', 'max:50000'],
+                    // 'material_file_id.*' => ['required', 'mimes:pdf', 'max:100'],
+                    'material_file_id' => ['required', 'mimes:pdf,mp4,mov,ogg,qt', 'max:100000'],
                     'material_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
                     'material_desc' => ['required'],
                     'terms' => ['required', 'max:255']
@@ -177,11 +178,7 @@ class MaterialController extends Controller
                 if ($request->hasFile('material_cover_id')) {
                     $material_cover = $request->file('material_cover_id');
                     $material_cover_name = 'MaterialCover' . time() . '.' . $material_cover->getClientOriginalExtension();
-                    $destinationPath = public_path('/storage/materials/covers');
-                    $img = Image::make($material_cover->path());
-                    $img->resize(600, 300, function ($constraint) {
-                        $constraint->aspectRatio();
-                    })->save($destinationPath . '/' . $material_cover_name);
+                    Storage::disk('material_cover')->put($material_cover_name, file_get_contents($material_cover));
                     $save_cover = File::create([
                         'name' => $material_cover_name,
                         'url' => 'storage/materials/covers/' . $material_cover_name
@@ -191,6 +188,7 @@ class MaterialController extends Controller
                 Material::create([
                     'user_id' => Auth::user()->id,
                     'title' => $request->title ?? null,
+                    'currency_id' => $request->currency_id ?? Auth::user()->currency->id,
                     'name_of_author' => $request->name_of_author ?? null,
                     'name_of_court' => $request->name_of_court ?? null,
                     'name_of_party' => $request->name_of_party ?? null,
@@ -206,7 +204,7 @@ class MaterialController extends Controller
                     'country_id' => $request->country_id ?? null,
                     'publisher' => $request->publisher ?? null,
                     'tags' => $tags,
-                    'uploaded_by' => 'admin',
+                    'uploaded_by' => 'vendor',
                     'subject_id' => $request->subject_id ?? null,
                     'privacy_code' => $request->privacy_code ?? null,
                     'material_file_id' => $save_file->id,

@@ -60,19 +60,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="name_of_court" style="display: none">
-                                    <div class="form-group">
-                                        <label class="form-label">Name of Court <span>*<span></label>
-                                        <input type="text" class="form-control" name="name_of_court"
-                                            value="{{ old('name_of_court') }}" requiredd=""
-                                            data-parsley-required-message="Name of Author is required" placeholder="">
-                                        @error('name_of_court')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" id="citation" style="display: none">
                                     <div class="form-group">
                                         <label class="form-label">Citation <span>*<span></label>
@@ -99,63 +86,67 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="form-group settings">
-                                        <label class="form-label">Price <span>*<span></label>
-                                        <select requiredd="" class="form-control select2"
-                                            data-parsley-errors-container="#price-error" id="bookPriceSelect" name="price"
-                                            data-parsley-required-message="Price is required"
-                                            data-placeholder="Select Price">
-                                            <option value=""></option>
-                                            <option value="Paid" @selected(old('price') == 'Paid')>Paid
-                                            </option>
-                                            <option value="Free" @selected(old('price') == 'Free')>Free
-                                            </option>
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" id="TAA-data-no2">
+                                    <div class="form-group">
+                                        <label class="form-label">Country of Publication
+                                            <span>*<span></label>
+                                        <select onchange="" class="form-control select" name="country_id"
+                                            id="country_of_publication" requiredd=""
+                                            data-parsley-errors-container="#country_of_publication-error"
+                                            data-parsley-required-message="Country of Publication is required">
+                                            <option value="">Select Country</option>
+                                            @isset($countries)
+                                                @foreach ($countries as $item)
+                                                    <option value="{{ $item->id }}" @selected(old('country_id') == $item->id)>
+                                                        {{ $item->name }}
+                                                    </option>
+                                                @endforeach
+                                            @endisset
                                         </select>
-                                        @error('price')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                        <span class="invalid-feedback" id="price-error" role="alert">
+                                        <span class="invalid-feedback" id="country_of_publication-error" role="alert">
+                                            @error('country_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="paidDiv" style="display: none">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="name_of_court"
+                                    style="display: none">
                                     <div class="form-group">
-                                        <label class="form-label">Amount <span>*<span></label>
-                                            <div class="d-flex">
-                                            <button disabled class="btn currency-btn" type="button">
-                                            <img
-                                            @if (Auth::user()->currency->id)
-                                                src="{{
-                                                 asset(Auth::user()->currency->flag) }}" 
-                                            @elseif ($app_default_currency)
-                                                src="{{
-                                                 asset($app_default_currency->flag) }}"
-                                            @endif 
-                                            alt="img"
-                                                class="mb-1 country">
-                                                 @if (Auth::user()->currency->id)
-                                                 {{Auth::user()->currency->code }}
-                                            @elseif ($app_default_currency)
-                                                {{ $app_default_currency->code }}
-                                            @endif 
-                                        </button>
-                                        <input type="number" class="form-control" placeholder="5000" min="1"
-                                            name="amount" value="{{ old('amount') }}" requiredd=""
-                                            data-parsley-required-message="Title of Material is required">
-                                    </div>
-                                        @error('amount')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <label class="form-label">Name of Court <span>*<span></label>
+                                        <select class="form-control select" name="name_of_court"
+                                            data-parsley-required-message="Name of Court is required" requiredd=""
+                                            data-parsley-errors-container="#court-name-error" id="select_name_of_court"
+                                            data-placeholder="Select Court">
+                                            <option data-value="153" value="">Select Court</option>
+                                            <option data-value="153" value="Supreme Court" @selected(old('name_of_court') == 'Supreme Court')>
+                                                Supreme Court</option>
+                                            <option data-value="153" value="Court of Appeal" @selected(old('name_of_court') == 'Court of Appeal')>
+                                                Court of Appeal</option>
+                                            <option data-value="153" value="Federal High Court"
+                                                @selected(old('name_of_court') == 'Federal High Court')>Federal High Court</option>
+                                            <option data-value="153" value="National Industrial Court"
+                                                @selected(old('name_of_court') == 'National Industrial Court')>National Industrial Court</option>
+                                            <option data-value="153" value="State High Court"
+                                                @selected(old('name_of_court') == 'State High Court')>State High Court</option>
+                                            <option data-value="153" value="Tax Tribunal/ Tax Appeal Tribunal"
+                                                @selected(old('name_of_court') == 'Tax Tribunal/ Tax Appeal Tribunal')>Tax Tribunal/ Tax Appeal Tribunal</option>
+                                            <option data-value="153" value="Election Tribunal"
+                                                @selected(old('name_of_court') == 'Election Tribunal')>Election Tribunal</option>
+                                        </select>
+                                        <span class="invalid-feedback" id="court-name-error" role="alert">
+                                            @error('name_of_court')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Type of Material <span>*<span></label>
-                                        <select class="form-control select" name="material_type_id"
+                                        <select onchange="" class="form-control select" name="material_type_id"
                                             id="material_type_select"
                                             data-parsley-required-message="Type of Material is required" requiredd=""
                                             data-parsley-errors-container="#material_type-error"
@@ -183,13 +174,13 @@
                                         <label class="form-label">Folder <span>*<span></label>
                                         <div class="d-flex">
                                             <select class="form-control select" name="folder_id"
-                                                data-parsley-required-message="Folder is required" requiredd=""
+                                                data-parsley-required-message="Subject is required" requiredd=""
                                                 data-parsley-errors-container="#folder-error"
-                                                data-placeholder="Select folder" id="folder_id_select">
+                                                data-placeholder="Select folder">
                                                 <option value="">Select folder</option>
                                                 @isset($folders)
                                                     @foreach ($folders as $item)
-                                                        <option data-value="{{ $item->material_type_id }}" value="{{ $item->id }}" @selected(old('folder_id') == $item->id)>
+                                                        <option value="{{ $item->id }}" @selected(old('folder_id') == $item->id)>
                                                             {{ $item->name }}
                                                         </option>
                                                     @endforeach
@@ -197,7 +188,7 @@
                                             </select>
                                             <button type="button" onclick="shiNew(event)" data-type="dark"
                                                 data-size="s" data-title="Add New Folder"
-                                                href="{{ route('admin.add_folder') }}" class="btn btn-primary">Add
+                                                href="{{ route('vendor.add_folder') }}" class="btn btn-primary">Add
                                                 New</button>
                                         </div>
                                         <span class="invalid-feedback" id="folder-error" role="alert">
@@ -223,32 +214,56 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" id="TAA-data-no2">
-                                    <div class="form-group">
-                                        <label class="form-label">Country of Publication
-                                            <span>*<span></label>
-                                        <select onchange="" class="form-control select" name="country_id"
-                                            id="" requiredd=""
-                                            data-parsley-errors-container="#country_of_publication-error"
-                                            data-parsley-required-message="Country of Publication is required">
-                                            <option value="">Select Country</option>
-                                            @isset($countries)
-                                                @foreach ($countries as $item)
-                                                    <option value="{{ $item->id }}" @selected(old('country_id') == $item->id)>
-                                                        {{ $item->name }}
-                                                    </option>
-                                                @endforeach
-                                            @endisset
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" id="priceDiv">
+                                    <div class="form-group settings">
+                                        <label class="form-label">Price <span>*<span></label>
+                                        <select requiredd="" class="form-control select2"
+                                            data-parsley-errors-container="#price-error" id="bookPriceSelect"
+                                            name="price" data-parsley-required-message="Price is required"
+                                            data-placeholder="Select Price">
+                                            <option value=""></option>
+                                            <option value="Paid" @selected(old('price') == 'Paid')>Paid
+                                            </option>
+                                            <option value="Free" @selected(old('price') == 'Free')>Free
+                                            </option>
                                         </select>
-                                        <span class="invalid-feedback" id="country_of_publication-error" role="alert">
-                                            @error('country_id')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
+                                        @error('price')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                        <span class="invalid-feedback" id="price-error" role="alert">
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="TAA-data1" style="display: none">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="paidDiv"
+                                    style="display: none">
+                                    <div class="form-group">
+                                        <label class="form-label">Amount <span>*<span></label>
+                                        <div class="d-flex">
+                                            <select class="form-control" name="currency_id" id="currency_id"
+                                                style="width: fit-content !important">
+                                                @isset($app_currencies)
+                                                    @foreach ($app_currencies as $app_currency)
+                                                        <option value="{{ $app_currency->id }}" @selected(Auth::user()->currency->id == $app_currency->id) 
+                                                             style="background-image:url('{{ asset($app_currency->flag) }}');">
+                                                             {{ $app_currency->name }} ({{ $app_currency->symbol }})
+                                                        </option>
+                                                    @endforeach
+                                                @endisset
+                                            </select>
+                                            <input type="number" class="form-control" placeholder="5000" min="1"
+                                                name="amount" value="{{ old('amount') }}" requiredd=""
+                                                data-parsley-required-message="Title of Material is required">
+                                        </div>
+                                        @error('amount')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="TAA-data1"
+                                    style="display: none">
                                     <div class="form-group">
                                         <label class="form-label">Country of University
                                             <span>*<span></label>
@@ -258,7 +273,7 @@
                                             <option value="">Select Country</option>
                                             @isset($countries)
                                                 @foreach ($countries as $item)
-                                                    <option  value="{{ $item->id }}" @selected(Auth::user()->country_id == $item->id)>
+                                                    <option value="{{ $item->id }}" @selected(Auth::user()->country_id == $item->id)>
                                                         {{ $item->name }}
                                                     </option>
                                                 @endforeach
@@ -272,7 +287,8 @@
                                             @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="TAA-data2" style="display: none">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="TAA-data2"
+                                    style="display: none">
                                     <div class="form-group">
                                         <label class="form-label">Universities
                                             <span>*<span></label>
@@ -282,7 +298,8 @@
                                             <option value="">Select Univerty</option>
                                             @isset($universities)
                                                 @foreach ($universities as $item)
-                                                    <option data-value="{{ $item->country_id }}" value="{{ $item->id }}" @selected(Auth::user()->university_id == $item->id)>
+                                                    <option data-value="{{ $item->country_id }}" value="{{ $item->id }}"
+                                                        @selected(Auth::user()->university_id == $item->id)>
                                                         {{ $item->name }}
                                                     </option>
                                                 @endforeach
@@ -436,8 +453,8 @@
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Material Description <span>*<span></label>
-                                        <textarea class="form-control textarea" data-parsley-required-message="Material Description is required" requiredd=""
-                                            name="material_desc" rows="10">{{ old('material_desc') }}</textarea>
+                                        <textarea class="form-control textarea" data-parsley-required-message="Material Description is required"
+                                            requiredd="" name="material_desc" rows="10">{{ old('material_desc') }}</textarea>
                                         @error('material_desc')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -462,10 +479,6 @@
                                         </span>
                                     @enderror
                                 </div>
-                                {{-- <form class="ff_fileupload_hidden" action="" method="post"
-                                    enctype="multipart/form-data"><input type="hidden" name="action"
-                                        value="fileuploader"><input type="file" name="files" multiple=""
-                                        accept=".jpg, .png, image/jpeg, image/png"></form> --}}
                                 <div class="col-lg-12 col-xl-12 text-center">
                                     <button type="submit" class="btn btn-primary p-3 pt-3 pt-2"
                                         style="font-size: 18px">Submit</button>

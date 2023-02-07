@@ -16,7 +16,7 @@ class UserController extends Controller
             //code...
             $data['title'] = "All User";
             $data['sn'] = 1;
-            $data['users'] = $user = User::where("role", "user")->with(['last_login', 'sub'])->get();
+            $data['users'] = $user = User::where("role", "user")->with(['last_login', 'sub'])->orderBy('created_at', 'DESC')->get();
             // dd($user[0]->last_login->last());
             return View('dashboard.admin.users.index', $data);
         } catch (\Throwable $th) {
