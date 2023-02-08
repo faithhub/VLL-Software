@@ -150,7 +150,7 @@
                                                         <span class="fa fa-map-marker"></span>
                                                     </div>
                                                     <div class="text pl-3">
-                                                        <p><span>Address:</span>{{ $settings['address'] ?? '--' }}</p>
+                                                        <p><span>Address: </span>{{ $settings['address'] ?? '--' }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="dbox w-100 d-flex align-items-center">
