@@ -5,13 +5,13 @@
               <div class="col-md-10">
                   <div class="row">
                       <div class="col-md-3 mb-md-0 mb-3">
-                          <h2 class="footer-heading"><a href="{{ route('privacy') }}" target="blank" class="link">Contact Us</a></h2>
+                          <h2 class="footer-heading"><a href="{{ route('contact') }}" target="blank" class="link">Contact Us</a></h2>
                       </div>
                       <div class="col-md-3 mb-md-0 mb-3">
-                          <h2 class="footer-heading"><a href="{{ route('privacy') }}" target="blank" class="link">About Us</a></h2>
+                          <h2 class="footer-heading"><a href="{{ route('about_us') }}" target="blank" class="link">About Us</a></h2>
                       </div>
                       <div class="col-md-3 mb-md-0 mb-3">
-                          <h2 class="footer-heading"><a href="{{ route('privacy') }}" target="blank" class="link">FAQ</a></h2>
+                          <h2 class="footer-heading"><a href="{{ route('faq') }}" target="blank" class="link">FAQ</a></h2>
                       </div>
                       <div class="col-md-3 mb-md-0 mb-3">
                           <h2 class="footer-heading"><a href="{{ route('privacy') }}" target="blank" class="link">Terms and Conditions</a></h2>

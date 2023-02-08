@@ -136,11 +136,11 @@
                                             <button onclick="shiNew(event)" data-type="dark" data-size="l"
                                                 data-title="Subscriptions" href="{{ route('user.subscriptions') }}"
                                                 class="sub-link btn btn-sm btn-primary">
-                                            @if (Auth::user()->sub->subscription_id)
-                                            Change
-                                            @else
-                                            Subcribe
-                                            @endif
+                                                @if (Auth::user()->sub->subscription_id)
+                                                    Change
+                                                @else
+                                                    Subcribe
+                                                @endif
                                             </button>
 
                                             @isset($sub)
@@ -186,19 +186,20 @@
                                                     <tbody>
                                                     </tbody>
                                                     @isset($team->teammates)
-                                                    @foreach ($team->teammates as $team)
-                                                        <tr>
-                                                            <td>{{$sn++}}</td>
-                                                            <td>{{$team}}</td>
-                                                            <td>
-                                                                @if ($team == Auth::user()->email)
-                                                                Team Admin
-                                                                @else
-                                                                <a href="#" class="btn btn-sm btn-primary">Remove</a>
-                                                                @endif
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
+                                                        @foreach ($team->teammates as $team)
+                                                            <tr>
+                                                                <td>{{ $sn++ }}</td>
+                                                                <td>{{ $team }}</td>
+                                                                <td>
+                                                                    @if ($team == Auth::user()->email)
+                                                                        Team Admin
+                                                                    @else
+                                                                        <a href="#"
+                                                                            class="btn btn-sm btn-primary">Remove</a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
                                                     @endisset
                                                     </thead>
                                                 </table>

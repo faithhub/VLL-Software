@@ -215,7 +215,7 @@
                                 id="general">
                                 <div class="row pt-4 mt-3">
                                     <div class="row mt-5 settings">
-                                        <form method="POST" action="{{ route('admin.settings') }}">
+                                        <form method="POST" class="general-settings-form" action="{{ route('admin.settings') }}">
                                             @csrf
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-12">
@@ -225,7 +225,35 @@
                                                             placeholder="Email Address" required=""
                                                             data-parsley-required-message="Email is required"
                                                             value="{{ $settings['email'] ?? '' }}">
-                                                        @error('name')
+                                                        @error('email')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Phone Number</label>
+                                                        <input name="phone" type="number" class="form-control"
+                                                            placeholder="Phone Number" required=""
+                                                            data-parsley-required-message="Phone is required"
+                                                            value="{{ $settings['phone'] ?? '' }}">
+                                                        @error('phone')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Address</label>
+                                                        <input name="address" type="text" class="form-control"
+                                                            placeholder="Address" required=""
+                                                            data-parsley-required-message="Address is required"
+                                                            value="{{ $settings['address'] ?? '' }}">
+                                                        @error('address')
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
@@ -783,10 +811,19 @@
             </div>
         </div>
     </div>
-
     <script type="text/javascript">
             $("#submitAboutUs").click(function() {
                 $("#about_us_edit").val($(".ql-editor").html());
             });
+
+            
+
+    $(function() {
+        $('.general-settings-form').parsley().on('field:validated', function() {
+            var ok = $('.parsley-error').length === 0;
+            $('.bs-callout-info').toggleClass('hidden', !ok);
+            $('.bs-callout-warning').toggleClass('hidden', ok);
+        })
+    });
         </script>
 @endsection

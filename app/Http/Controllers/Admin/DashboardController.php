@@ -146,7 +146,7 @@ class DashboardController extends Controller
                 }
                 Cache::flush();
                 Session::flash('success', "Settings updated successfully");
-                return redirect()->route('admin.settings');
+                return redirect()->route('admin.settings')->withInput(['tabName' => 'general']);;
             }
 
 

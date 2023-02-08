@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Contact;
+use App\Models\FAQ;
 use App\Models\Material;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 
 class HomeController extends Controller
@@ -24,7 +29,59 @@ class HomeController extends Controller
     {
         # code...
         $data['title'] = "Privacy Policy";
-        $data['contents'] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pulvinar in eu feugiat consequat tellus adipiscing morbi ultrices. Venenatis, sed nec fermentum, odio volutpat bibendum. Augue dictum duis nam faucibus nunc vel etiam. Lacus, nunc maecenas arcu morbi mauris eu purus amet. Nisi habitasse in cursus sit. Amet sem senectus adipiscing ac. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pulvinar in eu feugiat consequat tellus adipiscing morbi ultrices. Venenatis, sed nec fermentum, odio volutpat bibendum. Augue dictum duis nam faucibus nunc vel etiam. Lacus, nunc maecenas arcu morbi mauris eu purus amet. Nisi habitasse in cursus sit. Amet sem senectus adipiscing ac. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pulvinar in eu feugiat consequat tellus adipiscing morbi ultrices. Venenatis, sed nec fermentum, odio volutpat bibendum. Augue dictum duis nam faucibus nunc vel etiam. Lacus, nunc maecenas arcu morbi mauris eu purus amet. Nisi habitasse in cursus sit. Amet sem senectus adipiscing ac. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pulvinar in eu feugiat consequat tellus adipiscing morbi ultrices. Venenatis, sed nec fermentum, odio volutpat bibendum. Augue dictum duis nam faucibus nunc vel etiam. Lacus, nunc maecenas arcu morbi mauris eu purus amet. Nisi habitasse in cursus sit. Amet sem senectus adipiscing ac.";
         return View('web.privacy', $data);
+    }
+
+    public function about_us()
+    {
+        # code...
+        $data['title'] = "About Us";
+        return View('web.about-us', $data);
+    }
+
+    public function faq()
+    {
+        # code...
+        $data['title'] = "FAQ";
+        $data['sec'] = 2;
+        $data['faqs'] = FAQ::orderBy('created_at', 'DESC')->get();
+        return View('web.faq', $data);
+    }
+
+    public function contact(Request $request)
+    {
+        # code...
+        $data['title'] = "Contact Us";
+        if ($_POST) {
+
+            $rules = array(
+                'name' => ['required', 'string', 'max:50'],
+                'email' => ['required', 'email', 'string'],
+                'subject' => ['required', 'string', 'max:80'],
+                'message' => ['required', 'string'],
+            );
+
+            $messages = [];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+
+            if ($validator->fails()) {
+                Session::flash('warning', __('All fields are required'));
+                return back()->withErrors($validator)->withInput();;
+            }
+
+            // dd($request->all());
+
+            $object = new \stdClass();
+            $object->name = $request->name;
+            $object->email = $request->email;
+            $object->message = $request->message;
+            $object->subject = $request->subject;
+
+            Mail::to($request->email)->send(new Contact($object));
+            Session::flash('success', __('Your message was sent, thank you!'));
+            return redirect()->back();
+        }
+        return View('web.contact-us', $data);
     }
 }

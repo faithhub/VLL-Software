@@ -21,12 +21,12 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="section-title">
-                        <h2 class="single-box-h2" style="margin-bottom: 5px">Privacy policies</h2>
+                        <h2 class="single-box-h2" style="margin-bottom: 5px">About Us</h2>
                     </div>
 
                     <div class="who-we-are-text">
                         <p>
-                            {!! $settings['privacy'] ?? '' !!}
+                            {!! $settings['about_us'] ?? '' !!}
                         </p>
                     </div>
                 </div>
