@@ -27,6 +27,6 @@ class InviteTeamMember extends Mailable
      */
     public function build()
     {
-        return $this->subject('Invitation from VLL')->markdown('emails.team.invite')->with(['link' => $this->link]);
+        return $this->subject('Invite from Virtual Law Library')->markdown('emails.team.invite')->with(['link' => $this->link]);
     }
 }

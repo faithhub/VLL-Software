@@ -20,27 +20,30 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <table
-                                            class="table card-table table-vcenter text-nowrap dataTable no-footer"
+                                            class="table table-bordere card-table table-vcenter text-nowrap dataTable no-footer"
                                             id="datatable" role="grid" aria-describedby="datatable_info">
                                             <thead>
                                                 <tr role="row">
-                                                    <th class="" style="">Invoice ID
+                                                    <th class="sorting sorting_asc" style="">S/N
                                                     </th>
-                                                    <th scope="row" class="" style="">Date of Transaction
+                                                    <th class="sorting sorting_asc" style="">Invoice ID
+                                                    </th>
+                                                    <th scope="row" class="sorting" style="">Date of Transaction
                                                         </th>
-                                                        <th class="" tabindex="0" style="">Transaction Type</th>
-                                                    <th class="" tabindex="0" style="">Transaction Value</th>
+                                                        <th class="sorting" style="">Transaction Type</th>
+                                                    <th class="sorting" style="">Transaction Value</th>
                                                     </th>
-                                                    <th class="" tabindex="0" style="">Status</th>
+                                                    <th class="sorting" style="">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @isset($transactions)
                                                     @foreach ($transactions as $transaction)
                                                         <tr class="">
+                                                            <td>{{ $sn++ }}</td>
                                                             <td class="">
                                                                 <a class="font-weight-normal1"
-                                                                    href="#">{{$transaction->invoice_id}}</a>
+                                                                    href="#">{{$transaction->invoice_id}} {{$transaction->id}}</a>
                                                                 </td>
                                                             <td>{{$transaction->created_at->format('D, M j, Y h:i a')}}</td>
                                                             <td>

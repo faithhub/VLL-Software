@@ -18,10 +18,14 @@ class Subscription
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::user()->sub->isActive) {
-            Session::flash('permission_warning', 'Yo do not have an active subscription, please subscribe and try again!');
+        if (Auth::user()->sub->isActive) {
+            return $next($request);
+        } elseif (Auth::user()->team_id && Auth::user()->team->sub_status == 'active') {
+            return $next($request);
+        } else {
+            Session::flash('permission_warning', 'You do not have an active subscription, please subscribe and try again!');
             return redirect('/user/settings');
-        }
-        return $next($request);
+        } 
+        // return $next($request);
     }
 }

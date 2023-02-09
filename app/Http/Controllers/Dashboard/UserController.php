@@ -75,7 +75,6 @@ class UserController extends Controller
                     array_push($material_array, $object);
                 }
             }
-
             $data['material_array'] = $material_array;
             // dd($material_array);
             return View('dashboard.user.bookstore', $data);
@@ -139,13 +138,28 @@ class UserController extends Controller
 
             //code...
             $my_materials_arr = [];
-            $data['my_materials'] = $my_materials = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false])->get('material_id');
-            foreach ($my_materials as $key => $value) {
+            if (Auth::user()->team_id) {
                 # code...
-                array_push($my_materials_arr, $value->material_id);
+                $team = Team::find(Auth::user()->team_id);
+                foreach ($team->teammates as $key_2 => $value_2) {
+                    # code...
+                    $user = User::where('email', $value_2)->first();
+                    $my_materials = MaterialHistory::where(['user_id' => $user->id, 'is_rent_expired' => false])->get('material_id');
+                    foreach ($my_materials as $key => $value) {
+                        # code...
+                        array_push($my_materials_arr, $value->material_id);
+                    }
+                }
+            } else {
+                $data['my_materials'] = $my_materials = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false])->get('material_id');
+                foreach ($my_materials as $key => $value) {
+                    # code...
+                    array_push($my_materials_arr, $value->material_id);
+                }
             }
+
+
             $data['my_materials_arr'] = $my_materials_arr;
-            $data['rent'] = 700;
             $data['title'] = "Vnedor Dashboard - Bookstore";
             $data['material'] = $m = Material::where(['id' => $id])->with(['type', 'cover', 'country', 'folder', 'subject', 'test_country', 'university'])->first();
             if (!$m) {
@@ -170,10 +184,24 @@ class UserController extends Controller
         try {
             //code...
             $my_materials_arr = [];
-            $data['my_materials'] = $my_materials = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false])->get('material_id');
-            foreach ($my_materials as $key => $value) {
+            if (Auth::user()->team_id) {
                 # code...
-                array_push($my_materials_arr, $value->material_id);
+                $team = Team::find(Auth::user()->team_id);
+                foreach ($team->teammates as $key_2 => $value_2) {
+                    # code...
+                    $user = User::where('email', $value_2)->first();
+                    $my_materials = MaterialHistory::where(['user_id' => $user->id, 'is_rent_expired' => false])->get('material_id');
+                    foreach ($my_materials as $key => $value) {
+                        # code...
+                        array_push($my_materials_arr, $value->material_id);
+                    }
+                }
+            } else {
+                $data['my_materials'] = $my_materials = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false])->get('material_id');
+                foreach ($my_materials as $key => $value) {
+                    # code...
+                    array_push($my_materials_arr, $value->material_id);
+                }
             }
 
             $data['notes'] = Note::where(['user_id' => Auth::user()->id])->inRandomOrder()->limit(4)->get();
@@ -192,7 +220,8 @@ class UserController extends Controller
         try {
             //code...
             $data['title'] = "User Dashboard - Transactions";
-            $data['transactions'] = Transaction::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
+            $data['sn'] = 1;
+            $data['transactions'] = Transaction::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->get();
             return View('dashboard.user.transactions', $data);
         } catch (\Throwable $th) {
             //throw $th;
@@ -306,15 +335,54 @@ class UserController extends Controller
 
             if ($sub->type == 'professional' && $sub->max_teammate > 1) {
                 # code...
-                $team = Team::create([
-                    'user_id' => Auth::user()->id,
-                    'subscription_id' => $sub->id,
-                    'teammates' => [Auth::user()->email],
-                    'start_date' => $date,
-                    'end_date' => $end_date,
-                    'sub_status' => "active"
-                ]);
+                if (Auth::user()->team_id) {
+                    # code...
+                    $team = Team::find(Auth::user()->team_id);
+                    $team->subscription_id = $sub->id;
+                    $team->start_date = $date;
+                    $team->end_date = $end_date;
+                    $team->sub_status = "active";
+                    $team->save();
+                } else {
+                    # code...
+                    $team = Team::create([
+                        'user_id' => Auth::user()->id,
+                        'subscription_id' => $sub->id,
+                        'teammates' => [Auth::user()->email],
+                        'start_date' => $date,
+                        'end_date' => $end_date,
+                        'sub_status' => "active"
+                    ]);
+                }
                 $team_id = $team->id;
+                User::where('id', Auth::user()->id)->update(['sub_id' => $save_sub->id, 'team_id' => $team_id ?? null, 'team_admin' => true]);
+            } elseif ($sub->type == 'professional' && $sub->max_teammate == 1) {
+                if (Auth::user()->team_id) {
+                    # code...
+                    $team = Team::find(Auth::user()->team_id);
+                    foreach ($team->teammates as $key => $value) {
+                        # code...
+                        User::where('email', $value)->update(['team_id' => null]);
+                    }
+                    $team->teammates = [Auth::user()->email];
+                    $team->subscription_id = $sub->id;
+                    $team->start_date = $date;
+                    $team->end_date = $end_date;
+                    $team->sub_status = "active";
+                    $team->save();
+                } else {
+                    # code...
+                    $team = Team::create([
+                        'user_id' => Auth::user()->id,
+                        'subscription_id' => $sub->id,
+                        'teammates' => [Auth::user()->email],
+                        'start_date' => $date,
+                        'end_date' => $end_date,
+                        'sub_status' => "active"
+                    ]);
+                }
+                $team_id = $team->id;
+                User::where('id', Auth::user()->id)->update(['sub_id' => $save_sub->id, 'team_id' => $team_id ?? null, 'team_admin' => true]);
             }
 
             User::where('id', Auth::user()->id)->update(['sub_id' => $save_sub->id, 'team_id' => $team_id ?? null]);
@@ -468,6 +536,7 @@ class UserController extends Controller
             $data['sub'] = SubHistory::where('id', Auth::user()->sub_id)->with('sub')->first();
             $data['title'] = "User Dashboard - Settings";
             $data['team'] = $team = Team::find(Auth::user()->team_id);
+            $data['invite'] = $invite = Invite::where(['email' => Auth::user()->email, 'team_id' => Auth::user()->team_id, 'status' => 'accept'])->first();
             $data['sn'] = 1;
             // dd($team);
             return View('dashboard.user.settings', $data);
@@ -489,19 +558,20 @@ class UserController extends Controller
             $data['trxref'] = $trxref = $request->trxref;
             $data['amount'] = $amount = $request->amount;
             $data['type'] = $type = $request->type;
-            $date_rented_expired = null;
+            $rent_count = 0;
+            $rent_unique_id = 0;
             if ($type == "rented") {
                 # code...
                 $date_rented_expired = Carbon::now()->addDays(2);
-                $rent_pending = MaterialHistory::where(['user_id' => Auth::user()->id, 'type' => 'rented', 'is_rent_expired' => false])->where('rent_count', '<', 2)->latest()->first();;
-                if ($rent_pending) {
-                    MaterialHistory::where(['user_id' => Auth::user()->id, 'type' => 'rented', 'is_rent_expired' => false, 'id' => $rent_pending->id, 'rent_unique_id' => $rent_pending->rent_unique_id])->update(['rent_count' => 2]);
-                    $rent_count = 2;
-                    $rent_unique_id = $rent_pending->rent_unique_id;
-                } else {
-                    $rent_count = 0;
-                    $rent_unique_id = Str::upper("TRX" . $this->unique_code(17));
-                }
+                // $rent_pending = MaterialHistory::where(['user_id' => Auth::user()->id, 'type' => 'rented', 'is_rent_expired' => false])->where('rent_count', '<', 2)->latest()->first();;
+                // if ($rent_pending) {
+                //     MaterialHistory::where(['user_id' => Auth::user()->id, 'type' => 'rented', 'is_rent_expired' => false, 'id' => $rent_pending->id, 'rent_unique_id' => $rent_pending->rent_unique_id])->update(['rent_count' => 2]);
+                //     $rent_count = 2;
+                //     $rent_unique_id = $rent_pending->rent_unique_id;
+                // } else {
+                $rent_count = 1;
+                $rent_unique_id = Str::upper("TRX" . $this->unique_code(17));
+                // }
             }
             $data['invoice_id'] = $invoice_id = Str::upper("TRX" . $this->unique_code(12));
             $data['date'] = $date = Carbon::now();
@@ -531,13 +601,41 @@ class UserController extends Controller
                 'material_id' => $mat_id,
                 'transaction_id' => $trans->id,
                 'invoice_id' => $invoice_id,
-                'rent_count' => $rent_count ?? 1,
-                'rent_unique_id' => $rent_unique_id ?? null,
-                'date_rented_expired' => $date_rented_expired,
+                'rent_count' => $rent_count,
+                'rent_unique_id' => $rent_unique_id,
+                'date_rented_expired' => $date_rented_expired ?? null,
                 'type' => $type
             ]);
 
             return $data;
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            // dd($th->getMessage());
+            //throw $th;
+        }
+    }
+
+    public function second_rent($id)
+    {
+        # code...
+        try {
+            //code...
+            $rent_pending = MaterialHistory::where(['user_id' => Auth::user()->id, 'type' => 'rented', 'is_rent_expired' => false])->where('rent_count', '<', 2)->with('trans')->latest()->first();
+
+            MaterialHistory::where(['user_id' => Auth::user()->id, 'type' => 'rented', 'is_rent_expired' => false, 'id' => $rent_pending->id, 'rent_unique_id' => $rent_pending->rent_unique_id])->update(['rent_count' => 2]);
+            MaterialHistory::create([
+                'user_id' => Auth::user()->id,
+                'material_id' => $id,
+                'transaction_id' => $rent_pending->trans->id,
+                'invoice_id' => $rent_pending->invoice_id,
+                'rent_count' => 2,
+                'rent_unique_id' => $rent_pending->rent_unique_id,
+                'date_rented_expired' => $rent_pending->date_rented_expired,
+                'type' => 'rented'
+            ]);
+
+            Session::flash('success', 'Material added to my library successfully');
+            return redirect()->route('user.library');
         } catch (\Throwable $th) {
             dd($th->getMessage());
             //throw $th;
@@ -703,6 +801,29 @@ class UserController extends Controller
         }
     }
 
+    public function remove_teammate($team_id, $email)
+    {
+        # code...
+        $team = Team::find($team_id);
+        $teammates = $team->teammates;
+        if (in_array($email, $teammates)) {
+            foreach ($teammates as $key => $value) {
+                # code...
+                if ($email == $value) {
+                    unset($teammates[$key]);
+                }
+            }
+            $team->teammates = $teammates;
+            $team->save();
+        }
+        User::where('email', $email)->update(['team_id' => null]);
+        $invite = Invite::where(['email' => $email, 'team_id' => $team->id])->where('status', 'accept')->orWhere('status', null)->first();
+        $invite->status = 'removed';
+        $invite->save();
+        Session::flash('success', 'Team Member removed');
+        return redirect()->route('user.settings');
+    }
+
     public function accept_invite($id)
     {
         # code...
@@ -710,9 +831,16 @@ class UserController extends Controller
 
         $team = Team::find($decrypt);
         $teammates = $team->teammates;
-        array_push($teammates, Auth::user()->email);
-        $team->teammates = $teammates;
-        $team->save();
+        if (!in_array(Auth::user()->email, $teammates)) {
+            array_push($teammates, Auth::user()->email);
+            $team->teammates = $teammates;
+            $team->save();
+        }
+        User::where('email', Auth::user()->email)->update(['team_id' => $team->id]);
+        $invite = Invite::where(['email' => Auth::user()->email, 'team_id' => $team->id])->where('status', 'decline')->orWhere('status', null)->first();
+        $invite->status = 'accept';
+        $invite->date_accepted = Carbon::now();
+        $invite->save();
         Session::flash('success', 'Invite Accepted');
         return redirect()->route('user.index');
     }
@@ -726,8 +854,8 @@ class UserController extends Controller
         // array_push($teammates, Auth::user()->email);
         // $team->teammates = $teammates;
         // $team->save();
-        Session::flash('success', 'Invite Accepted');
-        return redirect()->route('user.index');
+        Session::flash('success', 'Invite Declined');
+        return redirect()->route('home');
     }
 
     public function invite_teammate(Request $request)

@@ -101,29 +101,29 @@
 
     function saveMaterial(amount, id, type, response) {
         try {
-                    url = "{{ route('user.rent.buy') }}";
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            mat_id: id,
-                            type: type,
-                            amount: amount,
-                            reference: response.reference,
-                            status: response.status,
-                            trxref: response.trxref,
-                        },
+            url = "{{ route('user.rent.buy') }}";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    mat_id: id,
+                    type: type,
+                    amount: amount,
+                    reference: response.reference,
+                    status: response.status,
+                    trxref: response.trxref,
+                },
 
-                        success: function(response) {
-                            console.log(response);
-                            return toastr.success("{{ session('success') }}", "Payment Successful");
-                        },
-                        error: function(err) {
-                            console.log(err);
-                            return toastr.error("{{ session('error') }}", "Payment Failed");
-                        }
-                    });
+                success: function(response) {
+                    console.log(response);
+                    return toastr.success("{{ session('success') }}", "Payment Successful");
+                },
+                error: function(err) {
+                    console.log(err);
+                    return toastr.error("{{ session('error') }}", "Payment Failed");
+                }
+            });
         } catch (error) {
             console.log(error);
         }

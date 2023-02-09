@@ -147,9 +147,9 @@
                                                 <div class="mat-title pl-3 mt-3">
                                                     <h6><b class="font-weight-bold">Plan: {{ $sub->sub->name }} </b></h6>
                                                     <h6><b class="font-weight-bold">Subscribed On:
-                                                        </b>{{ $sub->start_date }}</h6>
+                                                        </b>{{ date('D, M j, Y', strtotime($sub->start_date)) }}</h6>
                                                     <h6><b class="font-weight-bold">Expired On:
-                                                        </b>{{ $sub->expired_date }}</h6>
+                                                        </b>{{ date('D, M j, Y', strtotime($sub->expired_date)) }}</h6>
                                                     <h6><b class="font-weight-bold">Status: </b>
                                                         @if ($sub->isActive)
                                                             <span class="badge badge-gradient-success">Active</span>
@@ -158,6 +158,29 @@
                                                         @endif
                                                     </h6>
                                                 </div>
+                                            @endisset
+
+                                            @isset(Auth::user()->team_id)
+                                                @if (!Auth::user()->team_admin)
+                                                    <div class="mat-title pl-3 mt-3">
+                                                        <h6><b class="font-weight-bold">Team Details </b></h6>
+                                                        <h6><b class="font-weight-bold">Joined On:
+                                                                @isset($invite->date_accepted)
+                                                                    {{ date('D, M j, Y', strtotime($invite->date_accepted)) }}
+                                                                @endisset </b></h6>
+                                                        <h6><b class="font-weight-bold">Subscribed On:
+                                                            </b>{{ date('D, M j, Y', strtotime($team->start_date)) }}</h6>
+                                                        <h6><b class="font-weight-bold">Expired On:
+                                                            </b>{{ date('D, M j, Y', strtotime($team->expired_date)) }}</h6>
+                                                        <h6><b class="font-weight-bold">Status: </b>
+                                                            @if ($team->sub_status == 'active')
+                                                                <span class="badge badge-gradient-success">Active</span>
+                                                            @else
+                                                                <span class="badge badge-gradient-danger">Expired</span>
+                                                            @endif
+                                                        </h6>
+                                                    </div>
+                                                @endif
                                             @endisset
                                         </div>
                                     </div>
@@ -186,15 +209,16 @@
                                                     <tbody>
                                                     </tbody>
                                                     @isset($team->teammates)
-                                                        @foreach ($team->teammates as $team)
+                                                        @foreach ($team->teammates as $teammember)
                                                             <tr>
                                                                 <td>{{ $sn++ }}</td>
-                                                                <td>{{ $team }}</td>
+                                                                <td>{{ $teammember }}</td>
                                                                 <td>
-                                                                    @if ($team == Auth::user()->email)
+                                                                    @if ($teammember == Auth::user()->email)
                                                                         Team Admin
                                                                     @else
-                                                                        <a href="#"
+                                                                        <a href="{{ route('user.remove_teammate',['id' => $team->id, 'email' => $teammember]) }}"
+                                                                            onclick="return confirm('Are you sure you want to remove this memeber?')"
                                                                             class="btn btn-sm btn-primary">Remove</a>
                                                                     @endif
                                                                 </td>

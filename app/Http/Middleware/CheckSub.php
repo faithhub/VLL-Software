@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\SubHistory;
+use App\Models\Team;
 use App\Models\User;
 use Carbon\Carbon;
 use Closure;
@@ -27,6 +28,13 @@ class CheckSub
         } else {
             if (Carbon::now() > $sub->expired_date) {
                 $sub->isActive = false;
+                $sub->save();
+            }
+        }
+        if (Auth::user()->team_id) {
+            $team = Team::find(Auth::user()->team_id);
+            if (Carbon::now() > $team->end_date) {
+                $sub->sub_status = 'expired';
                 $sub->save();
             }
         }

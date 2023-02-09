@@ -20,7 +20,7 @@ return new class extends Migration
                 ->nullable()
                 ->constrained()
                 ->cascadeOnDelete();
-            $table->enum('status', ['accept', 'decline'])->nullable();
+            $table->enum('status', ['accept', 'decline', 'removed'])->nullable();
             $table->date('date_accepted')->nullable();
             $table->date('date_declined')->nullable();
             $table->timestamps();
