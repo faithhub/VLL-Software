@@ -55,7 +55,7 @@
                                     <div class="chat-body-style ps--active-y my_new_div_now" id="ChatBody">
                                         @isset($messages)
                                             @foreach ($messages as $message)
-                                                @if ($message->admin)
+                                                @if ($message->type == "admin")
                                                     <div class="message-feed media mt-0">
                                                         <div class="float-startpe-2"> <img
                                                                 src="{{ asset($message->admin->profile_pics->url ?? 'assets/dashboard/images/photos/22.jpg') }}"
@@ -91,7 +91,7 @@
                                                     </div>
                                                 @endif
 
-                                                @if ($message->user)
+                                                @if ($message->type == "user")
                                                     <div class="message-feed right">
                                                         <div class="float-end ps-2">
                                                             <img src="{{ asset(Auth::user()->profile_pics->url ?? 'assets/dashboard/images/photos/22.jpg') }}"

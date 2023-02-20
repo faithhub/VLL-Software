@@ -31,9 +31,13 @@ class DashboardController extends Controller
         # code...
         try {
             //code...
+            $mmmm = MaterialHistory::all();
+            foreach ($mmmm as $key => $value) {
+                # code...
+                $value->unique_id = Str::upper("MATHIS" . $this->unique_code(12));
+                $value->save();
+            }
             $data['title'] = "Admin Dashboard";
-            // Carbon
-
             $data['user_count'] = User::where('role', 'user')->count();
             $data['vendor_count'] = User::where('role', 'vendor')->count();
             $data['admin_upload'] = Material::where('uploaded_by', 'admin')->count();
