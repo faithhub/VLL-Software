@@ -22,27 +22,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
 
-    private function unique_code($limit)
-    {
-        return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
-    }
-    
     public function index(Request $request)
     {
         # code...
         try {
             //code...
-            $mmmm = MaterialHistory::all();
-            foreach ($mmmm as $key => $value) {
-                # code...
-                $value->unique_id = Str::upper("MATHIS" . $this->unique_code(12));
-                $value->save();
-            }
             $data['title'] = "Admin Dashboard";
             $data['user_count'] = User::where('role', 'user')->count();
             $data['vendor_count'] = User::where('role', 'vendor')->count();
