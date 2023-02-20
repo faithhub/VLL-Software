@@ -70,6 +70,9 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::match(['get', 'post'], 'remove/{id}/{email}',  [App\Http\Controllers\Dashboard\UserController::class, 'remove_teammate'])->name('remove_teammate');
         Route::match(['get', 'post'], 'decline/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'decline_invite'])->name('decline_invite');
         Route::match(['get', 'post'], 'set-current-note',  [App\Http\Controllers\Dashboard\UserController::class, 'set_current_note'])->name('set.current.note');
+        Route::match(['get'], 'notes',  [App\Http\Controllers\Dashboard\UserController::class, 'notes'])->name('notes');
+        Route::match(['get', 'post'], 'note/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'note'])->name('note');
+        Route::match(['post'], 'unlock-test',  [App\Http\Controllers\Dashboard\UserController::class, 'unlock_test'])->name('unlock_test');
     });
 });
 
@@ -105,11 +108,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         //Vendors
         Route::get('/vendors',  [App\Http\Controllers\Admin\VendorController::class, 'index'])->name('vendors');
         Route::get('/vendor/{id}',  [App\Http\Controllers\Admin\VendorController::class, 'view'])->name('vendor');
-
+        Route::get('/vendor/acc/{id}/{type}/{mode}',  [App\Http\Controllers\Admin\VendorController::class, 'lock_unlock'])->name('vendor.lock_unlock');
+        
         Route::get('/library',  [App\Http\Controllers\Admin\MaterialController::class, 'library'])->name('library');
         Route::match(['get', 'post'], '/upload',  [App\Http\Controllers\Admin\MaterialController::class, 'upload'])->name('upload');
         Route::match(['get', 'post'], '/edit/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'edit'])->name('edit.library');
         Route::match(['get'], '/library/view/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'view'])->name('view.library');
+        Route::match(['get'], '/library/delete/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'delete'])->name('delete.library');
 
 
         Route::get('/transactions',  [App\Http\Controllers\Admin\DashboardController::class, 'transactions'])->name('transactions');
@@ -146,5 +151,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         //Messages
         Route::match(['get', 'post'], '/messages',  [App\Http\Controllers\Admin\MessageController::class, 'index'])->name('messages');
+        Route::match(['post'], '/current_msg_user',  [App\Http\Controllers\Admin\MessageController::class, 'current_msg_user'])->name('current_msg_user');
+        Route::match(['post'], '/send_msg',  [App\Http\Controllers\Admin\MessageController::class, 'send_msg'])->name('send_msg');
     });
 });

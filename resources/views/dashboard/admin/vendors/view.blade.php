@@ -31,7 +31,6 @@
                                 src="{{ asset($vendor->profile_pics->url ?? 'assets/dashboard/images/photos/22.jpg') }}">
                             <div class="mt-1 ms-xl-5">
                                 <h4 class="pro-user-username mb-3 font-weight-bold">{{ $vendor->name }}
-                                    {{-- <i class="fa fa-check-circle text-success"></i> --}}
                                 </h4>
                                 <ul class="mb-0 pro-details">
 
@@ -98,6 +97,130 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row mt-5">
+                    <div class="col-lg-6 col-md-6 col-xl-6">
+                        <div class="card border-10 p-4">
+                            <div class="text-right">
+                                @if ($vendor->acc_verified)
+                                <a href="{{ route('admin.vendor.lock_unlock', ['id' => $vendor->id, 'type' => 'naira', 'mode' => 'unlock']) }}" onclick="return confirm('Are you sure you want to unlock this account?')" class="btn p-3 btn-primary">Unlock Naira account</a>
+                                @else
+                                <a href="{{ route('admin.vendor.lock_unlock', ['id' => $vendor->id, 'type' => 'naira', 'mode' => 'lock']) }}" onclick="return confirm('Are you sure you want to lock this account?')"  class="btn p-3 btn-primary">Lock Naira account</a>
+                                @endif
+                            </div>
+                            <div class="card-header border-bottom-0 mb-0">
+                                <h6 class="mb-1 mt-1 font-weight-bold h4">
+                                    <img src="{{ asset('assets/dashboard/images/flags/NGN.png') }}" alt="USD"
+                                        class="mb-1 country-settings">
+                                    Naira (NGN) Account
+                                </h6>
+                            </div>
+                            <div class="row mt-5 settings">
+                                <div class="col-lg-12 col-md-12 col-xl-12">
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Name</label>
+                                            <input type="" name="dom_acc_number" class="form-control"
+                                                id="dom_acc_number" placeholder="" disabled
+                                                value="{{ $vendor->bank->name ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Account Number</label>
+                                            <div class="d-flex">
+                                                <input type="number" name="acc_number" class="form-control" id="acc_number"
+                                                    placeholder="" disabled value="{{ $vendor->acc_number ?? '' }}">
+                                                @if ($vendor->acc_verified)
+                                                    <button type="button" class="btn btn-primary" disabled>
+                                                        <i class="fa fa-lock"></i>
+                                                        <b class="verify-btn">Verified</b>
+                                                    </button>
+                                                @else
+                                                    <button disabled type="button" id="verify-me" class="btn btn-primary"
+                                                        onclick="verifyAccount()">
+                                                        <i class="" id="spinner"></i>
+                                                        <b id="verify-btn">Not Verify</b>
+                                                    </button>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Account Name</label>
+                                            <input type="text" name="acc_name" id="acc_name" readonly
+                                                class="form-control" placeholder=""disabled
+                                                value="{{ $vendor->acc_name ?? '' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-6 col-md-6 col-xl-6">
+                        <div class="card border-10 p-4">
+                            <div class="text-right">
+                                @if ($vendor->dom_acc_verified)
+                                <a href="{{ route('admin.vendor.lock_unlock', ['id' => $vendor->id, 'type' => 'dom', 'mode' => 'unlock']) }}" onclick="return confirm('Are you sure you want to unlock this account?')" class="btn p-3 btn-primary">Unlock DOM account</a>
+                                @else
+                                <a href="{{ route('admin.vendor.lock_unlock', ['id' => $vendor->id, 'type' => 'dom', 'mode' => 'lock']) }}" onclick="return confirm('Are you sure you want to lock this account?')"  class="btn p-3 btn-primary">Lock DOM account</a>
+                                @endif
+                            </div>
+                            <div class="card-header border-bottom-0 mb-0">
+                                <h6 class="mb-1 mt-1 font-weight-bold h4">
+                                    <img src="{{ asset('assets/dashboard/images/flags/USD.png') }}" alt="USD"
+                                        class="mb-1 country-settings">
+                                    Dollar (USD) Account
+                                </h6>
+                            </div>
+                            <div class="row mt-5 settings">
+                                <div class="col-lg-12 col-md-12 col-xl-12">
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Name</label>
+                                            <input type="" name="" class="form-control"
+                                                id="dom_acc_number" placeholder="" disabled
+                                                value="{{ $vendor->dom->name ?? '' }}">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Account Number</label>
+                                            <div class="d-flex">
+                                                <input type="number" name="dom_acc_number" class="form-control"
+                                                    id="dom_acc_number" placeholder="" disabled
+                                                    value="{{ $vendor->dom_acc_number ?? '' }}">
+                                                @if ($vendor->dom_acc_verified)
+                                                    <button type="button" class="btn btn-primary" disabled>
+                                                        <i class="fa fa-lock"></i>
+                                                        <b class="dom_verify-btn">Verified</b>
+                                                    </button>
+                                                @else
+                                                    <button disabled type="button" id="dom_verify-me"
+                                                        class="btn btn-primary" onclick="verifyDomAccount()">
+                                                        <i class="" id="dom_spinner"></i>
+                                                        <b id="dom_verify-btn">Not Verify</b>
+                                                    </button>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Account Name</label>
+                                            <input type="text" readonly class="form-control" placeholder="" disabled
+                                                value="{{ $vendor->dom_acc_name ?? '' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="profile-cover">
                 <div class="wideget-user-tab">
@@ -109,7 +232,7 @@
                                 <li><a href="#tab-8" data-bs-toggle="tab" class="fs-14" aria-selected="false"
                                         role="tab" tabindex="-1">Transactions</a></li>
                                 <li><a href="#tab-9" data-bs-toggle="tab" class="fs-14" aria-selected="false"
-                                        role="tab" tabindex="-1">Timeline</a> </li>
+                                        role="tab" tabindex="-1">Login History</a> </li>
                             </ul>
                         </div>
                     </div>
@@ -132,14 +255,17 @@
                                                 <div class="col-sm-12">
                                                     <table
                                                         class="table table-bordere card-table table-vcenter text-nowrap dataTable no-footer"
-                                                        id="datatable" role="grid" aria-describedby="datatable_info">
+                                                        role="grid" aria-describedby="datatable_info">
                                                         <thead>
                                                             <tr role="row">
                                                                 <th class="sorting sorting_asc" style="">No</th>
-                                                                <th scope="row" class="sorting" style="">Book </th>
-                                                                <th class="sorting" tabindex="0" style="">Book Name
+                                                                <th scope="row" class="sorting" style="">Book
                                                                 </th>
-                                                                <th class="sorting" tabindex="0" style="">Type</th>
+                                                                <th class="sorting" tabindex="0" style="">Book
+                                                                    Name
+                                                                </th>
+                                                                <th class="sorting" tabindex="0" style="">Type
+                                                                </th>
                                                                 <th class="sorting" tabindex="0" style="">Author
                                                                 </th>
                                                                 <th class="sorting" tabindex="0" style="">
@@ -165,7 +291,9 @@
                                                                                 href="">{{ $material->title }}</a></td>
                                                                         <td>{{ $material->type->name ?? '-' }}</td>
                                                                         <td>{{ $material->name_of_author ?? '-' }}</td>
-                                                                        <td>{{ $material->material_desc ?? '-' }}</td>
+                                                                        <td>
+                                                                            {{ mb_strimwidth($material->material_desc ?? '', 0, 40, '...') }}
+                                                                        </td>
                                                                         {{-- <td>₦{{ number_format($material->amount ?? 0, 2) }}</td> --}}
                                                                         <td>
                                                                             <b
@@ -181,8 +309,8 @@
                                                                                     Delete</a>
                                                                                 <a href="{{ route('admin.edit.library', $material->id) }}"
                                                                                     class="btn m-1 btn-sm btn-primary">Edit</a>
-                                                                                <a href="{{ route('admin.view.library', $material->id) }}"
-                                                                                    class="btn btn-sm m-1 btn-primary">View</a>
+                                                                                {{-- <a href="{{ route('admin.view.library', $material->id) }}"
+                                                                                    class="btn btn-sm m-1 btn-primary">View</a> --}}
                                                                             </div>
                                                                         </td>
                                                                         {{-- <td>{{ $material->created_at->format('D, M j, Y') ?? '' }}</td> --}}
@@ -206,14 +334,14 @@
                                 <div class="card-header">
                                     <h3 class="card-title">Transaction History</h3>
                                 </div>
-                                <div class="card-body pt-0">
+                                <div class="card-body pt-5">
                                     <div class="table-responsive">
                                         <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <table
                                                         class="table table-bordere card-table table-vcenter text-nowrap dataTable no-footer"
-                                                        id="datatable" role="grid" aria-describedby="datatable_info">
+                                                        role="grid" aria-describedby="datatable_info">
                                                         <thead>
                                                             <tr role="row">
                                                                 <th class="sorting sorting_asc" style="">Invoice ID
@@ -281,14 +409,14 @@
                                 <div class="card-header">
                                     <h3 class="card-title">Login History</h3>
                                 </div>
-                                <div class="card-body pt-0">
+                                <div class="card-body pt-5">
                                     <div class="table-responsive">
                                         <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <table
                                                         class="table table-bordere card-table table-vcenter text-nowrap dataTable no-footer"
-                                                        id="datatable" role="grid" aria-describedby="datatable_info">
+                                                        role="grid" aria-describedby="datatable_info">
                                                         <thead>
                                                             <tr role="row">
                                                                 <th class="sorting" tabindex="0" style="">Date
@@ -331,4 +459,9 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            var tables = $('table').DataTable();
+        });
+    </script>
 @endsection

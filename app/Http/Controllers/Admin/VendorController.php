@@ -20,7 +20,7 @@ class VendorController extends Controller
             //code...
             $data['title'] = "All Vendors";
             $data['sn'] = 1;
-            $data['vendors'] = $v = User::where("role", "vendor")->with('bank')->orderBy('created_at', 'DESC')->get();
+            $data['vendors'] = $v = User::where("role", "vendor")->with(['bank', 'dom'])->orderBy('created_at', 'DESC')->get();
             return View('dashboard.admin.vendors.index', $data);
         } catch (\Throwable $th) {
             dd($th->getMessage());
@@ -33,7 +33,7 @@ class VendorController extends Controller
         # code...
         try {
             //code...
-            $data['vendor'] = $vendor = User::where(["role" => "vendor", 'id' => $id])->with(['bank', 'country', 'profile_pics'])->first();
+            $data['vendor'] = $vendor = User::where(["role" => "vendor", 'id' => $id])->with(['bank', 'dom', 'country', 'profile_pics'])->first();
             if (!$vendor) {
                 Session::flash('warning', 'No record found');
                 return redirect()->route('admin.vendors');
@@ -56,9 +56,56 @@ class VendorController extends Controller
                     array_push($mats_arr, $object);
                 }
             }
+            // dD($vendor);
             $data['login_histories'] = LoginHistory::where('user_id', $vendor->id)->get();
             $data['transactions'] = $mats_arr;
             return View('dashboard.admin.vendors.view', $data);
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            //throw $th;
+        }
+    }
+
+    public function lock_unlock($id, $type, $acc_mode)
+    {
+        # code...
+        try {
+            //code...
+            $vendor = User::find($id);
+            $mode = false;
+            $mode_name = "unlocked";
+
+            if (!$vendor) {
+                Session::flash('warning', 'No record found');
+                return redirect()->back();
+            }
+
+            if ($acc_mode == 'lock') {
+                # code...
+                $mode = true;
+                $mode_name = "locked";
+            }
+
+            switch ($type) {
+                case 'dom':
+                    # code...
+                    $vendor->dom_acc_verified = $mode;
+                    $vendor->save();
+                    Session::flash('success', 'Vendor DOM account ' . $mode_name);
+                    break;
+                case 'naira':
+                    # code...
+                    $vendor->acc_verified = $mode;
+                    $vendor->save();
+                    Session::flash('success', 'Vendor Naira account ' . $mode_name);
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+
+            return redirect()->back();
         } catch (\Throwable $th) {
             dd($th->getMessage());
             //throw $th;

@@ -44,7 +44,7 @@ class VendorController extends Controller
         # code...
         try {
             //code...
-            $data['title'] = "Vnedor Dashboard - My Library";
+            $data['title'] = "Vendor Dashboard - My Library";
             $role = ['vendor'];
             $data['material_types'] = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
             // $data['materialss'] = $m = Material::where('user_id', Auth::user()->id)->OrderBy('material_type_id')->selectRaw('material_type_id, count(*) as total')->groupBy('material_type_id')->get();
@@ -98,7 +98,7 @@ class VendorController extends Controller
         # code...
         try {
             //code...
-            $data['title'] = "Vnedor Dashboard - Transactions";
+            $data['title'] = "Vendor Dashboard - Transactions";
             $data['sn'] = 1;
             $matHis = MaterialHistory::with(['trans', 'mat'])->get();
             $mats_arr3 = [];
@@ -126,7 +126,7 @@ class VendorController extends Controller
         # code...
         try {
             //code...
-            $data['title'] = "Vnedor Dashboard - My Library";
+            $data['title'] = "Vendor Dashboard - My Library";
             $data['transactions'] = $this->materials;
             return View('dashboard.vendor.material-summary', $data);
         } catch (\Throwable $th) {
@@ -145,7 +145,7 @@ class VendorController extends Controller
         # code...
         try {
             //code...
-            $data['title'] = "Vnedor Dashboard - My Library";
+            $data['title'] = "Vendor Dashboard - My Library";
             $data['material'] = $m = Material::where(['user_id' => Auth::user()->id, 'id' => $id])->with(['type', 'file', 'cover', 'country', 'folder', 'subject', 'test_country', 'university'])->first();
             // dd($m);
             if (!$m) {
@@ -185,6 +185,7 @@ class VendorController extends Controller
 
             Messages::create([
                 'user_id' => Auth::user()->id,
+                'type' => 'user',
                 'msg' => $request->msg ?? null,
                 'file_name' => $msg_org_name ?? null,
                 'isMedia' => $isMedia,
@@ -203,7 +204,7 @@ class VendorController extends Controller
         }
         try {
             //code...
-            $data['title'] = "Vnedor Dashboard - Help";
+            $data['title'] = "Vendor Dashboard - Help";
             $data['messages'] = Messages::where('user_id', Auth::user()->id)->with(['file', 'user', 'admin'])->orderBy('created_at', 'ASC')->get();
             $data['email'] = "virtuallawlibrary@gmail.com";
             return View('dashboard.vendor.help', $data);

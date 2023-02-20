@@ -33,7 +33,9 @@
                             <h5><b class="font-weight-bold">Country: </b>{{ $material->test_country->name }}</h5>
                         @endisset --}}
                         @isset($material->university_id)
-                            <h5><b class="font-weight-bold">University: </b>{{ $material->university->name }}</h5>
+                            @if (substr($material->type->mat_unique_id, 0, 3) == 'TAA')
+                                <h5><b class="font-weight-bold">University: </b>{{ $material->university->name }}</h5>
+                            @endif
                         @endisset
                         <h5><b class="font-weight-bold">Amount:
                                 @if ($material->price == 'Paid')
@@ -75,7 +77,7 @@
                                         </a>
                                     @elseif($rentedMatCount == 1)
                                         <a class="btn m-2 btn-dark p-2 btn-outline-primary"
-                                           href="{{ route('user.second_rent', $material->id) }}">
+                                            href="{{ route('user.second_rent', $material->id) }}">
                                             Rent Book
                                         </a>
                                     @elseif($rentedMatCount == 0)
@@ -111,7 +113,7 @@
                                         </a>
                                     @elseif($rentedMatCount == 1)
                                         <a class="btn m-2 btn-dark p-2 btn-outline-primary"
-                                           href="{{ route('user.second_rent', $material->id) }}">
+                                            href="{{ route('user.second_rent', $material->id) }}">
                                             Rent Book
                                         </a>
                                     @elseif($rentedMatCount == 0)

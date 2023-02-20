@@ -15,6 +15,7 @@ class Messages extends Model
         "file_name",
         "isChecked",
         "isMedia",
+        "type",
         "media_id"
     ];
 

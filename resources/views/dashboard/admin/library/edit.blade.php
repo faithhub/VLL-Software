@@ -15,7 +15,7 @@
                         <h6 class="mb-1 mt-1 font-weight-bold h4">
                             Edit Material Information
                         </h6>
-                        <form method="POST" action="{{ route('admin.edit', $material['id']) }}" class="validate-form"
+                        <form method="POST" action="{{ route('admin.edit.library', $material['id']) }}" class="validate-form"
                             enctype="multipart/form-data">
                             <input type="hidden" name="id" value="{{ $material['id'] }}">
                             @csrf

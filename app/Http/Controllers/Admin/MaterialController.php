@@ -231,6 +231,24 @@ class MaterialController extends Controller
         }
     }
 
+    public function delete($id)
+    {
+        # code...
+        try {
+            //code...
+            $material =   Material::find($id);
+            if (!$material) {
+                Session::flash('error', __('Not record found'));
+                return redirect()->withInput(['tabName' => 'subjects']);
+            }
+            $material->delete();
+            Session::flash('success', __('Material Type deleted successfully'));
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            //throw $th;
+        }
+    }
 
     public function edit(Request $request, $id)
     {
@@ -437,7 +455,6 @@ class MaterialController extends Controller
             //throw $th;
         }
     }
-
 
     public function delete_material($id)
     {

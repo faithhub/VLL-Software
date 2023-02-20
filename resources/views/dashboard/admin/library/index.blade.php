@@ -53,9 +53,10 @@
                                                             </td>
                                                             <td>
                                                             <div class="d-flex">
-                                                                <a href="" class="p-2"><i class="fa fa-trash"></i></a>
+                                                                {{-- <a href="" class="p-2"><i class="fa fa-trash"></i></a> --}}
+                                                                <a onclick="return confirm('Are you sure you want to delete this material?')" href="{{ route('admin.delete.library', $material->id) }}" class="p-2"><i class="fa fa-trash"></i></a>
                                                                 <a href="{{ route('admin.edit.library', $material->id) }}" class="p-2"><i class="fa fa-pencil"></i></a>
-                                                                <a href="{{ route('admin.view.library', $material->id) }}" class="p-2"><i class="fa fa-eye"></i></a>
+                                                                {{-- <a href="{{ route('admin.view.library', $material->id) }}" class="p-2"><i class="fa fa-eye"></i></a> --}}
                                                             </div>
                                                             </td>
                                                             {{-- <td>{{ $material->created_at->format('D, M j, Y') ?? '' }}</td> --}}

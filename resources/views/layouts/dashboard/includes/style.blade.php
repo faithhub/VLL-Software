@@ -64,4 +64,73 @@
         font-size: 18px;
         color: black;
     }
+
+    .image_big_div {
+        height: 250px;
+    }
+    
+
+    .card-note {
+        box-shadow: 0 0.76rem 1.52rem rgb(18 38 63 / 16%);
+    }
+
+    .search-text {
+        background-color: #1d355747 !important;
+    }
+
+    /* #image_big_div {
+        background-color: green;
+        padding: 2px;
+        width: 100px;
+        -ms-transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+        position: absolute;
+        top: 15px;
+        left: -25px;
+
+        font-size: 12px;
+        text-align: center;
+    } */
+    #image_big_div {
+        position: fixed;
+        inset: 0 auto auto 0;
+        background: #08769b;
+        transform-origin: 100% 0;
+        /* or top left */
+        transform: translate(-29.3%) rotate(-45deg);
+    }
+
+    .ribbon-holder {
+        overflow: hidden;
+        position: relative
+    }
+
+    .ribbon {
+        font-weight: 800;
+        font-family: system-ui;
+        position: absolute;
+        text-transform: uppercase;
+        transform: rotate(-45deg);
+        text-align: center;
+        top: 25px;
+        left: -32px;
+        width: 145px;
+    }
+
+    .ribbon-rented {
+        background: red;
+        color: white;
+    }
+
+    .ribbon-bought {
+        background: #457B9D;
+        color: white;
+    }
+
+    .ribbon-free {
+        background: #457B9D;
+        color: white;
+    }
 </style>

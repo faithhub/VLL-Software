@@ -14,11 +14,14 @@
                             </div>
                         </div>
                         <div class="card-options" style="margin-right:2.5%">
-                            <select class="form-control select" style="min-width: 120% !important">
-                                <option>Last 7 Days</option>
-                                <option>Last 30 Days</option>
-                                <option>Last 12 Month</option>
+                            <form method="GET" action="">
+                            <select onchange="submitForm(this)" name="date" class="form-control select" style="min-width: 120% !important">
+                                <option value="all" @selected(request()->get('date') == "all" )>All</option>
+                                <option value="7" @selected(request()->get('date') == "7" )>Last 7 Days</option>
+                                <option value="30" @selected(request()->get('date') == "30" )>Last 30 Days</option>
+                                <option value="12" @selected(request()->get('date') == "12" )>Last 12 Month</option>
                             </select>
+                            </form>
                         </div>
                     </div>
                     <div class="card-body pt-0">
@@ -56,8 +59,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h4>Number of Users</h4>
-                                        <p>Number of  Vendors: {{$user_count ?? 0}}</p>
-                                        <p>Number of Other users: {{$vendor_count ?? 0}}</p>
+                                        <p>Number of  Vendors: {{$vendor_count ?? 0}}</p>
+                                        <p>Number of Users: {{$user_count ?? 0}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -67,4 +70,12 @@
             </div>
         </div>
     </div>
+
+  <script>
+      function submitForm(elem) {
+          if (elem.value) {
+              elem.form.submit();
+          }
+      }
+  </script>
 @endsection

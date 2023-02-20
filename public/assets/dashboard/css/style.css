@@ -9772,25 +9772,25 @@ button.close {
 }
 
 /* Admin Stat */
-.admin-stat .card{
-    background: #F0F4F9;
+.admin-stat .card {
+    background: #f0f4f9;
     border-radius: 10px;
 }
-.admin-stat .big-col{
+.admin-stat .big-col {
     padding-left: 4%;
     padding-top: 4%;
     padding-right: 4%;
 }
-.admin-stat .card-body{
+.admin-stat .card-body {
     padding: 10%;
 }
-.admin-stat h4{
+.admin-stat h4 {
     font-size: 25px;
     font-weight: 800;
     margin-bottom: 6%;
 }
 
-.admin-stat p{
+.admin-stat p {
     font-size: 20px;
     font-weight: 700;
 }
@@ -12714,20 +12714,19 @@ Inbox Message Style
     }
 }
 
-        .currency-btn{
-            background-color: #f0f4f9;
-            border: 1px solid #eee;
-        }
+.currency-btn {
+    background-color: #f0f4f9;
+    border: 1px solid #eee;
+}
 
-        
 .list-icons i {
     font-size: 56px;
 }
-        .mat_img {
-            width: auto;
-            max-height: 280px;
-            /* object-fit: cover; */
-        }
+.mat_img {
+    width: auto;
+    max-height: 250px;
+    /* object-fit: cover; */
+}
 
 .font-dot {
     margin-top: -12px;
@@ -12737,11 +12736,11 @@ Inbox Message Style
     font-size: 14px;
 }
 
-.type-text{
+.type-text {
     font-size: 13px;
 }
 
-.money{
+.money {
     color: green;
     font-weight: 800;
 }
@@ -13504,6 +13503,11 @@ Inbox Message Style
     margin-left: 15px;
 }
 
+
+        .country-settings{
+            width: 35px
+        }
+        
 .main-chat-msg-name h6 {
     margin-bottom: 2px;
     font-size: 15px;
@@ -13520,8 +13524,8 @@ Inbox Message Style
     position: relative;
     padding-bottom: 50px;
     padding-bottom: 0;
-    max-height: 555px;
-    overflow: hidden;
+    min-height: 75vh !important;
+    overflow: scroll;
 }
 
 .main-chat-body .content-inner {
@@ -14369,7 +14373,7 @@ Inbox Message Style
     font-size: 16px !important;
     color: #000 !important;
     font-weight: 600;
-    background-color: #F0F4F9 !important;
+    background-color: #f0f4f9 !important;
     border: 1px solid #eee !important;
     border-radius: 3px !important;
 }
@@ -14396,8 +14400,8 @@ Inbox Message Style
 .textarea {
     min-height: 200px !important;
 }
-.jconfirm .jconfirm-box div.jconfirm-content-pane .jconfirm-content{
-    overflow:hidden;
+.jconfirm .jconfirm-box div.jconfirm-content-pane .jconfirm-content {
+    overflow: hidden;
 }
 
 .settings .form-control {
@@ -27016,16 +27020,16 @@ select.form-control-lg:not([size]):not([multiple]) {
     color: #dc0441;
 } */
 
-    .invalid-feedback {
-        color: red !important;
-        letter-spacing: 2px !important;
-        display: block !important;
-        font-size: 14px !important
-    }
-    .invalid-feedback strong {
-        font-weight: 700 !important;
-        text-transform: capitalize;
-    }
+.invalid-feedback {
+    color: red !important;
+    letter-spacing: 2px !important;
+    display: block !important;
+    font-size: 14px !important;
+}
+.invalid-feedback strong {
+    font-weight: 700 !important;
+    text-transform: capitalize;
+}
 
 .invalid-tooltip {
     position: absolute;
@@ -70050,11 +70054,11 @@ body.rtl {
     border-radius: 25px;
 }
 
-
-        .panel.price{
-            border-radius: 15px;
-            box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
-        }
+.panel.price {
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+        rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
 
 /*right of pricing*/
 @media (min-width: 992px) {

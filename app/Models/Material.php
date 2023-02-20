@@ -61,6 +61,11 @@ class Material extends Model
         return $this->hasOne(Subject::class, 'id', 'subject_id');
     }
 
+    public function mat_his()
+    {
+        return $this->hasOne(MaterialHistory::class, 'material_id', 'id');
+    }
+
     public function file()
     {
         return $this->hasOne(File::class, 'id', 'material_file_id');

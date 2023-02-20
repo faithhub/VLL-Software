@@ -3,9 +3,9 @@
         <div class="card border-10 pt-2 card-primary">
             <div class="card-body">
                 <div class="row">
-                    <form method="POST" class="validate-form" action="{{ route('user.send_note', $material->id) }}">
+                    <form method="POST" class="validate-form" action="{{ route('user.send_note', $note->id) }}">
                         @csrf
-                        <input type="hidden" name="material_id" value="{{$material->id}}">
+                        <input type="hidden" name="note_id" value="{{$note->id}}">
                         <div class="col-sm-12 col-md-12 mb-4">
                             <label class='form-label'>Send To</label>
                             <div class='d-flex' style='margin-bottom:-10px'>

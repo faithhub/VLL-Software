@@ -16,6 +16,7 @@ use App\Models\MaterialType;
 use App\Models\Setting;
 use App\Models\Subject;
 use App\Models\Subscription;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -31,18 +32,36 @@ class DashboardController extends Controller
         try {
             //code...
             $data['title'] = "Admin Dashboard";
+            // Carbon
+
             $data['user_count'] = User::where('role', 'user')->count();
             $data['vendor_count'] = User::where('role', 'vendor')->count();
             $data['admin_upload'] = Material::where('uploaded_by', 'admin')->count();
             $data['vendor_upload'] = Material::where('uploaded_by', 'vendor')->count();
-            $mat_h_r = MaterialHistory::with('trans')->where('type', 'rented')
-                ->get();
-            $mat_h_b = MaterialHistory::with('trans')->where('type', 'bought')
-                ->get();
+            $mat_h_r = MaterialHistory::with('trans')->where('type', 'rented')->get();
+            $mat_h_b = MaterialHistory::with('trans')->where('type', 'bought')->get();
+
+            if ($_GET) {
+                if ($_GET['date'] && $_GET['date'] != 'all') {
+                    $days = $_GET['date'] ?? 0;
+                    $date = Carbon::now()->subDays($days);
+                    if ($days == 12) {
+                        $date = Carbon::now()->subMonth(12);
+                    }
+                    $data['user_count'] = User::where('role', 'user')->where('created_at', '>=', $date)->count();
+                    $data['vendor_count'] = User::where('role', 'vendor')->where('created_at', '>=', $date)->count();
+                    $data['admin_upload'] = Material::where('uploaded_by', 'admin')->where('created_at', '>=', $date)->count();
+                    $data['vendor_upload'] = Material::where('uploaded_by', 'vendor')->where('created_at', '>=', $date)->count();
+                    $mat_h_r = MaterialHistory::with('trans')->where('type', 'rented')->where('created_at', '>=', $date)->get();
+                    $mat_h_b = MaterialHistory::with('trans')->where('type', 'bought')->where('created_at', '>=', $date)->get();
+                }
+            }
+
             $data['rented_amt'] = $mat_h_r->sum('trans.amount');
             $data['rented_count'] = $mat_h_r->count();
             $data['bought_amt'] = $mat_h_b->sum('trans.amount');
             $data['bought_count'] = $mat_h_b->count();
+
             return View('dashboard.admin.dashboard.index', $data);
         } catch (\Throwable $th) {
             dd($th->getMessage());

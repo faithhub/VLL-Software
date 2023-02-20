@@ -6,7 +6,7 @@
                 <div class="card border-10 pt-5">
                     <div class="card-header border-bottom-0 mb-1">
                         <h6 class="mb-1 mt-1 font-weight-bold h6">
-                            <a href="{{ route('vendor.index') }}">
+                            <a href="{{ route('admin.library') }}">
                                 <i class="fa fa-arrow-left"></i>
                             </a>
                         </h6>

@@ -38,6 +38,10 @@ class User extends Authenticatable
         'bank_id',
         'acc_name',
         'acc_number',
+        'dom_bank_id',
+        'dom_acc_number',
+        'dom_acc_name',
+        'dom_acc_verified',
         'sub_id',
         'default_currency_id',
         'acc_verified'
@@ -74,6 +78,11 @@ class User extends Authenticatable
     public function bank()
     {
         return $this->hasOne(Bank::class, 'id', 'bank_id');
+    }
+
+    public function dom()
+    {
+        return $this->hasOne(Bank::class, 'id', 'dom_bank_id');
     }
 
     public function country()

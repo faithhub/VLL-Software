@@ -19,10 +19,6 @@
         .sub-card {
             background-color: #F0F4F9
         }
-
-        .country-settings{
-            width: 35px
-        }
     </style>
     <div class="main-container container-fluid px-0">
         <div class="row">

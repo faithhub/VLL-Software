@@ -18,6 +18,7 @@ class MaterialHistory extends Model
         "invoice_id",
         "date",
         "rent_count",
+        "unique_id",
         "rent_unique_id",
         "type"
     ];

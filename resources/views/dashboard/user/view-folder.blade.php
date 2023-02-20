@@ -7,11 +7,41 @@
                         @foreach ($all_materials as $material)
                             <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
                                 <div class="image">
-                                    <a onclick="shiNew(event)" data-type="dark" data-size="m"
-                                        data-title="{{ $material->title }}"
-                                        href="{{ route('user.view_material', $material->id) }}">
-                                        <img src="{{ asset($material->cover->url) }}" alt="{{ $material->title }}">
-                                    </a>
+                                    <div class="ribbon-holder">
+                                        @if ($material->mat_his)
+                                            @if (in_array($material->mat_his->material_id, $my_materials_arr))
+                                                @foreach ($all_my_materials_arr as $all_my_materials_arr_val)
+                                                    @if ($all_my_materials_arr_val->material_id == $material->mat_his->material_id)
+                                                        {{-- Rented --}}
+                                                        @if ($all_my_materials_arr_val->type == 'rented')
+                                                            @if ($all_my_materials_arr_val->is_rent_expired == false)
+                                                                <div
+                                                                    class="ribbon ribbon-holder ribbon-{{ $all_my_materials_arr_val->type }}">
+                                                                    {{ $all_my_materials_arr_val->type }}
+                                                                </div>
+                                                            @endif
+                                                        @endif
+
+                                                        {{-- Bought --}}
+                                                        @if ($all_my_materials_arr_val->type == 'bought')
+                                                            <div
+                                                                class="ribbon ribbon-holder ribbon-{{ $all_my_materials_arr_val->type }}">
+                                                                {{ $all_my_materials_arr_val->type }}</div>
+                                                        @endif
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        @endif
+
+                                        @if ($material->price == 'Free')
+                                            <div class="ribbon ribbon-holder ribbon-free">Free</div>
+                                        @endif
+                                        <a onclick="shiNew(event)" data-type="dark" data-size="m"
+                                            data-title="{{ $material->title }}"
+                                            href="{{ route('user.view_material', $material->id) }}">
+                                            <img src="{{ asset($material->cover->url) }}" alt="{{ $material->title }}">
+                                        </a>
+                                    </div>
                                 </div>
                                 <div class="mat-title">
                                     <div class="mt-2">
@@ -26,10 +56,10 @@
                                     </a>
                                 </div>
                             </div>
-                    @endforeach
-                @endisset
+                        @endforeach
+                    @endisset
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
