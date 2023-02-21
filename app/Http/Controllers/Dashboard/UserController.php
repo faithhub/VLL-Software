@@ -835,12 +835,13 @@ class UserController extends Controller
             $type = $request->type;
             if ($type == "new") {
                 Session::forget('current_note');
-                Session::put('new_note', true);
-                return true;
+            } elseif ($type == "view") {
+                Session::put('current_note', $note_id);
             }
-            Session::put('new_note', false);
-            Session::put('current_note', $note_id);
-            return true;
+            $object = new \stdClass();
+            $object->new_note = Session::get('new_note');
+            $object->current_note = Session::get('current_note');
+            return $object;
         }
         return redirect()->back();
     }
@@ -848,15 +849,11 @@ class UserController extends Controller
     public function access_material(Request $request, $id)
     {
         try {
-            // $current_note = Session::put('current_note', $value);
             $current_note = Session::get('current_note');
-            $new_note = Session::get('new_note');
             $note = null;
 
             if ($current_note) {
                 $note = Note::where(['id' => $current_note, 'user_id' => Auth::user()->id])->first();
-            } elseif ($new_note) {
-                $note = null;
             } else {
                 $note = Note::where(['material_id' => $id, 'user_id' => Auth::user()->id])->first();
             }
@@ -865,6 +862,7 @@ class UserController extends Controller
                 Session::put('current_note', $note->id);
             }
             $data['note'] = $note;
+            $data['current_note'] = $current_note;
             $data['notes'] = Note::where(['user_id' => Auth::user()->id])->get();
 
             if ($_POST) {

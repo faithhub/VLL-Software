@@ -96,7 +96,7 @@
                     @endif
                 </div>
             </div>
-
+{{-- @dump($note) --}}
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                 <div class="card" id="note_div_section">
                     <div class="card-body">
@@ -127,7 +127,7 @@
                                                     style="margin-right: 7px">New Note</a>
                                                 <a href="#" id="save_note_btn" onclick="saveNote()"
                                                     class="btn btn-sm btn-white text-black font-weight-bold"
-                                                    style="margin-right: 7px">Save
+                                                    style="margin-right: 7px">Save {{$current_note}}
                                                     Note</a>
                                                 <a href="#" onclick="checkNote('{{ Session::get('current_note') }}')"
                                                     class="btn btn-sm btn-white text-black font-weight-bold">Send

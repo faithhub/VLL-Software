@@ -26,8 +26,8 @@
         </div>
         < !-- End Switcher -->
             <!---Global-loader-->
-            <div id="global-loader" style="display: none;"> <img src="../assets/images/svgs/loader.svg" alt="loader">
-            </div>
+            {{-- <div id="global-loader" style="display: none;"> <img src="../assets/images/svgs/loader.svg" alt="loader">
+            </div> --}}
             <!--- End Global-loader-->
             <!-- Page -->
             <div class="page">
