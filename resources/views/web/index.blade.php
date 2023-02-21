@@ -52,9 +52,7 @@
 
                     <div class="who-we-are-text">
                         <p>
-                            Create a virtual law library at your workplace by providing answers to questions and
-                            build a set of authoritative materials from primary to secondary sources of law. The
-                            Virtual Law Library provides easy access to Laws, Case Law, Journals, Textbooks, Videos,
+                            The Virtual Law Library provides easy access to Laws, Case Law, Journals, Textbooks, Videos,
                             Audio and Legal Opinion. With our law library, you will enjoy seamless connectivity to
                             any and everything in the industry from service delivery, efficient access to research
                             resources and speedy accessibility to new laws as they are passed by the legislature.
