@@ -10,7 +10,22 @@ use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-    //
+
+    public function index()
+    {
+        # code...
+        try {
+            //code...
+            $data['title'] = "All Transactions";
+            $data['sn'] = 1;
+            $data['transactions'] = Transaction::with(['user'])->orderBy('created_at', 'DESC')->get();
+            return View('dashboard.admin.transactions.index', $data);
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            //throw $th;
+        }
+    }
+
     public function view($id)
     {
         # code...

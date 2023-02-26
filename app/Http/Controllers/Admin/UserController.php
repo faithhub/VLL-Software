@@ -21,7 +21,7 @@ class UserController extends Controller
             //code...
             $data['title'] = "All User";
             $data['sn'] = 1;
-            $data['users'] = $user = User::where("role", "user")->with(['last_login', 'sub'])->orderBy('created_at', 'DESC')->get();
+            $data['users'] = $user = User::where("role", "user")->with(['last_login', 'sub'])->orderBy('created_at', 'DESC')->orderBy('created_at', "DESC")->get();
             // dd($user[0]->last_login->last());
             return View('dashboard.admin.users.index', $data);
         } catch (\Throwable $th) {
@@ -44,9 +44,9 @@ class UserController extends Controller
             $data['sn2'] = 1;
             $data['sn3'] = 1;
             $data['title'] = $user->name;
-            $data['materials'] = MaterialHistory::where('user_id', $user->id)->with(['trans', 'mat'])->get();
-            $data['login_histories'] = LoginHistory::where('user_id', $user->id)->get();
-            $data['transactions'] = Transaction::where('user_id', $user->id)->get();
+            $data['materials'] = MaterialHistory::where('user_id', $user->id)->with(['trans', 'mat'])->orderBy('created_at', "DESC")->get();
+            $data['login_histories'] = LoginHistory::where('user_id', $user->id)->orderBy('created_at', "DESC")->get();
+            $data['transactions'] = Transaction::where('user_id', $user->id)->orderBy('created_at', "DESC")->get();
             return View('dashboard.admin.users.view', $data);
         } catch (\Throwable $th) {
             dd($th->getMessage());

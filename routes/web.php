@@ -118,7 +118,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::match(['get'], '/library/delete/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'delete'])->name('delete.library');
 
 
-        Route::get('/transactions',  [App\Http\Controllers\Admin\DashboardController::class, 'transactions'])->name('transactions');
+        Route::get('/transactions',  [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions');
         Route::get('/transactions/{id}',  [App\Http\Controllers\Admin\TransactionController::class, 'view'])->name('transaction.view');
         Route::match(['get', 'post'], '/settings',  [App\Http\Controllers\Admin\DashboardController::class, 'settings'])->name('settings');
         Route::match(['get', 'post'], '/profile',  [App\Http\Controllers\Admin\DashboardController::class, 'profile'])->name('profile');

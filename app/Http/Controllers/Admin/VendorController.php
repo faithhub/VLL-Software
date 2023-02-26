@@ -39,13 +39,13 @@ class VendorController extends Controller
                 return redirect()->route('admin.vendors');
             }
             $data['title'] = $vendor->name;
-            $data['materials'] = Material::where('user_id', $vendor->id)->with(['type', 'file', 'cover', 'vendor'])->get();
+            $data['materials'] = Material::where('user_id', $vendor->id)->with(['type', 'file', 'cover', 'vendor'])->orderBy('created_at', "DESC")->get();
             $data['sn'] = 1;
             $data['sn2'] = 1;
             $data['sn3'] = 1;
 
 
-            $mats = Material::where(['user_id' => $vendor->id, 'price' => 'Paid'])->get();
+            $mats = Material::where(['user_id' => $vendor->id, 'price' => 'Paid'])->orderBy('created_at', "DESC")->get();
             $mats_arr = [];
             foreach ($mats as $key => $mat) {
                 # code...
@@ -59,7 +59,7 @@ class VendorController extends Controller
                 }
             }
             // dD($vendor);
-            $data['login_histories'] = LoginHistory::where('user_id', $vendor->id)->get();
+            $data['login_histories'] = LoginHistory::where('user_id', $vendor->id)->orderBy('created_at', "DESC")->get();
             $data['transactions'] = $mats_arr;
             return View('dashboard.admin.vendors.view', $data);
         } catch (\Throwable $th) {
