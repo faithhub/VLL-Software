@@ -187,49 +187,53 @@
                                 </div>
 
                                 @if (Auth::user()->user_type == 'professionals')
-                                    <div class="col-lg-6 col-xl-6">
-                                        <div class="card">
-                                            <div class="card-header border-bottom-0 mt-3 text-black">
-                                                <h3 class="card-title font-weight-bold h2"> Team Members</h3>
-                                                <div class="card-options">
-                                                    <button href="{{ route('user.invite_teammate') }}"
-                                                        onclick="shiNew(event)" data-type="dark" data-size="s"
-                                                        data-title="Add new team member" type="button"
-                                                        class="btn btn-primary">Add New</button>
+                                    @isset($sub)
+                                        @if ($sub->sub->max_teammate > 1)
+                                            <div class="col-lg-6 col-xl-6">
+                                                <div class="card">
+                                                    <div class="card-header border-bottom-0 mt-3 text-black">
+                                                        <h3 class="card-title font-weight-bold h2"> Team Members</h3>
+                                                        <div class="card-options">
+                                                            <button href="{{ route('user.invite_teammate') }}"
+                                                                onclick="shiNew(event)" data-type="dark" data-size="s"
+                                                                data-title="Add new team member" type="button"
+                                                                class="btn btn-primary">Add New</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <td>S/N</td>
+                                                                    <td>Email</td>
+                                                                    <td>Action</td>
+                                                                </tr>
+                                                            <tbody>
+                                                            </tbody>
+                                                            @isset($team->teammates)
+                                                                @foreach ($team->teammates as $teammember)
+                                                                    <tr>
+                                                                        <td>{{ $sn++ }}</td>
+                                                                        <td>{{ $teammember }}</td>
+                                                                        <td>
+                                                                            @if ($teammember == Auth::user()->email)
+                                                                                Team Admin
+                                                                            @else
+                                                                                <a href="{{ route('user.remove_teammate', ['id' => $team->id, 'email' => $teammember]) }}"
+                                                                                    onclick="return confirm('Are you sure you want to remove this memeber?')"
+                                                                                    class="btn btn-sm btn-primary">Remove</a>
+                                                                            @endif
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @endisset
+                                                            </thead>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="card-body">
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <td>S/N</td>
-                                                            <td>Email</td>
-                                                            <td>Action</td>
-                                                        </tr>
-                                                    <tbody>
-                                                    </tbody>
-                                                    @isset($team->teammates)
-                                                        @foreach ($team->teammates as $teammember)
-                                                            <tr>
-                                                                <td>{{ $sn++ }}</td>
-                                                                <td>{{ $teammember }}</td>
-                                                                <td>
-                                                                    @if ($teammember == Auth::user()->email)
-                                                                        Team Admin
-                                                                    @else
-                                                                        <a href="{{ route('user.remove_teammate',['id' => $team->id, 'email' => $teammember]) }}"
-                                                                            onclick="return confirm('Are you sure you want to remove this memeber?')"
-                                                                            class="btn btn-sm btn-primary">Remove</a>
-                                                                    @endif
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    @endisset
-                                                    </thead>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        @endif
+                                    @endisset
                                 @endif
                                 <div class="col-lg-12 col-xl-12 text-center">
                                     <button class="btn btn-primary p-3 pt-2 pt-2" style="font-size: 18px">Save</button>

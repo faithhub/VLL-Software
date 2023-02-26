@@ -53,7 +53,7 @@ class UserController extends Controller
             $data['limit_mat'] = [0, 1, 2, 3];
             $data['limit_folder'] = $limit_folder = [1, 2, 3, 4];
             $data['title'] = "User Dashboard - Bookstore";
-            $mat_type = MaterialType::where('status', 'active')->get();
+            $mat_type = MaterialType::where('status', 'active')->orderBy('sort', 'ASC')->get();
             $material_array = [];
 
 
@@ -83,14 +83,13 @@ class UserController extends Controller
 
             foreach ($mat_type as $key => $value) {
                 # code...
-                if (substr($value->mat_unique_id, 0, 3) == "CSL") {
+                if (substr($value->mat_unique_id, 0, 3) == "CSL" || substr($value->mat_unique_id, 0, 3) == "LAW") {
                     # code...
                     $material = Material::where(['status' => 'active', 'material_type_id' => $value->id])->with(['type', 'folder', 'mat_his'])->get();
                     $material_grp = $material->groupBy('folder_id');
                     $object = new \stdClass();
                     $object->type = $value;
                     $object->materials = $material_grp;
-                    // Added property to the object
                     array_push($material_array, $object);
                 } else {
                     # code...
@@ -98,7 +97,6 @@ class UserController extends Controller
                     $object = new \stdClass();
                     $object->type = $value;
                     $object->materials = $material;
-                    // Added property to the object
                     array_push($material_array, $object);
                 }
             }
@@ -1032,6 +1030,7 @@ class UserController extends Controller
     {
 
         try {
+            $sub_his = SubHistory::where('id', Auth::user()->sub_id)->with('sub')->first();
             //code...
             if ($_POST) {
                 $rules = array(
@@ -1046,6 +1045,12 @@ class UserController extends Controller
                 }
 
                 $team = Team::find(Auth::user()->team_id);
+
+                if (count($team->teammates) > $sub_his->sub->max_teammate) {
+                    Session::flash('error', "Maximum number of team member reached");
+                    return redirect()->route('user.settings');
+                }
+                
                 $encrypt = Crypt::encryptString($team->id);
                 Invite::create([
                     'email' => $request->email,

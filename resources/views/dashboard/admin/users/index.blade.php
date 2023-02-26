@@ -31,9 +31,12 @@
                                                     <th class="sorting" tabindex="0" style="">Last Subcription</th>
                                                     <th class="sorting" tabindex="0" style="">Active Plan</th>
                                                     <th class="sorting" tabindex="0" style="">Last Login</th>
-                                                    <th class="sorting" tabindex="0" style="">Device Type</th>
+                                                    {{-- <th class="sorting" tabindex="0" style="">Last Login IP</th> --}}
+                                                    {{-- <th class="sorting" tabindex="0" style="">Device Type</th> --}}
+                                                    <th class="sorting" tabindex="0" style="">Device IOS</th>
                                                     <th class="sorting" tabindex="0" style="">Browser Type</th>
                                                     <th class="sorting" tabindex="0" style="">Location</th>
+                                                    <th class="sorting" tabindex="0" style="">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -42,7 +45,7 @@
                                                         <tr class="">
                                                             <td class="sorting_1">{{ $sn++ }}</td>
                                                             <td class="sorting_1"><a class="font-weight-bold"
-                                                                    href="">{{ $user->name }}</a></td>
+                                                                    href="{{ route('admin.user', $user->id) }}">{{ $user->name }}</a></td>
                                                             <td>{{ $user->email }}</td>
                                                             <td>{{ $user->phone }}</td>
                                                             <td>
@@ -54,18 +57,20 @@
                                                                </td>
                                                             <td><b>{{ $user->sub->sub->name ?? "--" }}</b></td>
                                                             <td>
-                                                                @isset($user->last_login)
-                                                                   {{-- {{ $user->last_login->last()->updated_at->format('D, M j, Y h:i a') ?? '-' }} --}}
+                                                                @isset($user->last_login->last()->created_at)
+                                                                   {{ $user->last_login->last()->created_at->format('D, M j, Y h:i a') ?? '-' }}
                                                                    @else
                                                                    --
                                                                 @endisset
                                                             </td>
-                                                            <td>{{ $user->last_login->last()->deviceType ?? '--' }} </td>
+                                                            {{-- <td>{{ $user->last_login->last()->ip ?? '--' }} </td> --}}
+                                                            {{-- <td>{{ $user->last_login->last()->deviceType ?? '--' }} </td> --}}
+                                                            <td>{{ $user->last_login->last()->platformFamily ?? '--' }} </td>
                                                             <td>{{ $user->last_login->last()->browserFamily ?? '--' }} </td>
                                                             <td>{{ $user->last_login->last()->regionName ?? '--' }} </td>
-                                                            {{-- <td>
-                                                        <span class="badge bg-warning-light border-warning fs-11">Pending</span>
-                                                    </td> --}}
+                                                            <td>
+                                                                <a href="{{ route('admin.user', $user->id) }}" class="btn btn-sm btn-primary">View</i></a>
+                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset

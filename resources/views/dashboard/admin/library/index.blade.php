@@ -13,7 +13,7 @@
                     </div>
                     <div class="card-body pt-0">
                         <div class="table-responsive">
-                            <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+                            <div id="datatable_wrapper" c   lass="dataTables_wrapper dt-bootstrap5 no-footer">
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <table
@@ -42,7 +42,9 @@
                                                                 <img src="{{ asset($material->cover->url ?? "") }}" style="max-height:60px">
                                                             </td>
                                                             <td class="sorting_1"><a class="font-weight-bold"
-                                                                    href="">{{ $material->title }}</a></td>
+                                                                    onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                                    data-title="{{ $material->invoice_id }}"
+                                                                    href="{{ route('admin.view_material', $material->id) }}">{{ $material->title }}</a></td>
                                                             <td>{{ $material->type->name ?? '-' }}</td>
                                                             <td>{{ $material->name_of_author ?? '-' }}</td>
                                                             <td>{{ $material->vendor->name ?? '-' }}</td>

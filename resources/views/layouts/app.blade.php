@@ -25,6 +25,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
 </head>
 
 <body>
@@ -92,4 +93,7 @@
     </div>
 </body>
 
+<script>
+    $window.bind('scroll').resize();
+</script>
 </html>

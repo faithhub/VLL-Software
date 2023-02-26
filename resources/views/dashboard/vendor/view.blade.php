@@ -7,7 +7,7 @@
                         <a href="#">
                             <img src="{{ asset($material->cover->url) }}" alt="{{ $material->title }}">
                         </a>
-                    </div>
+                    </div>a
                     <div class="rating text-center">
                         {{-- <h4 class="font-weight-bold h6 mt-3">Ratings:
                             <i class="fa fa-star"></i>

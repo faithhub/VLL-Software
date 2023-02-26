@@ -104,6 +104,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         //Users
         Route::get('/users',  [App\Http\Controllers\Admin\UserController::class, 'index'])->name('users');
+        Route::get('/user/{id}',  [App\Http\Controllers\Admin\UserController::class, 'view'])->name('user');
 
         //Vendors
         Route::get('/vendors',  [App\Http\Controllers\Admin\VendorController::class, 'index'])->name('vendors');
@@ -118,6 +119,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 
         Route::get('/transactions',  [App\Http\Controllers\Admin\DashboardController::class, 'transactions'])->name('transactions');
+        Route::get('/transactions/{id}',  [App\Http\Controllers\Admin\TransactionController::class, 'view'])->name('transaction.view');
         Route::match(['get', 'post'], '/settings',  [App\Http\Controllers\Admin\DashboardController::class, 'settings'])->name('settings');
         Route::match(['get', 'post'], '/profile',  [App\Http\Controllers\Admin\DashboardController::class, 'profile'])->name('profile');
         
@@ -125,6 +127,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::match(['get', 'post'], '/add_material',  [App\Http\Controllers\Admin\MaterialController::class, 'add_material'])->name('add_material');
         Route::match(['get'], '/view_material/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'view_material'])->name('view_material');
         Route::get('/delete_material/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'delete_material'])->name('delete_material');
+        Route::get('/view_material/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'view_material'])->name('view_material');
         // Route::get('/update_material_status/{id}/{value}',  [App\Http\Controllers\Dashboard\AdminController::class, 'update_material_status'])->name('update_material_status');
         
         Route::get('/test',  [App\Http\Controllers\Dashboard\AdminController::class, 'test'])->name('test');

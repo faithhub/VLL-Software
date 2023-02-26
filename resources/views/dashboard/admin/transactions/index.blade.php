@@ -26,13 +26,15 @@
                                                 <tr role="row">
                                                     <th class="sorting sorting_asc" style="">No</th>
                                                     <th class="sorting sorting_asc" style="">Invoice No</th>
+                                                    <th class="sorting sorting_asc" style="">Paystack Ref</th>
                                                     <th scope="row" class="sorting" style="">Date & Time</th>
                                                     <th class="sorting" tabindex="0" style="">User name</th>
                                                     <th class="sorting" tabindex="0" style="">Email Address</th>
                                                     {{-- <th class="sorting" tabindex="0" style="">Material</th> --}}
                                                     <th class="sorting" tabindex="0" style="">Amount</th>
-                                                    <th class="sorting" tabindex="0" style="">Currency</th>
-                                                    <th class="sorting" tabindex="0" style="">Type of transaction</th>
+                                                    {{-- <th class="sorting" tabindex="0" style="">Currency</th> --}}
+                                                    <th class="sorting" tabindex="0" style="">Type of transaction
+                                                    </th>
                                                     <th class="sorting" tabindex="0" style=""></th>
                                                 </tr>
                                             </thead>
@@ -41,14 +43,21 @@
                                                     @foreach ($transactions as $transaction)
                                                         <tr class="">
                                                             <td class="sorting_1">{{ $sn++ }}</td>
-                                                            <td class="sorting_1"><a class="font-weight-bold"
-                                                                    href="">{{ $transaction->invoice_id }}</a></td>
-                                                            <td>{{ $transaction->created_at->format('D, M j, Y H:i:s') ?? '' }}</td>
+                                                            <td class="sorting_1">
+                                                                <a class="font-weight-bold"
+                                                                    onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                                    data-title="{{ $transaction->invoice_id }}"
+                                                                    href="{{ route('admin.transaction.view', $transaction->id) }}">
+                                                                    {{ $transaction->invoice_id }}
+                                                                </a>
+                                                            </td>
+                                                            <td class="sorting_1">{{ $transaction->trxref }}</td>
+                                                            <td>{{ $transaction->created_at->format('D, M j, Y H:i:s') ?? '' }}
+                                                            </td>
                                                             <td class="sorting_1"><a class="font-weight-bold"
                                                                     href="">{{ $transaction->user->name }}</a></td>
                                                             <td>{{ $transaction->user->email }}</td>
                                                             <td><b class="money">{{ money($transaction->amount) }}</b></td>
-                                                            <td>NGN</td>
                                                             <td><b class="text-capitalize">{{ $transaction->type }}</b></td>
                                                             <td><a href=""><i class="fa fa-trash"></i></a></td>
                                                         </tr>

@@ -115,12 +115,12 @@ class MaterialController extends Controller
                     'price' => ['required', 'string', 'max:255'],
                     'amount' => ['required_if:price,Paid'],
                     'material_type_id' => ['required', 'max:255'],
-                    'folder_id' => ['required_if:material_type_value,CSL'],
-                    'name_of_party' => ['required_if:material_type_value,CSL'],
+                    'folder_id' => ['required_if:material_type_value,CSL,LAW'],
+                    'name_of_party' => ['required_if:material_type_value,CSL,LAW'],
                     // 'name_of_court' => ['required_if:material_type_value,CSL'],
-                    'citation' => ['required_if:material_type_value,CSL'],
-                    'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
-                    'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
+                    'citation' => ['required_if:material_type_value,CSL,LAW'],
+                    'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,LAW,VAA'],
+                    'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA,LAW'],
                     'test_country_id' => ['required_if:material_type_value,TAA'],
                     'university_id' => ['required_if:material_type_value,TAA'],
                     // 'publisher' => ['required', 'string', 'max:255'],
@@ -130,7 +130,7 @@ class MaterialController extends Controller
                     'privacy_code' => ['required_if:material_type_value,TAA'],
                     // 'material_file_id.*' => ['required', 'mimes:pdf', 'max:100'],
                     'material_file_id' => ['required', 'mimes:pdf,mp4,mov,ogg,qt', 'max:100000'],
-                    'material_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
+                    'material_cover_id' => ['required_if:material_type_value,TXT,LOJ,CSL,LAW,VAA', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
                     'material_desc' => ['required'],
                     'terms' => ['required', 'max:255']
                 );
@@ -208,7 +208,7 @@ class MaterialController extends Controller
                     'subject_id' => $request->subject_id ?? null,
                     'privacy_code' => $request->privacy_code ?? null,
                     'material_file_id' => $save_file->id,
-                    'material_cover_id' => $save_cover->id,
+                    'material_cover_id' => $save_cover->id ?? null,
                     'material_desc' => $request->material_desc ?? null
                 ]);
 
@@ -436,19 +436,27 @@ class MaterialController extends Controller
         }
     }
 
-    public function view($id)
+    public function view_material($id)
     {
+        function countPages($path)
+        {
+            $pdftext = file_get_contents($path);
+            $num = preg_match_all("/\/Page\W/", $pdftext, $dummy);
+            return $num;
+        }
         # code...
         try {
             //code...
+            $data['status'] = false;
             $data['material'] = $material = Material::with(['type', 'vendor', 'file', 'cover', 'country', 'subject'])->find($id);
-            if (!$material) {
-                Session::flash('warning', "No record found");
-                return redirect()->route('admin.library');
+            if ($material) {
+                $data['status'] = true;
+                $data['title'] = $material->title;
+                $data['histories'] = MaterialHistory::where('material_id', $material->id)->with(['trans', 'user'])->get();
+                $data['totalRented'] = MaterialHistory::where(['material_id' => $material->id, 'type' => 'rented'])->get()->count();
+                $data['totalBought'] = MaterialHistory::where(['material_id' => $material->id, 'type' => 'bought'])->get()->count();
+                $data['pageCount'] = countPages(public_path($material->file->url));
             }
-            $data['title'] = $material->title;
-            $data['sn'] = 1;
-            $data['histories'] = MaterialHistory::where('material_id', $material->id)->with(['trans', 'user'])->get();
             return View('dashboard.admin.library.view', $data);
         } catch (\Throwable $th) {
             dd($th->getMessage());

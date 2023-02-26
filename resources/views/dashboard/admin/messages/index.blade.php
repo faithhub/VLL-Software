@@ -58,11 +58,12 @@
                                                 <div class="media new">
                                                     <div class="main-img-user"> <img alt=""
                                                             src="{{ asset($user_message->message->user->profile_pics->url ?? 'assets/dashboard/images/photos/22.jpg') }}"
-                                                            class="avatar avatar-md brround"><span>{{ $user_message->msg_count }}</span>
+                                                            class="avatar avatar-md brround">
+                                                            <span>{{ $user_message->msg_count }}</span>
                                                     </div>
                                                     <div class="media-body">
                                                         <div class="media-contact-name">
-                                                            <span>{{ $user_message->message->user->name }}</span>
+                                                            <span>{{ $user_message->message->user->name }} <b class="text-capitalize" style="font-size:10px">({{ $user_message->message->user->user_type}})</b></span>
                                                             <span>{{ $user_message->message->created_at->diffForHumans() }}</span>
                                                         </div>
                                                         <p>{{ $user_message->msg }}</p>
@@ -107,9 +108,9 @@
                                     </div>
                                 </div>
                                 <nav class="nav">
-                                    <a class="nav-link d-none d-sm-block" data-bs-toggle="tooltip" href="#"
+                                    {{-- <a class="nav-link d-none d-sm-block" data-bs-toggle="tooltip" href="#"
                                         title="" data-bs-original-title="View Info" aria-label="View Info"><i
-                                            class="fe fe-alert-octagon text-muted"></i></a>
+                                            class="fe fe-alert-octagon text-muted"></i></a> --}}
                                 </nav>
                             </div>
                         </div>

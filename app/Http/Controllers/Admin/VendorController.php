@@ -41,6 +41,8 @@ class VendorController extends Controller
             $data['title'] = $vendor->name;
             $data['materials'] = Material::where('user_id', $vendor->id)->with(['type', 'file', 'cover', 'vendor'])->get();
             $data['sn'] = 1;
+            $data['sn2'] = 1;
+            $data['sn3'] = 1;
 
 
             $mats = Material::where(['user_id' => $vendor->id, 'price' => 'Paid'])->get();

@@ -103,9 +103,13 @@
                         <div class="card border-10 p-4">
                             <div class="text-right">
                                 @if ($vendor->acc_verified)
-                                <a href="{{ route('admin.vendor.lock_unlock', ['id' => $vendor->id, 'type' => 'naira', 'mode' => 'unlock']) }}" onclick="return confirm('Are you sure you want to unlock this account?')" class="btn p-3 btn-primary">Unlock Naira account</a>
+                                    <a href="{{ route('admin.vendor.lock_unlock', ['id' => $vendor->id, 'type' => 'naira', 'mode' => 'unlock']) }}"
+                                        onclick="return confirm('Are you sure you want to unlock this account?')"
+                                        class="btn p-3 btn-primary">Unlock Naira account</a>
                                 @else
-                                <a href="{{ route('admin.vendor.lock_unlock', ['id' => $vendor->id, 'type' => 'naira', 'mode' => 'lock']) }}" onclick="return confirm('Are you sure you want to lock this account?')"  class="btn p-3 btn-primary">Lock Naira account</a>
+                                    <a href="{{ route('admin.vendor.lock_unlock', ['id' => $vendor->id, 'type' => 'naira', 'mode' => 'lock']) }}"
+                                        onclick="return confirm('Are you sure you want to lock this account?')"
+                                        class="btn p-3 btn-primary">Lock Naira account</a>
                                 @endif
                             </div>
                             <div class="card-header border-bottom-0 mb-0">
@@ -164,9 +168,13 @@
                         <div class="card border-10 p-4">
                             <div class="text-right">
                                 @if ($vendor->dom_acc_verified)
-                                <a href="{{ route('admin.vendor.lock_unlock', ['id' => $vendor->id, 'type' => 'dom', 'mode' => 'unlock']) }}" onclick="return confirm('Are you sure you want to unlock this account?')" class="btn p-3 btn-primary">Unlock DOM account</a>
+                                    <a href="{{ route('admin.vendor.lock_unlock', ['id' => $vendor->id, 'type' => 'dom', 'mode' => 'unlock']) }}"
+                                        onclick="return confirm('Are you sure you want to unlock this account?')"
+                                        class="btn p-3 btn-primary">Unlock DOM account</a>
                                 @else
-                                <a href="{{ route('admin.vendor.lock_unlock', ['id' => $vendor->id, 'type' => 'dom', 'mode' => 'lock']) }}" onclick="return confirm('Are you sure you want to lock this account?')"  class="btn p-3 btn-primary">Lock DOM account</a>
+                                    <a href="{{ route('admin.vendor.lock_unlock', ['id' => $vendor->id, 'type' => 'dom', 'mode' => 'lock']) }}"
+                                        onclick="return confirm('Are you sure you want to lock this account?')"
+                                        class="btn p-3 btn-primary">Lock DOM account</a>
                                 @endif
                             </div>
                             <div class="card-header border-bottom-0 mb-0">
@@ -288,13 +296,15 @@
                                                                                 style="max-height:60px">
                                                                         </td>
                                                                         <td class="sorting_1"><a class="font-weight-bold"
-                                                                                href="">{{ $material->title }}</a></td>
+                                                                                onclick="shiNew(event)" data-type="dark"
+                                                                                data-size="m"
+                                                                                data-title="{{ $material->invoice_id }}"
+                                                                                href="{{ route('admin.view_material', $material->id) }}">{{ $material->title }}</a></td>
                                                                         <td>{{ $material->type->name ?? '-' }}</td>
                                                                         <td>{{ $material->name_of_author ?? '-' }}</td>
                                                                         <td>
                                                                             {{ mb_strimwidth($material->material_desc ?? '', 0, 40, '...') }}
                                                                         </td>
-                                                                        {{-- <td>₦{{ number_format($material->amount ?? 0, 2) }}</td> --}}
                                                                         <td>
                                                                             <b
                                                                                 class="money">{{ money($material->amount) }}</b>
@@ -304,19 +314,14 @@
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
-                                                                                <a href=""
+                                                                                <a onclick="return confirm('Are you sure you want to delete this material?')"
+                                                                                    href="{{ route('admin.delete.library', $material->id) }}"
                                                                                     class="btn btn-sm m-1 btn-primary">
                                                                                     Delete</a>
                                                                                 <a href="{{ route('admin.edit.library', $material->id) }}"
                                                                                     class="btn m-1 btn-sm btn-primary">Edit</a>
-                                                                                {{-- <a href="{{ route('admin.view.library', $material->id) }}"
-                                                                                    class="btn btn-sm m-1 btn-primary">View</a> --}}
                                                                             </div>
                                                                         </td>
-                                                                        {{-- <td>{{ $material->created_at->format('D, M j, Y') ?? '' }}</td> --}}
-                                                                        {{-- <td>
-                                                        <span class="badge bg-warning-light border-warning fs-11">Pending</span>
-                                                    </td> --}}
                                                                     </tr>
                                                                 @endforeach
                                                             @endisset
@@ -344,7 +349,13 @@
                                                         role="grid" aria-describedby="datatable_info">
                                                         <thead>
                                                             <tr role="row">
+                                                                <th class="sorting" tabindex="0" style="">
+                                                                    S/N
+                                                                </th>
                                                                 <th class="sorting sorting_asc" style="">Invoice ID
+                                                                </th>
+                                                                <th class="sorting sorting_asc" style="">PayStack
+                                                                    Ref
                                                                 </th>
                                                                 <th scope="row" class="sorting" style="">Date of
                                                                     Transaction
@@ -366,10 +377,16 @@
                                                             @isset($transactions)
                                                                 @foreach ($transactions as $transaction)
                                                                     <tr class="">
+                                                                        <td class="sorting_1">{{ $sn2++ }}</td>
                                                                         <td class="sorting_1">
                                                                             <a class="font-weight-normal1"
-                                                                                href="#">{{ $transaction->mat_his['trans']['invoice_id'] }}</a>
+                                                                                onclick="shiNew(event)" data-type="dark"
+                                                                                data-size="m"
+                                                                                data-title="{{ $transaction->mat_his['trans']['invoice_id'] }}"
+                                                                                href="{{ route('admin.transaction.view', $transaction->mat_his['trans']['id']) }}">
+                                                                                {{ $transaction->mat_his['trans']['invoice_id'] }}</a>
                                                                         </td>
+                                                                        <td>{{ $transaction->mat_his['trans']['trxref'] }}</td>
                                                                         <td>{{ $transaction->mat_his['trans']['created_at']->format('D, M j, Y h:i a') }}
                                                                         </td>
                                                                         <td>
@@ -419,12 +436,17 @@
                                                         role="grid" aria-describedby="datatable_info">
                                                         <thead>
                                                             <tr role="row">
+                                                                <th class="sorting" tabindex="0" style="">
+                                                                    S/N
+                                                                </th>
                                                                 <th class="sorting" tabindex="0" style="">Date
                                                                 </th>
+                                                                <th class="sorting" tabindex="0" style="">IP Address</th>
                                                                 <th class="sorting" tabindex="0" style="">Device
                                                                     Type</th>
                                                                 <th class="sorting" tabindex="0" style="">Browser
                                                                     Type</th>
+                                                                <th class="sorting" tabindex="0" style="">IOS</th>
                                                                 <th class="sorting" tabindex="0" style="">
                                                                     Location</th>
                                                             </tr>
@@ -433,12 +455,17 @@
                                                             @isset($login_histories)
                                                                 @foreach ($login_histories as $login_history)
                                                                     <tr class="">
+                                                                        <td class="sorting_1">{{ $sn3++ }}</td>
                                                                         <td>
                                                                             {{ $login_history->updated_at->format('D, M j, Y h:i a') ?? '-' }}
+                                                                        </td>
+                                                                        <td>{{ $login_history->ip ?? '--' }}
                                                                         </td>
                                                                         <td>{{ $login_history->deviceType ?? '--' }}
                                                                         </td>
                                                                         <td>{{ $login_history->browserFamily ?? '--' }}
+                                                                        </td>
+                                                                        <td>{{ $login_history->platformFamily ?? '--' }}
                                                                         </td>
                                                                         <td>{{ $login_history->regionName ?? '--' }}
                                                                         </td>

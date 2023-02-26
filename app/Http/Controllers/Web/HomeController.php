@@ -11,14 +11,15 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+
 
 class HomeController extends Controller
 {
-    //
 
     public function index()
     {
-        # code...
         $data['title'] = "Home";
         $data['banner'] = true;
         $data['materials'] = Material::with(['type', 'cover'])->where('status', 'active')->inRandomOrder()->limit(9)->get();

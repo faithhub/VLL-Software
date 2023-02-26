@@ -575,9 +575,9 @@
                                                                     <th class="sorting font-weight-bold sorting_asc"
                                                                         style="wwidth:15%">
                                                                         Type of Subject</th>
-                                                                    <th class="sorting font-weight-bold" tabindex="0"
+                                                                    {{-- <th class="sorting font-weight-bold" tabindex="0"
                                                                         style="wwidth:15%">
-                                                                        Material</th>
+                                                                        Material</th> --}}
                                                                     <th scope="row" class="sorting font-weight-bold"
                                                                         style="wwidth:45%">
                                                                         Description</th>
@@ -595,7 +595,7 @@
                                                                         <tr>
                                                                             <td class="sorting_1">{{ $subject_type->name }}
                                                                             </td>
-                                                                            <td>{{ $subject_type->material->name }}</td>
+                                                                            {{-- <td>{{ $subject_type->material->name }}</td> --}}
                                                                             <td>{{ $subject_type->description }}</td>
                                                                             <td>
                                                                                 @if ($subject_type->status == 'active')

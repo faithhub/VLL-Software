@@ -10,6 +10,10 @@
         .bg-f9faff {
             background: #fff !important;
         }
+
+        .navbar {
+            -webkit-backface-visibility: hidden !important;
+        }
     </style>
     <!-- Start Why Choose Us Area -->
     <section id="about" class="why-choose-us bg-f9faff">
@@ -187,7 +191,8 @@
                                             href="{{ route('login') }}">Login</a></p>
                                 </div>
                                 <div class="mb-3 form-check">
-                                    <input type="checkbox" name="terms" class="form-check-input" @if (old('form_type') == 'user') {{ old('terms') == 'on' ? 'checked' : '' }} @endif>
+                                    <input type="checkbox" name="terms" class="form-check-input"
+                                        @if (old('form_type') == 'user') {{ old('terms') == 'on' ? 'checked' : '' }} @endif>
                                     <label class="form-check-label user-form-text" for="">
                                         I have read and I agree with the <a class="user-form-a"
                                             href="{{ route('privacy') }}">Terms and
@@ -253,13 +258,13 @@
                                                 @endforeach
                                             @endisset
                                         </select>
-                                    @if (old('form_type') == 'vendor')
-                                        @error('v-country')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    @endif
+                                        @if (old('form_type') == 'vendor')
+                                            @error('v-country')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        @endif
                                     </div>
                                     <div class="mb-3" id="v-universities_id">
                                         <select class="form-control js-example-basic-single-v-uni" name="v-university"
@@ -357,7 +362,8 @@
                                     <p class="text-center">Already have an account? <a href="">Login</a></p>
                                 </div>
                                 <div class="mb-3 form-check">
-                                    <input type="checkbox" name="terms" class="form-check-input" @if (old('form_type') == 'vendor') {{ old('terms') == 'on' ? 'checked' : '' }} @endif>
+                                    <input type="checkbox" name="terms" class="form-check-input"
+                                        @if (old('form_type') == 'vendor') {{ old('terms') == 'on' ? 'checked' : '' }} @endif>
                                     <label class="form-check-label user-form-text" for="">
                                         I have read and I agree with the <a class="user-form-a"
                                             href="{{ route('privacy') }}">Terms and

@@ -188,7 +188,7 @@
                                             </select>
                                             <button type="button" onclick="shiNew(event)" data-type="dark"
                                                 data-size="s" data-title="Add New Folder"
-                                                href="{{ route('vendor.add_folder') }}" class="btn btn-primary">Add
+                                                href="{{ route('admin.add_folder') }}" class="btn btn-primary">Add
                                                 New</button>
                                         </div>
                                         <span class="invalid-feedback" id="folder-error" role="alert">
