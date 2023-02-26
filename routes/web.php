@@ -26,6 +26,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
+Route::get('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
 Route::match(['get', 'post'], '/register/vendor', [App\Http\Controllers\Auth\RegisterController::class, 'vendor'])->name('vendor_reg');
 
 Route::get('/', [App\Http\Controllers\Web\HomeController::class, 'index'])->name('home');

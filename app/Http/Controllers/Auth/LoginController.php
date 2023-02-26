@@ -53,4 +53,10 @@ class LoginController extends Controller
                 return '/login';
         }
     }
+
+    public function logout_now()
+    {
+        # code...
+        return redirect('home')->with(Auth::logout());
+    }
 }
