@@ -838,7 +838,8 @@ class UserController extends Controller
             }
             $object = new \stdClass();
             $object->new_note = Session::get('new_note');
-            $object->current_note = Session::get('current_note');
+            $object->current_note = $current_note = Session::get('current_note');
+            $object->note = Note::where(['id' => $current_note, 'user_id' => Auth::user()->id])->first();;
             return $object;
         }
         return redirect()->back();

@@ -104,7 +104,7 @@
                             <div class="tabs-menu1">
                                 <!-- Tabs -->
                                 <ul class="nav nav-tabs" id="myTab">
-                                    <li class=""><a href="#myProfile"
+                                    <li class=""><a href="#myProfile" id="profile_tab_note"
                                             class="{{ empty(old('tabName')) || old('tabName') == 'myProfile' ? 'active' : '' }}">New
                                             Note</a>
                                     </li>
@@ -373,13 +373,16 @@
                     type: type,
                 },
                 success: function(response) {
-                    console.log(response);
+                    console.log(response, response.note.title);
+                    document.getElementById('note-title').value = response.note.title;
+                    document.getElementById('note-content').value = response.note.content;
+                    document.getElementById("profile_tab_note").click();
                 },
                 error: function(err) {
                     console.log(err);
                 }
             });
-            $("#note_div_section").load(window.location.href + " #note_div_section");
+            // $("#note_div_section").load(window.location.href + " #note_div_section");
         }
 
         // const previewConfig = {
