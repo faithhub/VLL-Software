@@ -96,7 +96,7 @@
                     @endif
                 </div>
             </div>
-{{-- @dump($note) --}}
+            {{-- @dump($note) --}}
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                 <div class="card" id="note_div_section">
                     <div class="card-body">
@@ -127,7 +127,7 @@
                                                     style="margin-right: 7px">New Note</a>
                                                 <a href="#" id="save_note_btn" onclick="saveNote()"
                                                     class="btn btn-sm btn-white text-black font-weight-bold"
-                                                    style="margin-right: 7px">Save {{$current_note}}
+                                                    style="margin-right: 7px">Save {{ $current_note }}
                                                     Note</a>
                                                 <a href="#" onclick="checkNote('{{ Session::get('current_note') }}')"
                                                     class="btn btn-sm btn-white text-black font-weight-bold">Send
@@ -214,6 +214,8 @@
                         </div>
                     </div>
                 </div>
+                <button class="btn-sm btn btn-primary" id="curr_note_t" type="button">CN</button>
+                <button class="btn-sm btn btn-secondary">CN</button>
             </div>
         </div>
     </div>
@@ -264,13 +266,49 @@
         @endif
     @endif
 
+    {{-- @include('layouts.dashboard.includes.note') --}}
     <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
     <script type="text/javascript">
         $(document).on("keydown", "form", function(event) {
             return event.key != "Enter";
         });
 
-        console.log("{{ Session::get('current_note') }}")
+        (function() {
+            $("#curr_note_t").click(function() {
+                try {
+                    var actionUrl = "{{ route('user.set.current.note') }}";
+                    $.ajax({
+                        type: 'POST',
+                        url: actionUrl,
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            note_id: 2,
+                            type: "view",
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            // if (response.status) {
+                            //     document.getElementById("privacy_code_error").textContent = "";
+                            //     $(document).ready(function() {
+                            //         $("#myModal").modal('hide');
+                            //     });
+                            //     return toastr.success("{{ session('success') }}", "Test unlocked");
+                            // } else {
+                            //     document.getElementById("privacy_code_error").textContent =
+                            //         "Incorrect privacy code";
+                            //     return toastr.error("{{ session('error') }}", "Incorrect privacy code");
+                            // }
+                        },
+                        error: function(err) {
+                            return toastr.error("{{ session('error') }}", "Test not unlocked");
+                        }
+                    })
+
+                } catch (error) {
+                    console.log(error);
+                }
+            });
+        })();
 
         function checkCode() {
             document.getElementById("privacy_code_error").textContent = "";
@@ -305,7 +343,8 @@
                         });
                         return toastr.success("{{ session('success') }}", "Test unlocked");
                     } else {
-                        document.getElementById("privacy_code_error").textContent = "Incorrect privacy code";
+                        document.getElementById("privacy_code_error").textContent =
+                            "Incorrect privacy code";
                         return toastr.error("{{ session('error') }}", "Incorrect privacy code");
                     }
                 },
@@ -342,47 +381,48 @@
             });
             $("#note_div_section").load(window.location.href + " #note_div_section");
         }
-        const previewConfig = {
-            showAnnotationTools: false,
-            showDownloadPDF: false,
-            showPrintPDF: false,
-            enableSearchAPIs: true,
-            // hasReadOnlyAccess: true
-        }
-        const allowTextSelection = false;
 
-        try {
-            document.addEventListener("adobe_dc_view_sdk.ready", function() {
-                var adobeDCView = new AdobeDC.View({
-                    clientId: "{{ env('ADOBECLIENTID') }}",
-                    divId: "adobe-dc-view"
-                });
+        // const previewConfig = {
+        //     showAnnotationTools: false,
+        //     showDownloadPDF: false,
+        //     showPrintPDF: false,
+        //     enableSearchAPIs: true,
+        //     // hasReadOnlyAccess: true
+        // }
+        // const allowTextSelection = false;
 
-                var previewFilePromise = adobeDCView.previewFile({
-                    content: {
-                        location: {
-                            url: "{{ asset($material->file->url) }}"
-                        }
-                    },
-                    metaData: {
-                        fileName: "{{ $material->title }}"
-                    }
-                }, previewConfig);
+        // try {
+        //     document.addEventListener("adobe_dc_view_sdk.ready", function() {
+        //         var adobeDCView = new AdobeDC.View({
+        //             clientId: "{{ env('ADOBECLIENTID') }}",
+        //             divId: "adobe-dc-view"
+        //         });
+
+        //         var previewFilePromise = adobeDCView.previewFile({
+        //             content: {
+        //                 location: {
+        //                     url: "{{ asset($material->file->url) }}"
+        //                 }
+        //             },
+        //             metaData: {
+        //                 fileName: "{{ $material->title }}"
+        //             }
+        //         }, previewConfig);
 
 
 
-                previewFilePromise.then(adobeViewer => {
-                    adobeViewer.getAPIs().then(apis => {
-                        apis.enableTextSelection(allowTextSelection)
-                            .then(() => console.log("Success"))
-                            .catch(error => console.log(error, "error"));
-                    });
-                });
+        //         previewFilePromise.then(adobeViewer => {
+        //             adobeViewer.getAPIs().then(apis => {
+        //                 apis.enableTextSelection(allowTextSelection)
+        //                     .then(() => console.log("Success"))
+        //                     .catch(error => console.log(error, "error"));
+        //             });
+        //         });
 
-            });
-        } catch (error) {
-            console.log(error, "err 888");
-        }
+        //     });
+        // } catch (error) {
+        //     console.log(error, "err 888");
+        // }
 
         // function saveNote(params) {
         //     const content = sessionStorage.getItem('note-content');
@@ -432,9 +472,8 @@
             });
         }
 
-        $(function() {
+        // $(function() {
 
-        });
+        // });
     </script>
-
 @endsection
