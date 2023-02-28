@@ -364,6 +364,10 @@
 
         function viewNote(id, type) {
             var url = "{{ route('user.set.current.note') }}";
+            if (type == 'new') {
+                document.getElementById('note-title').value = '';
+                document.getElementById('note-content').value = '';
+            }
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -373,10 +377,13 @@
                     type: type,
                 },
                 success: function(response) {
-                    console.log(response, response.note.title);
-                    document.getElementById('note-title').value = response.note.title;
-                    document.getElementById('note-content').value = response.note.content;
-                    document.getElementById("profile_tab_note").click();
+                    // console.log(response, response.note.title);
+                    console.log(response.current_note);
+                    if (response.current_note != null) {
+                        document.getElementById('note-title').value = response.note.title;
+                        document.getElementById('note-content').value = response.note.content;
+                        document.getElementById("profile_tab_note").click();
+                    }
                 },
                 error: function(err) {
                     console.log(err);
