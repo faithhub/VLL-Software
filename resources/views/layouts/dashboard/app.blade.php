@@ -10,7 +10,7 @@
     <meta content="" name="author">
     <meta name="keywords" content="Virtual Law Library dashboard">
     <!-- Title -->
-    <title>Virtual Law Library Dashboard - {{ $title ?? '' }}</title>
+    <title>Virtual Law Library Dashboard | {{ $title ?? '' }}</title>
     @include('layouts.dashboard.includes.style')
     @include('layouts.dashboard.includes.paystack')
 
