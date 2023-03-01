@@ -6,11 +6,11 @@
     <!-- Meta data -->
     <meta charset="UTF-8">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
-    <meta content="VLL Dashboard" name="description">
+    <meta content="Virtual Law Library Dashboard" name="description">
     <meta content="" name="author">
-    <meta name="keywords" content="VLL dashboard">
+    <meta name="keywords" content="Virtual Law Library dashboard">
     <!-- Title -->
-    <title>VLL dashboard - {{ $title ?? '' }}</title>
+    <title>Virtual Law Library Dashboard - {{ $title ?? '' }}</title>
     @include('layouts.dashboard.includes.style')
     @include('layouts.dashboard.includes.paystack')
 

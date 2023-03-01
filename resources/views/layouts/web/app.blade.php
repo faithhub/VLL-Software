@@ -7,6 +7,9 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Virtual Law Library Dashboard" name="description">
+    <meta content="" name="author">
+    <meta name="keywords" content="Virtual Law Library dashboard">
 
     <!-- Link of CSS files -->
     @include('layouts.web.includes.style')
@@ -14,7 +17,7 @@
     <!-- Alert -->
     @include('layouts.web.includes.alert')
 
-    <title>VLL - {{ $title ?? '' }}</title>
+    <title>Virtual Law Library - {{ $title ?? '' }}</title>
 </head>
 
 <body data-bs-spy="scroll" data-bs-offset="70">
