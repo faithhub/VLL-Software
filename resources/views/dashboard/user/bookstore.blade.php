@@ -243,17 +243,8 @@
                             </div>
                         @endforeach
                     @endisset
-
-                    <button id="curr_note_t">sjhbhjsdM</button>
                 </div>
             </div>
         </div>
-
     </div>
-     <script type="text/javascript">
-        $("#curr_note_t").click(function() {
-            console.log("curr_note_t");
-            //your code here
-        });
-    </script>
 @endsection
