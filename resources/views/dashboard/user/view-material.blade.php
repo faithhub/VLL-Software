@@ -523,7 +523,7 @@
 
             setTimeout(function() {
                 document.getElementById('loading').style.display = 'none';
-            }, 3000);
+            }, 2000);
             // $("#note_div_section").load(window.location.href + " #note_div_section");
         }
 
