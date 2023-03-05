@@ -6,6 +6,8 @@ function checkUniversities(data) {
         document.getElementById("country").required = true;
         document.getElementById("universities").removeAttribute("disabled");
         document.getElementById("country").removeAttribute("disabled");
+        document.getElementById("country_div").style.display = "block"
+        document.getElementById("universities_id").style.display = "block"
     } else if (data.name == "type" && data.value == "professionals") {
         reset = document.getElementById("universities");
         reset.selectedIndex = -1;
@@ -19,6 +21,8 @@ function checkUniversities(data) {
             .getElementById("universities")
             .setAttribute("disabled", "disabled");
         document.getElementById("country").setAttribute("disabled", "disabled");
+        document.getElementById("country_div").style.display = "none"
+        document.getElementById("universities_id").style.display = "none"
     } else {
         document.getElementById("universities").required = false;
         document.getElementById("country").required = false;
@@ -29,6 +33,7 @@ function checkUniversities(data) {
         document.getElementById("country").setAttribute("disabled", "disabled");
     }
 }
+Update from User, Vendor, and Admin dashboard
 
 var type = "{{ old('form_type') }}";
 switchForm(type);
