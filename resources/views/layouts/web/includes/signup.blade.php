@@ -33,7 +33,7 @@ function checkUniversities(data) {
         document.getElementById("country").setAttribute("disabled", "disabled");
     }
 }
-Update from User, Vendor, and Admin dashboard
+// Update from User, Vendor, and Admin dashboard
 
 var type = "{{ old('form_type') }}";
 switchForm(type);
