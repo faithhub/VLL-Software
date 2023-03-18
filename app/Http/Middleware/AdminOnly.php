@@ -5,9 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
-class Admin
+class AdminOnly
 {
     /**
      * Handle an incoming request.
@@ -20,10 +19,35 @@ class Admin
     {
         try {
             $role = Auth::user()->role;
-            if ($role == "admin" || $role == "sub_admin") {
+            $sub_admin = Auth::user()->sub_admin;
+            if ($role == "admin") {
                 return $next($request);
             } else {
                 switch ($role) {
+                    case "sub_admin":
+                        switch ($sub_admin) {
+                            case 'user':
+                                # code...
+                                return redirect('/admin/users');
+                                break;
+                            case 'transaction':
+                                # code...
+                                return redirect('/admin/transactions');
+                                break;
+                            case 'chat':
+                                # code...
+                                return redirect('/admin/messages');
+                                break;
+                            case 'material':
+                                # code...
+                                return redirect('/admin/library');
+                                break;
+                            default:
+                                # code...
+                                return redirect('/logout');
+                                break;
+                        }
+                        break;
                     case "user":
                         // Session::flash('permission_warning', 'You no not have access to this page');
                         return redirect('/user');

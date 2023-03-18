@@ -38,7 +38,7 @@
                                     </li>
                                 </ul>
                             @endif
-                            @if (Auth::user()->role == 'admin')
+                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'sub_admin')
                                 <ul class="navbar-nav mx-auto">
                                     <li class="nav-item"><a class="nav-link login-btn"
                                             href="{{ route('admin.index') }}">Dashboard</a>

@@ -24,7 +24,7 @@
                                     @if (Auth::user()->role == 'vendor')
                                         <a href="{{ route('vendor.index') }}" class="gt-btn">Go to Dashboard</a>
                                     @endif
-                                    @if (Auth::user()->role == 'admin')
+                                    @if (Auth::user()->role == 'admin' || Auth::user()->role == 'sub_admin')
                                         <a href="{{ route('admin.index') }}" class="gt-btn">Go to Dashboard</a>
                                     @endif
                                 @else

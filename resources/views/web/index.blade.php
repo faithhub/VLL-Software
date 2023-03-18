@@ -131,14 +131,6 @@
         </div>
     </section>
     <!-- End Why Choose Us Area -->
-        <div class="row">
-            <div class="col-6">
-                <div class="text-center">
-                    Sell
-                </div>
-            </div>
-            <div class="col-6 text-center">Buy</div>
-        </div>
     <!-- Start Fun Facts Area -->
     <section class="fun-facts-area ptb-1"
         style="background-image: linear-gradient(rgba(57, 81, 133, 0.04) 0.28%, #395185 99.67%), url('{{ asset('assets/web/img/team.png') }}')">

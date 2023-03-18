@@ -175,7 +175,7 @@
                         </a>
                     </li>
                 @endif
-                @if (Auth::user()->role == 'admin')
+                @if (Auth::user()->role == 'sub_admin' || Auth::user()->role == 'admin')
                     <li class="slide is-expanded" id="sidebar">
                         <a class="side-menu__item side_menus {{ request()->is('admin') || request()->is('admin/summary/*') ? 'active' : '' }}"
                             href="{{ route('admin.index') }}">
@@ -188,30 +188,49 @@
                             <span class="side-menu__label">Dashboard</span>
                         </a>
                     </li>
+                @endif
+
+                @if (Auth::user()->role == 'admin')
                     <li class="slide is-expanded" id="sidebar">
-                        <a class="side-menu__item side_menus {{ request()->is('admin/users') ? 'active' : '' }}"
+                        <a class="side-menu__item side_menus {{ request()->is('admin/sub-admin') ? 'active' : '' }}"
+                            href="{{ route('admin.sub_admin') }}">
+                            <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" class="side-menu__icon">
+                                <path
+                                    d="M11.9963 15.4004C14.1491 15.4004 15.8625 13.2179 15.8625 10.5254C15.8625 7.83289 14.1173 5.65039 11.9963 5.65039C9.84338 5.65039 8.13 7.83289 8.13 10.5254C8.09625 13.216 9.84375 15.4004 11.9963 15.4004ZM13.8713 16.9004H10.1288C7.185 16.9004 4.8 19.6988 4.8 23.1488C4.8 23.8426 5.27625 24.4004 5.865 24.4004H18.135C18.7238 24.4004 19.2 23.8426 19.2 23.1488C19.2 19.6988 16.815 16.9004 13.8713 16.9004ZM19.2 7.90039C20.8568 7.90039 22.2 6.22133 22.2 4.15039C22.2 2.07945 20.8575 0.400391 19.2 0.400391C17.5433 0.400391 16.2 2.07945 16.2 4.15039C16.2 6.22133 17.5425 7.90039 19.2 7.90039ZM6.89625 10.5254C6.89625 10.27 6.93308 10.0271 6.95659 9.77961C6.5475 9.49883 6.0975 9.40039 5.62125 9.40039H3.303C1.479 9.40039 0 11.3598 0 13.7738C0 14.2566 0.295763 14.6504 0.66075 14.6504H8.142C7.37625 13.5348 6.89625 12.1051 6.89625 10.5254ZM4.8 7.90039C6.45675 7.90039 7.8 6.22133 7.8 4.15039C7.8 2.07945 6.4575 0.400391 4.8 0.400391C3.14325 0.400391 1.8 2.07945 1.8 4.15039C1.8 6.22133 3.14325 7.90039 4.8 7.90039ZM20.6963 9.40039H18.3773C17.8973 9.40039 17.4443 9.54275 17.0325 9.78664C17.055 10.0332 17.0925 10.2723 17.0925 10.5254C17.0925 12.1055 16.6133 13.5352 15.849 14.6504H23.3378C23.7038 14.6504 24 14.2566 24 13.7738C24 11.3598 22.5225 9.40039 20.6963 9.40039Z"
+                                    fill="{{ request()->is('admin/sub-admin') ? '#fff' : '#1D3557' }}">
+                            </svg>
+                            <span class="side-menu__label">Sub Admins</span>
+                        </a>
+                    </li>
+                @endif
+                @if (Auth::user()->sub_admin == 'user' || Auth::user()->role == 'admin')
+                    <li class="slide is-expanded" id="sidebar">
+                        <a class="side-menu__item side_menus {{ request()->is('admin/users') || request()->is('admin/user/*') ? 'active' : '' }}"
                             href="{{ route('admin.users') }}">
                             <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                 xmlns="http://www.w3.org/2000/svg" class="side-menu__icon">
                                 <path
                                     d="M11.9963 15.4004C14.1491 15.4004 15.8625 13.2179 15.8625 10.5254C15.8625 7.83289 14.1173 5.65039 11.9963 5.65039C9.84338 5.65039 8.13 7.83289 8.13 10.5254C8.09625 13.216 9.84375 15.4004 11.9963 15.4004ZM13.8713 16.9004H10.1288C7.185 16.9004 4.8 19.6988 4.8 23.1488C4.8 23.8426 5.27625 24.4004 5.865 24.4004H18.135C18.7238 24.4004 19.2 23.8426 19.2 23.1488C19.2 19.6988 16.815 16.9004 13.8713 16.9004ZM19.2 7.90039C20.8568 7.90039 22.2 6.22133 22.2 4.15039C22.2 2.07945 20.8575 0.400391 19.2 0.400391C17.5433 0.400391 16.2 2.07945 16.2 4.15039C16.2 6.22133 17.5425 7.90039 19.2 7.90039ZM6.89625 10.5254C6.89625 10.27 6.93308 10.0271 6.95659 9.77961C6.5475 9.49883 6.0975 9.40039 5.62125 9.40039H3.303C1.479 9.40039 0 11.3598 0 13.7738C0 14.2566 0.295763 14.6504 0.66075 14.6504H8.142C7.37625 13.5348 6.89625 12.1051 6.89625 10.5254ZM4.8 7.90039C6.45675 7.90039 7.8 6.22133 7.8 4.15039C7.8 2.07945 6.4575 0.400391 4.8 0.400391C3.14325 0.400391 1.8 2.07945 1.8 4.15039C1.8 6.22133 3.14325 7.90039 4.8 7.90039ZM20.6963 9.40039H18.3773C17.8973 9.40039 17.4443 9.54275 17.0325 9.78664C17.055 10.0332 17.0925 10.2723 17.0925 10.5254C17.0925 12.1055 16.6133 13.5352 15.849 14.6504H23.3378C23.7038 14.6504 24 14.2566 24 13.7738C24 11.3598 22.5225 9.40039 20.6963 9.40039Z"
-                                    fill="{{ request()->is('admin/users') ? '#fff' : '#1D3557' }}">
+                                    fill="{{ request()->is('admin/users') || request()->is('admin/user/*') ? '#fff' : '#1D3557' }}">
                             </svg>
                             <span class="side-menu__label">Users</span>
                         </a>
                     </li>
                     <li class="slide is-expanded" id="sidebar">
-                        <a class="side-menu__item side_menus {{ request()->is('admin/vendors') ? 'active' : '' }}"
+                        <a class="side-menu__item side_menus {{ request()->is('admin/vendors') || request()->is('admin/vendor/*') ? 'active' : '' }}"
                             href="{{ route('admin.vendors') }}">
                             <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                 xmlns="http://www.w3.org/2000/svg" class="side-menu__icon">
                                 <path
                                     d="M11.9963 15.4004C14.1491 15.4004 15.8625 13.2179 15.8625 10.5254C15.8625 7.83289 14.1173 5.65039 11.9963 5.65039C9.84338 5.65039 8.13 7.83289 8.13 10.5254C8.09625 13.216 9.84375 15.4004 11.9963 15.4004ZM13.8713 16.9004H10.1288C7.185 16.9004 4.8 19.6988 4.8 23.1488C4.8 23.8426 5.27625 24.4004 5.865 24.4004H18.135C18.7238 24.4004 19.2 23.8426 19.2 23.1488C19.2 19.6988 16.815 16.9004 13.8713 16.9004ZM19.2 7.90039C20.8568 7.90039 22.2 6.22133 22.2 4.15039C22.2 2.07945 20.8575 0.400391 19.2 0.400391C17.5433 0.400391 16.2 2.07945 16.2 4.15039C16.2 6.22133 17.5425 7.90039 19.2 7.90039ZM6.89625 10.5254C6.89625 10.27 6.93308 10.0271 6.95659 9.77961C6.5475 9.49883 6.0975 9.40039 5.62125 9.40039H3.303C1.479 9.40039 0 11.3598 0 13.7738C0 14.2566 0.295763 14.6504 0.66075 14.6504H8.142C7.37625 13.5348 6.89625 12.1051 6.89625 10.5254ZM4.8 7.90039C6.45675 7.90039 7.8 6.22133 7.8 4.15039C7.8 2.07945 6.4575 0.400391 4.8 0.400391C3.14325 0.400391 1.8 2.07945 1.8 4.15039C1.8 6.22133 3.14325 7.90039 4.8 7.90039ZM20.6963 9.40039H18.3773C17.8973 9.40039 17.4443 9.54275 17.0325 9.78664C17.055 10.0332 17.0925 10.2723 17.0925 10.5254C17.0925 12.1055 16.6133 13.5352 15.849 14.6504H23.3378C23.7038 14.6504 24 14.2566 24 13.7738C24 11.3598 22.5225 9.40039 20.6963 9.40039Z"
-                                    fill="{{ request()->is('admin/vendors') ? '#fff' : '#1D3557' }}">
+                                    fill="{{ request()->is('admin/vendors') || request()->is('admin/vendor/*')  ? '#fff' : '#1D3557' }}">
                             </svg>
                             <span class="side-menu__label">Vendors</span>
                         </a>
                     </li>
+                @endif
+                @if (Auth::user()->sub_admin == 'material' || Auth::user()->role == 'admin')
                     <li class="slide is-expanded" id="sidebar">
                         <a class="side-menu__item side_menus {{ request()->is('admin/library/*') || request()->is('admin/library') || request()->is('admin/upload') ? 'active' : '' }}"
                             href="{{ route('admin.library') }}">
@@ -224,12 +243,16 @@
                             <span class="side-menu__label">Library</span>
                         </a>
                     </li>
+                @endif
+                @if (Auth::user()->sub_admin == 'transaction' || Auth::user()->role == 'admin')
                     <li class="slide is-expanded" id="sidebar">
-                        <a class="side-menu__item side_menus {{ request()->is('admin/transactions') ? 'active' : '' }}"  href="{{ route('admin.transactions') }}">
+                        <a class="side-menu__item side_menus {{ request()->is('admin/transactions') ? 'active' : '' }}"
+                            href="{{ route('admin.transactions') }}">
                             <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="24.000000pt"
                                 height="24.000000pt" viewBox="0 0 24.000000 24.000000"
                                 preserveAspectRatio="xMidYMid meet" class="side-menu__icon">
-                                <g transform="translate(0.000000,24.000000) scale(0.100000,-0.100000)" fill="{{ request()->is('admin/transactions') ? '#fff' : '#1D3557' }}"
+                                <g transform="translate(0.000000,24.000000) scale(0.100000,-0.100000)"
+                                    fill="{{ request()->is('admin/transactions') ? '#fff' : '#1D3557' }}"
                                     stroke="none">
                                     <path d="M115 210 l-60 -19 78 2 c63 2 77 5 75 17 -4 21 -24 21 -93 0z" />
                                     <path
@@ -245,9 +268,11 @@
                             <span class="side-menu__label">Transactions</span>
                         </a>
                     </li>
-
+                @endif
+                @if (Auth::user()->sub_admin == 'chat' || Auth::user()->role == 'admin')
                     <li class="slide is-expanded" id="sidebar">
-                        <a class="side-menu__item side_menus {{ request()->is('admin/messages') ? 'active' : '' }}"  href="{{ route('admin.messages') }}">
+                        <a class="side-menu__item side_menus {{ request()->is('admin/messages') ? 'active' : '' }}"
+                            href="{{ route('admin.messages') }}">
                             <svg width="23" height="20" viewBox="0 0 23 20" fill="none"
                                 xmlns="http://www.w3.org/2000/svg" class="side-menu__icon">
                                 <path
@@ -261,8 +286,11 @@
                             <span class="side-menu__label">Messages</span>
                         </a>
                     </li>
+                @endif
+                @if (Auth::user()->role == 'admin')
                     <li class="slide is-expanded" id="sidebar">
-                        <a class="side-menu__item side_menus {{ request()->is('admin/settings') ? 'active' : '' }}"  href="{{ route('admin.settings') }}">
+                        <a class="side-menu__item side_menus {{ request()->is('admin/settings') ? 'active' : '' }}"
+                            href="{{ route('admin.settings') }}">
                             <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                 xmlns="http://www.w3.org/2000/svg" class="side-menu__icon">
                                 <path
@@ -273,7 +301,9 @@
                             <span class="side-menu__label">Settings</span>
                         </a>
                     </li>
+                @endif
 
+                @if (Auth::user()->role == 'sub_admin' || Auth::user()->role == 'admin')
                     <li class="slide is-expanded" id="sidebar">
                         <a class="side-menu__item side_menus" href="{{ route('logout') }}"
                             onclick="event.preventDefault();
@@ -294,6 +324,7 @@
 
 
             </ul>
+            {{-- <button class="btn btn-primary" onclick="makePayment()">Pay</button> --}}
         </div>
         <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
             <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>

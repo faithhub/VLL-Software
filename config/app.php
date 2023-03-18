@@ -141,6 +141,14 @@ return [
     'maintenance' => [
         'driver' => 'file',
         // 'store'  => 'redis',
+
+
+
+
+        /**
+         * Staging URL: https://ravesandboxapi.flutterwave.com/v3
+         * Live URL: https://api.ravepay.co/v3
+         */
     ],
 
     /*
@@ -211,7 +219,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        'Image' => 'Intervention\Image\Facades\Image'
+        'Image' => 'Intervention\Image\Facades\Image',
     ])->toArray(),
 
 ];

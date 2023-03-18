@@ -19,6 +19,7 @@ class User
     public function handle(Request $request, Closure $next)
     {
         $role = Auth::user()->role;
+        $sub_admin = Auth::user()->sub_admin;
         if ($role == "user") {
             return $next($request);
         } else {
@@ -26,6 +27,30 @@ class User
                 case "admin":
                     // Session::flash('permission_warning', 'You no not have access to this page');
                     return redirect('/admin');
+                    break;
+                case "sub_admin":
+                    switch ($sub_admin) {
+                        case 'user':
+                            # code...
+                            return redirect('/admin/users');
+                            break;
+                        case 'transaction':
+                            # code...
+                            return redirect('/admin/transactions');
+                            break;
+                        case 'chat':
+                            # code...
+                            return redirect('/admin/messages');
+                            break;
+                        case 'material':
+                            # code...
+                            return redirect('/admin/library');
+                            break;
+                        default:
+                            # code...
+                            return redirect('/logout');
+                            break;
+                    }
                     break;
                 case "vendor":
                     // Session::flash('permission_warning', 'You no not have access to this page');

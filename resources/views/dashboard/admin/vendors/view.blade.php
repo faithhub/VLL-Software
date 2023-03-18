@@ -235,11 +235,13 @@
                     <div class="tab-menu-heading p-0">
                         <div class="tabs-menu1 px-3">
                             <ul class="nav" role="tablist">
-                                <li><a href="#tab-7" class="fs-14 active" data-bs-toggle="tab" aria-selected="true"
-                                        role="tab">Materials</a> </li>
-                                <li><a href="#tab-8" data-bs-toggle="tab" class="fs-14" aria-selected="false"
-                                        role="tab" tabindex="-1">Transactions</a></li>
-                                <li><a href="#tab-9" data-bs-toggle="tab" class="fs-14" aria-selected="false"
+                                @if (Auth::user()->role == 'admin')
+                                    <li><a href="#tab-7" class="fs-14 active" data-bs-toggle="tab" aria-selected="true"
+                                            role="tab">Materials</a> </li>
+                                    <li><a href="#tab-8" data-bs-toggle="tab" class="fs-14" aria-selected="false"
+                                            role="tab" tabindex="-1">Transactions</a></li>
+                                @endif
+                                <li><a href="#tab-9" data-bs-toggle="tab" class="fs-14 @if (Auth::user()->sub_admin == 'user') active @endif" aria-selected="false"
                                         role="tab" tabindex="-1">Login History</a> </li>
                             </ul>
                         </div>
@@ -251,177 +253,194 @@
             <div class="col-xl-12 col-lg-12 col-md-12">
                 <div class="border-0">
                     <div class="tab-content">
-                        <div class="tab-pane active show" id="tab-7" role="tabpanel">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Materials</h3>
-                                </div>
-                                <div class="card-body pt-5">
-                                    <div class="table-responsive">
-                                        <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <table
-                                                        class="table table-bordere card-table table-vcenter text-nowrap dataTable no-footer"
-                                                        role="grid" aria-describedby="datatable_info">
-                                                        <thead>
-                                                            <tr role="row">
-                                                                <th class="sorting sorting_asc" style="">No</th>
-                                                                <th scope="row" class="sorting" style="">Book
-                                                                </th>
-                                                                <th class="sorting" tabindex="0" style="">Book
-                                                                    Name
-                                                                </th>
-                                                                <th class="sorting" tabindex="0" style="">Type
-                                                                </th>
-                                                                <th class="sorting" tabindex="0" style="">Author
-                                                                </th>
-                                                                <th class="sorting" tabindex="0" style="">
-                                                                    Description</th>
-                                                                <th class="sorting" tabindex="0" style="">Price
-                                                                </th>
-                                                                <th class="sorting" tabindex="0" style="">
-                                                                    Material</th>
-                                                                <th class="sorting" tabindex="0" style="">Action
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @isset($materials)
-                                                                @foreach ($materials as $material)
-                                                                    <tr class="">
-                                                                        <td class="sorting_1">{{ $sn++ }}</td>
-                                                                        <td class="sorting_1">
-                                                                            <img src="{{ asset($material->cover->url ?? '') }}"
-                                                                                style="max-height:60px">
-                                                                        </td>
-                                                                        <td class="sorting_1"><a class="font-weight-bold"
-                                                                                onclick="shiNew(event)" data-type="dark"
-                                                                                data-size="m"
-                                                                                data-title="{{ $material->invoice_id }}"
-                                                                                href="{{ route('admin.view_material', $material->id) }}">{{ $material->title }}</a></td>
-                                                                        <td>{{ $material->type->name ?? '-' }}</td>
-                                                                        <td>{{ $material->name_of_author ?? '-' }}</td>
-                                                                        <td>
-                                                                            {{ mb_strimwidth($material->material_desc ?? '', 0, 40, '...') }}
-                                                                        </td>
-                                                                        <td>
-                                                                            <b
-                                                                                class="money">{{ money($material->amount) }}</b>
-                                                                        </td>
-                                                                        <td><a class="font-weight-bold"
-                                                                                href="{{ asset($material->file->url ?? '') }}">{{ $material->title }}.pdf</a>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="d-flex">
-                                                                                <a onclick="return confirm('Are you sure you want to delete this material?')"
-                                                                                    href="{{ route('admin.delete.library', $material->id) }}"
-                                                                                    class="btn btn-sm m-1 btn-primary">
-                                                                                    Delete</a>
-                                                                                <a href="{{ route('admin.edit.library', $material->id) }}"
-                                                                                    class="btn m-1 btn-sm btn-primary">Edit</a>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            @endisset
-                                                        </tbody>
-                                                    </table>
+
+                        @if (Auth::user()->role == 'admin')
+                            <div class="tab-pane active show" id="tab-7" role="tabpanel">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Materials</h3>
+                                    </div>
+                                    <div class="card-body pt-5">
+                                        <div class="table-responsive">
+                                            <div id="datatable_wrapper"
+                                                class="dataTables_wrapper dt-bootstrap5 no-footer">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <table
+                                                            class="table table-bordere card-table table-vcenter text-nowrap dataTable no-footer"
+                                                            role="grid" aria-describedby="datatable_info">
+                                                            <thead>
+                                                                <tr role="row">
+                                                                    <th class="sorting sorting_asc" style="">No</th>
+                                                                    <th scope="row" class="sorting" style="">
+                                                                        Book
+                                                                    </th>
+                                                                    <th class="sorting" tabindex="0" style="">
+                                                                        Book
+                                                                        Name
+                                                                    </th>
+                                                                    <th class="sorting" tabindex="0" style="">
+                                                                        Type
+                                                                    </th>
+                                                                    <th class="sorting" tabindex="0" style="">
+                                                                        Author
+                                                                    </th>
+                                                                    <th class="sorting" tabindex="0" style="">
+                                                                        Description</th>
+                                                                    <th class="sorting" tabindex="0" style="">
+                                                                        Price
+                                                                    </th>
+                                                                    <th class="sorting" tabindex="0" style="">
+                                                                        Material</th>
+                                                                    <th class="sorting" tabindex="0" style="">
+                                                                        Action
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @isset($materials)
+                                                                    @foreach ($materials as $material)
+                                                                        <tr class="">
+                                                                            <td class="sorting_1">{{ $sn++ }}</td>
+                                                                            <td class="sorting_1">
+                                                                                <img src="{{ asset($material->cover->url ?? '') }}"
+                                                                                    style="max-height:60px">
+                                                                            </td>
+                                                                            <td class="sorting_1"><a class="font-weight-bold"
+                                                                                    onclick="shiNew(event)" data-type="dark"
+                                                                                    data-size="m"
+                                                                                    data-title="{{ $material->invoice_id }}"
+                                                                                    href="{{ route('admin.view_material', $material->id) }}">{{ $material->title }}</a>
+                                                                            </td>
+                                                                            <td>{{ $material->type->name ?? '-' }}</td>
+                                                                            <td>{{ $material->name_of_author ?? '-' }}</td>
+                                                                            <td>
+                                                                                {{ mb_strimwidth($material->material_desc ?? '', 0, 40, '...') }}
+                                                                            </td>
+                                                                            <td>
+                                                                                <b
+                                                                                    class="money">{{ money($material->amount) }}</b>
+                                                                            </td>
+                                                                            <td><a class="font-weight-bold"
+                                                                                    href="{{ asset($material->file->url ?? '') }}">{{ $material->title }}.pdf</a>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="d-flex">
+                                                                                    <a onclick="return confirm('Are you sure you want to delete this material?')"
+                                                                                        href="{{ route('admin.delete.library', $material->id) }}"
+                                                                                        class="btn btn-sm m-1 btn-primary">
+                                                                                        Delete</a>
+                                                                                    <a href="{{ route('admin.edit.library', $material->id) }}"
+                                                                                        class="btn m-1 btn-sm btn-primary">Edit</a>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                @endisset
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="tab-pane" id="tab-8" role="tabpanel">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Transaction History</h3>
-                                </div>
-                                <div class="card-body pt-5">
-                                    <div class="table-responsive">
-                                        <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <table
-                                                        class="table table-bordere card-table table-vcenter text-nowrap dataTable no-footer"
-                                                        role="grid" aria-describedby="datatable_info">
-                                                        <thead>
-                                                            <tr role="row">
-                                                                <th class="sorting" tabindex="0" style="">
-                                                                    S/N
-                                                                </th>
-                                                                <th class="sorting sorting_asc" style="">Invoice ID
-                                                                </th>
-                                                                <th class="sorting sorting_asc" style="">PayStack
-                                                                    Ref
-                                                                </th>
-                                                                <th scope="row" class="sorting" style="">Date of
-                                                                    Transaction
-                                                                </th>
-                                                                <th class="sorting" tabindex="0" style="">
-                                                                    Transaction Type
-                                                                </th>
-                                                                <th class="sorting" tabindex="0" style="">
-                                                                    Transaction Value
-                                                                </th>
-                                                                <th class="sorting" tabindex="0" style="">Net
-                                                                    Order Value
-                                                                </th>
-                                                                <th class="sorting" tabindex="0" style="">Status
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @isset($transactions)
-                                                                @foreach ($transactions as $transaction)
-                                                                    <tr class="">
-                                                                        <td class="sorting_1">{{ $sn2++ }}</td>
-                                                                        <td class="sorting_1">
-                                                                            <a class="font-weight-normal1"
-                                                                                onclick="shiNew(event)" data-type="dark"
-                                                                                data-size="m"
-                                                                                data-title="{{ $transaction->mat_his['trans']['invoice_id'] }}"
-                                                                                href="{{ route('admin.transaction.view', $transaction->mat_his['trans']['id']) }}">
-                                                                                {{ $transaction->mat_his['trans']['invoice_id'] }}</a>
-                                                                        </td>
-                                                                        <td>{{ $transaction->mat_his['trans']['trxref'] }}</td>
-                                                                        <td>{{ $transaction->mat_his['trans']['created_at']->format('D, M j, Y h:i a') }}
-                                                                        </td>
-                                                                        <td>
-                                                                            @if ($transaction->mat_his['type'] == 'bought')
+                            <div class="tab-pane" id="tab-8" role="tabpanel">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Transaction History</h3>
+                                    </div>
+                                    <div class="card-body pt-5">
+                                        <div class="table-responsive">
+                                            <div id="datatable_wrapper"
+                                                class="dataTables_wrapper dt-bootstrap5 no-footer">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <table
+                                                            class="table table-bordere card-table table-vcenter text-nowrap dataTable no-footer"
+                                                            role="grid" aria-describedby="datatable_info">
+                                                            <thead>
+                                                                <tr role="row">
+                                                                    <th class="sorting" tabindex="0" style="">
+                                                                        S/N
+                                                                    </th>
+                                                                    <th class="sorting sorting_asc" style="">Invoice
+                                                                        ID
+                                                                    </th>
+                                                                    <th class="sorting sorting_asc" style="">
+                                                                        PayStack
+                                                                        Ref
+                                                                    </th>
+                                                                    <th scope="row" class="sorting" style="">
+                                                                        Date of
+                                                                        Transaction
+                                                                    </th>
+                                                                    <th class="sorting" tabindex="0" style="">
+                                                                        Transaction Type
+                                                                    </th>
+                                                                    <th class="sorting" tabindex="0" style="">
+                                                                        Transaction Value
+                                                                    </th>
+                                                                    <th class="sorting" tabindex="0" style="">Net
+                                                                        Order Value
+                                                                    </th>
+                                                                    <th class="sorting" tabindex="0" style="">
+                                                                        Status
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @isset($transactions)
+                                                                    @foreach ($transactions as $transaction)
+                                                                        <tr class="">
+                                                                            <td class="sorting_1">{{ $sn2++ }}</td>
+                                                                            <td class="sorting_1">
+                                                                                <a class="font-weight-normal1"
+                                                                                    onclick="shiNew(event)" data-type="dark"
+                                                                                    data-size="m"
+                                                                                    data-title="{{ $transaction->mat_his['trans']['invoice_id'] }}"
+                                                                                    href="{{ route('admin.transaction.view', $transaction->mat_his['trans']['id']) }}">
+                                                                                    {{ $transaction->mat_his['trans']['invoice_id'] }}</a>
+                                                                            </td>
+                                                                            <td>{{ $transaction->mat_his['trans']['trxref'] }}
+                                                                            </td>
+                                                                            <td>{{ $transaction->mat_his['trans']['created_at']->format('D, M j, Y h:i a') }}
+                                                                            </td>
+                                                                            <td>
+                                                                                @if ($transaction->mat_his['type'] == 'bought')
+                                                                                    <span
+                                                                                        class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->mat_his['type'] }}</span>
+                                                                                @endif
+                                                                                @if ($transaction->mat_his['type'] == 'rented')
+                                                                                    <span
+                                                                                        class="badge bg-warning-light border-warning text-capitalize type-text">{{ $transaction->mat_his['type'] }}</span>
+                                                                                @endif
+                                                                            </td>
+                                                                            <td><span
+                                                                                    class="money">{{ money($transaction->mat_his['trans']['amount']) }}</span>
+                                                                            </td>
+                                                                            <td><span
+                                                                                    class="money">{{ money((80.5 / 100) * $transaction->mat_his['trans']['amount']) }}</span>
+                                                                            </td>
+                                                                            <td>
                                                                                 <span
-                                                                                    class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->mat_his['type'] }}</span>
-                                                                            @endif
-                                                                            @if ($transaction->mat_his['type'] == 'rented')
-                                                                                <span
-                                                                                    class="badge bg-warning-light border-warning text-capitalize type-text">{{ $transaction->mat_his['type'] }}</span>
-                                                                            @endif
-                                                                        </td>
-                                                                        <td><span
-                                                                                class="money">{{ money($transaction->mat_his['trans']['amount']) }}</span>
-                                                                        </td>
-                                                                        <td><span
-                                                                                class="money">{{ money((80.5 / 100) * $transaction->mat_his['trans']['amount']) }}</span>
-                                                                        </td>
-                                                                        <td>
-                                                                            <span
-                                                                                class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->mat_his['trans']['status'] }}</span>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            @endisset
-                                                        </tbody>
-                                                    </table>
+                                                                                    class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->mat_his['trans']['status'] }}</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                @endisset
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="tab-pane" id="tab-9" role="tabpanel">
+                        @endif
+                        <div class="tab-pane @if (Auth::user()->sub_admin == 'user') active show @endif" id="tab-9" role="tabpanel">
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">Login History</h3>
@@ -441,12 +460,14 @@
                                                                 </th>
                                                                 <th class="sorting" tabindex="0" style="">Date
                                                                 </th>
-                                                                <th class="sorting" tabindex="0" style="">IP Address</th>
+                                                                <th class="sorting" tabindex="0" style="">IP
+                                                                    Address</th>
                                                                 <th class="sorting" tabindex="0" style="">Device
                                                                     Type</th>
                                                                 <th class="sorting" tabindex="0" style="">Browser
                                                                     Type</th>
-                                                                <th class="sorting" tabindex="0" style="">IOS</th>
+                                                                <th class="sorting" tabindex="0" style="">IOS
+                                                                </th>
                                                                 <th class="sorting" tabindex="0" style="">
                                                                     Location</th>
                                                             </tr>

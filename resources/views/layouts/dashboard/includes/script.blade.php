@@ -60,7 +60,92 @@
 <!-- Main Quill library -->
 {{-- <script src="//cdn.quilljs.com/1.0.0/quill.js"></script> --}}
 <script src="//cdn.quilljs.com/1.0.0/quill.min.js"></script>
+<script src="https://checkout.flutterwave.com/v3.js"></script>
 <script type="text/javascript">
+    function makePayment() {
+        // FLWPUBK_TEST-e1cbb8cf92b2193b7613de4cc1a4fa60-X
+        // FLWPUBK_TEST-2a155d1d83d66523b4a71d5d09a900e4-X
+        FlutterwaveCheckout({
+            public_key: "FLWPUBK_TEST-e1cbb8cf92b2193b7613de4cc1a4fa60-X",
+            tx_ref: "VLL_" + Math.floor((Math.random() * 1000000000) + 1),
+            amount: 5600,
+            currency: "NGN",
+            // payment_options: "card",
+            payment_options: "card, banktransfer",
+            callback: function(payment) {
+                // Send AJAX verification request to backend
+                console.log(payment);
+                verifyTransactionOnBackend(payment.id);
+            },
+            //  callback: function (data) {
+            //     console.log(data);
+            //     const reference = data.tx_ref;
+            //     alert("payment was successfully completed" + reference)
+            // },
+            onclose: function(incomplete) {
+                if (incomplete || window.verified === false) {
+                    console.log(incomplete, 'failed');
+                    // document.querySelector("#payment-failed").style.display = 'block';
+                } else {
+                    // document.querySelector("form").style.display = 'none';
+                    if (window.verified == true) {
+                        console.log(incomplete, 'success');
+                        // document.querySelector("#payment-success").style.display = 'block';
+                    } else {
+                        console.log(incomplete, 'pending');
+                        // document.querySelector("#payment-pending").style.display = 'block';
+                    }
+                }
+            },
+            // meta: {
+            //     consumer_id: 23,
+            //     consumer_mac: "92a3-912ba-1192a",
+            // },
+            customer: {
+                email: "newrose@unsinkableship.com",
+                phone_number: "08102909304",
+                name: "Rose DeWitt Bukater",
+            },
+            // customizations: {
+            //     title: "The Titanic Store",
+            //     description: "Payment for an awesome cruise",
+            //     logo: "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
+            // },
+        });
+    }
+
+    function verifyTransactionOnBackend(transactionId) {
+        // Let's just pretend the request was successful
+        setTimeout(function() {
+            window.verified = true;
+        }, 200);
+    }
+
+
+    // function makePayment() {
+    //     FlutterwaveCheckout({
+    //         public_key: "FLWPUBK_TEST-2a155d1d83d66523b4a71d5d09a900e4-X",
+    //         tx_ref: "titanic-48981487876868",
+    //         amount: 1000,
+    //         currency: "NGN",
+    //         payment_options: "card",
+    //         redirect_url: "https://glaciers.titanic.com/handle-flutterwave-payment",
+    //         //   meta: {
+    //         //     consumer_id: 23,
+    //         //     consumer_mac: "92a3-912ba-1192a",
+    //         //   },
+    //         customer: {
+    //             email: "adebayooluwadara@gmail.com",
+    //             phone_number: "08102909304",
+    //             name: "Rose DeWitt Bukater",
+    //         },
+    //         customizations: {
+    //             title: "The Titanic Store",
+    //             description: "Payment for an awesome cruise",
+    //             logo: "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
+    //         },
+    //     });
+    // }
 
     $(document).ready(function() {
 

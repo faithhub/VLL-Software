@@ -90,34 +90,27 @@
                     </div>
                 </div>
             </div>
-
             <div class="profile-cover">
                 <div class="wideget-user-tab">
                     <div class="tab-menu-heading p-0">
                         <div class="tabs-menu1 px-3">
                             <ul class="nav" role="tablist">
-                                @if (Auth::user()->role == 'admin')
                                 <li><a href="#tab-7" class="fs-14 active" data-bs-toggle="tab" aria-selected="true"
                                         role="tab">Materials</a> </li>
                                 <li><a href="#tab-8" data-bs-toggle="tab" class="fs-14" aria-selected="false"
                                         role="tab" tabindex="-1">Transactions</a></li>
-            @endif
-                                <li><a href="#tab-9" data-bs-toggle="tab" class="fs-14 @if (Auth::user()->sub_admin == 'user') active  @endif" aria-selected="false"
+                                <li><a href="#tab-9" data-bs-toggle="tab" class="fs-14" aria-selected="false"
                                         role="tab" tabindex="-1">Login History</a> </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- /.profile-cover -->
+            </div><!-- /.profile-cover -->
         </div> <!-- Row -->
-
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12">
                 <div class="border-0">
                     <div class="tab-content">
-
-            @if (Auth::user()->role == 'admin')
                         <div class="tab-pane active show" id="tab-7" role="tabpanel">
                             <div class="card">
                                 <div class="card-header">
@@ -307,8 +300,7 @@
                                 </div>
                             </div>
                         </div>
-                        @endif
-                        <div class="tab-pane @if (Auth::user()->sub_admin == 'user') active show  @endif" id="tab-9" role="tabpanel">
+                        <div class="tab-pane" id="tab-9" role="tabpanel">
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">Login History</h3>

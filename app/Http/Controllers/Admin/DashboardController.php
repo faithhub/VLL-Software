@@ -127,6 +127,66 @@ class DashboardController extends Controller
         }
     }
 
+    public function sub_admin_profile(Request $request)
+    {
+        # code...
+        try {
+            //code...
+            if ($_POST) {
+                $rules = array(
+                    'name' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'max:255', 'unique:users,email,' . Auth::user()->id],
+                    'gender' => ['string', 'max:255'],
+                    'phone' => ['nullable', 'string', 'max:255'],
+                    'avatar' => ['nullable', 'max:5000']
+                );
+
+                $validator = Validator::make($request->all(), $rules);
+
+                if ($validator->fails()) {
+                    // dd($validator->errors());
+                    Session::flash('warning', __('All fields are required'));
+                    return back()->withErrors($validator)->withInput();
+                }
+
+                // dd($request->all());
+                if ($request->hasFile('avatar')) {
+                    $profile_pics = $request->file('avatar');
+                    $profile_pics_name = 'MaterialCover' . time() . '.' . $profile_pics->getClientOriginalExtension();
+                    Storage::disk('profile_pics')->put($profile_pics_name, file_get_contents($profile_pics));
+                    $save_cover = File::create([
+                        'name' => $profile_pics_name,
+                        'url' => 'storage/avatars/' . $profile_pics_name
+                    ]);
+                }
+
+                $update_user = User::where('id', Auth::user()->id)->update([
+                    'name' => $request->name ?? Auth::user()->name,
+                    'email' => $request->email ?? Auth::user()->email,
+                    'gender' => $request->gender ?? Auth::user()->gender,
+                    'phone' => $request->phone ?? Auth::user()->phone,
+                    'avatar' => $save_cover->id ?? Auth::user()->profile_pics->id,
+                ]);
+
+                if (!$update_user) {
+                    # code...
+                    Session::flash('error', "An error occur when update profile, try again");
+                    return back();
+                }
+
+
+                Session::flash('success', "Profile updated successfully");
+                return redirect()->route('admin.sub_admin_profile');
+            }
+
+            $data['title'] = "My Profile";
+            return View('dashboard.admin.sub-admin.profile', $data);
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            //throw $th;
+        }
+    }
+
     public function settings(Request $request)
     {
 

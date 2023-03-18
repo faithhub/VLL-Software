@@ -18,11 +18,36 @@ class Vendor
      */
     public function handle(Request $request, Closure $next)
     {
+        $sub_admin = Auth::user()->sub_admin;
         $role = Auth::user()->role;
         if ($role == "vendor") {
             return $next($request);
         } else {
             switch ($role) {
+                case "sub_admin":
+                    switch ($sub_admin) {
+                        case 'user':
+                            # code...
+                            return redirect('/admin/users');
+                            break;
+                        case 'transaction':
+                            # code...
+                            return redirect('/admin/transactions');
+                            break;
+                        case 'chat':
+                            # code...
+                            return redirect('/admin/messages');
+                            break;
+                        case 'material':
+                            # code...
+                            return redirect('/admin/library');
+                            break;
+                        default:
+                            # code...
+                            return redirect('/logout');
+                            break;
+                    }
+                    break;
                 case "admin":
                     // Session::flash('permission_warning', 'You no not have access to this page');
                     return redirect('/admin');

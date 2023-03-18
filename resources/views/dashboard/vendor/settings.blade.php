@@ -92,7 +92,7 @@
                                         </div>
 
                                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-4">
-                                            <label class='form-label'>Gneder</label>
+                                            <label class='form-label'>Gender</label>
                                             <div class='d-flex' style='margin-bottom:-10px'>
                                                 <div class='form-check form-check-inline'>
                                                     <input class='form-check-input' name='gender' type='radio'
