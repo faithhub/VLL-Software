@@ -85,7 +85,7 @@
                                             <input class='form-check-input'
                                                 {{ Auth::user()->role == 'material' ? 'checked' : '' }} name='role'
                                                 type='radio' id='inlineCheckbox3' value='material'>
-                                            <label class='form-check-label' for='inlineCheckbox3'>Material Managemen</label>
+                                            <label class='form-check-label' for='inlineCheckbox3'>Material Management</label>
                                         </div>
                                         <div class='form-check form-check-inline'>
                                             <input class='form-check-input'
