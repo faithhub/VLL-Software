@@ -25,11 +25,11 @@ use Illuminate\Support\Facades\Validator;
 
 // require __DIR__ . "/vendor/autoload.php";
 
-use Flutterwave\EventHandlers\EventHandlerInterface;
-use Flutterwave\Flutterwave;
-// use Flutterwave\Util\Currency;
+// use Flutterwave\EventHandlers\EventHandlerInterface;
+// use Flutterwave\Flutterwave;
+// // use Flutterwave\Util\Currency;
 
-\Flutterwave\Flutterwave::bootstrap();
+// \Flutterwave\Flutterwave::bootstrap();
 class DashboardController extends Controller
 {
 
