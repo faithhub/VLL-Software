@@ -1,4 +1,13 @@
 <div class="row">
+    <style>
+.user-role{
+        font-size: 10px;
+        padding: 2px;
+        /* padding-top: 2px; */
+        font-weight: 800;
+        font-family: fantasy !important;
+}
+        </style>
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div class="card border-10 pt-2 card-primary">
             <div class="card-body">
@@ -55,7 +64,15 @@
                         <h5><b class="font-weight-bold">Total Bought: </b>{{ $totalBought }}</h5>
 
                         @isset($material->vendor)
-                        <h5><b class="font-weight-bold">Uploaded By: </b>{{ $material->user->name }}</h5>
+                        {{$material->vendor}}
+                        {{$material->user}}
+                        <h5><b class="font-weight-bold">Uploaded By: 
+                            @if ($material->vendor->role == "vendor")
+                            <a href="{{ route('admin.vendor', $material->user->id) }}">{{ $material->user->name }}</a> <span class="text-capitalize user-role btn-sm btn btn-primary">{{$material->vendor->role}}</span>
+                            @else
+                            {{ $material->user->name }} <span class="text-capitalize user-role btn-sm btn btn-primary">{{$material->vendor->role}}</span>
+                            @endif
+                            </b></h5>
                         @endisset
                         
                         <h5><b class="font-weight-bold">Summary: </b></h5>

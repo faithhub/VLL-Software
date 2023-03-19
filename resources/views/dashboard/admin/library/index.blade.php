@@ -56,8 +56,13 @@
                                                             <td>
                                                             <div class="d-flex">
                                                                 {{-- <a href="" class="p-2"><i class="fa fa-trash"></i></a> --}}
-                                                                <a onclick="return confirm('Are you sure you want to delete this material?')" href="{{ route('admin.delete.library', $material->id) }}" class="p-2"><i class="fa fa-trash"></i></a>
-                                                                <a href="{{ route('admin.edit.library', $material->id) }}" class="p-2"><i class="fa fa-pencil"></i></a>
+                                                                <a  onclick="return confirm('Are you sure you want to delete this material?')" href="{{ route('admin.delete.library', $material->id) }}" class="btn m-1 btn-sm btn-danger">Delete</a>
+                                                                <a href="{{ route('admin.edit.library', $material->id) }}" class="btn btn-sm m-1 btn-primary">Edit</a>
+                                                                <a onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                                    data-title="{{ $material->invoice_id }}"
+                                                                    href="{{ route('admin.view_material', $material->id) }}" class="btn btn-sm m-1 btn-secondary">View</a>
+                                                                {{-- <a onclick="return confirm('Are you sure you want to delete this material?')" href="{{ route('admin.delete.library', $material->id) }}" class="p-2"><i class="fa fa-trash"></i></a>
+                                                                <a href="{{ route('admin.edit.library', $material->id) }}" class="p-2"><i class="fa fa-pencil"></i></a> --}}
                                                                 {{-- <a href="{{ route('admin.view.library', $material->id) }}" class="p-2"><i class="fa fa-eye"></i></a> --}}
                                                             </div>
                                                             </td>
