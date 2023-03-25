@@ -63,7 +63,8 @@
                                             @foreach ($material_arr->materials as $key => $material)
                                                 @if (substr($material_arr->type->mat_unique_id, 0, 3) == 'CSL' ||
                                                         substr($material_arr->type->mat_unique_id, 0, 3) == 'LAW')
-                                                    @if (in_array($key, $limit_folder))
+                                                        @dump($material[0]['folder'])
+                                                    {{-- @if (in_array($key, $limit_folder))
                                                         <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
                                                             <div class="image image_big_div">
                                                                 <div class="ribbon-holder">
@@ -94,7 +95,7 @@
                                                                 </a>
                                                             </div>
                                                         </div>
-                                                    @endif
+                                                    @endif --}}
                                                 @else
                                                     @if (substr($material_arr->type->mat_unique_id, 0, 3) == 'TAA')
                                                         @if (Auth::user()->user_type == 'student')
