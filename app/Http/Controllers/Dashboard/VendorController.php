@@ -80,19 +80,6 @@ class VendorController extends Controller
         }
     }
 
-    public function view_folder($id)
-    {
-        # code...
-        try {
-            //code...
-            $data['all_materials'] = Material::where(['user_id' => Auth::user()->id, 'folder_id' => $id])->with(['type', 'folder'])->get();
-            return View('dashboard.vendor.view-folder', $data);
-        } catch (\Throwable $th) {
-            //throw $th;
-            dd($th->getMessage());
-        }
-    }
-
     public function transactions()
     {
         # code...
@@ -272,7 +259,7 @@ class VendorController extends Controller
 
             $data['banks'] = $b = Bank::orderBy('name', 'ASC')->get(['id', 'name', 'code']);
             $data['sub'] = SubHistory::where('id', Auth::user()->sub_id)->with('sub')->first();
-            $data['title'] = "User Dashboard - Settings";
+            $data['title'] = "Vendor Dashboard - Settings";
             return View('dashboard.vendor.settings', $data);
         } catch (\Throwable $th) {
             //throw $th;
@@ -465,26 +452,26 @@ class VendorController extends Controller
                     'name_of_author' => ['required_if:material_type_value,TXT,LOJ,VAA'],
                     'version' => ['required_if:material_type_value,TXT,LOJ,VAA'],
                     // 'version' => ['required', 'string', 'max:255'],
-                    'price' => ['required', 'string', 'max:255'],
                     'amount' => ['required_if:price,Paid'],
                     'material_type_id' => ['required', 'max:255'],
                     'folder_id' => ['required_if:material_type_value,CSL'],
                     'name_of_party' => ['required_if:material_type_value,CSL'],
                     // 'name_of_court' => ['required_if:material_type_value,CSL'],
                     'citation' => ['required_if:material_type_value,CSL'],
-                    'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
+                    'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,TAA,VAA'],
+                    'price' => ['required_if:material_type_value,TXT,LOJ,TAA,VAA'],
                     'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
                     'test_country_id' => ['required_if:material_type_value,TAA'],
                     'university_id' => ['required_if:material_type_value,TAA'],
                     // 'publisher' => ['required', 'string', 'max:255'],
                     'publisher' => ['required_if:material_type_value,TXT,LOJ,VAA'],
                     'tags' => ['required', 'string', 'max:255'],
-                    'subject_id' => ['required_if:material_type_value,5'],
+                    'subject_id' => ['required_if:material_type_value,TAA'],
                     'privacy_code' => ['required_if:material_type_value,TAA'],
                     // 'material_file_id.*' => ['required', 'mimes:pdf', 'max:100'],
                     'material_file_id' => ['required', 'mimes:pdf,mp4,mov,ogg,qt', 'max:100000'],
-                    'material_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
-                    'material_desc' => ['required'],
+                    'material_cover_id' => ['required_if:material_type_value,TXT,LOJ,VAA', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
+                    'material_desc' => ['required_if:material_type_value,TXT,LOJ,VAA'],
                     'terms' => ['required', 'max:255']
                 );
 
@@ -538,6 +525,11 @@ class VendorController extends Controller
                     ]);
                 }
 
+                if ($request->material_type_value == "CSL") {
+                    $folder = Folder::find($request->folder_id);
+                    // dd($request->all(), $folder);
+                }
+
                 Material::create([
                     'user_id' => Auth::user()->id,
                     'title' => $request->title ?? null,
@@ -560,15 +552,15 @@ class VendorController extends Controller
                     'uploaded_by' => 'vendor',
                     'subject_id' => $request->subject_id ?? null,
                     'privacy_code' => $request->privacy_code ?? null,
-                    'material_file_id' => $save_file->id,
-                    'material_cover_id' => $save_cover->id,
+                    'material_file_id' => $save_file->id ?? null,
+                    'material_cover_id' => $save_cover->id ?? $folder->folder_cover_id,
                     'material_desc' => $request->material_desc ?? null
                 ]);
 
                 Session::flash('success', 'Material uploaded successfully');
                 return redirect()->route('vendor.index');
             }
-            $data['title'] = "User Dashboard - Upload Material";
+            $data['title'] = "Vendor Dashboard - Upload Material";
             $role = ['vendor'];
             $data['material_types'] = $m = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
             $data['subjects'] = Subject::where("status", "active")->get();
@@ -707,7 +699,7 @@ class VendorController extends Controller
                 Session::flash('warning', 'No record found');
                 return redirect()->route('vendor.index');
             }
-            $data['title'] = "User Dashboard - Edit Material";
+            $data['title'] = "Vendor Dashboard - Edit Material";
             $role = ['vendor'];
             $data['material_types'] = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
             $data['subjects'] = Subject::where("status", "active")->get();
@@ -723,7 +715,26 @@ class VendorController extends Controller
         }
     }
 
-    public function add_folder(Request $request)
+    public function delete($id)
+    {
+        # code...
+        try {
+            //code...
+            $material = Material::find($id);
+            if (!$material) {
+                Session::flash('warning', 'No record found for this material');
+                return redirect()->back();
+            }
+            $material->delete();
+            Session::flash('success', 'Material deleted successfully');
+            return redirect()->route('vendor.index');
+        } catch (\Throwable $th) {
+            dD($th->getMessage());
+            //throw $th;
+        }
+    }
+
+    public function folders()
     {
         # code...
         try {
@@ -772,8 +783,69 @@ class VendorController extends Controller
                 return redirect()->back();
             }
 
-            $data['title'] = "User Dashboard - Create New Folder";
+            $data['title'] = "Vendor Dashboard - All Folder";
+            $data['sn'] = 1;
+            $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->get();
+            return View('dashboard.vendor.folders', $data);
+        } catch (\Throwable $th) {
+            dD($th->getMessage());
+            //throw $th;
+        }
+    }
+
+    public function add_folder(Request $request)
+    {
+        # code...
+        try {
+            //code...
+            if ($_POST) {
+                $rules = array(
+                    'name' => ['required', 'string', 'max:255'],
+                    'amount' => ['required', 'string'],
+                    'folder_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:50000'],
+                );
+
+                $messages = [
+                    'folder_cover_id.required_if' => __('The Folder cover is required'),
+                ];
+
+                // dd($request->all());
+                $validator = Validator::make($request->all(), $rules, $messages);
+
+                if ($validator->fails()) {
+                    Session::flash('warning', __('All fields are required'));
+                    return back()->withErrors($validator)->withInput();
+                }
+
+                if ($request->hasFile('folder_cover_id')) {
+                    $folder_cover = $request->file('folder_cover_id');
+                    $folder_cover_name = 'FolderCover' . time() . '.' . $folder_cover->getClientOriginalExtension();
+                    $destinationPath = public_path('/storage/materials/covers');
+                    $img = Image::make($folder_cover->path());
+                    $img->resize(600, 300, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath . '/' . $folder_cover_name);
+                    $save_cover = File::create([
+                        'name' => $folder_cover_name,
+                        'url' => 'storage/materials/covers/' . $folder_cover_name
+                    ]);
+                }
+
+
+                Folder::create([
+                    "material_type_id" => $request->material_type_id,
+                    "name" => $request->name,
+                    "amount" => $request->amount,
+                    "folder_cover_id" => $save_cover->id,
+                    "user_id" => Auth::user()->id
+                ]);
+                Session::flash('success', __('Folder added successfully'));
+                return redirect()->back();
+            }
+
+            $data['title'] = "Vendor Dashboard - Create New Folder";
             $role = ['vendor'];
+            $data['mode'] = "create";
             $data['material_types'] = $m = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
             $material_type_id = MaterialType::where(["status" => "active", "mat_unique_id" => "CSL786746357"])->whereJsonContains('role', $role)->get();
             $data['subjects'] = Subject::where("status", "active")->get();
@@ -787,22 +859,83 @@ class VendorController extends Controller
         }
     }
 
-    public function delete($id)
+    public function edit_folder(Request $request, $id)
+    {
+        # code...
+        try {
+            $data['folder'] = $folder = Folder::where(['user_id' => Auth::user()->id, 'id' => $id])->first();
+
+            if (!$folder) {
+                Session::flash('warning', __('No record found'));
+                return redirect()->route('vendor.folders');
+            }
+            //code...
+            if ($_POST) {
+                $rules = array(
+                    'name' => ['required', 'string', 'unique:folders,name,' . $id],
+                    'amount' => ['required', 'string'],
+                    'folder_cover_id' => ['mimes:jpeg,png,jpg,gif,svg', 'max:50000'],
+                );
+
+                $messages = [
+                    'folder_cover_id.required_if' => __('The Folder cover is required'),
+                ];
+
+                // dd($request->all());
+                $validator = Validator::make($request->all(), $rules, $messages);
+
+                if ($validator->fails()) {
+                    Session::flash('warning', __('All fields are required'));
+                    return back()->withErrors($validator)->withInput();
+                }
+
+                if ($request->hasFile('folder_cover_id')) {
+                    $folder_cover = $request->file('folder_cover_id');
+                    $folder_cover_name = 'FolderCover' . time() . '.' . $folder_cover->getClientOriginalExtension();
+                    $destinationPath = public_path('/storage/materials/covers');
+                    $img = Image::make($folder_cover->path());
+                    $img->resize(600, 300, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath . '/' . $folder_cover_name);
+                    $save_cover = File::create([
+                        'name' => $folder_cover_name,
+                        'url' => 'storage/materials/covers/' . $folder_cover_name
+                    ]);
+                }
+
+
+
+                Folder::where(['user_id' => Auth::user()->id, 'id' => $id])->update([
+                    "material_type_id" => $request->material_type_id,
+                    "name" => $request->name,
+                    "amount" => $request->amount,
+                    "folder_cover_id" => $save_cover->id ?? $folder->folder_cover_id,
+                ]);
+                Session::flash('success', __('Folder updated successfully'));
+                return redirect()->route('vendor.folders');
+            }
+
+            $data['title'] = "Vendor Dashboard - Edit Folder";
+            $data['mode'] = "edit";
+            return View('dashboard.vendor.add-material-folder', $data);
+        } catch (\Throwable $th) {
+            dD($th->getMessage());
+            //throw $th;
+        }
+    }
+
+    public function view_folder($id)
     {
         # code...
         try {
             //code...
-            $material = Material::find($id);
-            if (!$material) {
-                Session::flash('warning', 'No record found for this material');
-                return redirect()->back();
-            }
-            $material->delete();
-            Session::flash('success', 'Material deleted successfully');
-            return redirect()->route('vendor.index');
+            $data['sn'] = 1;
+            $data['title'] = "Vendor Dashboard - Materials";
+            $data['all_materials'] = Material::where(['user_id' => Auth::user()->id, 'folder_id' => $id])->with(['type', 'folder'])->get();
+            return View('dashboard.vendor.view-folder', $data);
         } catch (\Throwable $th) {
-            dD($th->getMessage());
             //throw $th;
+            dd($th->getMessage());
         }
     }
 }

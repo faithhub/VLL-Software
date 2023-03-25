@@ -28,6 +28,13 @@ class CheckRentedMaterials
             $value->is_rent_expired = true;
             $value->save();
         }
+
+        $folders = MaterialHistory::where(['mat_type' => "folder"])->whereDate('folder_expired_date', '<', Carbon::now())->get();
+        foreach ($folders as $key2 => $valu2) {
+            # code...
+            $valu2->isFolderExpired = true;
+            $valu2->save();
+        }
         return $next($request);
     }
 }

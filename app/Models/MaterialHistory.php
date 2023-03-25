@@ -14,11 +14,15 @@ class MaterialHistory extends Model
     protected $fillable = [
         "material_id",
         "user_id",
+        "folder_id",
         "transaction_id",
         "invoice_id",
         "date",
+        "folder_expired_date",
+        "isFolderExpired",
         "rent_count",
         "unique_id",
+        "mat_type",
         "rent_unique_id",
         "type"
     ];

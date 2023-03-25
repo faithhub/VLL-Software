@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\UserWelcomeEmail;
 use App\Models\Currency;
 use App\Models\FAQ;
 use App\Models\Material;
@@ -19,6 +20,7 @@ use App\Models\Subscription;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -37,6 +39,8 @@ class DashboardController extends Controller
     {
         # code...
         try {
+
+            // Mail::to("adebayooluwadara@gmail.com")->send(new UserWelcomeEmail("Dara"));
             //code...
             $data['title'] = "Admin Dashboard";
             $data['user_count'] = User::where('role', 'user')->count();

@@ -109,16 +109,16 @@ class MaterialController extends Controller
                 $rules = array(
                     'title' => ['required', 'string', 'max:255'],
                     // 'name_of_author' => ['required', 'string', 'max:255'],
-                    'name_of_author' => ['required_if:material_type_value,TXT,LOJ,VAA'],
-                    'version' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                    'name_of_author' => ['required_if:material_type_value,TXT,LOJ,VAA,LAW'],
+                    'version' => ['required_if:material_type_value,TXT,LOJ,VAA,LAW'],
                     // 'version' => ['required', 'string', 'max:255'],
                     'price' => ['required', 'string', 'max:255'],
                     'amount' => ['required_if:price,Paid'],
                     'material_type_id' => ['required', 'max:255'],
                     'folder_id' => ['required_if:material_type_value,CSL,LAW'],
-                    'name_of_party' => ['required_if:material_type_value,CSL,LAW'],
+                    'name_of_party' => ['required_if:material_type_value,CSL'],
                     // 'name_of_court' => ['required_if:material_type_value,CSL'],
-                    'citation' => ['required_if:material_type_value,CSL,LAW'],
+                    'citation' => ['required_if:material_type_value,CSL'],
                     'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,LAW,VAA'],
                     'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA,LAW'],
                     'test_country_id' => ['required_if:material_type_value,TAA'],
@@ -130,8 +130,8 @@ class MaterialController extends Controller
                     'privacy_code' => ['required_if:material_type_value,TAA'],
                     // 'material_file_id.*' => ['required', 'mimes:pdf', 'max:100'],
                     'material_file_id' => ['required', 'mimes:pdf,mp4,mov,ogg,qt', 'max:100000'],
-                    'material_cover_id' => ['required_if:material_type_value,TXT,LOJ,CSL,LAW,VAA', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
-                    'material_desc' => ['required'],
+                    'material_cover_id' => ['required_if:material_type_value,TXT,LOJ,VAA', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
+                    'material_desc' => ['required_if:material_type_value,TXT,LOJ,VAA'],
                     'terms' => ['required', 'max:255']
                 );
 
@@ -158,7 +158,7 @@ class MaterialController extends Controller
                 $validator = Validator::make($request->all(), $rules, $messages);
 
                 if ($validator->fails()) {
-                    // dd($request->all(), $validator->errors());
+                    dd($request->all(), $validator->errors());
                     Session::flash('warning', __('All fields are required'));
                     return back()->withErrors($validator)->withInput();
                 }

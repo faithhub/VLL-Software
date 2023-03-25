@@ -23,7 +23,7 @@
                     <div class="col-lg-4 col-md-4 mb-5 p-2 justify-content-center text-center">
                         <div class="image">
                             <a href="{{ route('user.index') }}">
-                                <img src="{{ asset($material->cover->url) }}" class="mat_img" alt="{{ $material->title }}">
+                                <img src="{{ asset($material->cover->url ?? "") }}" class="mat_img" alt="{{ $material->title }}">
                             </a>
                         </div>
                         <div class="mat-title">

@@ -58,6 +58,35 @@
                                     </div>
                                 @endforeach
                             @endisset
+                            @isset($folders)
+                                @foreach ($folders as $key => $folder)
+                                    <div class="col-lg-4 col-md-4 mb-5 justify-content-center">
+                                        <div class="image image_big_div">
+                                            <div class="ribbon-holder">
+                                                @if (in_array($folder->id, $bought_folders))
+                                                    <div class="ribbon ribbon-holder ribbon-bought">Bought</div>
+                                                @endif
+                                                <a onclick="shiNew(event)" data-type="dark" data-size="l"
+                                                    data-title="{{ $folder->name }}"
+                                                    href="{{ route('user.view_folder', $folder->id) }}">
+                                                    <img src="{{ asset($folder->folder_cover->url) }}" alt="{{ $folder->title }}"
+                                                        class="mat_img">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mat-title">
+                                            <div class="mt-2">
+                                            </div>
+                                            <a onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                data-title="{{ $folder->name }}"
+                                                href="{{ route('user.view_folder', $folder->id) }}"
+                                                class="book-title mt-2">
+                                                <h4 class="text-capitalize">{{ $folder->name }}</h4>
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endisset
                         </div>
                     </div>
                 </div>

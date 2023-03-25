@@ -12,7 +12,6 @@
                     <div class="card-header border-bottom-0 mb-4 mt-3">
                         <div class="card-options" style="margin-left:2.5%">
                             <form method="GET" id="selectMaterialForm" action="">
-                                {{-- @csrf --}}
                                 <select class="form-control select2" onchange="selectMat()" name="mat_unique_id"
                                     id="selectMaterial" style="min-width: 10% !important">
                                     <option value="all">All</option>

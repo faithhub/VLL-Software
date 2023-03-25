@@ -20,6 +20,62 @@
                             @csrf
                             <input type="hidden" name="material_type_value" value="" id="material_type_value">
                             <div class="row mt-5 mb-5 settings">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Type of Material <span>*<span></label>
+                                        <select onchange="" class="form-control select" name="material_type_id"
+                                            id="material_type_select"
+                                            data-parsley-required-message="Type of Material is required" requiredd=""
+                                            data-parsley-errors-container="#material_type-error"
+                                            data-placeholder="Select type of material">
+                                            <option value="">Select Type of Material</option>
+                                            @isset($material_types)
+                                                @foreach ($material_types as $item)
+                                                    <option data-matId="{{ $item->mat_unique_id }}"
+                                                        data-text="{{ $item->name }}" value="{{ $item->id }}"
+                                                        @selected(old('material_type_id') == $item->id)>
+                                                        {{ $item->name }}</option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
+                                        <span class="invalid-feedback" id="material_type-error" role="alert">
+                                            @error('material_type_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="folder_div" style="display:none">
+                                    <div class="form-group">
+                                        <label class="form-label">Folder <span>*<span></label>
+                                        <div class="d-flex">
+                                            <select class="form-control select" name="folder_id"
+                                                data-parsley-required-message="Subject is required" requiredd=""
+                                                data-parsley-errors-container="#folder-error"
+                                                data-placeholder="Select folder">
+                                                <option value="">Select folder</option>
+                                                @isset($folders)
+                                                    @foreach ($folders as $item)
+                                                        <option value="{{ $item->id }}" @selected(old('folder_id') == $item->id)>
+                                                            {{ $item->name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endisset
+                                            </select>
+                                            <button type="button" onclick="shiNew(event)" data-type="dark"
+                                                data-size="s" data-title="Add New Folder"
+                                                href="{{ route('admin.add_folder') }}" class="btn btn-primary">Add
+                                                New</button>
+                                        </div>
+                                        <span class="invalid-feedback" id="folder-error" role="alert">
+                                            @error('folder_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                    </div>
+                                </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                     <div class="form-group">
                                         <label class="form-label">Title of Material
@@ -76,8 +132,8 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" id="version">
                                     <div class="form-group">
                                         <label class="form-label">Version <span>*<span></label>
-                                        <input type="text" class="form-control" placeholder="2nd Version" name="version"
-                                            value="{{ old('version') }}" requiredd=""
+                                        <input type="text" class="form-control" placeholder="2nd Version"
+                                            name="version" value="{{ old('version') }}" requiredd=""
                                             data-parsley-required-message="Version is required">
                                         @error('version')
                                             <span class="invalid-feedback" role="alert">
@@ -143,62 +199,6 @@
                                             @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                    <div class="form-group">
-                                        <label class="form-label">Type of Material <span>*<span></label>
-                                        <select onchange="" class="form-control select" name="material_type_id"
-                                            id="material_type_select"
-                                            data-parsley-required-message="Type of Material is required" requiredd=""
-                                            data-parsley-errors-container="#material_type-error"
-                                            data-placeholder="Select type of material">
-                                            <option value="">Select Type of Material</option>
-                                            @isset($material_types)
-                                                @foreach ($material_types as $item)
-                                                    <option data-matId="{{ $item->mat_unique_id }}"
-                                                        data-text="{{ $item->name }}" value="{{ $item->id }}"
-                                                        @selected(old('material_type_id') == $item->id)>
-                                                        {{ $item->name }}</option>
-                                                @endforeach
-                                            @endisset
-                                        </select>
-                                        <span class="invalid-feedback" id="material_type-error" role="alert">
-                                            @error('material_type_id')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="folder_div">
-                                    <div class="form-group">
-                                        <label class="form-label">Folder <span>*<span></label>
-                                        <div class="d-flex">
-                                            <select class="form-control select" name="folder_id"
-                                                data-parsley-required-message="Subject is required" requiredd=""
-                                                data-parsley-errors-container="#folder-error"
-                                                data-placeholder="Select folder">
-                                                <option value="">Select folder</option>
-                                                @isset($folders)
-                                                    @foreach ($folders as $item)
-                                                        <option value="{{ $item->id }}" @selected(old('folder_id') == $item->id)>
-                                                            {{ $item->name }}
-                                                        </option>
-                                                    @endforeach
-                                                @endisset
-                                            </select>
-                                            <button type="button" onclick="shiNew(event)" data-type="dark"
-                                                data-size="s" data-title="Add New Folder"
-                                                href="{{ route('admin.add_folder') }}" class="btn btn-primary">Add
-                                                New</button>
-                                        </div>
-                                        <span class="invalid-feedback" id="folder-error" role="alert">
-                                            @error('folder_id')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                    </div>
-                                </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6" id="TAA-data-no1">
                                     <div class="form-group">
                                         <label class="form-label">Year of Publication
@@ -244,9 +244,9 @@
                                                 style="width: fit-content !important">
                                                 @isset($app_currencies)
                                                     @foreach ($app_currencies as $app_currency)
-                                                        <option value="{{ $app_currency->id }}" @selected(Auth::user()->currency->id == $app_currency->id) 
-                                                             style="background-image:url('{{ asset($app_currency->flag) }}');">
-                                                             {{ $app_currency->name }} ({{ $app_currency->symbol }})
+                                                        <option value="{{ $app_currency->id }}" @selected(Auth::user()->currency->id == $app_currency->id)
+                                                            style="background-image:url('{{ asset($app_currency->flag) }}');">
+                                                            {{ $app_currency->name }} ({{ $app_currency->symbol }})
                                                         </option>
                                                     @endforeach
                                                 @endisset
@@ -347,7 +347,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="subject_div">
                                     <div class="form-group">
-                                        <label class="form-label">Subject <span>*<span></label>
+                                        <label class="form-label">Subject <span><span></label>
                                         <select onchange="" class="form-control select" name="subject_id"
                                             id="subject_select" data-parsley-required-message="Subject is required"
                                             requiredd="" data-parsley-errors-container="#subject-error"
@@ -419,7 +419,7 @@
                                             @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="material_cover_id">
                                     <div class="form-group">
                                         <label class="form-label">Material Cover <span>*<span></label>
                                         <label class="btn btn-primary btn-block custom-file-upload">
@@ -450,7 +450,7 @@
                                             @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="material_desc_id">
                                     <div class="form-group">
                                         <label class="form-label">Material Description <span>*<span></label>
                                         <textarea class="form-control textarea" data-parsley-required-message="Material Description is required"

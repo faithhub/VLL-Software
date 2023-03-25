@@ -5,7 +5,7 @@
                 <div class="row">
                     <div class="image text-center">
                         <a href="#">
-                            <img src="{{ asset($material->cover->url) }}" alt="{{ $material->title }}">
+                            <img src="{{ asset($material->cover->url ?? '') }}" alt="{{ $material->title }}">
                         </a>
                     </div>
                     <div class="rating text-center">
@@ -57,41 +57,70 @@
                         </p>
 
                         @if (Auth::user()->sub->isActive)
-                            @if (in_array($material->id, $my_materials_arr))
-                                <a href="{{ route('user.access_material', $material->id) }}"
-                                    class="btn btn-primary p-3">
-                                    Access Material
-                                </a>
-                            @else
-                                @if ($material->price == 'Free')
-                                    <a href="{{ route('user.add_to_library', $material->id) }}"
+                            @isset($folder)
+                                @if (in_array($folder->id, $bought_folders))
+                                    <a href="{{ route('user.access_material', $material->id) }}"
                                         class="btn btn-primary p-3">
-                                        Add To Library
+                                        Access Material
                                     </a>
+                                @else
+                                    <div class="mt-5">
+                                        <div class="card"
+                                            style="width: fit-content; box-shadow: 0 0.76rem 1.52rem rgb(18 36 63 / 43%);">
+                                            <div class="card-body">
+                                                <h5><b class="font-weight-bold">Folder Name: </b>{{ $folder->name }}</h5>
+                                                <h5><b class="font-weight-bold">Folder Amount:
+                                                        {{ money($folder->amount) }}</b>
+                                                    /
+                                                    annual </h5>
+                                                <h5><b class="font-weight-bold">No of Materials:
+                                                        {{ $folder_mat_count }}</b>
+                                                </h5>
+                                                <a onclick="material('{{ $folder->amount }}', '{{ $material->id }}', 'folder')"
+                                                    class="btn m-2 btn-primary p-3">
+                                                    Buy Folder
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endif
-                                @if ($material->price == 'Paid')
-                                    @if ($rentedMatCount >= 2)
-                                        <a aria-readonly="true" class="btn m-2 btn-primary p-2"
-                                            @disabled(true) style="cursor: no-drop">
-                                            Maximum rent reached
-                                        </a>
-                                    @elseif($rentedMatCount == 1)
-                                        <a class="btn m-2 btn-dark p-2 btn-outline-primary"
-                                            href="{{ route('user.second_rent', $material->id) }}">
-                                            Rent Book
-                                        </a>
-                                    @elseif($rentedMatCount == 0)
-                                        <a class="btn m-2 btn-dark p-2 btn-outline-primary"
-                                            onclick="material('{{ $settings['rent'] ?? 700 }}', '{{ $material->id }}', 'rented')">
-                                            Rent Book
+                            @else
+                                @if (in_array($material->id, $my_materials_arr))
+                                    <a href="{{ route('user.access_material', $material->id) }}"
+                                        class="btn btn-primary p-3">
+                                        Access Material
+                                    </a>
+                                @else
+                                    @if ($material->price == 'Free')
+                                        <a href="{{ route('user.add_to_library', $material->id) }}"
+                                            class="btn btn-primary p-3">
+                                            Add To Library
                                         </a>
                                     @endif
-                                    <a onclick="material('{{ $material->amount }}', '{{ $material->id }}', 'bought')"
-                                        class="btn m-2 btn-primary p-2">
-                                        Buy Book
-                                    </a>
+                                    @if ($material->price == 'Paid')
+                                        @if ($rentedMatCount >= 2)
+                                            <a aria-readonly="true" class="btn m-2 btn-primary p-2"
+                                                @disabled(true) style="cursor: no-drop">
+                                                Maximum rent reached
+                                            </a>
+                                        @elseif($rentedMatCount == 1)
+                                            <a class="btn m-2 btn-dark p-2 btn-outline-primary"
+                                                href="{{ route('user.second_rent', $material->id) }}">
+                                                Rent Book
+                                            </a>
+                                        @elseif($rentedMatCount == 0)
+                                            <a class="btn m-2 btn-dark p-2 btn-outline-primary"
+                                                onclick="material('{{ $settings['rent'] ?? 700 }}', '{{ $material->id }}', 'rented')">
+                                                Rent Book
+                                            </a>
+                                        @endif
+                                        <a onclick="material('{{ $material->amount }}', '{{ $material->id }}', 'bought')"
+                                            class="btn m-2 btn-primary p-2">
+                                            Buy Book
+                                        </a>
+                                    @endif
                                 @endif
-                            @endif
+                            @endisset
                         @elseif (Auth::user()->team_id && Auth::user()->team->sub_status == 'active')
                             @if (in_array($material->id, $my_materials_arr))
                                 <a href="{{ route('user.access_material', $material->id) }}"

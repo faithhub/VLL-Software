@@ -12,6 +12,7 @@ class Folder extends Model
         'name',
         'material_type_id',
         'user_id',
+        'amount',
         'folder_cover_id'
     ];
 

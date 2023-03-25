@@ -120,7 +120,8 @@
             var uniqueId = matId.substring(0, 3);
             document.getElementById("material_type_value").value = uniqueId
 
-            if (uniqueId == "TXT" || uniqueId == "CSL" ||  uniqueId == "LAW") {
+            // if (uniqueId == "TXT" || uniqueId == "CSL" ||  uniqueId == "LAW") {
+            if (uniqueId == "TXT") {
                 console.log(id, uniqueId);
                 document.getElementById('subject_div').style.display = 'block';
             } else {
@@ -138,8 +139,8 @@
                 document.getElementById("version").classList.add('col-md-12', 'col-lg-12', 'col-xl-12');
                 document.getElementById("priceDiv").classList.remove('col-md-6', 'col-lg-6',
                     'col-xl-6');
-                document.getElementById("priceDiv").classList.add('col-md-12', 'col-lg-12',
-                    'col-xl-12');
+                document.getElementById("priceDiv").classList.add('col-md-6', 'col-lg-6',
+                    'col-xl-6');
                 document.getElementById('privacy_div').style.display = 'block';
                 document.getElementById('TAA-data1').style.display = 'block';
                 document.getElementById('TAA-data2').style.display = 'block';
@@ -161,8 +162,32 @@
                 document.getElementById('TAA-data1').style.display = 'none';
             }
 
-            if (uniqueId == "CSL" ||  uniqueId == "LAW") {
+            // if (uniqueId == "CSL" ||  uniqueId == "LAW") {
+            if (uniqueId == "LAW" || uniqueId == "CSL") {
                 document.getElementById('folder_div').style.display = 'block';
+                document.getElementById('material_cover_id').style.display = 'none';
+                document.getElementById('material_desc_id').style.display = 'none';
+                document.getElementById('TAA-data-no1').style.display = 'none';
+                document.getElementById('priceDiv').style.display = 'none';
+                // document.getElementById('name_of_party').style.display = 'block';
+                // document.getElementById('name_of_court').style.display = 'block';
+                // document.getElementById('version').style.display = 'none';
+                // document.getElementById('publishers').style.display = 'none';
+                // document.getElementById('citation').style.display = 'block';
+            } else {
+                document.getElementById('folder_div').style.display = 'none';
+                document.getElementById('material_cover_id').style.display = 'block';
+                document.getElementById('material_desc_id').style.display = 'block';
+                document.getElementById('TAA-data-no1').style.display = 'block';
+                document.getElementById('priceDiv').style.display = 'block';
+                // document.getElementById('citation').style.display = 'none';
+                // document.getElementById('name_of_court').style.display = 'none';
+                // document.getElementById('name_of_party').style.display = 'none';
+                // document.getElementById('publishers').style.display = 'block';
+                // document.getElementById('version').style.display = 'block';
+            }
+
+            if (uniqueId == "CSL") {
                 document.getElementById('name_of_party').style.display = 'block';
                 document.getElementById('name_of_court').style.display = 'block';
                 document.getElementById('name_of_author').style.display = 'none';
@@ -170,7 +195,6 @@
                 document.getElementById('publishers').style.display = 'none';
                 document.getElementById('citation').style.display = 'block';
             } else {
-                document.getElementById('folder_div').style.display = 'none';
                 document.getElementById('citation').style.display = 'none';
                 document.getElementById('name_of_court').style.display = 'none';
                 document.getElementById('name_of_party').style.display = 'none';
@@ -236,7 +260,7 @@
             }
             var id = $(this).val();
             var options = $(this).data('options').filter('[data-value=' + id + ']');
-            console.log(options, id)
+            // console.log(options, id)
             $('#select_name_of_court').html(options);
         }).change();
     });

@@ -64,8 +64,6 @@
                         <h5><b class="font-weight-bold">Total Bought: </b>{{ $totalBought }}</h5>
 
                         @isset($material->vendor)
-                        {{$material->vendor}}
-                        {{$material->user}}
                         <h5><b class="font-weight-bold">Uploaded By: 
                             @if ($material->vendor->role == "vendor")
                             <a href="{{ route('admin.vendor', $material->user->id) }}">{{ $material->user->name }}</a> <span class="text-capitalize user-role btn-sm btn btn-primary">{{$material->vendor->role}}</span>

@@ -114,11 +114,11 @@
                                                                                     data-size="m"
                                                                                     data-title="{{ $material->title }}"
                                                                                     href="{{ route('user.view_material', $material->id) }}">
-                                                                                    <img src="{{ asset($material->cover->url) }}"
+                                                                                    <img src="{{ asset($material->cover->url ?? "") }}"
                                                                                         alt="{{ $material->title }}"
                                                                                         class="mat_img">
                                                                                     <img id="img-2"
-                                                                                        src="{{ asset('materials/icon/v-play.png') }}"
+                                                                                        src="{{ asset('materials/icon/v-play.png' ?? "") }}"
                                                                                         alt="{{ $material->title }}" align="middle"
                                                                                         style="color: black">
                                                                                 </a>
@@ -127,7 +127,7 @@
                                                                                     data-size="m"
                                                                                     data-title="{{ $material->title }}"
                                                                                     href="{{ route('user.view_material', $material->id) }}">
-                                                                                    <img src="{{ asset($material->cover->url) }}"
+                                                                                    <img src="{{ asset($material->cover->url ?? "") }}"
                                                                                         alt="{{ $material->title }}"
                                                                                         class="mat_img">
                                                                             @endif
@@ -188,7 +188,7 @@
                                                                         <a onclick="shiNew(event)" data-type="dark" data-size="m"
                                                                             data-title="{{ $material->title }}"
                                                                             href="{{ route('user.view_material', $material->id) }}">
-                                                                            <img src="{{ asset($material->cover->url) }}"
+                                                                            <img src="{{ asset($material->cover->url ?? "") }}"
                                                                                 alt="{{ $material->title }}" class="mat_img">
                                                                             <img id="img-2"
                                                                                 src="{{ asset('materials/icon/v-play.png') }}"
@@ -199,7 +199,7 @@
                                                                         <a onclick="shiNew(event)" data-type="dark" data-size="m"
                                                                             data-title="{{ $material->title }}"
                                                                             href="{{ route('user.view_material', $material->id) }}">
-                                                                            <img src="{{ asset($material->cover->url) }}"
+                                                                            <img src="{{ asset($material->cover->url ?? "") }}"
                                                                                 alt="{{ $material->title }}" class="mat_img">
                                                                     @endif
                                                                 </div>

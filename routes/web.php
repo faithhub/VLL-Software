@@ -95,7 +95,12 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
         Route::match(['get', 'post'], 'upload',  [App\Http\Controllers\Dashboard\VendorController::class, 'upload'])->name('upload');
         Route::match(['get', 'post'], 'edit/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'edit'])->name('edit');
         Route::match(['get'], 'delete/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'delete'])->name('delete');
+
+
+        Route::match(['get'], 'folders',  [App\Http\Controllers\Dashboard\VendorController::class, 'folders'])->name('folders');
         Route::match(['get', 'post'], 'add_folder',  [App\Http\Controllers\Dashboard\VendorController::class, 'add_folder'])->name('add_folder');
+        Route::match(['get', 'post'], 'edit_folder/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'edit_folder'])->name('edit_folder');
+        // Route::match(['get'], 'view_folder/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'view_folder'])->name('view_folder');
     });
 });
 
