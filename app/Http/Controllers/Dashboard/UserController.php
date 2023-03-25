@@ -116,6 +116,7 @@ class UserController extends Controller
             }
 
 
+            dd($bought_folders);
             $data['bought_folders'] = $bought_folders;
             $data['material_array'] = $material_array;
             $data['my_materials_arr'] = $my_materials_arr;
