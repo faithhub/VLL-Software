@@ -159,7 +159,7 @@ class MaterialController extends Controller
                 $validator = Validator::make($request->all(), $rules, $messages);
 
                 if ($validator->fails()) {
-                    dd($request->all(), $validator->errors());
+                    // dd($request->all(), $validator->errors());
                     Session::flash('warning', __('All fields are required'));
                     return back()->withErrors($validator)->withInput();
                 }
