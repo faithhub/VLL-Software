@@ -82,7 +82,7 @@ class UserController extends Controller
                 }
             } else {
                 $data['my_materials'] = $my_materials = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false])->get();
-                $all_folders = MaterialHistory::where(['user_id' => Auth::user()->id, 'isFolderExpired' => false])->get();
+                $all_folders = MaterialHistory::where(['user_id' => Auth::user()->id, "mat_type" => "folder", 'isFolderExpired' => false])->get();
                 foreach ($all_folders as $key2 => $value2) {
                     # code...
                     array_push($bought_folders, $value2->folder_id);
@@ -185,7 +185,7 @@ class UserController extends Controller
                 }
             } else {
                 $data['my_materials'] = $my_materials = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false])->get();
-                $all_folders = MaterialHistory::where(['user_id' => Auth::user()->id, 'isFolderExpired' => false])->get();
+                $all_folders = MaterialHistory::where(['user_id' => Auth::user()->id, "mat_type" => "folder", 'isFolderExpired' => false])->get();
                 foreach ($all_folders as $key2 => $value2) {
                     # code...
                     array_push($bought_folders, $value2->folder_id);
@@ -276,7 +276,7 @@ class UserController extends Controller
                 }
             } else {
                 $data['my_materials'] = $my_materials = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false])->get();
-                $all_folders = MaterialHistory::where(['user_id' => Auth::user()->id, 'isFolderExpired' => false])->get();
+                $all_folders = MaterialHistory::where(['user_id' => Auth::user()->id, "mat_type" => "folder", 'isFolderExpired' => false])->get();
                 foreach ($all_folders as $key2 => $value2) {
                     # code...
                     array_push($bought_folders, $value2->folder_id);
@@ -395,7 +395,7 @@ class UserController extends Controller
                 }
             } else {
                 $data['my_materials'] = $my_materials = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false])->get();
-                $all_folders = MaterialHistory::where(['user_id' => Auth::user()->id, 'isFolderExpired' => false])->get();
+                $all_folders = MaterialHistory::where(['user_id' => Auth::user()->id, "mat_type" => "folder", 'isFolderExpired' => false])->get();
                 foreach ($all_folders as $key2 => $value2) {
                     # code...
                     array_push($bought_folders, $value2->folder_id);
