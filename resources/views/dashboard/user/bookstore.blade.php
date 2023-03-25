@@ -67,7 +67,7 @@
                                                         <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
                                                             <div class="image image_big_div">
                                                                 <div class="ribbon-holder">
-                                                                    @if (in_array($material[0]['folder']['id'], $bought_folders))
+                                                                    @if (in_array($material[0]['folder']['id'] ?? 0, $bought_folders))
                                                                         <div class="ribbon ribbon-holder ribbon-bought">
                                                                             Bought
                                                                         </div>
