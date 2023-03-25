@@ -112,14 +112,15 @@ class MaterialController extends Controller
                     'name_of_author' => ['required_if:material_type_value,TXT,LOJ,VAA,LAW'],
                     'version' => ['required_if:material_type_value,TXT,LOJ,VAA,LAW'],
                     // 'version' => ['required', 'string', 'max:255'],
-                    'price' => ['required', 'string', 'max:255'],
+                    'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,TAA,VAA'],
+                    'price' => ['required_if:material_type_value,TXT,LOJ,TAA,VAA'],
                     'amount' => ['required_if:price,Paid'],
                     'material_type_id' => ['required', 'max:255'],
                     'folder_id' => ['required_if:material_type_value,CSL,LAW'],
                     'name_of_party' => ['required_if:material_type_value,CSL'],
                     // 'name_of_court' => ['required_if:material_type_value,CSL'],
                     'citation' => ['required_if:material_type_value,CSL'],
-                    'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,LAW,VAA'],
+                    // 'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,LAW,VAA'],
                     'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA,LAW'],
                     'test_country_id' => ['required_if:material_type_value,TAA'],
                     'university_id' => ['required_if:material_type_value,TAA'],
@@ -185,6 +186,11 @@ class MaterialController extends Controller
                     ]);
                 }
 
+                if ($request->material_type_value == "CSL" || $request->material_type_value == "LAW") {
+                    $folder = Folder::find($request->folder_id);
+                    // dd($request->all(), $folder);
+                }
+
                 Material::create([
                     'user_id' => Auth::user()->id,
                     'title' => $request->title ?? null,
@@ -204,11 +210,11 @@ class MaterialController extends Controller
                     'country_id' => $request->country_id ?? null,
                     'publisher' => $request->publisher ?? null,
                     'tags' => $tags,
-                    'uploaded_by' => 'vendor',
+                    'uploaded_by' => 'admin',
                     'subject_id' => $request->subject_id ?? null,
                     'privacy_code' => $request->privacy_code ?? null,
-                    'material_file_id' => $save_file->id,
-                    'material_cover_id' => $save_cover->id ?? null,
+                    'material_file_id' => $save_file->id ?? null,
+                    'material_cover_id' => $save_cover->id ?? $folder->folder_cover_id,
                     'material_desc' => $request->material_desc ?? null
                 ]);
 
