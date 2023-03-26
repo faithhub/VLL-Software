@@ -20,4 +20,9 @@ class Folder extends Model
     {
         return $this->hasOne(File::class, 'id', 'folder_cover_id')->withDefault();
     }
+
+    public function mat_type()
+    {
+        return $this->hasOne(MaterialType::class, 'id', 'material_type_id');
+    }
 }

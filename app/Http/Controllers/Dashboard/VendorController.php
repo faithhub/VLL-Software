@@ -785,7 +785,7 @@ class VendorController extends Controller
 
             $data['title'] = "Vendor Dashboard - All Folder";
             $data['sn'] = 1;
-            $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->get();
+            $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->with('mat_type')->get();
             return View('dashboard.vendor.folders', $data);
         } catch (\Throwable $th) {
             dD($th->getMessage());

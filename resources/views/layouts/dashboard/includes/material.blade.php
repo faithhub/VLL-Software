@@ -228,8 +228,21 @@
             }
             var id = $(this).val();
             var options = $(this).data('options').filter('[data-value=' + id + ']');
-            console.log(options, id)
+            // console.log(options, id)
             $('#university_id').html(options);
+        });
+    });
+
+    $(document).ready(function() {
+        $("#material_type_select").change(function() {
+            if ($(this).data('options') === undefined) {
+                /*Taking an array of all options-2 and kind of embedding it on the select1*/
+                $(this).data('options', $('#folder_select_id option').clone());
+            }
+            var id = $(this).val();
+            var options = $(this).data('options').filter('[data-value=' + id + ']');
+            console.log(options, id)
+            $('#folder_select_id').html(options);
         });
     });
 

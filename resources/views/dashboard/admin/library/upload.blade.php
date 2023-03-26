@@ -51,22 +51,23 @@
                                         <label class="form-label">Folder <span>*<span></label>
                                         <div class="d-flex">
                                             <select class="form-control select" name="folder_id"
+                                            id="folder_select_id"
                                                 data-parsley-required-message="Subject is required" requiredd=""
                                                 data-parsley-errors-container="#folder-error"
                                                 data-placeholder="Select folder">
                                                 <option value="">Select folder</option>
                                                 @isset($folders)
                                                     @foreach ($folders as $item)
-                                                        <option value="{{ $item->id }}" @selected(old('folder_id') == $item->id)>
+                                                        <option data-value="{{ $item->material_type_id ?? "" }}" value="{{ $item->id }}" @selected(old('folder_id') == $item->id)>
                                                             {{ $item->name }}
                                                         </option>
                                                     @endforeach
                                                 @endisset
                                             </select>
-                                            <button type="button" onclick="shiNew(event)" data-type="dark"
+                                            {{-- <button type="button" onclick="shiNew(event)" data-type="dark"
                                                 data-size="s" data-title="Add New Folder"
                                                 href="{{ route('admin.add_folder') }}" class="btn btn-primary">Add
-                                                New</button>
+                                                New</button> --}}
                                         </div>
                                         <span class="invalid-feedback" id="folder-error" role="alert">
                                             @error('folder_id')

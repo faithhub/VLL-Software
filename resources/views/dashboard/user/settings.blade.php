@@ -25,7 +25,6 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="card border-10 pt-5">
                     <div class="card-header border-bottom-0 mb-4">
-                                    <button type="button" onclick="makePayment()">Pay Now</button>
                         <h6 class="mb-1 mt-1 font-weight-bold h4">General Settings</h6>
                     </div>
                     <div class="card-body pt-0">

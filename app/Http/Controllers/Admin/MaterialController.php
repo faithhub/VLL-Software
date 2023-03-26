@@ -36,6 +36,22 @@ class MaterialController extends Controller
         }
     }
 
+    public function folders()
+    {
+        # code...
+        try {
+            //code...
+            $data['title'] = "Admin Dashboard - All Folder";
+            $data['sn'] = 1;
+            $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->with('mat_type')->get();
+            return View('dashboard.admin.library.folders', $data);
+        } catch (\Throwable $th) {
+            dD($th->getMessage());
+            //throw $th;
+        }
+    }
+
+
     public function add_folder(Request $request)
     {
         # code...
@@ -44,6 +60,7 @@ class MaterialController extends Controller
             if ($_POST) {
                 $rules = array(
                     'name' => ['required', 'string', 'max:255'],
+                    'amount' => ['required', 'string', 'max:255'],
                     'folder_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:50000'],
                 );
 
@@ -76,6 +93,7 @@ class MaterialController extends Controller
                 Folder::create([
                     "material_type_id" => $request->material_type_id,
                     "name" => $request->name,
+                    "amount" => $request->amount,
                     "folder_cover_id" => $save_cover->id,
                     "user_id" => Auth::user()->id
                 ]);
@@ -84,6 +102,7 @@ class MaterialController extends Controller
             }
 
             $data['title'] = "Create New Folder";
+            $data['mode'] = "create";
             $role = ['admin'];
             $data['material_types'] = $m = MaterialType::where("status", "active")->whereIn('name', ['Law', 'Case Law'])->whereJsonContains('role', $role)->get();
             $data['subjects'] = Subject::where("status", "active")->get();
@@ -91,6 +110,87 @@ class MaterialController extends Controller
             // $material_type_id = MaterialType::where(["status" => "active"])->whereIn('mat_unique_id', ['CSL786746357', 'LAW9889734678'])->whereJsonContains('role', $role)->get();
             $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->get();
             $data['universities'] = University::Orderby('name', 'ASC')->get();
+            return View('dashboard.admin.modals.add-folder', $data);
+        } catch (\Throwable $th) {
+            dD($th->getMessage());
+            //throw $th;
+        }
+    }
+
+    public function view_folder($id)
+    {
+        # code...
+        try {
+            //code...
+            $data['sn'] = 1;
+            $data['title'] = "Admin Dashboard - Materials";
+            $data['all_materials'] = Material::where(['user_id' => Auth::user()->id, 'folder_id' => $id])->with(['type', 'folder'])->get();
+            return View('dashboard.admin.modals.view-folder', $data);
+        } catch (\Throwable $th) {
+            //throw $th;
+            dd($th->getMessage());
+        }
+    }
+
+    public function edit_folder(Request $request, $id)
+    {
+        # code...
+        try {
+            $data['folder'] = $folder = Folder::where(['user_id' => Auth::user()->id, 'id' => $id])->first();
+
+            if (!$folder) {
+                Session::flash('warning', __('No record found'));
+                return redirect()->route('admin.folders');
+            }
+            //code...
+            if ($_POST) {
+                $rules = array(
+                    'name' => ['required', 'string', 'unique:folders,name,' . $id],
+                    'amount' => ['required', 'string'],
+                    'folder_cover_id' => ['mimes:jpeg,png,jpg,gif,svg', 'max:50000'],
+                );
+
+                $messages = [
+                    'folder_cover_id.required_if' => __('The Folder cover is required'),
+                ];
+
+                // dd($request->all());
+                $validator = Validator::make($request->all(), $rules, $messages);
+
+                if ($validator->fails()) {
+                    Session::flash('warning', __('All fields are required'));
+                    return back()->withErrors($validator)->withInput();
+                }
+
+                if ($request->hasFile('folder_cover_id')) {
+                    $folder_cover = $request->file('folder_cover_id');
+                    $folder_cover_name = 'FolderCover' . time() . '.' . $folder_cover->getClientOriginalExtension();
+                    $destinationPath = public_path('/storage/materials/covers');
+                    $img = Image::make($folder_cover->path());
+                    $img->resize(600, 300, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath . '/' . $folder_cover_name);
+                    $save_cover = File::create([
+                        'name' => $folder_cover_name,
+                        'url' => 'storage/materials/covers/' . $folder_cover_name
+                    ]);
+                }
+
+
+
+                Folder::where(['user_id' => Auth::user()->id, 'id' => $id])->update([
+                    "material_type_id" => $request->material_type_id,
+                    "name" => $request->name,
+                    "amount" => $request->amount,
+                    "folder_cover_id" => $save_cover->id ?? $folder->folder_cover_id,
+                ]);
+                Session::flash('success', __('Folder updated successfully'));
+                return redirect()->route('admin.folders');
+            }
+            $role = ['admin'];
+            $data['material_types'] = $m = MaterialType::where("status", "active")->whereIn('name', ['Law', 'Case Law'])->whereJsonContains('role', $role)->get();
+            $data['title'] = "Admin Dashboard - Edit Folder";
+            $data['mode'] = "edit";
             return View('dashboard.admin.modals.add-folder', $data);
         } catch (\Throwable $th) {
             dD($th->getMessage());
@@ -229,6 +329,7 @@ class MaterialController extends Controller
             $data['countries'] = Country::all();
             // $material_type_id = MaterialType::where(["status" => "active"])->whereIn('mat_unique_id', ['CSL786746357', 'LAW9889734678'])->whereJsonContains('role', $role)->get();
             $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->get();
+            // dd($f);
             $data['universities'] = University::Orderby('name', 'ASC')->get();
             return View('dashboard.admin.library.upload', $data);
         } catch (\Throwable $th) {

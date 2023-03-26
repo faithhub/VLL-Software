@@ -152,6 +152,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         //Folder
         Route::match(['get', 'post'], 'add_folder',  [App\Http\Controllers\Admin\MaterialController::class, 'add_folder'])->name('add_folder')->middleware('sub_admin_mat');
+        Route::match(['get', 'post'], 'edit_folder/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'edit_folder'])->name('edit_folder')->middleware('sub_admin_mat');
+        Route::match(['get'], 'folders',  [App\Http\Controllers\Admin\MaterialController::class, 'folders'])->name('folders')->middleware('sub_admin_mat');
+        Route::match(['get'], 'view_folder/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'view_folder'])->name('view_folder')->middleware('sub_admin_mat');
 
 
         //FAQ

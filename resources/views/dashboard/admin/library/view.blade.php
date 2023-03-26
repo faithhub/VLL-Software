@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="image text-center">
                         <a href="#">
-                            <img src="{{ asset($material->cover->url) }}" alt="{{ $material->title }}">
+                            <img src="{{ asset($material->cover->url ?? "") }}" alt="{{ $material->title }}">
                         </a>
                     </div>
                     <div class="rating text-center">
