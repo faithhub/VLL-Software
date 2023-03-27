@@ -33,6 +33,14 @@ function checkUniversities(data) {
         document.getElementById("country").setAttribute("disabled", "disabled");
     }
 }
+var e = document.querySelector('input[name="type"]:checked').value;
+var n = document.querySelector('input[name="type"]:checked').name;
+var nn = {
+    name:n,
+    value:e
+}
+checkUniversities(nn)
+
 // Update from User, Vendor, and Admin dashboard
 
 var type = "{{ old('form_type') }}";
