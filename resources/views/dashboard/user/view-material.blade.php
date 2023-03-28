@@ -498,7 +498,7 @@
         try {
             document.addEventListener("adobe_dc_view_sdk.ready", function() {
                 var adobeDCView = new AdobeDC.View({
-                    clientId: "{{ env('ADOBECLIENTID') }}",
+                    clientId: "d8ac379f49344d2ab2cebea9f9fb8e9e",
                     divId: "adobe-dc-view"
                 });
 
