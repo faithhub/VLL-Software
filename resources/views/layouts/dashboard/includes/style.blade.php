@@ -22,12 +22,63 @@
         background-color: var(--primary-bg-color);
         border-color: var(--primary-bg-color);
     }
+    #frame {
+
+  display: flex; 
+  justify-content:center;
+  /* height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #dbe4ed; 
+    background-image: url( asset('materials/icon/v-play.png'));
+    background-position: center;
+    background-size: cover;  */
+}
+#img2 {
+  position: absolute; 
+  z-index: 2;
+  top: 52.5%;
+}
+
+    #video-bookstore-cover {
+        position: absolute;
+        justify-content: center;
+        width: 20%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%)
+    }
+    #video-bookstore-cover-view {
+    position: absolute;
+    justify-content: center;
+    width: 20%;
+    position: absolute;
+    top: 30%;
+    color: #330c0c;
+    left: 50%;
+    transform: translate(-50%, -80%);
+}
+    .video-bookstore-cover {
+        position: absolute;
+        justify-content: center;
+        width: 20%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%)
+    }
 
     .parsley-required {
         color: red !important;
         letter-spacing: 2px !important;
         display: block !important;
         font-weight: 800 !important;
+    }
+
+    .mat_img {
+        cursor: pointer;
     }
 
     input,
@@ -68,7 +119,7 @@
     .image_big_div {
         height: 250px;
     }
-    
+
 
     .card-note {
         box-shadow: 0 0.76rem 1.52rem rgb(18 38 63 / 16%);

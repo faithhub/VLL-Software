@@ -368,7 +368,7 @@ select{
 }
 .section-title {
     text-align: center;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
 }
 .section-title h3 {
     font-size: 28px;
@@ -699,7 +699,7 @@ select{
     font-size: 30px !important;
     margin-top: 10px;
     font-weight: 700 !important;
-    margin-bottom: 1%;
+    /* margin-bottom: 1%; */
 }
 
 .legal-article {
@@ -714,9 +714,9 @@ select{
 .single-box-h2-sub {
     color: #395185 !important;
     font-size: 30px !important;
-    margin-top: 10px;
+    /* margin-top: 10px; */
     font-weight: 700 !important;
-    margin-bottom: 8px;
+    /* margin-bottom: 8px; */
 }
 .single-box h3,
 .single-box i,

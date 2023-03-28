@@ -192,6 +192,7 @@ class UserController extends Controller
 
                 foreach ($my_materials as $key => $value) {
                     # code...
+                    // dd($value);
                     array_push($my_materials_arr, $value->unique_id);
                 }
             }
@@ -225,6 +226,9 @@ class UserController extends Controller
                 }
             }
 
+            // dd($my_materials_arr,
+            //     Auth::user()->id
+            // );
 
             $data['notes'] = Note::where(['user_id' => Auth::user()->id])->latest()->limit(5)->get();
             $data['title'] = "User Dashboard - My Library";
@@ -235,7 +239,7 @@ class UserController extends Controller
                 ->join('material_types', 'materials.material_type_id', '=', 'material_types.id')
                 // ->join('folders', 'materials.folder_id', '=', 'folders.id')
                 ->join('files', 'materials.material_cover_id', '=', 'files.id')
-                ->select('material_histories.id as mat_his_id', 'material_histories.is_rent_expired as is_rent_expired', 'material_histories.type as mat_his_type', 'material_histories.unique_id as mat_his_unique_id', 'materials.*', 'files.url as mat_cover', 'material_types.name as type_name', 'material_types.id as type_id')
+                ->select('material_histories.id as mat_his_id', 'material_histories.is_rent_expired as is_rent_expired', 'material_histories.type as mat_his_type', 'material_histories.unique_id as mat_his_unique_id', 'materials.*', 'files.url as mat_cover', 'material_types.mat_unique_id as mat_unique_id', 'material_types.name as type_name', 'material_types.id as type_id')
                 ->whereIn('material_histories.unique_id', $my_materials_arr)
                 ->where(['materials.status' => 'active'])
                 ->get();
@@ -835,14 +839,14 @@ class UserController extends Controller
                 'date_rented_expired' => $date_rented_expired ?? null,
                 'type' => $type,
                 'folder_expired_date' => $folder_expired_date ?? null,
-                'isFolderExpired' => $isFolderExpired ?? null,
+                'isFolderExpired' => $isFolderExpired ?? false,
                 'mat_type' => $mat_type
             ]);
 
             return $data;
         } catch (\Throwable $th) {
             return $th->getMessage();
-            // dd($th->getMessage());
+            dd($th->getMessage());
             //throw $th;
         }
     }

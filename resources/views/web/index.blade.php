@@ -5,11 +5,52 @@
             font-size: 18px;
         }
 
+        #video-bookstore-cover {
+            position: absolute;
+            justify-content: center;
+            width: 20%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%)
+        }
+
         .mat_img {
             float: left;
             width: auto;
             height: 300px;
             /* object-fit: cover; */
+        }
+
+        .flapImage {
+            margin: 0 auto;
+            text-align: center;
+            top: 0;
+            left: 0;
+            background-color: black;
+        }
+
+        .my_cat {
+            display: inherit;
+
+        }
+
+        .container-img {
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Black_cat_eyes.jpg/277px-Black_cat_eyes.jpg');
+            background-size: cover;
+            /* width: 100%;
+                        height: 100vh; */
+            position: relative;
+            float: left;
+            width: 350px;
+            height: 350px;
+        }
+
+        .center-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     </style>
 
@@ -19,20 +60,29 @@
             <div class="container">
                 <div class="row">
                     @foreach ($materials as $material)
-                    @if (substr($material->type->at_unique_id, 0, 3) != "TAA")  
-                    <div class="col-lg-4 col-md-4 mb-5 p-2 justify-content-center text-center">
-                        <div class="image">
-                            <a href="{{ route('user.index') }}">
-                                <img src="{{ asset($material->cover->url ?? "") }}" class="mat_img" alt="{{ $material->title }}">
-                            </a>
-                        </div>
-                        <div class="mat-title">
-                            <a href="{{ route('user.index') }}">
-                                <h4>{{ $material->title }}</h4>
-                            </a>
-                        </div>
-                    </div>
-                    @endif
+                        @if (substr($material->type->at_unique_id, 0, 3) != 'TAA')
+                            <div class="col-lg-4 col-md-4 mb-5 p-2 justify-content-center text-center">
+
+
+                                <a href="{{ route('user.index') }}">
+                                    <div class="container-img"
+                                        style="background-image: url('{{ asset($material->cover->url ?? '') }}')">
+                                        @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
+                                            <img src="{{ asset('materials/icon/v-play.png') }}" alt="{{ $material->title }}"
+                                                width="20%" class="center-image">
+                                                @endif
+                                    </div>
+                                    {{-- </div> --}}
+                                </a>
+                                {{-- <div class="image">
+                                </div> --}}
+                                <div class="mat-title">
+                                    <a href="{{ route('user.index') }}">
+                                        <h4>{{ $material->title }}</h4>
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
                     @endforeach
                 </div>
             </div>

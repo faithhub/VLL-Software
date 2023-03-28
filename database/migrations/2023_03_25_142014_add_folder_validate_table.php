@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('material_histories', function (Blueprint $table) {
-            $table->date('folder_expired_date');
-            $table->boolean('isFolderExpired');
+            $table->date('folder_expired_date')->nullable();
+            $table->boolean('isFolderExpired')->default(false);
         });
     }
 

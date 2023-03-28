@@ -210,6 +210,15 @@ pre {
 svg:not(:root) {
     overflow: hidden;
 }
+ .video-bookstore-cover {
+        position: absolute !important;
+        justify-content: center !important;
+        width: 20% !important;
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%)
+    }
 
 caption {
     padding-top: 0.75rem;

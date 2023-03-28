@@ -4,9 +4,15 @@
             <div class="card-body">
                 <div class="row">
                     <div class="image text-center">
-                        <a href="#">
-                            <img src="{{ asset($material->cover->url ?? '') }}" alt="{{ $material->title }}">
-                        </a>
+                        <div id="frame">
+                            <a href="#">
+                                <img src="{{ asset($material->cover->url ?? '') }}" alt="{{ $material->title }}">
+                                @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
+                                    <img id="video-bookstore-cover-view" src="{{ asset('materials/icon/v-play.png') }}"
+                                        alt="{{ $material->title }}" align="middle" style="color: black">
+                                @endif
+                            </a>
+                        </div>
                     </div>
                     <div class="rating text-center">
                         {{-- <h4 class="font-weight-bold h6 mt-3">Ratings:

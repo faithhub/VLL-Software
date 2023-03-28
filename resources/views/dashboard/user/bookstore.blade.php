@@ -1,16 +1,6 @@
 @extends('layouts/dashboard/app')
 @section('content')
     <style>
-        #img-2 {
-            position: absolute;
-            justify-content: center;
-            width: 10%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%)
-        }
-
         #img-3 {
             position: absolute;
             justify-content: center;
@@ -142,7 +132,7 @@
                                                                                     <img src="{{ asset($material->cover->url) }}"
                                                                                         alt="{{ $material->title }}"
                                                                                         class="mat_img">
-                                                                                    <img id="img-2"
+                                                                                    <img id="video-bookstore-cover"
                                                                                         src="{{ asset('materials/icon/v-play.png') }}"
                                                                                         alt="{{ $material->title }}" align="middle"
                                                                                         style="color: black">
@@ -215,7 +205,7 @@
                                                                             href="{{ route('user.view_material', $material->id) }}">
                                                                             <img src="{{ asset($material->cover->url) }}"
                                                                                 alt="{{ $material->title }}" class="mat_img">
-                                                                            <img id="img-2"
+                                                                            <img id="video-bookstore-cover"
                                                                                 src="{{ asset('materials/icon/v-play.png') }}"
                                                                                 alt="{{ $material->title }}" align="middle"
                                                                                 style="color: black">

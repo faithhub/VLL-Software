@@ -37,6 +37,12 @@
                                                     href="{{ route('user.view_material', $material->id) }}">
                                                     <img src="{{ asset($material->mat_cover) }}" alt="{{ $material->title }}"
                                                         class="mat_img">
+
+                                                    @if (substr($material->mat_unique_id, 0, 3) == 'VAA')
+                                                        <img id="video-bookstore-cover"
+                                                            src="{{ asset('materials/icon/v-play.png') }}"
+                                                            alt="{{ $material->title }}" align="middle" style="color: black">
+                                                     @endif
                                                 </a>
                                             </div>
                                         </div>
@@ -69,8 +75,8 @@
                                                 <a onclick="shiNew(event)" data-type="dark" data-size="l"
                                                     data-title="{{ $folder->name }}"
                                                     href="{{ route('user.view_folder', $folder->id) }}">
-                                                    <img src="{{ asset($folder->folder_cover->url) }}" alt="{{ $folder->title }}"
-                                                        class="mat_img">
+                                                    <img src="{{ asset($folder->folder_cover->url) }}"
+                                                        alt="{{ $folder->title }}" class="mat_img">
                                                 </a>
                                             </div>
                                         </div>
@@ -79,8 +85,7 @@
                                             </div>
                                             <a onclick="shiNew(event)" data-type="dark" data-size="m"
                                                 data-title="{{ $folder->name }}"
-                                                href="{{ route('user.view_folder', $folder->id) }}"
-                                                class="book-title mt-2">
+                                                href="{{ route('user.view_folder', $folder->id) }}" class="book-title mt-2">
                                                 <h4 class="text-capitalize">{{ $folder->name }}</h4>
                                             </a>
                                         </div>
