@@ -33,6 +33,7 @@ class CheckSub
         }
         if (Auth::user()->team_id) {
             $team = Team::find(Auth::user()->team_id);
+            dd($team);
             if (Carbon::now() > $team->end_date) {
                 $sub->sub_status = 'expired';
                 $sub->save();
