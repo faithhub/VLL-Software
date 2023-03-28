@@ -76,6 +76,13 @@
                                                         data-title="{{ $material->title }}"
                                                         href="{{ route('vendor.view_material', $material->id) }}">
                                                         <img src="{{ $material->cover->url }}" alt="{{ $material->title }}" class="mat_img">
+
+                                                            @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
+                                                                <img id="video-bookstore-cover"
+                                                                    src="{{ asset('materials/icon/v-play.png') }}"
+                                                                    alt="{!! $material->title[0] !!}" align="middle"
+                                                                    style="color: black">
+                                                            @endif
                                                     </a>
                                                 </div>
                                                 <div class="mat-title">

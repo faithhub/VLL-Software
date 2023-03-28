@@ -101,6 +101,24 @@
                                                         href="{{ route('user.view_material', $material->id) }}">
                                                         <img src="{{ asset($material->mat_cover ?? $material->cover->url) }}"
                                                             alt="{!! $material->name_of_author !!}" class="mat_img">
+
+                                                        @isset($material->type->mat_unique_id)
+                                                            @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
+                                                                <img id="video-bookstore-cover"
+                                                                    src="{{ asset('materials/icon/v-play.png') }}"
+                                                                    alt="{!! $material->title[0] !!}" align="middle"
+                                                                    style="color: black">
+                                                            @endif
+                                                        @endisset
+                                                        @isset($material->mat_unique_id)
+                                                            @if (substr($material->mat_unique_id, 0, 3) == 'VAA')
+                                                                <img id="video-bookstore-cover"
+                                                                    src="{{ asset('materials/icon/v-play.png') }}"
+                                                                    alt="{!! $material->title[0] !!}" align="middle"
+                                                                    style="color: black">
+                                                            @endif
+                                                        @endisset
+
                                                     </a>
                                                 </div>
                                             </div>

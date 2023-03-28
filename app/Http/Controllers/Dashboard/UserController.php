@@ -213,7 +213,7 @@ class UserController extends Controller
                         ->join('files', 'materials.material_cover_id', '=', 'files.id')
                         ->where('materials.tags', 'LIKE', '%' . $search . '%')
                         ->orWhere('materials.title', 'LIKE', '%' . $search . '%')
-                        ->select('material_histories.id as mat_his_id', 'material_histories.is_rent_expired as is_rent_expired', 'material_histories.type as mat_his_type', 'materials.*', 'files.url as mat_cover', 'material_types.name as type_name', 'material_types.id as type_id')
+                        ->select('material_histories.id as mat_his_id', 'material_histories.is_rent_expired as is_rent_expired', 'material_histories.type as mat_his_type', 'materials.*', 'files.url as mat_cover', 'material_histories.unique_id as mat_his_unique_id', 'material_types.mat_unique_id as mat_unique_id', 'material_types.name as type_name', 'material_types.id as type_id')
                         ->whereIn('material_histories.unique_id', $my_materials_arr)
                         ->get()
                         ->map(function ($row) use ($search) {
@@ -222,6 +222,7 @@ class UserController extends Controller
                             return $row;
                         });
 
+                    // dd("hgvhgvh");
                     return View('dashboard.user.search', $data);
                 }
             }
