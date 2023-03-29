@@ -50,7 +50,7 @@ class SubAdminController extends Controller
                     Session::flash('warning', __('All fields are required'));
                     return back()->withErrors($validator)->withInput();
                 }
-
+                // dd($request->all());
                 $user = User::create([
                     'name' => $request->name,
                     'email' => $request->email,

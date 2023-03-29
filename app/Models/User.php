@@ -43,6 +43,7 @@ class User extends Authenticatable
         'dom_acc_name',
         'dom_acc_verified',
         'sub_id',
+        'sub_admin',
         'default_currency_id',
         'acc_verified'
     ];
