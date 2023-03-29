@@ -296,7 +296,7 @@
                     </li>
                 @endif
 
-                @if (Auth::user()->role == 'admin')
+                {{-- @if (Auth::user()->role == 'admin') --}}
                     @if (Auth::user()->sub_admin == 'transaction' || Auth::user()->role == 'admin')
                         <li class="slide is-expanded" id="sidebar">
                             <a class="side-menu__item side_menus {{ request()->is('admin/transactions') ? 'active' : '' }}"
@@ -322,7 +322,7 @@
                             </a>
                         </li>
                     @endif
-                @endif
+                {{-- @endif --}}
 
                 @if (Auth::user()->sub_admin == 'chat' || Auth::user()->role == 'admin')
                     <li class="slide is-expanded" id="sidebar">
