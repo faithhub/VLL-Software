@@ -14,10 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::table('material_histories', function (Blueprint $table) {
-            $table->foreignId('folder_id')
-                ->nullable()
-                ->constrained()
-                ->cascadeOnDelete();
+            $table->bigInteger('folder_id')->unsigned()->nullable();
+            $table->foreign('folder_id')->references('id')->on('folders');
+            // $table->foreignId('folder_id')
+            //     ->nullable()
+            //     ->constrained()
+            //     ->cascadeOnDelete();
         });
     }
 
