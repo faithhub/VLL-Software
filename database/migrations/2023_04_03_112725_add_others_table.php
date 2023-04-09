@@ -19,10 +19,12 @@ return new class extends Migration
             $table->string("version")->nullable();
             $table->string("price")->nullable();
             $table->longText("tags")->nullable();
-            $table->foreignId('country_id')
-                ->nullable()
-                ->constrained('countries')
-                ->cascadeOnDelete();
+            $table->bigInteger('country_id')->unsigned()->nullable();
+            $table->foreign('country_id')->references('id')->on('countries');
+            // $table->foreignId('country_id')
+            //     ->nullable()
+            //     ->constrained('countries')
+            //     ->cascadeOnDelete();
         });
     }
 
