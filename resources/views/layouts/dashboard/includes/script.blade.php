@@ -62,46 +62,57 @@
 <script src="//cdn.quilljs.com/1.0.0/quill.min.js"></script>
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 <script type="text/javascript">
- function makePayment() {
-        FlutterwaveCheckout({
-          public_key: "FLWPUBK_TEST-f29599923595f8d17ad67b6d3b6b117b-X",
-          tx_ref: "titanic-48981487343MDI0NzMx",
-          amount: 50000,
-          currency: "NGN",
-          payment_options: "card, banktransfer, ussd",
-          redirect_url:
-            "https://glaciers.titanic.com/handle-flutterwave-payment",
-          meta: {
-            consumer_id: 23,
-            consumer_mac: "92a3-912ba-1192a",
-          },
-          customer: {
-            email: "rose@unsinkableship.com",
-            phone_number: "08102909304",
-            name: "Rose DeWitt Bukater",
-          },
-          customizations: {
-            title: "The Titanic Store",
-            description: "Payment for an awesome cruise",
-            logo: "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
-          },
-        });
-      }
-      
     function makePayment2() {
+        FlutterwaveCheckout({
+            public_key: "FLWPUBK_TEST-006e9a2dde4eb5947f2da2af0c2f3695-X",
+            // public_key: "FLWPUBK_TEST-SANDBOXDEMOKEY-X",
+            tx_ref: "VLL_" + Math.floor((Math.random() * 1000000000) + 1),
+            amount: 3400,
+            currency: "USD",
+            payment_options: "card, ussd",
+            redirect_url: "https://demoredirect.localhost.me/",
+            customer: {
+                "name": "Jesse Pinkman",
+                "email": "jessepinkman@walterwhite.org"
+            }
+            // public_key: "FLWPUBK_TEST-f29599923595f8d17ad67b6d3b6b117b-X",
+            // tx_ref: "85666yuguygftyguy377865",
+            // amount: 5000,
+            // currency: "NGN",
+            // payment_options: "card, banktransfer, ussd",
+            // redirect_url: "https://glaciers.titanic.com/handle-flutterwave-payment",
+            // //   meta: {
+            // //     consumer_id: 23,
+            // //     consumer_mac: "92a3-912ba-1192a",
+            // //   },
+            // customer: {
+            //     email: "rose@unsinkableship.com",
+            //     phone_number: "08102909304",
+            //     name: "Rose DeWitt Bukater",
+            // },
+            // customizations: {
+            //     title: "The Titanic Store",
+            //     description: "Payment for an awesome cruise",
+            //     logo: "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
+            // },
+        });
+    }
+
+    function makePayment() {
         // FLWPUBK_TEST-e1cbb8cf92b2193b7613de4cc1a4fa60-X
         // FLWPUBK_TEST-2a155d1d83d66523b4a71d5d09a900e4-X
         FlutterwaveCheckout({
-            public_key: "FLWPUBK_TEST-e1cbb8cf92b2193b7613de4cc1a4fa60-X",
-            tx_ref: "VLL_" + Math.floor((Math.random() * 1000000000) + 1),
-            amount: 5600,
-            currency: "NGN",
+            public_key: "FLWPUBK_TEST-006e9a2dde4eb5947f2da2af0c2f3695-X",
+            tx_ref: "VLL-" + Math.floor((Math.random() * 1000000000000) + 1),
+            amount: 1000,
+            currency: "CAD",
             // payment_options: "card",
+            redirect_url: "{{ route('confirm.payment') }}",
             payment_options: "card, banktransfer",
             callback: function(payment) {
                 // Send AJAX verification request to backend
                 console.log(payment);
-                verifyTransactionOnBackend(payment.id);
+                verifyTransactionOnBackend(payment);
             },
             //  callback: function (data) {
             //     console.log(data);
@@ -116,6 +127,7 @@
                     // document.querySelector("form").style.display = 'none';
                     if (window.verified == true) {
                         console.log(incomplete, 'success');
+                verifyTransactionOnBackend(payment);
                         // document.querySelector("#payment-success").style.display = 'block';
                     } else {
                         console.log(incomplete, 'pending');
@@ -123,14 +135,9 @@
                     }
                 }
             },
-            // meta: {
-            //     consumer_id: 23,
-            //     consumer_mac: "92a3-912ba-1192a",
-            // },
             customer: {
-                email: "newrose@unsinkableship.com",
-                phone_number: "08102909304",
-                name: "Rose DeWitt Bukater",
+                email: "{{ Auth::user()->email }}",
+                name: "{{ Auth::user()->name }}",
             },
             // customizations: {
             //     title: "The Titanic Store",
@@ -140,10 +147,17 @@
         });
     }
 
-    function verifyTransactionOnBackend(transactionId) {
+    function verifyTransactionOnBackend(payment) {
         // Let's just pretend the request was successful
         setTimeout(function() {
             window.verified = true;
+             if (window.verified == true) {
+                        console.log(payment, 'success');
+                        // document.querySelector("#payment-success").style.display = 'block';
+                    } else {
+                        console.log(payment, 'pending');
+                        // document.querySelector("#payment-pending").style.display = 'block';
+                    }
         }, 200);
     }
 

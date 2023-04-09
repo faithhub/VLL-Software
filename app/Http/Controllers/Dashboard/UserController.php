@@ -547,6 +547,7 @@ class UserController extends Controller
                 'date' => $date,
                 'amount' => $amount,
                 'status' => $status,
+                'currency_id' => Auth::user()->currency->id,
                 'reference' => $reference,
                 'trxref' => $trxref,
                 'type' => 'subscription'
@@ -823,6 +824,7 @@ class UserController extends Controller
                 'date' => $date,
                 'amount' => $amount,
                 'status' => $status,
+                'currency_id' => Auth::user()->currency->id,
                 'reference' => $reference,
                 'trxref' => $trxref,
                 'type' =>  $type

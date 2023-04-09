@@ -43,7 +43,11 @@ Route::prefix('google')->name('google.')->group(function () {
 });
 
 Route::group(['middleware' => ['auth']], function () {
+    //Change currency
     Route::match(['post'], 'change-currency',  [App\Http\Controllers\Admin\DashboardController::class, 'change_currency'])->name('change_currency');
+    //Payment Confrimation
+    Route::get('/confirm-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'confirm'])->name('confirm.payment');
+    Route::post('/save-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'save_transaction'])->name('save.transaction');
 });
 
 //User
@@ -96,13 +100,16 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
         Route::match(['get', 'post'], 'edit/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'edit'])->name('edit');
         Route::match(['get'], 'delete/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'delete'])->name('delete');
 
+        Route::match(['get'], '/material/cancel',  [App\Http\Controllers\Dashboard\VendorController::class, 'cancel'])->name('cancel.library');
 
         Route::match(['get'], 'folders',  [App\Http\Controllers\Dashboard\VendorController::class, 'folders'])->name('folders');
         Route::match(['get', 'post'], 'add_folder',  [App\Http\Controllers\Dashboard\VendorController::class, 'add_folder'])->name('add_folder');
         Route::match(['get', 'post'], 'edit_folder/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'edit_folder'])->name('edit_folder');
+        Route::match(['get'], 'delete_folder/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'delete_folder'])->name('delete_folder');
         // Route::match(['get'], 'view_folder/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'view_folder'])->name('view_folder');
     });
 });
+
 
 //Admin
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -128,6 +135,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::match(['get', 'post'], '/edit/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'edit'])->name('edit.library')->middleware('sub_admin_mat');
         Route::match(['get'], '/library/view/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'view'])->name('view.library')->middleware('sub_admin_mat');
         Route::match(['get'], '/library/delete/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'delete'])->name('delete.library')->middleware('sub_admin_mat');
+        Route::match(['get'], '/library/cancel',  [App\Http\Controllers\Admin\MaterialController::class, 'cancel'])->name('cancel.library')->middleware('sub_admin_mat');
 
 
         Route::get('/transactions',  [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions')->middleware('sub_admin_trans');
@@ -155,6 +163,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::match(['get', 'post'], 'edit_folder/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'edit_folder'])->name('edit_folder')->middleware('sub_admin_mat');
         Route::match(['get'], 'folders',  [App\Http\Controllers\Admin\MaterialController::class, 'folders'])->name('folders')->middleware('sub_admin_mat');
         Route::match(['get'], 'view_folder/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'view_folder'])->name('view_folder')->middleware('sub_admin_mat');
+        Route::match(['get'], 'delete_folder/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'delete_folder'])->name('delete_folder')->middleware('sub_admin_mat');
 
 
         //FAQ

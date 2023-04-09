@@ -77,6 +77,32 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
 
 <script type="text/javascript">
+    $("#testing_select").bind('change', function() {
+        var select = "";
+        $("#testing_select option:selected").each(function() {
+            select += "," + $(this).text();
+        });
+        if (select != "") {
+            select = select.substr(1);
+        }
+        $("#testing_select").text(select);
+    });
+
+    $('#folder_cover2').bind('change', function() {
+        if (this.files[0]) {
+            var fileName = this.files[0].name;
+            var fileSize = this.files[0].size;
+            var size = parseFloat(fileSize / 1000).toFixed(0);
+            document.getElementById('folder_cover2_img').src = window.URL.createObjectURL(this
+                .files[0])
+            $("#folder_cover2_name").text(fileName);
+            $("#folder_cover2_size").text(`${size} KB`);
+            document.getElementById('folder_cover2_preview').style.display = 'block';
+        } else {
+            document.getElementById('folder_cover2_preview').style.display = 'none';
+        }
+    });
+
     $(document).ready(function() {
 
         $('#material_cover').bind('change', function() {
@@ -94,7 +120,6 @@
             }
         });
 
-
         $('#material_file').bind('change', function() {
             if (this.files[0]) {
                 var fileName = this.files[0].name;
@@ -108,7 +133,68 @@
             }
         });
 
+        $('#material_file2').bind('change', function() {
+            if (this.files[0]) {
+                var fileName = this.files[0].name;
+                var fileSize = this.files[0].size;
+                var size = parseFloat(fileSize / 1000).toFixed(0);
+                $("#material_file_name2").text(fileName);
+                $("#material_file_size2").text(`${size} KB`);
+                document.getElementById('material_file_preview2').style.display = 'block';
+            } else {
+                document.getElementById('material_file_preview2').style.display = 'none';
+            }
+        });
+        $('#material_file3').bind('change', function() {
+            if (this.files[0]) {
+                var fileName = this.files[0].name;
+                var fileSize = this.files[0].size;
+                var size = parseFloat(fileSize / 1000).toFixed(0);
+                $("#material_file_name3").text(fileName);
+                $("#material_file_size3").text(`${size} KB`);
+                document.getElementById('material_file_preview3').style.display = 'block';
+            } else {
+                document.getElementById('material_file_preview3').style.display = 'none';
+            }
+        });
+
+        $('#material_file4').bind('change', function() {
+            if (this.files[0]) {
+                var fileName = this.files[0].name;
+                var fileSize = this.files[0].size;
+                var size = parseFloat(fileSize / 1000).toFixed(0);
+                $("#material_file_name4").text(fileName);
+                $("#material_file_size4").text(`${size} KB`);
+                document.getElementById('material_file_preview4').style.display = 'block';
+            } else {
+                document.getElementById('material_file_preview4').style.display = 'none';
+            }
+        });
+
+        $('#material_file5').bind('change', function() {
+            if (this.files[0]) {
+                var fileName = this.files[0].name;
+                var fileSize = this.files[0].size;
+                var size = parseFloat(fileSize / 1000).toFixed(0);
+                $("#material_file_name5").text(fileName);
+                $("#material_file_size5").text(`${size} KB`);
+                document.getElementById('material_file_preview5').style.display = 'block';
+            } else {
+                document.getElementById('material_file_preview5').style.display = 'none';
+            }
+        });
+
         $("#material_type_select").change(function() {
+
+            document.getElementById("publishers").classList.remove('col-md-6', 'col-lg-6',
+                'col-xl-6');
+            document.getElementById("publishers").classList.add('col-md-12', 'col-lg-12',
+                'col-xl-12');
+
+            document.getElementById("priceDiv").classList.remove('col-md-6', 'col-lg-6',
+                'col-xl-6');
+            document.getElementById("priceDiv").classList.add('col-md-12', 'col-lg-12',
+                'col-xl-12');
 
             if ($(this).data('options') === undefined) {
                 /*Taking an array of all options-2 and kind of embedding it on the select1*/
@@ -118,99 +204,153 @@
             var text = $(this).find(':selected').attr('data-text');
             var matId = $(this).find(':selected').attr('data-matId');
             var uniqueId = matId.substring(0, 3);
+            var select = document.getElementById("folder_select_id");
             document.getElementById("material_type_value").value = uniqueId
+            var option_new = select.options[select.selectedIndex]
+            const folders = @json($folders);
+            const old_folder_id = "{{ old('folder_id') }}";
+            const firstFolder = {
+                id: "new_folder",
+                amount: 000,
+                name: "Create Folder"
+            };
 
-            // if (uniqueId == "TXT" || uniqueId == "CSL" ||  uniqueId == "LAW") {
-            if (uniqueId == "TXT") {
-                console.log(id, uniqueId);
-                document.getElementById('subject_div').style.display = 'block';
-            } else {
-                document.getElementById('subject_div').style.display = 'none';
+
+            var csl_elems = document.getElementsByClassName('new_csl_div_tag');
+            var law_elems = document.getElementsByClassName('new_law_div_tag');
+            var new_folder_elems = document.getElementsByClassName('new-folder');
+            var elems = document.getElementsByClassName('upload-form-fields');
+            $("#title_of_material").text("Material");
+            for (var i = 0; i < elems.length; i += 1) {
+                elems[i].style.display = 'none';
             }
 
-            // if (uniqueId == "CSL" ||  uniqueId == "LAW") {
-            //     document.getElementById('folder_div').style.display = 'block';
-            // } else {
-            //     document.getElementById('folder_div').style.display = 'none';
-            // }
+            switch (uniqueId) {
+                case "TXT":
+                    var txt_elems = document.getElementsByClassName('text-field');
+                    for (var i = 0; i < txt_elems.length; i += 1) {
+                        txt_elems[i].style.display = 'block';
+                    }
+                    break;
+                case "LOJ":
+                    var loj_elems = document.getElementsByClassName('loj-field');
+                    for (var i = 0; i < loj_elems.length; i += 1) {
+                        loj_elems[i].style.display = 'block';
+                    }
+                    break;
+                case "TAA":
+                    var taa_elems = document.getElementsByClassName('taa-field');
+                    for (var i = 0; i < taa_elems.length; i += 1) {
+                        taa_elems[i].style.display = 'block';
+                    }
+                    document.getElementById("priceDiv").classList.remove('col-md-12', 'col-lg-12',
+                        'col-xl-12');
+                    document.getElementById("priceDiv").classList.add('col-md-6', 'col-lg-6',
+                        'col-xl-6');
+                    break;
+                case "CSL":
+                    const folder_csl = "{{ $ff_csl }}";
+                    console.log(folder_csl, old_folder_id, 'old_folder_id');
+                    let folders_new_csl = folders.filter(item => {
+                        console.log(item.material_type_id, id);
+                        return item.material_type_id == id
+                    })
+                    if (uniqueId == "CSL" && folder_csl != "1") {
+                        folders_new_csl.unshift(firstFolder)
+                    }
+                    select.innerHTML = folders_new_csl.reduce((options, {
+                            id,
+                            name
+                        }) =>
+                        options +=
+                        `<option value="${id}" ${ old_folder_id == 'new_folder' ? 'selected' : ''} ${ old_folder_id == id ? 'selected' : ''}>${name}</option>`,
+                        '<option value=""></option>');
 
-            if (uniqueId == "TAA") {
-                document.getElementById("version").classList.remove('col-md-6', 'col-lg-6', 'col-xl-6');
-                document.getElementById("version").classList.add('col-md-12', 'col-lg-12', 'col-xl-12');
-                document.getElementById("priceDiv").classList.remove('col-md-6', 'col-lg-6',
-                    'col-xl-6');
-                document.getElementById("priceDiv").classList.add('col-md-6', 'col-lg-6',
-                    'col-xl-6');
-                document.getElementById('privacy_div').style.display = 'block';
-                document.getElementById('TAA-data1').style.display = 'block';
-                document.getElementById('TAA-data2').style.display = 'block';
-                document.getElementById('TAA-data-no1').style.display = 'none';
-                document.getElementById('TAA-data-no2').style.display = 'none';
-                document.getElementById('publishers').style.display = 'none';
-            } else {
-                document.getElementById("version").classList.remove('col-md-12', 'col-lg-12',
-                    'col-xl-12');
-                document.getElementById("version").classList.add('col-md-6', 'col-lg-6', 'col-xl-6');
-                document.getElementById("priceDiv").classList.remove('col-md-12', 'col-lg-12',
-                    'col-xl-12');
-                document.getElementById("priceDiv").classList.add('col-md-6', 'col-lg-6', 'col-xl-6');
-                document.getElementById('TAA-data-no2').style.display = 'block';
-                document.getElementById('TAA-data-no1').style.display = 'block';
-                document.getElementById('publishers').style.display = 'block';
-                document.getElementById('privacy_div').style.display = 'none';
-                document.getElementById('TAA-data2').style.display = 'none';
-                document.getElementById('TAA-data1').style.display = 'none';
-            }
+                    if (folder_csl == "1") {
+                        for (var i = 0; i < csl_elems.length; i += 1) {
+                            csl_elems[i].style.display = 'block';
+                        }
+                    } else {
+                        for (var i = 0; i < new_folder_elems.length; i += 1) {
+                            new_folder_elems[i].style.display = 'block';
+                        }
+                    }
 
-            // if (uniqueId == "CSL" ||  uniqueId == "LAW") {
-            if (uniqueId == "LAW" || uniqueId == "CSL") {
-                document.getElementById('folder_div').style.display = 'block';
-                document.getElementById('material_cover_id').style.display = 'none';
-                document.getElementById('material_desc_id').style.display = 'none';
-                document.getElementById('TAA-data-no1').style.display = 'none';
-                document.getElementById('priceDiv').style.display = 'none';
-                // document.getElementById('name_of_party').style.display = 'block';
-                // document.getElementById('name_of_court').style.display = 'block';
-                // document.getElementById('version').style.display = 'none';
-                // document.getElementById('publishers').style.display = 'none';
-                // document.getElementById('citation').style.display = 'block';
-            } else {
-                document.getElementById('folder_div').style.display = 'none';
-                document.getElementById('material_cover_id').style.display = 'block';
-                document.getElementById('material_desc_id').style.display = 'block';
-                document.getElementById('TAA-data-no1').style.display = 'block';
-                document.getElementById('priceDiv').style.display = 'block';
-                // document.getElementById('citation').style.display = 'none';
-                // document.getElementById('name_of_court').style.display = 'none';
-                // document.getElementById('name_of_party').style.display = 'none';
-                // document.getElementById('publishers').style.display = 'block';
-                // document.getElementById('version').style.display = 'block';
-            }
+                    break;
+                case "LAW":
+                    const folder_law = "{{ $ff_law }}";
+                    let folders_new_law = folders.filter(item => {
+                        return item.material_type_id == id
+                    })
+                    if (uniqueId == "LAW" && folder_law != "1") {
+                        folders_new_law.unshift(firstFolder)
+                    }
+                    select.innerHTML = folders_new_law.reduce((options, {
+                            id,
+                            name
+                        }) =>
+                        options +=
+                        `<option value="${id}" ${ old_folder_id == 'new_folder' ? 'selected' : ''} ${ old_folder_id == id ? 'selected' : ''}>${name}</option>`,
+                        '<option value="" selected></option>');
 
-            if (uniqueId == "CSL") {
-                document.getElementById('name_of_party').style.display = 'block';
-                document.getElementById('name_of_court').style.display = 'block';
-                document.getElementById('name_of_author').style.display = 'none';
-                document.getElementById('version').style.display = 'none';
-                document.getElementById('publishers').style.display = 'none';
-                document.getElementById('citation').style.display = 'block';
-            } else {
-                document.getElementById('citation').style.display = 'none';
-                document.getElementById('name_of_court').style.display = 'none';
-                document.getElementById('name_of_party').style.display = 'none';
-                document.getElementById('name_of_author').style.display = 'block';
-                document.getElementById('publishers').style.display = 'block';
-                document.getElementById('version').style.display = 'block';
-            }
+                    if (folder_law == "1") {
+                        document.getElementById("mat_title_div").classList.remove('col-md-6',
+                            'col-lg-6',
+                            'col-xl-6');
+                        document.getElementById("mat_title_div").classList.add('col-md-12', 'col-lg-12',
+                            'col-xl-12');
+                        $("#title_of_material").text("Law");
+                        for (var i = 0; i < law_elems.length; i += 1) {
+                            law_elems[i].style.display = 'block';
+                        }
+                    } else {
+                        for (var i = 0; i < new_folder_elems.length; i += 1) {
+                            new_folder_elems[i].style.display = 'block';
+                        }
+                    }
+                    break;
+                case "VAA":
+                    $("#material_file_text").text("Video/Audio");
+                    $("#file_text").text("Upload Material in Video or Audio format");
+                    $('#material_file').attr("accept", ".mp4,.mp3");
+                    document.getElementById("publishers").classList.remove('col-md-6', 'col-lg-6',
+                        'col-xl-6');
+                    document.getElementById("publishers").classList.add('col-md-12', 'col-lg-12',
+                        'col-xl-12');
+                    document.getElementById("priceDiv").classList.remove('col-md-6', 'col-lg-6',
+                        'col-xl-6');
+                    document.getElementById("priceDiv").classList.add('col-md-12', 'col-lg-12',
+                        'col-xl-12');
+                    var vaa_elems = document.getElementsByClassName('vaa-field');
+                    for (var i = 0; i < vaa_elems.length; i += 1) {
+                        vaa_elems[i].style.display = 'block';
+                    }
+                    break;
 
-            if (uniqueId == "VAA") {
-                $("#material_file_text").text("Video/Audio");
-                $("#file_text").text("Upload Material in Video or Audio format");
-                $('#material_file').attr("accept", ".mp4,.mp3");
-            } else {
-                $('#material_file').attr("accept", ".pdf");
-                $("#material_file_text").text("PDF");
-                $("#file_text").text("Upload Material in PDF");
+                default:
+                    $("#title_of_material").text("Material");
+                    $('#material_file').attr("accept", ".pdf");
+                    $("#material_file_text").text("PDF");
+                    $("#file_text").text("Upload Material in PDF");
+                    document.getElementById("mat_title_div").classList.remove('col-md-12', 'col-lg-12',
+                        'col-xl-12');
+                    document.getElementById("mat_title_div").classList.add('col-md-6',
+                        'col-lg-6',
+                        'col-xl-6');
+                    document.getElementById("priceDiv").classList.remove('col-md-12', 'col-lg-12',
+                        'col-xl-12');
+                    document.getElementById("priceDiv").classList.add('col-md-6', 'col-lg-6',
+                        'col-xl-6');
+                    for (var i = 0; i < new_folder_elems.length; i += 1) {
+                        new_folder_elems[i].style.display = 'none';
+                    }
+                    for (var i = 0; i < csl_elems.length; i += 1) {
+                        csl_elems[i].style.display = 'none';
+                    }
+                    for (var i = 0; i < elems.length; i += 1) {
+                        elems[i].style.display = 'block';
+                    }
+                    break;
             }
 
             var options = $(this).data('options').filter('[data-value=' + id + ']');
@@ -219,6 +359,14 @@
 
     });
 
+
+
+    $(document).ready(function() {
+        $("#folder_select_id").change(function() {
+            var value = $(this).val();
+            console.log(value);
+        });
+    });
 
     $(document).ready(function() {
         $("#test_country_id").change(function() {
@@ -230,19 +378,6 @@
             var options = $(this).data('options').filter('[data-value=' + id + ']');
             // console.log(options, id)
             $('#university_id').html(options);
-        });
-    });
-
-    $(document).ready(function() {
-        $("#material_type_select").change(function() {
-            if ($(this).data('options') === undefined) {
-                /*Taking an array of all options-2 and kind of embedding it on the select1*/
-                $(this).data('options', $('#folder_select_id option').clone());
-            }
-            var id = $(this).val();
-            var options = $(this).data('options').filter('[data-value=' + id + ']');
-            console.log(options, id)
-            $('#folder_select_id').html(options);
         });
     });
 

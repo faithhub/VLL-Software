@@ -48,10 +48,10 @@
                                             @else
                                                 <a class="btn btn-lg btn-warning"
                                                     @isset($sub->session)
-                                                onclick="payWithPaystack('{{ $sub->session }}', '{{ $sub->id }}', 'session')"
+                                                onclick="flutterwaveCheckout('{{ $sub->session }}', '{{ $sub->id }}', 'session')"
                                                 @endisset
                                                     @isset($sub->system)
-                                                onclick="payWithPaystack('{{ $sub->system }}', '{{ $sub->id }}', 'system')"
+                                                onclick="flutterwaveCheckout('{{ $sub->system }}', '{{ $sub->id }}', 'system')"
                                                 @endisset>
                                                     @if (Auth::user()->sub->subscription_id)
                                                         Change
@@ -108,10 +108,11 @@
                                             @else
                                                 <a class="btn btn-lg btn-success"
                                                     @isset($sub->session)
-                                                onclick="payWithPaystack('{{ $sub->session }}', '{{ $sub->id }}', 'session')"
+                                                onclick="flutterwaveCheckout('{{ $sub->session }}', '{{ $sub->id }}', 'session')"
                                                 @endisset
                                                     @isset($sub->system)
-                                                onclick="payWithPaystack('{{ $sub->system }}', '{{ $sub->id }}', 'system')"
+                                                onclick="flutterwaveCheckout('{{ $sub->system }}', '{{ $sub->id }}', 'system')"
+                                                onclick="flutterwaveCheckout('{{ $sub->system }}', '{{ $sub->id }}', 'system')"
                                                 @endisset>
                                                     @if (Auth::user()->sub->subscription_id)
                                                         Change
@@ -168,7 +169,7 @@
                                             <a class="btn btn-lg btn-gray text-white" @disabled(true)
                                                 style="cursor: no-drop">Subcribed</a>
                                         @else
-                                            <a onclick="payWithPaystack('{{ $sub->annual }}', '{{ $sub->id }}', 'annual')"
+                                            <a onclick="flutterwaveCheckout('{{ $sub->annual }}', '{{ $sub->id }}', 'annual')"
                                                 class="btn btn-lg text-white font-weight-bold
                                             @if ($sub->name == 'SINGLE USER') bg-warning @endif
                                             @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
@@ -217,7 +218,19 @@
                                             <a class="btn btn-lg btn-gray text-white" @disabled(true)
                                                 style="cursor: no-drop">Subcribed</a>
                                         @else
-                                            <a onclick="payWithPaystack('{{ $sub->quarterly }}', '{{ $sub->id }}', 'quarterly')"
+                                            <a onclick="flutterwaveCheckout('{{ $sub->quarterly }}', '{{ $sub->id }}', 'quarterly')"
+                                                class="btn btn-lg text-white font-weight-bold
+                                            @if ($sub->name == 'SINGLE USER') bg-warning @endif
+                                            @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
+                                            @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif "
+                                                href="#">
+                                                @if (Auth::user()->sub->subscription_id)
+                                                    Change
+                                                @else
+                                                    Subscribe
+                                                @endif
+                                            </a>
+                                            <a onclick="flutterwaveCheckout('{{ $sub->quarterly }}', '{{ $sub->id }}', 'quarterly')"
                                                 class="btn btn-lg text-white font-weight-bold
                                             @if ($sub->name == 'SINGLE USER') bg-warning @endif
                                             @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
@@ -266,7 +279,7 @@
                                             <a class="btn btn-lg btn-gray text-white" @disabled(true)
                                                 style="cursor: no-drop">Subcribed</a>
                                         @else
-                                            <a onclick="payWithPaystack('{{ $sub->monthly }}', '{{ $sub->id }}', 'monthly')"
+                                            <a onclick="flutterwaveCheckout('{{ $sub->monthly }}', '{{ $sub->id }}', 'monthly')"
                                                 class="btn btn-lg text-white font-weight-bold
                                             @if ($sub->name == 'SINGLE USER') bg-warning @endif
                                             @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
@@ -315,7 +328,7 @@
                                             <a class="btn btn-lg btn-gray text-white" @disabled(true)
                                                 style="cursor: no-drop">Subcribed</a>
                                         @else
-                                            <a onclick="payWithPaystack('{{ $sub->weekly }}', '{{ $sub->id }}', 'weekly')"
+                                            <a onclick="flutterwaveCheckout('{{ $sub->weekly }}', '{{ $sub->id }}', 'weekly')"
                                                 class="btn btn-lg text-white font-weight-bold
                                             @if ($sub->name == 'SINGLE USER') bg-warning @endif
                                             @if ($sub->name == 'GROUP USERS (5)') bg-success @endif

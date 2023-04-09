@@ -53,11 +53,11 @@
                             </div>
                         </div>
 
-                        <div class="card-options" style="margin-right:2.5%">
+                        {{-- <div class="card-options" style="margin-right:2.5%">
                             <a onclick="shiNew(event)" data-type="dark" data-size="s" data-title="Add New Folder"
                                 href="{{ route('admin.add_folder') }}" class="btn btn-bg btn-primary p-3"><i
                                     class="fa fa-upload"></i>&nbsp&nbspAdd New</a>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="card-body pt-0">
                         <div class="table-responsive">
@@ -108,8 +108,9 @@
                                                             <td>{{ $folder->created_at->format('D, M j, Y') }}
                                                             </td>
                                                             <td>
-                                                                <a onclick="shiNew(event)" data-type="dark" data-size="s" data-title="{{$folder->name}}" href="{{ route('admin.edit_folder', $folder->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                                                <a onclick="shiNew(event)" data-type="dark" data-size="m" data-title="{{$folder->name}}" href="{{ route('admin.edit_folder', $folder->id) }}" class="btn btn-sm btn-primary">Edit</a>
                                                                 <a onclick="shiNew(event)" data-type="dark" data-size="xl" data-title="{{$folder->name}}'s Folder" href="{{ route('admin.view_folder', $folder->id) }}" class="btn btn-sm btn-primary">Materials</a>
+                                                                <a onclick="return confirm('Are you sure you want to delete this folder?')" href="{{ route('admin.delete_folder', $folder->id) }}" class="btn btn-sm btn-danger">Delete</a>
                                                             </td>
                                                         </tr>
                                                     @endforeach

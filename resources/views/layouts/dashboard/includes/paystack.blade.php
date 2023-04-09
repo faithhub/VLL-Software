@@ -66,7 +66,6 @@
         }
     }
 
-
     function material(amount, sub_id, type) {
         // e.preventDefault();
 

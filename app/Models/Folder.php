@@ -12,8 +12,17 @@ class Folder extends Model
         'name',
         'material_type_id',
         'user_id',
+        'name_of_author',
         'amount',
-        'folder_cover_id'
+        'publisher',
+        'version',
+        'tags',
+        'country_id',
+        'folder_cover_id',
+    ];
+
+    protected $casts = [
+        'tags' => 'array'
     ];
 
     public function folder_cover()

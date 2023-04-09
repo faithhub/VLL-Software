@@ -13,6 +13,7 @@
     <title>Virtual Law Library Dashboard | {{ $title ?? '' }}</title>
     @include('layouts.dashboard.includes.style')
     @include('layouts.dashboard.includes.paystack')
+    @include('layouts.dashboard.includes.flutterwave')
 
 </head>
 

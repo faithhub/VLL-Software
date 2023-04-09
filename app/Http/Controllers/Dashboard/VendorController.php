@@ -445,38 +445,68 @@ class VendorController extends Controller
         try {
             //code...
             if ($_POST) {
-                // dd($request->all());
-                $rules = array(
-                    'title' => ['required', 'string', 'max:255'],
-                    // 'name_of_author' => ['required', 'string', 'max:255'],
-                    'name_of_author' => ['required_if:material_type_value,TXT,LOJ,VAA'],
-                    'version' => ['required_if:material_type_value,TXT,LOJ,VAA'],
-                    // 'version' => ['required', 'string', 'max:255'],
-                    'amount' => ['required_if:price,Paid'],
-                    'material_type_id' => ['required', 'max:255'],
-                    'folder_id' => ['required_if:material_type_value,CSL'],
-                    'name_of_party' => ['required_if:material_type_value,CSL'],
-                    // 'name_of_court' => ['required_if:material_type_value,CSL'],
-                    'citation' => ['required_if:material_type_value,CSL'],
-                    'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,TAA,VAA'],
-                    'price' => ['required_if:material_type_value,TXT,LOJ,TAA,VAA'],
-                    'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
-                    'test_country_id' => ['required_if:material_type_value,TAA'],
-                    'university_id' => ['required_if:material_type_value,TAA'],
-                    // 'publisher' => ['required', 'string', 'max:255'],
-                    'publisher' => ['required_if:material_type_value,TXT,LOJ,VAA'],
-                    'tags' => ['required', 'string', 'max:255'],
-                    'subject_id' => ['required_if:material_type_value,TAA'],
-                    'privacy_code' => ['required_if:material_type_value,TAA'],
-                    // 'material_file_id.*' => ['required', 'mimes:pdf', 'max:100'],
-                    'material_file_id' => ['required', 'mimes:pdf,mp4,mov,ogg,qt', 'max:100000'],
-                    'material_cover_id' => ['required_if:material_type_value,TXT,LOJ,VAA', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
-                    'material_desc' => ['required_if:material_type_value,TXT,LOJ,VAA'],
-                    'terms' => ['required', 'max:255']
-                );
+
+                if ($request->folder_id == "new_folder") {
+                    $rules = array(
+                        'material_type_id' => ['required', 'string', 'max:255'],
+                        'folder_id' => ['required', 'string', 'max:255'],
+                        'folder_name' => ['required', 'string', 'max:255'],
+                        'name_of_author' => ['required', 'string', 'max:255'],
+                        'version' => ['required', 'string', 'max:255'],
+                        'country_id' => ['required', 'string', 'max:255'],
+                        'price' => ['required', 'string', 'max:255'],
+                        'amount' => ['required_if:price,Paid'],
+                        'publisher' => ['required', 'string', 'max:255'],
+                        'tags' => ['required', 'string', 'max:255'],
+                        'folder_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
+                    );
+                } elseif ($request->folder_id != null && $request->folder_id != "new_folder") {
+                    $rules = array(
+                        // 'material_type_id' => ['required', 'string', 'max:255'],
+                        'folder_id' => ['required', 'string', 'max:255'],
+                        // 'folder_name' => ['required', 'string', 'max:255'],
+                        'name_of_party' => ['required', 'string', 'max:255'],
+                        // 'name_of_author' => ['required', 'string', 'max:255'],
+                        'name_of_court' => ['required', 'string', 'max:255'],
+                        'tags' => ['required', 'string', 'max:255'],
+                        'material_file_id' => ['required', 'mimes:pdf,mp4,mov,ogg,qt', 'max:50000'],
+                    );
+                } else {
+                    // dd("not new_folder", $request->all());
+                    $rules = array(
+                        'title' => ['required', 'string', 'max:255'],
+                        // 'name_of_author' => ['required', 'string', 'max:255'],
+                        'name_of_author' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                        'version' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                        // 'version' => ['required', 'string', 'max:255'],
+                        'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,TAA,VAA'],
+                        'price' => ['required_if:material_type_value,TXT,LOJ,TAA,VAA'],
+                        'amount' => ['required_if:price,Paid'],
+                        'material_type_id' => ['required', 'max:255'],
+                        'folder_id' => ['required_if:material_type_value,CSL'],
+                        'name_of_party' => ['required_if:material_type_value,CSL'],
+                        // 'name_of_court' => ['required_if:material_type_value,CSL'],
+                        'citation' => ['required_if:material_type_value,CSL'],
+                        // 'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
+                        'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
+                        'test_country_id' => ['required_if:material_type_value,TAA'],
+                        'university_id' => ['required_if:material_type_value,TAA'],
+                        // 'publisher' => ['required', 'string', 'max:255'],
+                        'publisher' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                        'tags' => ['required', 'string', 'max:255'],
+                        'subject_id' => ['required_if:material_type_value,TXT'],
+                        'privacy_code' => ['required_if:material_type_value,TAA'],
+                        'material_file_id' => ['required', 'mimes:pdf,mp4,mp3,mov,ogg,qt', 'max:50000'],
+                        'material_cover_id' => ['required_if:material_type_value,TXT,LOJ,VAA', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
+                        'material_desc' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                        'terms' => ['required', 'max:255']
+                    );
+                }
 
                 $messages = [
+                    'publisher.required_if' => __('Publisher is required'),
                     'name_of_party.required_if' => __('Name of Party is required'),
+                    'name_of_author.required_if' => __('Name of Author is required'),
                     'name_of_court.required_if' => __('Name of Court is required'),
                     'citation.required_if' => __('Citation is required'),
                     'privacy_code.required_if' => __('Test privacy code is required'),
@@ -490,8 +520,9 @@ class VendorController extends Controller
                     'subject_id.required' => __('The Subject name is required'),
                     'folder_id.required_if' => __('The Folder name is required'),
                     'material_file_id.required' => __('The Material File is required'),
+                    'material_file_id.required_if' => __('The Material File is required'),
                     'material_file_id.max' => __('The Material File size must not more than 50MB'),
-                    'material_cover_id.required' => __('The Material Cover is required'),
+                    'material_cover_id.required_if' => __('The Material Cover is required'),
                     'material_cover_id.max' => __('The Material Cover size must not more that 5MB')
                 ];
 
@@ -525,43 +556,104 @@ class VendorController extends Controller
                     ]);
                 }
 
-                if ($request->material_type_value == "CSL") {
-                    $folder = Folder::find($request->folder_id);
-                    // dd($request->all(), $folder);
+                if ($request->hasFile('folder_cover_id')) {
+                    $folder_cover = $request->file('folder_cover_id');
+                    $folder_cover_name = 'FolderCover' . time() . '.' . $folder_cover->getClientOriginalExtension();
+                    $destinationPath = public_path('/storage/materials/covers');
+                    $img = Image::make($folder_cover->path());
+                    $img->resize(600, 300, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath . '/' . $folder_cover_name);
+                    $save_folder_cover = File::create([
+                        'name' => $folder_cover_name,
+                        'url' => 'storage/materials/covers/' . $folder_cover_name
+                    ]);
                 }
+                if ($request->folder_id == "new_folder") {
 
-                Material::create([
-                    'user_id' => Auth::user()->id,
-                    'title' => $request->title ?? null,
-                    'currency_id' => $request->currency_id ?? Auth::user()->currency->id,
-                    'name_of_author' => $request->name_of_author ?? null,
-                    'name_of_court' => $request->name_of_court ?? null,
-                    'name_of_party' => $request->name_of_party ?? null,
-                    'citation' => $request->citation ?? null,
-                    'version' => $request->version ?? null,
-                    'price' => $request->price ?? null,
-                    'amount' => $request->amount ?? null,
-                    'material_type_id' => $request->material_type_id ?? null,
-                    'folder_id' => $request->folder_id ?? null,
-                    'year_of_publication' => $request->year_of_publication ?? null,
-                    'test_country_id' => $request->test_country_id ?? null,
-                    'university_id' => $request->university_id ?? null,
-                    'country_id' => $request->country_id ?? null,
-                    'publisher' => $request->publisher ?? null,
-                    'tags' => $tags,
-                    'uploaded_by' => 'vendor',
-                    'subject_id' => $request->subject_id ?? null,
-                    'privacy_code' => $request->privacy_code ?? null,
-                    'material_file_id' => $save_file->id ?? null,
-                    'material_cover_id' => $save_cover->id ?? $folder->folder_cover_id,
-                    'material_desc' => $request->material_desc ?? null
-                ]);
+                    $new_foler = Folder::create([
+                        "material_type_id" => $request->material_type_id,
+                        "name" => $request->folder_name,
+                        "amount" => $request->amount ?? 0,
+                        "publisher" => $request->publisher,
+                        "name_of_author" => $request->name_of_author,
+                        "version" => $request->version,
+                        "price" => $request->price,
+                        "tags" => $request->tags,
+                        "country_id" => $request->country_id,
+                        "folder_cover_id" => $save_folder_cover->id,
+                        "user_id" => Auth::user()->id
+                    ]);
+                    $mat_type = MaterialType::find($request->material_type_id);
+                    $mat_unique = substr($mat_type->mat_unique_id, 0, 3);
+                    Session::flash('success', __('New Folder created successfully'));
+                    Session::put('new_folder', $new_foler);
+                    Session::put('mat_type', $mat_type);
+                    Session::put('mat_unique', $mat_unique);
+                    return redirect()->back();
+                } else {
 
-                Session::flash('success', 'Material uploaded successfully');
-                return redirect()->route('vendor.index');
+                    $folder = null;
+                    if ($request->material_type_value == "CSL") {
+                        $folder = Folder::find($request->folder_id);
+                        // dd($request->all(), $folder);
+                    }
+
+                    Material::create([
+                        'user_id' => Auth::user()->id,
+                        'title' => $request->title ?? null,
+                        'currency_id' => $request->currency_id ?? Auth::user()->currency->id,
+                        'name_of_author' => $request->name_of_author ?? null,
+                        'name_of_court' => $request->name_of_court ?? null,
+                        'name_of_party' => $request->name_of_party ?? null,
+                        'citation' => $request->citation ?? null,
+                        'version' => $request->version ?? null,
+                        'price' => $request->price ?? null,
+                        'amount' => $request->amount ?? null,
+                        'material_type_id' => $request->material_type_id ?? $folder->material_type_id,
+                        'folder_id' => $request->folder_id ?? null,
+                        'year_of_publication' => $request->year_of_publication ?? null,
+                        'test_country_id' => $request->test_country_id ?? null,
+                        'university_id' => $request->university_id ?? null,
+                        'country_id' => $request->country_id ?? null,
+                        'publisher' => $request->publisher ?? null,
+                        'tags' => $tags,
+                        'uploaded_by' => 'admin',
+                        'subject_id' => $request->subject_id ?? null,
+                        'privacy_code' => $request->privacy_code ?? null,
+                        'material_file_id' => $save_file->id ?? null,
+                        'material_cover_id' => $save_cover->id ?? $folder->folder_cover_id,
+                        'material_desc' => $request->material_desc ?? null
+                    ]);
+
+                    Session::forget('new_folder');
+                    Session::forget('mat_type');
+                    Session::forget('mat_unique');
+                    Session::flash('success', 'Material uploaded successfully');
+                    return redirect()->route('vendor.index');
+                }
             }
+
             $data['title'] = "Vendor Dashboard - Upload Material";
             $role = ['vendor'];
+            $data['ff_csl'] = false;
+            $data['ff_law'] = false;
+            $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->with('mat_type')->get();
+            foreach ($f as $key => $value) {
+                # code...
+                if (isset($value->mat_type->mat_unique_id)) {
+                    if (
+                        substr($value->mat_type->mat_unique_id, 0, 3) == "CSL"
+                    ) {
+                        $data['ff_csl'] = true;
+                    }
+                    if (
+                        substr($value->mat_type->mat_unique_id, 0, 3) == "LAW"
+                    ) {
+                        $data['ff_law'] = true;
+                    }
+                }
+            }
             $data['material_types'] = $m = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
             $data['subjects'] = Subject::where("status", "active")->get();
             $data['countries'] = Country::all();
@@ -701,6 +793,24 @@ class VendorController extends Controller
             }
             $data['title'] = "Vendor Dashboard - Edit Material";
             $role = ['vendor'];
+            $data['ff_csl'] = false;
+            $data['ff_law'] = false;
+            $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->with('mat_type')->get();
+            foreach ($f as $key => $value) {
+                # code...
+                if (isset($value->mat_type->mat_unique_id)) {
+                    if (
+                        substr($value->mat_type->mat_unique_id, 0, 3) == "CSL"
+                    ) {
+                        $data['ff_csl'] = true;
+                    }
+                    if (
+                        substr($value->mat_type->mat_unique_id, 0, 3) == "LAW"
+                    ) {
+                        $data['ff_law'] = true;
+                    }
+                }
+            }
             $data['material_types'] = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
             $data['subjects'] = Subject::where("status", "active")->get();
             $data['countries'] = Country::all();
@@ -711,6 +821,22 @@ class VendorController extends Controller
             return View('dashboard.vendor.edit', $data);
         } catch (\Throwable $th) {
             dD($th->getMessage());
+            //throw $th;
+        }
+    }
+
+    public function cancel()
+    {
+        # code...
+        try {
+            //code...
+            Session::forget('new_folder');
+            Session::forget('mat_type');
+            Session::forget('mat_unique');
+            Session::flash('success', __('Canceled successfully'));
+            return redirect()->route('vendor.index');
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
             //throw $th;
         }
     }
@@ -739,50 +865,6 @@ class VendorController extends Controller
         # code...
         try {
             //code...
-            if ($_POST) {
-                $rules = array(
-                    'name' => ['required', 'string', 'max:255'],
-                    'folder_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:50000'],
-                );
-
-                $messages = [
-                    'folder_cover_id.required_if' => __('The Folder cover is required'),
-                ];
-
-                // dd($request->all());
-                $validator = Validator::make($request->all(), $rules, $messages);
-
-                if ($validator->fails()) {
-                    dd($validator->errors());
-                    Session::flash('warning', __('All fields are required'));
-                    return back()->withErrors($validator)->withInput();
-                }
-
-                if ($request->hasFile('folder_cover_id')) {
-                    $folder_cover = $request->file('folder_cover_id');
-                    $folder_cover_name = 'FolderCover' . time() . '.' . $folder_cover->getClientOriginalExtension();
-                    $destinationPath = public_path('/storage/materials/covers');
-                    $img = Image::make($folder_cover->path());
-                    $img->resize(600, 300, function ($constraint) {
-                        $constraint->aspectRatio();
-                    })->save($destinationPath . '/' . $folder_cover_name);
-                    $save_cover = File::create([
-                        'name' => $folder_cover_name,
-                        'url' => 'storage/materials/covers/' . $folder_cover_name
-                    ]);
-                }
-
-
-                Folder::create([
-                    "material_type_id" => $request->material_type_id,
-                    "name" => $request->name,
-                    "folder_cover_id" => $save_cover->id,
-                    "user_id" => Auth::user()->id
-                ]);
-                Session::flash('success', __('Folder added successfully'));
-                return redirect()->back();
-            }
-
             $data['title'] = "Vendor Dashboard - All Folder";
             $data['sn'] = 1;
             $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->with('mat_type')->get();
@@ -809,7 +891,6 @@ class VendorController extends Controller
                     'folder_cover_id.required_if' => __('The Folder cover is required'),
                 ];
 
-                // dd($request->all());
                 $validator = Validator::make($request->all(), $rules, $messages);
 
                 if ($validator->fails()) {
@@ -832,12 +913,21 @@ class VendorController extends Controller
                 }
 
 
+                $tags = explode(",", $request->tags);
+
+                // dd($request->all());
+
+
                 Folder::create([
                     "material_type_id" => $request->material_type_id,
                     "name" => $request->name,
+                    "name_of_author" => $request->name_of_author,
+                    "version" => $request->version,
+                    "country_id" => $request->country_id,
+                    "publisher" => $request->publisher,
+                    "tags" => $tags,
                     "amount" => $request->amount,
                     "folder_cover_id" => $save_cover->id,
-                    "user_id" => Auth::user()->id
                 ]);
                 Session::flash('success', __('Folder added successfully'));
                 return redirect()->back();
@@ -858,6 +948,26 @@ class VendorController extends Controller
             //throw $th;
         }
     }
+
+    public function delete_folder($id)
+    {
+        # code...
+        try {
+            //code...
+            $folder = Folder::where(['user_id' => Auth::user()->id, 'id' => $id])->first();
+            if (!$folder) {
+                Session::flash('warning', 'No record found for this folder');
+                return redirect()->back();
+            }
+            $folder->delete();
+            Session::flash('success', 'Folder deleted successfully');
+            return redirect()->route('vendor.folders');
+        } catch (\Throwable $th) {
+            dD($th->getMessage());
+            //throw $th;
+        }
+    }
+
 
     public function edit_folder(Request $request, $id)
     {
@@ -903,11 +1013,18 @@ class VendorController extends Controller
                     ]);
                 }
 
+                $tags = explode(",", $request->tags);
 
+                // dd($request->all());
 
                 Folder::where(['user_id' => Auth::user()->id, 'id' => $id])->update([
                     "material_type_id" => $request->material_type_id,
                     "name" => $request->name,
+                    "name_of_author" => $request->name_of_author,
+                    "version" => $request->version,
+                    "country_id" => $request->country_id,
+                    "publisher" => $request->publisher,
+                    "tags" => $tags,
                     "amount" => $request->amount,
                     "folder_cover_id" => $save_cover->id ?? $folder->folder_cover_id,
                 ]);
@@ -917,6 +1034,7 @@ class VendorController extends Controller
 
             $data['title'] = "Vendor Dashboard - Edit Folder";
             $data['mode'] = "edit";
+            $data['countries'] = Country::all();
             return View('dashboard.vendor.add-material-folder', $data);
         } catch (\Throwable $th) {
             dD($th->getMessage());

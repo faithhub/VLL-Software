@@ -334,7 +334,7 @@
                                             @foreach ($material['tags'] as $tag)
                                                 {{ $tag }} @endforeach
                                             "
-                                            data-parsley-required-message="Title of Material is required" placeholder="">
+                                            data-parsley-required-message="Tag is required" placeholder="">
                                         <div class="col-auto">
                                             <span id="passwordHelpInline" class="form-text">
                                                 Input words to aid search in Bookstore (Law, Legal)

@@ -191,7 +191,7 @@
                         <div class="middle-div">
                             <h2 class="team-text-h2">Add Professional Members to Use Library with One<br>
                                 Subscription.</h2>
-                            <a href="#" class="sub-btn">Subscribe</a>
+                            <a href="{{ route('login') }}" class="sub-btn">Add Members</a>
                         </div>
                     </div>
                 </div>

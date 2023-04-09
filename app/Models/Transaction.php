@@ -15,6 +15,7 @@ class Transaction extends Model
         "user_id",
         "subscription_id",
         "invoice_id",
+        "currency_id",
         "date",
         "amount",
         "status",
@@ -32,5 +33,9 @@ class Transaction extends Model
     public function mat_his()
     {
         return $this->hasOne(MaterialHistory::class);
+    }
+    public function currency()
+    {
+        return $this->hasOne(Currency::class, 'id', 'currency_id');
     }
 }

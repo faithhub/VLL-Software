@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div class="card border-10 pt-2 card-primary">
+                <h6><b>{{$all_materials->count()}} Material(s)</b></h6>
             <div class="card-body">
                 <div class="row">
                     @isset($all_materials)

@@ -44,14 +44,14 @@
                                                             <td class="sorting_1"><a class="font-weight-bold"
                                                                     onclick="shiNew(event)" data-type="dark" data-size="m"
                                                                     data-title="{{ $material->invoice_id }}"
-                                                                    href="{{ route('admin.view_material', $material->id) }}">{{ $material->title }}</a></td>
+                                                                    href="{{ route('admin.view_material', $material->id) }}">{{ mb_strimwidth($material->title ?? '', 0, 20, '...') }}</a></td>
                                                             <td>{{ $material->type->name ?? '-' }}</td>
                                                             <td>{{ $material->name_of_author ?? '-' }}</td>
                                                             <td>{{ $material->vendor->name ?? '-' }}</td>
-                                                            <td>{{ $material->material_desc ?? '-' }}</td>
+                                                            <td>{{ mb_strimwidth($material->material_desc ?? '', 0, 20, '...') }}</td>
                                                             <td>₦{{ number_format($material->amount ?? 0, 2) }}</td>
                                                             <td><a class="font-weight-bold"
-                                                                    href="{{ asset($material->file->url ?? "") }}">{{ $material->title }}.pdf</a>
+                                                                    href="{{ asset($material->file->url ?? "") }}">{{ mb_strimwidth($material->title ?? '', 0, 20, '...') }}.pdf</a>
                                                             </td>
                                                             <td>
                                                             <div class="d-flex">
