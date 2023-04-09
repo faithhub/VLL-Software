@@ -1,16 +1,17 @@
 @php
-    // $currency = Auth::user()->default_currency_id;
+    $currency = Auth::user()->currency->code ?? $app_default_currency->code;
 @endphp
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 <script type="text/javascript">
-    console.log("{{ Auth::user()->default_currency_id }}", @json(Auth::user()->currency->code));
+    console.log("{{ Auth::user()->default_currency_id }}");
 
     function flutterwaveCheckout(amount, sub_id, type) {
+        const currency = "{{$currency}}";
         FlutterwaveCheckout({
             public_key: "FLWPUBK_TEST-006e9a2dde4eb5947f2da2af0c2f3695-X",
             tx_ref: "VLL-" + Math.floor((Math.random() * 100000000000000) + 1),
             amount: amount,
-            currency: "{{ Auth::user()->currency->code }}",
+            currency: currency,
             // redirect_url: "{{ route('confirm.payment') }}",
             payment_options: "card",
             callback: function(payment) {
@@ -81,11 +82,13 @@
     }
 
      function flutterwaveBuyMaterial(amount, sub_id, type) {
+        const currency = "{{$currency}}";
+        console.log(currency);
         FlutterwaveCheckout({
             public_key: "FLWPUBK_TEST-006e9a2dde4eb5947f2da2af0c2f3695-X",
             tx_ref: "VLL-" + Math.floor((Math.random() * 100000000000000) + 1),
             amount: amount,
-            currency: "{{ Auth::user()->currency->code }}",
+            currency: currency,
             // redirect_url: "{{ route('confirm.payment') }}",
             payment_options: "card",
             callback: function(payment) {

@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
@@ -22,6 +23,10 @@ class FlutterwaveController extends Controller
 
     public function confirm()
     {
+        // $response = Http::get('https://api.flutterwave.com/v3/transfers/rates?amount=1000&destination_currency=USD&source_currency=KES');
+        // $response->header('Authorization: Bearer FLWPUBK_TEST-006e9a2dde4eb5947f2da2af0c2f3695-X');
+
+        // dd($response);
         # code...
         try {
             //code...
