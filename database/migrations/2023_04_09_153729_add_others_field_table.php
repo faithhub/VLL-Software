@@ -15,18 +15,18 @@ return new class extends Migration
     {
         Schema::table('transactions', function (Blueprint $table) {
             $table->string("sub_type")->nullable();
-            $table->bigInteger('country_id')->unsigned()->nullable();
-            $table->foreign('country_id')->references('id')->on('countries');
-            $table->bigInteger('material_id')->unsigned()->nullable();
-            $table->foreign('material_id')->references('id')->on('materials');
-            // $table->foreignId('currency_id')
-            //     ->nullable()
-            //     ->constrained('currencies')
-            //     ->cascadeOnDelete();
-            // $table->foreignId('material_id')
-            //     ->nullable()
-            //     ->constrained()
-            //     ->cascadeOnDelete();
+            // $table->bigInteger('country_id')->unsigned()->nullable();
+            // $table->foreign('country_id')->references('id')->on('countries');
+            // $table->bigInteger('material_id')->unsigned()->nullable();
+            // $table->foreign('material_id')->references('id')->on('materials');
+            $table->foreignId('currency_id')
+            ->nullable()
+                ->constrained('currencies')
+                ->cascadeOnDelete();
+            $table->foreignId('material_id')
+            ->nullable()
+                ->constrained()
+                ->cascadeOnDelete();
         });
     }
 
