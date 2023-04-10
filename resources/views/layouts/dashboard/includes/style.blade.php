@@ -184,4 +184,23 @@
         background: #457B9D;
         color: white;
     }
+
+        .container-img {
+            position: relative;
+        }
+
+        .image__1 {
+            display: block;
+            position: relative;
+            max-width: 100%;
+            height: auto;
+            z-index: 1;
+        }
+
+        .image__2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
 </style>

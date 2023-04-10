@@ -54,7 +54,7 @@
                                                 data-title="{{ $material->title }}"
                                                 href="{{ route('user.view_material', $material->id) }}">
                                                 <img src="{{ asset($material->cover->url ?? '') }}"
-                                                    alt="{{ $material->title }}">
+                                                    alt="{{ $material->name_of_court }}">
                                             </a>
                                         </div>
                                     </div>
@@ -62,12 +62,12 @@
                                         <div class="mt-2">
                                         </div>
                                         <a onclick="shiNew(event)" data-type="dark" data-size="m"
-                                            data-title="{{ $material->title }}"
+                                            data-title="{{ $material->name_of_court }}"
                                             href="{{ route('user.view_material', $material->id) }}" class="book-title mt-2">
-                                            <h4 class="text-capitalize">{{ $material->title }}
-                                                ({{ $material->year_of_publication }})
+                                            <h4 class="text-capitalize">{{ $material->name_of_court ?? $material->title }}
+                                                {{-- ({{ $material->year_of_publication }}) --}}
                                             </h4>
-                                            <h5 class="text-capitalize">{{ $material->name_of_author }}</h5>
+                                            {{-- <h5 class="text-capitalize">{{ $material->name_of_party }}</h5> --}}
                                         </a>
                                     </div>
                                 </div>
@@ -94,7 +94,7 @@
                                         <h5><b class="font-weight-bold">No of Materials:
                                                 {{ $folder_mat_count }}</b>
                                         </h5>
-                                        <a onclick="material('{{ $folder->amount }}', '{{ $folder->id }}', 'folder')"
+                                        <a onclick="flutterwaveBuyMaterial('{{ $folder->amount }}', '{{ $folder->id }}', 'folder')"
                                             class="btn m-2 btn-primary p-3">
                                             Buy Folder
                                         </a>

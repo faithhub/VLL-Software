@@ -53,40 +53,40 @@
                                             @foreach ($material_arr->materials as $key => $material)
                                                 @if (substr($material_arr->type->mat_unique_id, 0, 3) == 'CSL' ||
                                                         substr($material_arr->type->mat_unique_id, 0, 3) == 'LAW')
-                                                        @isset($material[0]['folder'])
-                                                    @if (in_array($key, $limit_folder))
-                                                        <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
-                                                            <div class="image image_big_div">
-                                                                <div class="ribbon-holder">
-                                                                    @if (in_array($material[0]['folder']['id'] ?? 0, $bought_folders))
-                                                                        <div class="ribbon ribbon-holder ribbon-bought">
-                                                                            Bought
-                                                                        </div>
-                                                                    @endif
+                                                    @isset($material[0]['folder'])
+                                                        @if (in_array($key, $limit_folder))
+                                                            <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
+                                                                <div class="image image_big_div">
+                                                                    <div class="ribbon-holder">
+                                                                        @if (in_array($material[0]['folder']['id'] ?? 0, $bought_folders))
+                                                                            <div class="ribbon ribbon-holder ribbon-bought">
+                                                                                Bought
+                                                                            </div>
+                                                                        @endif
+                                                                        <a onclick="shiNew(event)" data-type="dark" data-size="xl"
+                                                                            data-title="{{ $material[0]['folder']['name'] }}"
+                                                                            href="{{ route('user.view_folder', $material[0]['folder']['id']) }}">
+                                                                            <img src="{{ asset($material[0]['folder']['folder_cover']['url']) }}"
+                                                                                alt="{{ $material[0]['folder']['name'] }}"
+                                                                                class="mat_img">
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mat-title">
+                                                                    <div class="mt-2">
+                                                                    </div>
                                                                     <a onclick="shiNew(event)" data-type="dark" data-size="xl"
                                                                         data-title="{{ $material[0]['folder']['name'] }}"
-                                                                        href="{{ route('user.view_folder', $material[0]['folder']['id']) }}">
-                                                                        <img src="{{ asset($material[0]['folder']['folder_cover']['url']) }}"
-                                                                            alt="{{ $material[0]['folder']['name'] }}"
-                                                                            class="mat_img">
+                                                                        href="{{ route('user.view_folder', $material[0]['folder']['id']) }}"
+                                                                        class="book-title mt-2">
+                                                                        <h4 class="text-capitalize">
+                                                                            {{ $material[0]['folder']['name'] }}
+                                                                        </h4>
                                                                     </a>
                                                                 </div>
                                                             </div>
-                                                            <div class="mat-title">
-                                                                <div class="mt-2">
-                                                                </div>
-                                                                <a onclick="shiNew(event)" data-type="dark" data-size="xl"
-                                                                    data-title="{{ $material[0]['folder']['name'] }}"
-                                                                    href="{{ route('user.view_folder', $material[0]['folder']['id']) }}"
-                                                                    class="book-title mt-2">
-                                                                    <h4 class="text-capitalize">
-                                                                        {{ $material[0]['folder']['name'] }}
-                                                                    </h4>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                        @endisset
+                                                        @endif
+                                                    @endisset
                                                 @else
                                                     @if (substr($material_arr->type->mat_unique_id, 0, 3) == 'TAA')
                                                         @if (Auth::user()->user_type == 'student')

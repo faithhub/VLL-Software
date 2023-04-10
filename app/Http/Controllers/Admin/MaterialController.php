@@ -256,6 +256,7 @@ class MaterialController extends Controller
                         $rules = array(
                             // 'material_type_id' => ['required', 'string', 'max:255'],
                             'folder_id' => ['required', 'string', 'max:255'],
+                            'citation' => ['required', 'string', 'max:255'],
                             // 'folder_name' => ['required', 'string', 'max:255'],
                             'name_of_party' => ['required', 'string', 'max:255'],
                             // 'name_of_author' => ['required', 'string', 'max:255'],
@@ -271,7 +272,7 @@ class MaterialController extends Controller
                             // 'folder_name' => ['required', 'string', 'max:255'],
                             'title' => ['required', 'string', 'max:255'],
                             'year_of_enactmen' => ['required', 'string', 'max:255'],
-                            'tags' => ['required', 'string', 'max:255'],
+                            'tags' => ['required', 'max:255'],
                             'material_file_id' => ['required', 'mimes:pdf,mp4,mov,ogg,qt', 'max:50000'],
                         );
                     }
@@ -388,7 +389,7 @@ class MaterialController extends Controller
                         "name_of_author" => $request->name_of_author,
                         "version" => $request->version,
                         "price" => $request->price,
-                        "tags" => $request->tags,
+                        "tags" => $tags,
                         "country_id" => $request->country_id,
                         "folder_cover_id" => $save_folder_cover->id,
                         "user_id" => Auth::user()->id
@@ -424,6 +425,7 @@ class MaterialController extends Controller
                         'amount' => $request->amount ?? null,
                         'material_type_id' => $request->material_type_id ?? $folder->material_type_id,
                         'folder_id' => $request->folder_id ?? null,
+                        'year_of_enactmen' => $request->year_of_enactmen ?? null,
                         'year_of_publication' => $request->year_of_publication ?? null,
                         'test_country_id' => $request->test_country_id ?? null,
                         'university_id' => $request->university_id ?? null,
@@ -737,6 +739,7 @@ class MaterialController extends Controller
                 $data['totalRented'] = MaterialHistory::where(['material_id' => $material->id, 'type' => 'rented'])->get()->count();
                 $data['totalBought'] = MaterialHistory::where(['material_id' => $material->id, 'type' => 'bought'])->get()->count();
                 $data['pageCount'] = countPages(public_path($material->file->url));
+                $data['folder'] = $f = Folder::find($material->folder_id);
             }
             return View('dashboard.admin.library.view', $data);
         } catch (\Throwable $th) {

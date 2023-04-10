@@ -464,7 +464,7 @@ class VendorController extends Controller
                     $rules = array(
                         // 'material_type_id' => ['required', 'string', 'max:255'],
                         'folder_id' => ['required', 'string', 'max:255'],
-                        // 'folder_name' => ['required', 'string', 'max:255'],
+                        'citation' => ['required', 'string', 'max:255'],
                         'name_of_party' => ['required', 'string', 'max:255'],
                         // 'name_of_author' => ['required', 'string', 'max:255'],
                         'name_of_court' => ['required', 'string', 'max:255'],

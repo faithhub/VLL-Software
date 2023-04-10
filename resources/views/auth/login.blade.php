@@ -1,14 +1,15 @@
 @extends('layouts.web.app')
 
 @section('content')
-<style>
-    .navbar.navbar-two{
-        background: #fff !important;
+    <style>
+        .navbar.navbar-two {
+            background: #fff !important;
 
-    }
-.bg-f9faff {
-    background: #fff !important;
-}
+        }
+
+        .bg-f9faff {
+            background: #fff !important;
+        }
     </style>
     <!-- Start Why Choose Us Area -->
     <section id="about" class="why-choose-us bg-f9faff">
@@ -18,7 +19,8 @@
                     <div class="row about-image">
                         <div class="col-12 col-lg-12 col-md-12 d-none d-md-block">
                             <div class="image">
-                                <img src="{{ asset('assets/web/img/bg-book003.jpg') }}" alt="about" style="max-height: 90vh">
+                                <img src="{{ asset('assets/web/img/bg-book003.jpg') }}" alt="about"
+                                    style="max-height: 90vh">
                             </div>
                         </div>
                     </div>
@@ -29,7 +31,6 @@
                             <h3 class="single-box-h2">Welcome Back</h3>
                             <h6>Kindly fill in your details</h6>
                         </div>
-
                         {{-- <form id="login_form" data-parsley-validate="" method="POST" action="{{ route('login') }}"> --}}
                         <form id="login_form" data-parsley-validate="" method="POST" action="{{ route('login') }}">
                             @csrf

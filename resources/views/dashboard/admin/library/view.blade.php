@@ -31,14 +31,39 @@
                         </h4> --}}
                     </div>
                     <div class="mat-title">
-                        <h4 class="h2 font-weight-bold text-center mt-3">{{ $material->title }}</h4>
-                        @if (substr($material->type->mat_unique_id, 0, 3) == 'CSL' || substr($material->type->mat_unique_id, 0, 3) == 'LAW')
+                             <h4 class="h2 font-weight-bold text-center mt-3">
+                            {{ $material->title ?? $material->name_of_court }}</h4>
+                        @isset($material->title)
+                            <h5><b class="font-weight-bold">Title: </b>{{ $material->title }}</h5>
+                        @endisset
+                        @if (substr($material->type->mat_unique_id, 0, 3) == 'CSL')
                             <h5><b class="font-weight-bold">Name of Court: </b>{{ $material->name_of_court ?? '' }}</h5>
                             <h5><b class="font-weight-bold">Name of Party: </b>{{ $material->name_of_party ?? '' }}</h5>
                             <h5><b class="font-weight-bold">Citation: </b>{{ $material->citation ?? '' }}</h5>
+                            <h5><b class="font-weight-bold">Publisher: </b>{{ $folder->publisher ?? '' }}</h5>
+                            <h5><b class="font-weight-bold">Name of Author: </b>{{ $folder->name_of_author ?? '' }}
+                            </h5>
+                            <h5><b class="font-weight-bold">version: </b>{{ $folder->version ?? '' }}</h5>
+                            <h5><b class="font-weight-bold">Publisher: </b>{{ $folder->publisher ?? '' }}</h5>
+                            </h5>
+                        @endif
+                        @if (substr($material->type->mat_unique_id, 0, 3) == 'LAW')
+                            <h5><b class="font-weight-bold">Year of Enactmen:
+                                </b>{{ $material->year_of_enactmen ?? '' }}</h5>
+                            <h5><b class="font-weight-bold">Publisher: </b>{{ $folder->publisher ?? '' }}</h5>
+                            <h5><b class="font-weight-bold">Name of Author: </b>{{ $folder->name_of_author ?? '' }}
+                            </h5>
+                            <h5><b class="font-weight-bold">version: </b>{{ $folder->version ?? '' }}</h5>
+                            <h5><b class="font-weight-bold">Publisher: </b>{{ $folder->publisher ?? '' }}</h5>
                         @endif
                         @isset($material->name_of_author)
-                            <h5><b class="font-weight-bold">Author: </b>{{ $material->name_of_author ?? '' }}</h5>
+                            <h5><b class="font-weight-bold">Author: </b>{{ $material->name_of_author }}</h5>
+                        @endisset
+                        @isset($material->version)
+                            <h5><b class="font-weight-bold">Version: </b>{{ $material->version }}</h5>
+                        @endisset
+                        @isset($material->publisher)
+                            <h5><b class="font-weight-bold">Publisher: </b>{{ $material->publisher }}</h5>
                         @endisset
                         @isset($material->year_of_publication)
                             <h5><b class="font-weight-bold">Year Of Publication: </b>{{ $material->year_of_publication }}
@@ -47,22 +72,22 @@
                         @isset($material->country)
                             <h5><b class="font-weight-bold">Country Of Publication: </b>{{ $material->country->name }}</h5>
                         @endisset
-
-                        @if (substr($material->type->mat_unique_id, 0, 3) == 'TAA')
-                            @isset($material->test_country_id)
-                                <h5><b class="font-weight-bold">Country: </b>{{ $material->test_country->name }}</h5>
-                            @endisset
-                            @isset($material->university_id)
+                        @isset($material->university_id)
+                            @if (substr($material->type->mat_unique_id, 0, 3) == 'TAA')
                                 <h5><b class="font-weight-bold">University: </b>{{ $material->university->name }}</h5>
-                            @endisset
-                        @endif
-                        <h5><b class="font-weight-bold">Price:</b>
-                            @if ($material->price == 'Paid')
-                                ₦{{ number_format($material->amount, 2) }}
-                            @else
-                                Free
                             @endif
-                        </h5>
+                        @endisset
+                        @isset($folder)
+                        @else
+                            <h5><b class="font-weight-bold">Amount:
+                                    @if ($material->price == 'Paid')
+                                        {{ money($material->amount) }}
+                                    @else
+                                        Free
+                                    @endif
+                                </b>
+                            </h5>
+                        @endisset
                         <h5><b class="font-weight-bold">Pages: </b>{{ $pageCount }}</h5>
                         <h5><b class="font-weight-bold">Total Rented: </b>{{ $totalRented }}</h5>
                         <h5><b class="font-weight-bold">Total Bought: </b>{{ $totalBought }}</h5>

@@ -26,9 +26,9 @@
                                     <form method="POST" action="{{ route('admin.upload') }}" class="validate-form"
                                         enctype="multipart/form-data">
                                         @csrf
-                                        <input type="" name="material_type_value"
+                                        <input type="hidden" name="material_type_value"
                                             value="{{ Session::get('mat_unique') }}" id="material_type_value">
-                                        <input type="" name="folder_id" value="{{ Session::get('new_folder')->id }}">
+                                        <input type="hidden" name="folder_id" value="{{ Session::get('new_folder')->id }}">
                                         <div class="row mt-5 mb-5 settings">
                                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                                 <div class="form-group">
@@ -186,9 +186,9 @@
                                     <form method="POST" action="{{ route('admin.upload') }}" class="validate-form"
                                         enctype="multipart/form-data">
                                         @csrf
-                                        <input type="" name="material_type_value"
+                                        <input type="hidden" name="material_type_value"
                                             value="{{ Session::get('mat_unique') }}" id="material_type_value">
-                                        <input type="" name="folder_id" value="{{ Session::get('new_folder')->id }}">
+                                        <input type="hidden" name="folder_id" value="{{ Session::get('new_folder')->id }}">
                                         <div class="row mt-5 mb-5 settings">
                                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                                 <div class="form-group">
@@ -491,26 +491,6 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 new_law_div_tag"
-                                        style="display: none">
-                                        <div class="form-group">
-                                            <label class="form-label">Tags <span>*<span></label>
-                                            <input type="" data-role="tagsinput"
-                                                class="form-control tm-input tm-input-inf" placeholder="Input material tags"
-                                                requiredd="" name="tags" value="{{ old('tags') }}"
-                                                data-parsley-required-message="Title of Material is required">
-                                            <div class="col-auto">
-                                                <span id="passwordHelpInline" class="form-text">
-                                                    Input words to aid search in Bookstore (Law, Legal)
-                                                </span>
-                                            </div>
-                                            @error('tags')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
                                     {{-- <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 new_law_div_tag"
                                         style="display: none">
                                         <div class="form-group">
@@ -738,7 +718,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 text-field new-folder taa-field vaa-field loj-field material_upload_fields">
+                                    <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 text-field new_law_div_tag new-folder taa-field vaa-field loj-field material_upload_fields">
                                         <div class="form-group">
                                             <label class="form-label">Tags <span>*<span></label>
                                             <input type="" data-role="tagsinput"

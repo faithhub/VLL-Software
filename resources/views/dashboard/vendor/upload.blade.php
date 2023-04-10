@@ -1,5 +1,44 @@
 @extends('layouts/dashboard/app')
 @section('content')
+    <style>
+        #custom-options {
+            display: none;
+        }
+
+        #custom-select {
+            /* width: 200px; */
+            /* height: 30px; */
+            /* border: 1px solid #ccc; */
+            padding: 5px 10px;
+            /* border-radius: 5px; */
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #custom-options {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            /* border: 1px solid #ccc; */
+            border-top: none;
+            /* border-radius: 0 0 5px 5px; */
+            position: absolute;
+            width: 100%;
+            z-index: 1;
+            background-color: #fff;
+            overflow-y: scroll;
+            /* max-height: 150px; */
+        }
+
+        #custom-options li {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        #custom-options li:hover {
+            background-color: #f2f2f2;
+        }
+    </style>
     <div class="main-container container-fluid px-0">
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -12,6 +51,12 @@
                         </h6>
                     </div>
                     <div class="card-body pt-0">
+                        {{-- <input type="text" id="custom-select" placeholder="Select an option">
+                        <ul id="custom-options">
+                            <li>Option 1</li>
+                            <li>Option 2</li>
+                            <li>Option 3</li>
+                        </ul> --}}
                         @php
                             $new_folder = Session::get('new_folder');
                             $mat_type = Session::get('mat_type');
@@ -26,21 +71,24 @@
                                     <form method="POST" action="{{ route('vendor.upload') }}" class="validate-form"
                                         enctype="multipart/form-data">
                                         @csrf
-                                        <input type="" name="material_type_value"
+                                        <input type="hidden" name="material_type_value"
                                             value="{{ Session::get('mat_unique') }}" id="material_type_value">
-                                        <input type="" name="folder_id" value="{{ Session::get('new_folder')->id }}">
+                                        <input type="hidden" name="folder_id" value="{{ Session::get('new_folder')->id }}">
                                         <div class="row mt-5 mb-5 settings">
                                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                                 <div class="form-group">
                                                     <label class="form-label">Name of Party <span>*<span></label>
-                                                    <select onchange="" class="form-control select" name="name_of_party"
-                                                        id="" requiredd=""
-                                                        data-parsley-errors-container="#country_of_publication-error"
-                                                        data-parsley-required-message="Country of Publication is required">
-                                                        <option value="">Select Party</option>
-                                                        <option value="Plaintiff">Plaintiff/ Prosecutor/ Appellant</option>
-                                                        <option value="Defendant">Defendant/Respondent</option>
-                                                    </select>
+                                                    <input type="text" class="form-control" id="custom-select"
+                                                        name="name_of_party" value="{{ old('name_of_party') }}" requiredd=""
+                                                        data-parsley-required-message="Name of Party is required" placeholder=""
+                                                        autocomplete="off">
+                                                    <ul id="custom-options">
+                                                        <li>Plaintiff</li>
+                                                        <li>Prosecutor</li>
+                                                        <li>Appellant</li>
+                                                        <li>Defendant</li>
+                                                        <li>Respondent</li>
+                                                    </ul>
                                                     @error('name_of_party')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
@@ -102,7 +150,7 @@
                                                     <input type="" data-role="tagsinput"
                                                         class="form-control tm-input tm-input-inf"
                                                         placeholder="Input material tags" requiredd="" name="tags"
-                                                        value="{{ old('tags') }}"
+                                                        value="{{ old('tags') }}" autocomplete="off"
                                                         data-parsley-required-message="Title of Material is required">
                                                     <div class="col-auto">
                                                         <span id="passwordHelpInline" class="form-text">
@@ -600,7 +648,8 @@
                                             <label class="form-label">Year of Publication <span>*<span></label>
                                             <input type="number" class="form-control" name="year_of_publication"
                                                 value="{{ old('year_of_publication') }}" requiredd=""
-                                                data-parsley-required-message="Year of Publication is required" placeholder="">
+                                                data-parsley-required-message="Year of Publication is required"
+                                                placeholder="">
                                             @error('year_of_publication')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -608,7 +657,8 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 text-field new-folder taa-field vaa-field loj-field material_upload_fields">
+                                    <div
+                                        class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 text-field new-folder taa-field vaa-field loj-field material_upload_fields">
                                         <div class="form-group">
                                             <label class="form-label">Tags <span>*<span></label>
                                             <input type="" data-role="tagsinput"
@@ -810,4 +860,26 @@
         </div>
     </div>
     @include('layouts.dashboard.includes.material')
+
+    <script>
+        var select = document.getElementById("custom-select");
+        var options = document.getElementById("custom-options");
+
+        select.addEventListener("click", function() {
+            options.style.display = "block";
+        });
+
+        document.addEventListener("click", function(e) {
+            if (e.target !== select) {
+                options.style.display = "none";
+            }
+        });
+
+        options.addEventListener("click", function(e) {
+            if (e.target.tagName === "LI") {
+                select.value = e.target.innerText;
+                options.style.display = "none";
+            }
+        });
+    </script>
 @endsection

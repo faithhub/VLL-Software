@@ -20,10 +20,10 @@
                                     <a onclick="shiNew(event)" data-type="dark" data-size="m"
                                         data-title="{{ $material->title }}"
                                         href="{{ route('vendor.view_material', $material->id) }}" class="book-title mt-2">
-                                        <h4 class="text-capitalize">{{ $material->title }}
-                                            ({{ $material->year_of_publication }})
+                                        <h4 class="text-capitalize">{{ $material->name_of_court }}
+                                            {{-- ({{ $material->name_of_party }}) --}}
                                         </h4>
-                                        <h5 class="text-capitalize">{{ $material->name_of_author }}</h5>
+                                        {{-- <h5 class="text-capitalize">{{ $material->name_of_author }}</h5> --}}
                                     </a>
                                 </div>
                             </div>

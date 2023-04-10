@@ -24,6 +24,7 @@ class Material extends Model
         "country_id",
         "publisher",
         "tags",
+        "year_of_enactmen",
         "subject_id",
         "privacy_code",
         "material_file_id",
