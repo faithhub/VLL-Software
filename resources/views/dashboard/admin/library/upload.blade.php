@@ -31,16 +31,20 @@
                                         <input type="hidden" name="folder_id" value="{{ Session::get('new_folder')->id }}">
                                         <div class="row mt-5 mb-5 settings">
                                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+
                                                 <div class="form-group">
                                                     <label class="form-label">Name of Party <span>*<span></label>
-                                                    <select onchange="" class="form-control select" name="name_of_party"
-                                                        id="" requiredd=""
-                                                        data-parsley-errors-container="#country_of_publication-error"
-                                                        data-parsley-required-message="Country of Publication is required">
-                                                        <option value="">Select Party</option>
-                                                        <option value="Plaintiff">Plaintiff/ Prosecutor/ Appellant</option>
-                                                        <option value="Defendant">Defendant/Respondent</option>
-                                                    </select>
+                                                    <input type="text" class="form-control" id="custom-select"
+                                                        name="name_of_party" value="{{ old('name_of_party') }}" requiredd=""
+                                                        data-parsley-required-message="Name of Party is required" placeholder=""
+                                                        autocomplete="off">
+                                                    <ul id="custom-options">
+                                                        <li>Plaintiff</li>
+                                                        <li>Prosecutor</li>
+                                                        <li>Appellant</li>
+                                                        <li>Defendant</li>
+                                                        <li>Respondent</li>
+                                                    </ul>
                                                     @error('name_of_party')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
@@ -379,14 +383,17 @@
                                         style="display: none">
                                         <div class="form-group">
                                             <label class="form-label">Name of Party <span>*<span></label>
-                                            <select onchange="" class="form-control select" name="name_of_party"
-                                                id="" requiredd=""
-                                                data-parsley-errors-container="#country_of_publication-error"
-                                                data-parsley-required-message="Country of Publication is required">
-                                                <option value="">Select Party</option>
-                                                <option value="Plaintiff">Plaintiff/ Prosecutor/ Appellant</option>
-                                                <option value="Defendant">Defendant/Respondent</option>
-                                            </select>
+                                            <input type="text" class="form-control" id="custom-select"
+                                                name="name_of_party" value="{{ old('name_of_party') }}" requiredd=""
+                                                data-parsley-required-message="Name of Party is required" placeholder=""
+                                                autocomplete="off">
+                                            <ul id="custom-options">
+                                                <li>Plaintiff</li>
+                                                <li>Prosecutor</li>
+                                                <li>Appellant</li>
+                                                <li>Defendant</li>
+                                                <li>Respondent</li>
+                                            </ul>
                                             @error('name_of_party')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -440,26 +447,6 @@
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
-                                        </div>
-                                    </div>
-                                    <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 new_csl_div_tag"
-                                        style="display: none">
-                                        <div class="form-group">
-                                            <label class="form-label">Tags <span>*<span></label>
-                                            <input type="" data-role="tagsinput"
-                                                class="form-control tm-input tm-input-inf" placeholder="Input material tags"
-                                                requiredd="" name="tags" value="{{ old('tags') }}"
-                                                data-parsley-required-message="Title of Material is required">
-                                            <div class="col-auto">
-                                                <span id="passwordHelpInline" class="form-text">
-                                                    Input words to aid search in Bookstore (Law, Legal)
-                                                </span>
-                                            </div>
-                                            @error('tags')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
                                         </div>
                                     </div>
                                     <div class="upload-form-fields col-sm-12 col-md-6 col-lg-6 col-xl-6 new_law_div_tag text-field taa-field vaa-field loj-field material_upload_fields"
@@ -710,7 +697,8 @@
                                             <label class="form-label">Year of Publication <span>*<span></label>
                                             <input type="number" class="form-control" name="year_of_publication"
                                                 value="{{ old('year_of_publication') }}" requiredd=""
-                                                data-parsley-required-message="Year of Publication is required" placeholder="">
+                                                data-parsley-required-message="Year of Publication is required"
+                                                placeholder="">
                                             @error('year_of_publication')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -718,7 +706,8 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 text-field new_law_div_tag new-folder taa-field vaa-field loj-field material_upload_fields">
+                                    <div
+                                        class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 text-field new_law_div_tag new_csl_div_tag new-folder taa-field vaa-field loj-field material_upload_fields">
                                         <div class="form-group">
                                             <label class="form-label">Tags <span>*<span></label>
                                             <input type="" data-role="tagsinput"

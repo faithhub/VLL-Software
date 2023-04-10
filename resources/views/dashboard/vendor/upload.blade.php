@@ -1,44 +1,5 @@
 @extends('layouts/dashboard/app')
 @section('content')
-    <style>
-        #custom-options {
-            display: none;
-        }
-
-        #custom-select {
-            /* width: 200px; */
-            /* height: 30px; */
-            /* border: 1px solid #ccc; */
-            padding: 5px 10px;
-            /* border-radius: 5px; */
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        #custom-options {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            /* border: 1px solid #ccc; */
-            border-top: none;
-            /* border-radius: 0 0 5px 5px; */
-            position: absolute;
-            width: 100%;
-            z-index: 1;
-            background-color: #fff;
-            overflow-y: scroll;
-            /* max-height: 150px; */
-        }
-
-        #custom-options li {
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-
-        #custom-options li:hover {
-            background-color: #f2f2f2;
-        }
-    </style>
     <div class="main-container container-fluid px-0">
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -295,22 +256,25 @@
                                     </div>
                                     <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 new_csl_div_tag"
                                         style="display: none">
-                                        <div class="form-group">
-                                            <label class="form-label">Name of Party <span>*<span></label>
-                                            <select onchange="" class="form-control select" name="name_of_party"
-                                                id="" requiredd=""
-                                                data-parsley-errors-container="#country_of_publication-error"
-                                                data-parsley-required-message="Country of Publication is required">
-                                                <option value="">Select Party</option>
-                                                <option value="Plaintiff">Plaintiff/ Prosecutor/ Appellant</option>
-                                                <option value="Defendant">Defendant/Respondent</option>
-                                            </select>
-                                            @error('name_of_party')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
+                                                <div class="form-group">
+                                                    <label class="form-label">Name of Party <span>*<span></label>
+                                                    <input type="text" class="form-control" id="custom-select"
+                                                        name="name_of_party" value="{{ old('name_of_party') }}" requiredd=""
+                                                        data-parsley-required-message="Name of Party is required" placeholder=""
+                                                        autocomplete="off">
+                                                    <ul id="custom-options">
+                                                        <li>Plaintiff</li>
+                                                        <li>Prosecutor</li>
+                                                        <li>Appellant</li>
+                                                        <li>Defendant</li>
+                                                        <li>Respondent</li>
+                                                    </ul>
+                                                    @error('name_of_party')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
                                     </div>
                                     <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 new_csl_div_tag"
                                         style="display: none">
@@ -860,26 +824,4 @@
         </div>
     </div>
     @include('layouts.dashboard.includes.material')
-
-    <script>
-        var select = document.getElementById("custom-select");
-        var options = document.getElementById("custom-options");
-
-        select.addEventListener("click", function() {
-            options.style.display = "block";
-        });
-
-        document.addEventListener("click", function(e) {
-            if (e.target !== select) {
-                options.style.display = "none";
-            }
-        });
-
-        options.addEventListener("click", function(e) {
-            if (e.target.tagName === "LI") {
-                select.value = e.target.innerText;
-                options.style.display = "none";
-            }
-        });
-    </script>
 @endsection

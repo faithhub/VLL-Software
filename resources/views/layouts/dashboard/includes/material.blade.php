@@ -1,5 +1,43 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet" />
 <style>
+    #custom-options {
+        display: none;
+    }
+
+    #custom-select {
+        /* width: 200px; */
+        /* height: 30px; */
+        /* border: 1px solid #ccc; */
+        padding: 5px 10px;
+        /* border-radius: 5px; */
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    #custom-options {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        /* border: 1px solid #ccc; */
+        border-top: none;
+        /* border-radius: 0 0 5px 5px; */
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+        background-color: #fff;
+        overflow-y: scroll;
+        /* max-height: 150px; */
+    }
+
+    #custom-options li {
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    #custom-options li:hover {
+        background-color: #f2f2f2;
+    }
+
     #img-2 {
         position: absolute;
         justify-content: center;
@@ -77,6 +115,25 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
 
 <script type="text/javascript">
+    var select = document.getElementById("custom-select");
+    var options = document.getElementById("custom-options");
+
+    select.addEventListener("click", function() {
+        options.style.display = "block";
+    });
+
+    document.addEventListener("click", function(e) {
+        if (e.target !== select) {
+            options.style.display = "none";
+        }
+    });
+
+    options.addEventListener("click", function(e) {
+        if (e.target.tagName === "LI") {
+            select.value = e.target.innerText;
+            options.style.display = "none";
+        }
+    });
     $("#testing_select").bind('change', function() {
         var select = "";
         $("#testing_select option:selected").each(function() {

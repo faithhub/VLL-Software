@@ -44,7 +44,13 @@
                                                             <td class="sorting_1"><a class="font-weight-bold"
                                                                     onclick="shiNew(event)" data-type="dark" data-size="m"
                                                                     data-title="{{ $material->invoice_id }}"
-                                                                    href="{{ route('admin.view_material', $material->id) }}">{{ mb_strimwidth($material->title ?? '', 0, 20, '...') }}</a></td>
+                                                                    href="{{ route('admin.view_material', $material->id) }}">
+                                                                    @isset($material->name_of_court)
+                                                                    {{ mb_strimwidth($material->name_of_court ?? '', 0, 30, '...') }}
+                                                                        @else
+                                                                        {{ mb_strimwidth($material->title ?? '', 0, 30, '...') }}
+                                                                    @endisset
+                                                                </a></td>
                                                             <td>{{ $material->type->name ?? '-' }}</td>
                                                             <td>{{ $material->name_of_author ?? '-' }}</td>
                                                             <td>{{ $material->vendor->name ?? '-' }}</td>
