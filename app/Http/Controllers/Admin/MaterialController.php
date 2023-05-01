@@ -233,6 +233,7 @@ class MaterialController extends Controller
         # code...
         try {
             //code...
+            $data['mode'] = "create";
 
             if ($_POST) {
 
@@ -389,6 +390,7 @@ class MaterialController extends Controller
                         "name_of_author" => $request->name_of_author,
                         "version" => $request->version,
                         "price" => $request->price,
+                        "currency_id" => $request->currency_id ?? null,
                         "tags" => $tags,
                         "country_id" => $request->country_id,
                         "folder_cover_id" => $save_folder_cover->id,
@@ -423,6 +425,7 @@ class MaterialController extends Controller
                         'version' => $request->version ?? null,
                         'price' => $request->price ?? null,
                         'amount' => $request->amount ?? null,
+                        "country_id" => $request->country_id,
                         'material_type_id' => $request->material_type_id ?? $folder->material_type_id,
                         'folder_id' => $request->folder_id ?? null,
                         'year_of_enactmen' => $request->year_of_enactmen ?? null,
@@ -519,6 +522,7 @@ class MaterialController extends Controller
     {
         # code...
         try {
+            $data['mode'] = "edit";
             //code...
             if ($_POST) {
                 $material = Material::find($request->id);
@@ -526,32 +530,87 @@ class MaterialController extends Controller
                     Session::flash('warning', 'No record found for this material');
                     return redirect()->back();
                 }
-                $rules = array(
-                    'title' => ['required', 'string', 'max:255'],
-                    'name_of_author' => ['required_if:material_type_value,TXT,LOJ,VAA'],
-                    'version' => ['required_if:material_type_value,TXT,LOJ,VAA'],
-                    'price' => ['required', 'string', 'max:255'],
-                    'amount' => ['required_if:price,Paid'],
-                    'material_type_id' => ['required', 'max:255'],
-                    'folder_id' => ['required_if:material_type_value,CSL'],
-                    'name_of_party' => ['required_if:material_type_value,CSL'],
-                    'name_of_court' => ['required_if:material_type_value,CSL'],
-                    'citation' => ['required_if:material_type_value,CSL'],
-                    'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
-                    'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
-                    'test_country_id' => ['required_if:material_type_value,TAA'],
-                    'university_id' => ['required_if:material_type_value,TAA'],
-                    'publisher' => ['required', 'string', 'max:255'],
-                    'tags' => ['required', 'string', 'max:255'],
-                    'subject_id' => ['required_if:material_type_value,5'],
-                    'privacy_code' => ['required_if:material_type_value,TAA'],
-                    'material_file_id' => ['mimes:pdf,mp4,mov,ogg,qt', 'max:50000'],
-                    'material_cover_id' => ['mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
-                    'material_desc' => ['required'],
-                );
+
+
+                if ($request->folder_id == "new_folder") {
+                    $rules = array(
+                        'material_type_id' => ['required', 'string', 'max:255'],
+                        'folder_id' => ['required', 'string', 'max:255'],
+                        'folder_name' => ['required', 'string', 'max:255'],
+                        'name_of_author' => ['required', 'string', 'max:255'],
+                        'version' => ['required', 'string', 'max:255'],
+                        'country_id' => ['required', 'string', 'max:255'],
+                        'price' => ['required', 'string', 'max:255'],
+                        'amount' => ['required_if:price,Paid'],
+                        'publisher' => ['required', 'string', 'max:255'],
+                        'tags' => ['required', 'string', 'max:255'],
+                        'folder_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
+                    );
+                    // dd("new_folder", $request->all());
+                } elseif ($request->folder_id != null && $request->folder_id != "new_folder") {
+                    if ($request->material_type_value == "CSL") {
+                        $rules = array(
+                            // 'material_type_id' => ['required', 'string', 'max:255'],
+                            'folder_id' => ['required', 'string', 'max:255'],
+                            'citation' => ['required', 'string', 'max:255'],
+                            // 'folder_name' => ['required', 'string', 'max:255'],
+                            'name_of_party' => ['required', 'string', 'max:255'],
+                            // 'name_of_author' => ['required', 'string', 'max:255'],
+                            'name_of_court' => ['required', 'string', 'max:255'],
+                            'tags' => ['required', 'string', 'max:255'],
+                            'material_file_id' => ['required', 'mimes:pdf,mp4,mov,ogg,qt', 'max:50000'],
+                        );
+                    }
+                    if ($request->material_type_value == "LAW") {
+                        $rules = array(
+                            // 'material_type_id' => ['required', 'string', 'max:255'],
+                            'folder_id' => ['required', 'string', 'max:255'],
+                            // 'folder_name' => ['required', 'string', 'max:255'],
+                            'title' => ['required', 'string', 'max:255'],
+                            'year_of_enactmen' => ['required', 'string', 'max:255'],
+                            'tags' => ['required', 'max:255'],
+                            'material_file_id' => ['required', 'mimes:pdf,mp4,mov,ogg,qt', 'max:50000'],
+                        );
+                    }
+                    // dd("not new_folder", $request->all());
+                } else {
+                    // dd("not new_folder", $request->all());
+                    $rules = array(
+                        'title' => ['required', 'string', 'max:255'],
+                        // 'name_of_author' => ['required', 'string', 'max:255'],
+                        'name_of_author' => ['required_if:material_type_value,TXT,LOJ,VAA,LAW'],
+                        'version' => ['required_if:material_type_value,TXT,LOJ,VAA,LAW'],
+                        // 'version' => ['required', 'string', 'max:255'],
+                        'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,TAA,VAA'],
+                        'price' => ['required_if:material_type_value,TXT,LOJ,TAA,VAA'],
+                        'amount' => ['required_if:price,Paid'],
+                        'material_type_id' => ['required', 'max:255'],
+                        'folder_id' => ['required_if:material_type_value,CSL,LAW'],
+                        'name_of_party' => ['required_if:material_type_value,CSL'],
+                        // 'name_of_court' => ['required_if:material_type_value,CSL'],
+                        'citation' => ['required_if:material_type_value,CSL'],
+                        // 'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,LAW,VAA'],
+                        'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA,LAW'],
+                        'test_country_id' => ['required_if:material_type_value,TAA'],
+                        'university_id' => ['required_if:material_type_value,TAA'],
+                        // 'publisher' => ['required', 'string', 'max:255'],
+                        'publisher' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                        'tags' => ['required', 'string', 'max:255'],
+                        'subject_id' => ['required_if:material_type_value,TXT'],
+                        'privacy_code' => ['required_if:material_type_value,TAA'],
+                        // 'material_file_id.*' => ['required', 'mimes:pdf', 'max:100'],
+                        'material_file_id' => ['required', 'mimes:pdf,mp4,mp3,mov,ogg,qt', 'max:50000'],
+                        'material_cover_id' => ['required_if:material_type_value,TXT,LOJ,VAA', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
+                        'material_desc' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                        'terms' => ['required', 'max:255']
+                    );
+                    // dd("all", $request->all());
+                }
 
                 $messages = [
+                    'publisher.required_if' => __('Publisher is required'),
                     'name_of_party.required_if' => __('Name of Party is required'),
+                    'name_of_author.required_if' => __('Name of Author is required'),
                     'name_of_court.required_if' => __('Name of Court is required'),
                     'citation.required_if' => __('Citation is required'),
                     'privacy_code.required_if' => __('Test privacy code is required'),
@@ -565,10 +624,12 @@ class MaterialController extends Controller
                     'subject_id.required' => __('The Subject name is required'),
                     'folder_id.required_if' => __('The Folder name is required'),
                     'material_file_id.required' => __('The Material File is required'),
+                    'material_file_id.required_if' => __('The Material File is required'),
                     'material_file_id.max' => __('The Material File size must not more than 50MB'),
-                    'material_cover_id.required' => __('The Material Cover is required'),
+                    'material_cover_id.required_if' => __('The Material Cover is required'),
                     'material_cover_id.max' => __('The Material Cover size must not more that 5MB')
                 ];
+
 
                 $validator = Validator::make($request->all(), $rules, $messages);
 
@@ -612,6 +673,7 @@ class MaterialController extends Controller
                     'version' => $request->version ?? $material['version'],
                     'price' => $request->price ?? $material['price'],
                     'amount' => $request->amount ?? $material['amount'],
+                    'currency_id' => $request->currency_id ?? $material['currency_id'],
                     'material_type_id' => $request->material_type_id ?? $material['material_type_id'],
                     'folder_id' => $request->folder_id ?? $material['folder_id'],
                     'year_of_publication' => $request->year_of_publication ?? $material['year_of_publication'],
@@ -642,7 +704,7 @@ class MaterialController extends Controller
             $data['material_types'] = $m = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
             $data['subjects'] = Subject::where("status", "active")->get();
             $data['countries'] = Country::all();
-            $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->get();
+            $data['folders'] = $f = Folder::all();
             $data['universities'] = University::Orderby('name', 'ASC')->get();
             $data['ff_csl'] = false;
             $data['ff_law'] = false;
@@ -661,6 +723,7 @@ class MaterialController extends Controller
                     }
                 }
             }
+            // dd($f);
             return View('dashboard.admin.library.edit', $data);
         } catch (\Throwable $th) {
             dD($th->getMessage());
