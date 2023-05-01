@@ -159,13 +159,13 @@
                     </li>
 
                     <li class="slide is-expanded" id="sidebar">
-                        <a class="side-menu__item side_menus {{ request()->is('vendor/help') ? 'active' : '' }}"
-                            href="{{ route('vendor.help') }}">
+                        <a class="side-menu__item side_menus {{ request()->is('vendor/payouts') ? 'active' : '' }}"
+                            href="{{ route('vendor.payouts') }}">
                             <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="24.000000pt"
                                 height="24.000000pt" viewBox="0 0 24.000000 24.000000"
                                 preserveAspectRatio="xMidYMid meet" class="side-menu__icon">
                                 <g transform="translate(0.000000,24.000000) scale(0.100000,-0.100000)"
-                                    fill="{{ request()->is('vendor/transactions') ? '#fff' : '#1D3557' }}"
+                                    fill="{{ request()->is('vendor/payouts') ? '#fff' : '#1D3557' }}"
                                     stroke="none">
                                     <path d="M115 210 l-60 -19 78 2 c63 2 77 5 75 17 -4 21 -24 21 -93 0z" />
                                     <path
@@ -178,7 +178,7 @@
                                         d="M168 99 c-10 -5 -18 -20 -18 -32 0 -28 26 -67 45 -67 19 0 45 39 4567 0 12 -9 27 -19 33 -24 12 -31 12 -53 -1z" />
                                 </g>
                             </svg>
-                            <span class="side-menu__label">Payments</span>
+                            <span class="side-menu__label">Payouts</span>
                         </a>
                     </li>
 

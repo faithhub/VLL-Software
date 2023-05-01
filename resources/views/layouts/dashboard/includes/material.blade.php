@@ -265,7 +265,9 @@
             document.getElementById("material_type_value").value = uniqueId
             var option_new = select.options[select.selectedIndex]
             const folders = @json($folders);
+            const mode = "{{ $mode }}";
             const old_folder_id = "{{ old('folder_id') }}";
+            const edit_folder_id = "{{ $material->folder_id ?? '' }}";
             const firstFolder = {
                 id: "new_folder",
                 amount: 000,
@@ -307,21 +309,40 @@
                     break;
                 case "CSL":
                     const folder_csl = "{{ $ff_csl }}";
-                    console.log(folder_csl, old_folder_id, 'old_folder_id');
+                    console.log(old_folder_id, mode, 'old_folder_id');
+
                     let folders_new_csl = folders.filter(item => {
                         console.log(item.material_type_id, id);
-                        return item.material_type_id == id
+                        // return item.material_type_id
+                        if (mode === 'edit') {
+                            return item.material_type_id
+                        } else {
+                            return item.material_type_id == id
+                        }
                     })
+
                     if (uniqueId == "CSL" && folder_csl != "1") {
                         folders_new_csl.unshift(firstFolder)
                     }
-                    select.innerHTML = folders_new_csl.reduce((options, {
-                            id,
-                            name
-                        }) =>
-                        options +=
-                        `<option value="${id}" ${ old_folder_id == 'new_folder' ? 'selected' : ''} ${ old_folder_id == id ? 'selected' : ''}>${name}</option>`,
-                        '<option value=""></option>');
+
+                    if (mode == 'edit') {
+                        select.innerHTML = folders_new_csl.reduce((options, {
+                                id,
+                                name
+                            }) =>
+                            options +=
+                            `<option value="${id}" ${ edit_folder_id == id ? 'selected' : ''}>${name}</option>`,
+                            '<option value="" selected></option>');
+                    } else {
+                        select.innerHTML = folders_new_csl.reduce((options, {
+                                id,
+                                name
+                            }) =>
+                            options +=
+                            `<option value="${id}" ${ old_folder_id == 'new_folder' ? 'selected' : ''} ${ old_folder_id == id ? 'selected' : ''}>${name}</option>`,
+                            '<option value="" selected></option>');
+                    }
+
 
                     if (folder_csl == "1") {
                         for (var i = 0; i < csl_elems.length; i += 1) {
@@ -337,18 +358,34 @@
                 case "LAW":
                     const folder_law = "{{ $ff_law }}";
                     let folders_new_law = folders.filter(item => {
-                        return item.material_type_id == id
+                        if (mode == 'edit') {
+                            return item.material_type_id
+                        } else {
+                            return item.material_type_id == id
+                        }
                     })
+
                     if (uniqueId == "LAW" && folder_law != "1") {
                         folders_new_law.unshift(firstFolder)
                     }
-                    select.innerHTML = folders_new_law.reduce((options, {
-                            id,
-                            name
-                        }) =>
-                        options +=
-                        `<option value="${id}" ${ old_folder_id == 'new_folder' ? 'selected' : ''} ${ old_folder_id == id ? 'selected' : ''}>${name}</option>`,
-                        '<option value="" selected></option>');
+
+                    if (mode == 'edit') {
+                        select.innerHTML = folders_new_law.reduce((options, {
+                                id,
+                                name
+                            }) =>
+                            options +=
+                            `<option value="${id}" ${ edit_folder_id == id ? 'selected' : ''}>${name}</option>`,
+                            '<option value="" selected></option>');
+                    } else {
+                        select.innerHTML = folders_new_law.reduce((options, {
+                                id,
+                                name
+                            }) =>
+                            options +=
+                            `<option value="${id}" ${ old_folder_id == 'new_folder' ? 'selected' : ''} ${ old_folder_id == id ? 'selected' : ''}>${name}</option>`,
+                            '<option value="" selected></option>');
+                    }
 
                     if (folder_law == "1") {
                         document.getElementById("mat_title_div").classList.remove('col-md-6',

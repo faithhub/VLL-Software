@@ -74,7 +74,7 @@
                         @else
                             <h5><b class="font-weight-bold">Amount:
                                     @if ($material->price == 'Paid')
-                                        {{ money($material->amount) }}
+                                        {{ money($material->amount, $material->currency_id) }}
                                     @else
                                         Free
                                     @endif
@@ -111,13 +111,13 @@
                                             <div class="card-body">
                                                 <h5><b class="font-weight-bold">Folder Name: </b>{{ $folder->name }}</h5>
                                                 <h5><b class="font-weight-bold">Folder Amount:
-                                                        {{ money($folder->amount) }}</b>
+                                                        {{ money($folder->amount, $folder->currency_id) }}</b>
                                                     /
                                                     annual </h5>
                                                 <h5><b class="font-weight-bold">No of Materials:
                                                         {{ $folder_mat_count }}</b>
                                                 </h5>
-                                                <a onclick="flutterwaveBuyMaterial('{{ $folder->amount }}', '{{ $material->id }}', 'folder')"
+                                                <a onclick="flutterwaveBuyMaterial('{{ exchange($folder->amount, $folder->currency_id) }}', '{{ $material->id }}', 'folder')"
                                                     class="btn m-2 btn-primary p-3">
                                                     Buy Folder
                                                 </a>
@@ -151,11 +151,11 @@
                                             </a>
                                         @elseif($rentedMatCount == 0)
                                             <a class="btn m-2 btn-dark p-2 btn-outline-primary"
-                                                onclick="flutterwaveBuyMaterial('{{ $settings['rent'] ?? 700 }}', '{{ $material->id }}', 'rented')">
+                                                onclick="flutterwaveBuyMaterial('{{ exchange($settings['rent'] ?? 700) }}', '{{ $material->id }}', 'rented')">
                                                 Rent Book
                                             </a>
                                         @endif
-                                        <a onclick="flutterwaveBuyMaterial('{{ $material->amount }}', '{{ $material->id }}', 'bought')"
+                                        <a onclick="flutterwaveBuyMaterial('{{ exchange($material->amount, $material->currency_id) }}', '{{ $material->id }}', 'bought')"
                                             class="btn m-2 btn-primary p-2">
                                             Buy Book
                                         </a>
@@ -188,11 +188,11 @@
                                         </a>
                                     @elseif($rentedMatCount == 0)
                                         <a class="btn m-2 btn-dark p-2 btn-outline-primary"
-                                            onclick="flutterwaveBuyMaterial('{{ $settings['rent'] ?? 700 }}', '{{ $material->id }}', 'rented')">
+                                            onclick="flutterwaveBuyMaterial('{{ exchange($settings['rent'] ?? 700) }}', '{{ $material->id }}', 'rented')">
                                             Rent Book
                                         </a>
                                     @endif
-                                    <a onclick="flutterwaveBuyMaterial('{{ $material->amount }}', '{{ $material->id }}', 'bought')"
+                                    <a onclick="flutterwaveBuyMaterial('{{ exchange($material->amount) }}', '{{ $material->id }}', 'bought')"
                                         class="btn m-2 btn-primary p-2">
                                         Buy Book
                                     </a>

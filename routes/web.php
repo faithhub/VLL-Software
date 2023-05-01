@@ -90,6 +90,7 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
         Route::match(['get', 'post'], 'settings',  [App\Http\Controllers\Dashboard\VendorController::class, 'settings'])->name('settings');
         Route::match(['get', 'post'], 'help',  [App\Http\Controllers\Dashboard\VendorController::class, 'help'])->name('help');
         Route::get('transactions',  [App\Http\Controllers\Dashboard\VendorController::class, 'transactions'])->name('transactions');
+        Route::get('payouts',  [App\Http\Controllers\Dashboard\VendorController::class, 'payouts'])->name('payouts');
         Route::get('summary/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'summary'])->name('summary');
         Route::get('subscriptions',  [App\Http\Controllers\Dashboard\VendorController::class, 'subscriptions'])->name('subscriptions');
         Route::match(['post'], 'subscribe',  [App\Http\Controllers\Dashboard\VendorController::class, 'subscribe'])->name('subscribe');

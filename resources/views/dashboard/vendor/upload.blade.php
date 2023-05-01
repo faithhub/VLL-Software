@@ -12,12 +12,6 @@
                         </h6>
                     </div>
                     <div class="card-body pt-0">
-                        {{-- <input type="text" id="custom-select" placeholder="Select an option">
-                        <ul id="custom-options">
-                            <li>Option 1</li>
-                            <li>Option 2</li>
-                            <li>Option 3</li>
-                        </ul> --}}
                         @php
                             $new_folder = Session::get('new_folder');
                             $mat_type = Session::get('mat_type');
@@ -37,6 +31,7 @@
                                         <input type="hidden" name="folder_id" value="{{ Session::get('new_folder')->id }}">
                                         <div class="row mt-5 mb-5 settings">
                                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+
                                                 <div class="form-group">
                                                     <label class="form-label">Name of Party <span>*<span></label>
                                                     <input type="text" class="form-control" id="custom-select"
@@ -111,7 +106,7 @@
                                                     <input type="" data-role="tagsinput"
                                                         class="form-control tm-input tm-input-inf"
                                                         placeholder="Input material tags" requiredd="" name="tags"
-                                                        value="{{ old('tags') }}" autocomplete="off"
+                                                        value="{{ old('tags') }}"
                                                         data-parsley-required-message="Title of Material is required">
                                                     <div class="col-auto">
                                                         <span id="passwordHelpInline" class="form-text">
@@ -178,7 +173,7 @@
                                             <div class="col-lg-12 col-xl-12 text-center">
                                                 <button type="submit" class="btn btn-primary p-3 pt-3 pt-2"
                                                     style="font-size: 18px">Submit</button>
-                                                <a href="{{ route('vendor.cancel.library') }}"
+                                                <a href="{{ route('admin.cancel.library') }}"
                                                     onclick="return confirm('Are you sure you want to cancel?')"
                                                     class="btn btn-danger m-3 p-3 pt-3 pt-2"
                                                     style="font-size: 18px">Cancel</a>
@@ -256,25 +251,25 @@
                                     </div>
                                     <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 new_csl_div_tag"
                                         style="display: none">
-                                                <div class="form-group">
-                                                    <label class="form-label">Name of Party <span>*<span></label>
-                                                    <input type="text" class="form-control" id="custom-select"
-                                                        name="name_of_party" value="{{ old('name_of_party') }}" requiredd=""
-                                                        data-parsley-required-message="Name of Party is required" placeholder=""
-                                                        autocomplete="off">
-                                                    <ul id="custom-options">
-                                                        <li>Plaintiff</li>
-                                                        <li>Prosecutor</li>
-                                                        <li>Appellant</li>
-                                                        <li>Defendant</li>
-                                                        <li>Respondent</li>
-                                                    </ul>
-                                                    @error('name_of_party')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Name of Party <span>*<span></label>
+                                            <input type="text" class="form-control" id="custom-select"
+                                                name="name_of_party" value="{{ old('name_of_party') }}" requiredd=""
+                                                data-parsley-required-message="Name of Party is required" placeholder=""
+                                                autocomplete="off">
+                                            <ul id="custom-options">
+                                                <li>Plaintiff</li>
+                                                <li>Prosecutor</li>
+                                                <li>Appellant</li>
+                                                <li>Defendant</li>
+                                                <li>Respondent</li>
+                                            </ul>
+                                            @error('name_of_party')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
                                     </div>
                                     <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 new_csl_div_tag"
                                         style="display: none">
@@ -324,26 +319,6 @@
                                                 @enderror
                                         </div>
                                     </div>
-                                    <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 new_csl_div_tag"
-                                        style="display: none">
-                                        <div class="form-group">
-                                            <label class="form-label">Tags <span>*<span></label>
-                                            <input type="" data-role="tagsinput"
-                                                class="form-control tm-input tm-input-inf" placeholder="Input material tags"
-                                                requiredd="" name="tags" value="{{ old('tags') }}"
-                                                data-parsley-required-message="Title of Material is required">
-                                            <div class="col-auto">
-                                                <span id="passwordHelpInline" class="form-text">
-                                                    Input words to aid search in Bookstore (Law, Legal)
-                                                </span>
-                                            </div>
-                                            @error('tags')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
                                     <div class="upload-form-fields col-sm-12 col-md-6 col-lg-6 col-xl-6 new_law_div_tag text-field taa-field vaa-field loj-field material_upload_fields"
                                         id="mat_title_div">
                                         <div class="form-group">
@@ -367,26 +342,6 @@
                                                 value="{{ old('year_of_enactmen') }}" requiredd=""
                                                 data-parsley-required-message="Title of Material is required" placeholder="">
                                             @error('year_of_enactmen')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 new_law_div_tag"
-                                        style="display: none">
-                                        <div class="form-group">
-                                            <label class="form-label">Tags <span>*<span></label>
-                                            <input type="" data-role="tagsinput"
-                                                class="form-control tm-input tm-input-inf" placeholder="Input material tags"
-                                                requiredd="" name="tags" value="{{ old('tags') }}"
-                                                data-parsley-required-message="Title of Material is required">
-                                            <div class="col-auto">
-                                                <span id="passwordHelpInline" class="form-text">
-                                                    Input words to aid search in Bookstore (Law, Legal)
-                                                </span>
-                                            </div>
-                                            @error('tags')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -622,7 +577,7 @@
                                         </div>
                                     </div>
                                     <div
-                                        class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 text-field new-folder taa-field vaa-field loj-field material_upload_fields">
+                                        class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 text-field new_law_div_tag new_csl_div_tag new-folder taa-field vaa-field loj-field material_upload_fields">
                                         <div class="form-group">
                                             <label class="form-label">Tags <span>*<span></label>
                                             <input type="" data-role="tagsinput"

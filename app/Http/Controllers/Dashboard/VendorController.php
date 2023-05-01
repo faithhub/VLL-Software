@@ -92,19 +92,34 @@ class VendorController extends Controller
 
             foreach ($matHis as $key => $mat_h) {
                 # code...
-                if ($mat_h->mat->user_id == Auth::user()->id && $mat_h->transaction_id != null) {
-                    array_push($mats_arr3, $mat_h->transaction_id);
+                if (isset($mat_h->mat->user_id)) {
+                    if ($mat_h->mat->user_id == Auth::user()->id && $mat_h->transaction_id != null) {
+                        array_push($mats_arr3, $mat_h->transaction_id);
+                    }
                 }
             }
 
-            // dd($mats_arr3);
             $data['transactions'] = Transaction::whereIn('id', $mats_arr3)->with('mat_his')->orderBy('created_at', 'DESC')->get();
             // $data['transactions'] = $mats_arr2;
             // dd($data['transactions']);
             return View('dashboard.vendor.transactions', $data);
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th->getMessage());
+            dd($th);
+        }
+    }
+
+    public function payouts()
+    {
+        # code...
+        try {
+            //code...
+            $data['title'] = "Vendor Dashboard - Payouts";
+            $data['sn'] = 1;
+            return View('dashboard.vendor.payouts', $data);
+        } catch (\Throwable $th) {
+            //throw $th;
+            dd($th);
         }
     }
 
@@ -444,6 +459,7 @@ class VendorController extends Controller
         # code...
         try {
             //code...
+            $data['mode'] = "create";
             if ($_POST) {
 
                 if ($request->folder_id == "new_folder") {
@@ -461,6 +477,7 @@ class VendorController extends Controller
                         'folder_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
                     );
                 } elseif ($request->folder_id != null && $request->folder_id != "new_folder") {
+                    // dd($request->all());
                     $rules = array(
                         // 'material_type_id' => ['required', 'string', 'max:255'],
                         'folder_id' => ['required', 'string', 'max:255'],
@@ -579,7 +596,8 @@ class VendorController extends Controller
                         "name_of_author" => $request->name_of_author,
                         "version" => $request->version,
                         "price" => $request->price,
-                        "tags" => $request->tags,
+                        "currency_id" => $request->currency_id ?? null,
+                        "tags" => $tags,
                         "country_id" => $request->country_id,
                         "folder_cover_id" => $save_folder_cover->id,
                         "user_id" => Auth::user()->id
@@ -607,6 +625,7 @@ class VendorController extends Controller
                         'name_of_court' => $request->name_of_court ?? null,
                         'name_of_party' => $request->name_of_party ?? null,
                         'citation' => $request->citation ?? null,
+                        "currency_id" => $request->currency_id ?? null,
                         'version' => $request->version ?? null,
                         'price' => $request->price ?? null,
                         'amount' => $request->amount ?? null,
@@ -618,7 +637,7 @@ class VendorController extends Controller
                         'country_id' => $request->country_id ?? null,
                         'publisher' => $request->publisher ?? null,
                         'tags' => $tags,
-                        'uploaded_by' => 'admin',
+                        'uploaded_by' => 'vendor',
                         'subject_id' => $request->subject_id ?? null,
                         'privacy_code' => $request->privacy_code ?? null,
                         'material_file_id' => $save_file->id ?? null,
@@ -673,42 +692,74 @@ class VendorController extends Controller
         # code...
         try {
             //code...
+            $data['mode'] = "edit";
             if ($_POST) {
                 $material = Material::find($request->id);
                 if (!$material) {
                     Session::flash('warning', 'No record found for this material');
                     return redirect()->back();
                 }
-                $rules = array(
-                    'title' => ['required', 'string', 'max:255'],
-                    // 'name_of_author' => ['required', 'string', 'max:255'],
-                    'name_of_author' => ['required_if:material_type_value,TXT,LOJ,VAA'],
-                    'version' => ['required_if:material_type_value,TXT,LOJ,VAA'],
-                    // 'version' => ['required', 'string', 'max:255'],
-                    'price' => ['required', 'string', 'max:255'],
-                    'amount' => ['required_if:price,Paid'],
-                    'material_type_id' => ['required', 'max:255'],
-                    'folder_id' => ['required_if:material_type_value,CSL'],
-                    'name_of_party' => ['required_if:material_type_value,CSL'],
-                    // 'name_of_court' => ['required_if:material_type_value,CSL'],
-                    'citation' => ['required_if:material_type_value,CSL'],
-                    'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
-                    'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
-                    'test_country_id' => ['required_if:material_type_value,TAA'],
-                    'university_id' => ['required_if:material_type_value,TAA'],
-                    // 'publisher' => ['required', 'string', 'max:255'],
-                    'publisher' => ['required_if:material_type_value,TXT,LOJ,VAA'],
-                    'tags' => ['required', 'string', 'max:255'],
-                    'subject_id' => ['required_if:material_type_value,5'],
-                    'privacy_code' => ['required_if:material_type_value,TAA'],
-                    'material_file_id' => ['mimes:pdf,mp4,mov,ogg,qt', 'max:50000'],
-                    'material_cover_id' => ['mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
-                    'material_desc' => ['required'],
-                );
 
+                if ($request->folder_id == "new_folder") {
+                    $rules = array(
+                        'material_type_id' => ['required', 'string', 'max:255'],
+                        'folder_id' => ['required', 'string', 'max:255'],
+                        'folder_name' => ['required', 'string', 'max:255'],
+                        'name_of_author' => ['required', 'string', 'max:255'],
+                        'version' => ['required', 'string', 'max:255'],
+                        'country_id' => ['required', 'string', 'max:255'],
+                        'price' => ['required', 'string', 'max:255'],
+                        'amount' => ['required_if:price,Paid'],
+                        'publisher' => ['required', 'string', 'max:255'],
+                        'tags' => ['required', 'string', 'max:255'],
+                        'folder_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
+                    );
+                } elseif ($request->folder_id != null && $request->folder_id != "new_folder") {
+                    $rules = array(
+                        // 'material_type_id' => ['required', 'string', 'max:255'],
+                        'folder_id' => ['required', 'string', 'max:255'],
+                        'citation' => ['required', 'string', 'max:255'],
+                        'name_of_party' => ['required', 'string', 'max:255'],
+                        // 'name_of_author' => ['required', 'string', 'max:255'],
+                        'name_of_court' => ['required', 'string', 'max:255'],
+                        'tags' => ['required', 'string', 'max:255'],
+                        'material_file_id' => ['required', 'mimes:pdf,mp4,mov,ogg,qt', 'max:50000'],
+                    );
+                } else {
+                    // dd("not new_folder", $request->all());
+                    $rules = array(
+                        'title' => ['required', 'string', 'max:255'],
+                        // 'name_of_author' => ['required', 'string', 'max:255'],
+                        'name_of_author' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                        'version' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                        // 'version' => ['required', 'string', 'max:255'],
+                        'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,TAA,VAA'],
+                        'price' => ['required_if:material_type_value,TXT,LOJ,TAA,VAA'],
+                        'amount' => ['required_if:price,Paid'],
+                        'material_type_id' => ['required', 'max:255'],
+                        'folder_id' => ['required_if:material_type_value,CSL'],
+                        'name_of_party' => ['required_if:material_type_value,CSL'],
+                        // 'name_of_court' => ['required_if:material_type_value,CSL'],
+                        'citation' => ['required_if:material_type_value,CSL'],
+                        // 'year_of_publication' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
+                        'country_id' => ['required_if:material_type_value,TXT,LOJ,CSL,VAA'],
+                        'test_country_id' => ['required_if:material_type_value,TAA'],
+                        'university_id' => ['required_if:material_type_value,TAA'],
+                        // 'publisher' => ['required', 'string', 'max:255'],
+                        'publisher' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                        'tags' => ['required', 'string', 'max:255'],
+                        'subject_id' => ['required_if:material_type_value,TXT'],
+                        'privacy_code' => ['required_if:material_type_value,TAA'],
+                        'material_file_id' => ['mimes:pdf,mp4,mp3,mov,ogg,qt', 'max:50000'],
+                        'material_cover_id' => ['mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
+                        'material_desc' => ['required_if:material_type_value,TXT,LOJ,VAA'],
+                    );
+                }
 
                 $messages = [
+                    'publisher.required_if' => __('Publisher is required'),
                     'name_of_party.required_if' => __('Name of Party is required'),
+                    'name_of_author.required_if' => __('Name of Author is required'),
                     'name_of_court.required_if' => __('Name of Court is required'),
                     'citation.required_if' => __('Citation is required'),
                     'privacy_code.required_if' => __('Test privacy code is required'),
@@ -722,14 +773,17 @@ class VendorController extends Controller
                     'subject_id.required' => __('The Subject name is required'),
                     'folder_id.required_if' => __('The Folder name is required'),
                     'material_file_id.required' => __('The Material File is required'),
+                    'material_file_id.required_if' => __('The Material File is required'),
                     'material_file_id.max' => __('The Material File size must not more than 50MB'),
-                    'material_cover_id.required' => __('The Material Cover is required'),
+                    'material_cover_id.required_if' => __('The Material Cover is required'),
                     'material_cover_id.max' => __('The Material Cover size must not more that 5MB')
                 ];
+
 
                 $validator = Validator::make($request->all(), $rules, $messages);
 
                 if ($validator->fails()) {
+                    // dd($validator->errors());
                     Session::flash('warning', __('All fields are required'));
                     return back()->withErrors($validator)->withInput();
                 }
@@ -767,6 +821,7 @@ class VendorController extends Controller
                     'version' => $request->version ?? $material['version'],
                     'price' => $request->price ?? $material['price'],
                     'amount' => $request->amount ?? $material['amount'],
+                    'currency_id' => $request->currency_id ?? $material['currency_id'],
                     'material_type_id' => $request->material_type_id ?? $material['material_type_id'],
                     'folder_id' => $request->folder_id ?? $material['folder_id'],
                     'year_of_publication' => $request->year_of_publication ?? $material['year_of_publication'],

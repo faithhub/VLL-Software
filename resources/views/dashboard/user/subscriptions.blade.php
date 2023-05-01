@@ -22,22 +22,19 @@
                                         <ul class="text-center">
                                             <li class="mb-4">
                                                 @isset($sub->session)
-                                                    <strong class="font-weight-bold">₦{{ number_format($sub->session, 2) }}
+                                                    <strong class="font-weight-bold">{{ money($sub->session) }}
                                                     </strong>/ {{ $sub->name }}
                                                 @endisset
                                             </li>
                                             <li class="mb-4">
                                                 @isset($sub->system)
-                                                    <strong class="font-weight-bold">₦{{ number_format($sub->system, 2) }}
+                                                    <strong class="font-weight-bold">{{ money($sub->system) }}
                                                     </strong>/ {{ $sub->name }}
                                                 @endisset
                                             </li>
                                             <li class="mb-4">
                                                 @isset($sub->session)
                                                     <strong>{{ $sub->session_duration }} months</strong>
-                                                @endisset
-                                                @isset($sub->system)
-                                                    <strong>{{ $sub->system_duration }} months</strong>
                                                 @endisset
                                             </li>
                                         </ul>
@@ -48,10 +45,10 @@
                                             @else
                                                 <a class="btn btn-lg btn-warning"
                                                     @isset($sub->session)
-                                                onclick="flutterwaveCheckout('{{ $sub->session }}', '{{ $sub->id }}', 'session')"
+                                                onclick="flutterwaveCheckout('{{ exchange($sub->session) }}', '{{ $sub->id }}', 'session')"
                                                 @endisset
                                                     @isset($sub->system)
-                                                onclick="flutterwaveCheckout('{{ $sub->system }}', '{{ $sub->id }}', 'system')"
+                                                onclick="flutterwaveCheckout('{{ exchange($sub->system) }}', '{{ $sub->id }}', 'system')"
                                                 @endisset>
                                                     @if (Auth::user()->sub->subscription_id)
                                                         Change
@@ -82,22 +79,19 @@
                                         <ul class="text-center">
                                             <li class="mb-4">
                                                 @isset($sub->session)
-                                                    <strong class="font-weight-bold">₦{{ number_format($sub->session, 2) }}
+                                                    <strong class="font-weight-bold">{{ money($sub->session) }}
                                                     </strong>/ {{ $sub->name }}
                                                 @endisset
                                             </li>
                                             <li class="mb-4">
                                                 @isset($sub->system)
-                                                    <strong class="font-weight-bold">₦{{ number_format($sub->system, 2) }}
+                                                    <strong class="font-weight-bold">{{ money($sub->system) }}
                                                     </strong>/ {{ $sub->name }}
                                                 @endisset
                                             </li>
                                             <li class="mb-4">
                                                 @isset($sub->session)
                                                     <strong>{{ $sub->session_duration }} months</strong>
-                                                @endisset
-                                                @isset($sub->system)
-                                                    <strong>{{ $sub->system_duration }} months</strong>
                                                 @endisset
                                             </li>
                                         </ul>
@@ -108,11 +102,10 @@
                                             @else
                                                 <a class="btn btn-lg btn-success"
                                                     @isset($sub->session)
-                                                onclick="flutterwaveCheckout('{{ $sub->session }}', '{{ $sub->id }}', 'session')"
+                                                onclick="flutterwaveCheckout('{{ exchange($sub->session) }}', '{{ $sub->id }}', 'session')"
                                                 @endisset
                                                     @isset($sub->system)
-                                                onclick="flutterwaveCheckout('{{ $sub->system }}', '{{ $sub->id }}', 'system')"
-                                                onclick="flutterwaveCheckout('{{ $sub->system }}', '{{ $sub->id }}', 'system')"
+                                                onclick="flutterwaveCheckout('{{ exchange($sub->system) }}', '{{ $sub->id }}', 'system')"
                                                 @endisset>
                                                     @if (Auth::user()->sub->subscription_id)
                                                         Change
@@ -154,7 +147,7 @@
                                     </div>
                                     <ul class="text-center">
                                         <li class="mb-4">
-                                            <strong class="font-weight-bold">₦{{ number_format($sub->annual, 2) }}
+                                            <strong class="font-weight-bold">{{ money($sub->annual) }}
                                             </strong>/ Annual
                                         </li>
                                         <li class="mb-4">
@@ -169,7 +162,7 @@
                                             <a class="btn btn-lg btn-gray text-white" @disabled(true)
                                                 style="cursor: no-drop">Subcribed</a>
                                         @else
-                                            <a onclick="flutterwaveCheckout('{{ $sub->annual }}', '{{ $sub->id }}', 'annual')"
+                                            <a onclick="flutterwaveCheckout('{{ exchange($sub->annual) }}', '{{ $sub->id }}', 'annual')"
                                                 class="btn btn-lg text-white font-weight-bold
                                             @if ($sub->name == 'SINGLE USER') bg-warning @endif
                                             @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
@@ -203,7 +196,7 @@
                                     </div>
                                     <ul class="text-center">
                                         <li class="mb-4">
-                                            <strong class="font-weight-bold">₦{{ number_format($sub->quarterly, 2) }}
+                                            <strong class="font-weight-bold">{{ money($sub->quarterly) }}
                                             </strong>/ Quarterly
                                         </li>
                                         <li class="mb-4">
@@ -218,19 +211,7 @@
                                             <a class="btn btn-lg btn-gray text-white" @disabled(true)
                                                 style="cursor: no-drop">Subcribed</a>
                                         @else
-                                            <a onclick="flutterwaveCheckout('{{ $sub->quarterly }}', '{{ $sub->id }}', 'quarterly')"
-                                                class="btn btn-lg text-white font-weight-bold
-                                            @if ($sub->name == 'SINGLE USER') bg-warning @endif
-                                            @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
-                                            @if ($sub->name == 'GROUP USERS (10)') bg-secondary @endif "
-                                                href="#">
-                                                @if (Auth::user()->sub->subscription_id)
-                                                    Change
-                                                @else
-                                                    Subscribe
-                                                @endif
-                                            </a>
-                                            <a onclick="flutterwaveCheckout('{{ $sub->quarterly }}', '{{ $sub->id }}', 'quarterly')"
+                                            <a onclick="flutterwaveCheckout('{{ exchange($sub->quarterly) }}', '{{ $sub->id }}', 'quarterly')"
                                                 class="btn btn-lg text-white font-weight-bold
                                             @if ($sub->name == 'SINGLE USER') bg-warning @endif
                                             @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
@@ -264,7 +245,7 @@
                                     </div>
                                     <ul class="text-center">
                                         <li class="mb-4">
-                                            <strong class="font-weight-bold">₦{{ number_format($sub->monthly, 2) }}
+                                            <strong class="font-weight-bold">{{ money($sub->monthly) }}
                                             </strong>/ Monthly
                                         </li>
                                         <li class="mb-4">
@@ -279,7 +260,7 @@
                                             <a class="btn btn-lg btn-gray text-white" @disabled(true)
                                                 style="cursor: no-drop">Subcribed</a>
                                         @else
-                                            <a onclick="flutterwaveCheckout('{{ $sub->monthly }}', '{{ $sub->id }}', 'monthly')"
+                                            <a onclick="flutterwaveCheckout('{{ exchange($sub->monthly) }}', '{{ $sub->id }}', 'monthly')"
                                                 class="btn btn-lg text-white font-weight-bold
                                             @if ($sub->name == 'SINGLE USER') bg-warning @endif
                                             @if ($sub->name == 'GROUP USERS (5)') bg-success @endif
@@ -313,7 +294,7 @@
                                     </div>
                                     <ul class="text-center">
                                         <li class="mb-4">
-                                            <strong class="font-weight-bold">₦{{ number_format($sub->weekly, 2) }}
+                                            <strong class="font-weight-bold">{{ money($sub->weekly) }}
                                             </strong>/ Weekly
                                         </li>
                                         <li class="mb-4">
@@ -328,7 +309,7 @@
                                             <a class="btn btn-lg btn-gray text-white" @disabled(true)
                                                 style="cursor: no-drop">Subcribed</a>
                                         @else
-                                            <a onclick="flutterwaveCheckout('{{ $sub->weekly }}', '{{ $sub->id }}', 'weekly')"
+                                            <a onclick="flutterwaveCheckout('{{ exchange($sub->weekly) }}', '{{ $sub->id }}', 'weekly')"
                                                 class="btn btn-lg text-white font-weight-bold
                                             @if ($sub->name == 'SINGLE USER') bg-warning @endif
                                             @if ($sub->name == 'GROUP USERS (5)') bg-success @endif

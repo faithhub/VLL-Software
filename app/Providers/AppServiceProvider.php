@@ -7,6 +7,7 @@ use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -40,9 +41,10 @@ class AppServiceProvider extends ServiceProvider
                 });
         });
 
+        // if (Schema::hasTable('currencies')) {
         $currencies = Currency::all();
         $app_default_currency = Currency::where('isDefault', true)->first();
-
+        
         View::share(['settings' => $settings, 'app_currencies' => $currencies, 'app_default_currency' =>
         $app_default_currency]);
     }

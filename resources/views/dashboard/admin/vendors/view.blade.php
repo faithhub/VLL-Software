@@ -319,7 +319,7 @@
                                                                             </td>
                                                                             <td>
                                                                                 <b
-                                                                                    class="money">{{ money($material->amount) }}</b>
+                                                                                    class="money">{{ money($material->amount, $material->currency_id) }}</b>
                                                                             </td>
                                                                             <td><a class="font-weight-bold"
                                                                                     href="{{ asset($material->file->url ?? '') }}">{{ $material->title }}.pdf</a>

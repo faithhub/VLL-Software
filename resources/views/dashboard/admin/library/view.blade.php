@@ -81,7 +81,7 @@
                         @else
                             <h5><b class="font-weight-bold">Amount:
                                     @if ($material->price == 'Paid')
-                                        {{ money($material->amount) }}
+                                        {{ money($material->amount, $material->currency_id) }}
                                     @else
                                         Free
                                     @endif

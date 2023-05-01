@@ -18,6 +18,7 @@ class Folder extends Model
         'version',
         'tags',
         'country_id',
+        'currency_id',
         'folder_cover_id',
     ];
 

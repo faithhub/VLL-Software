@@ -103,7 +103,7 @@
                                                                     href="#">{{ $folder->mat_type->name ?? "" }}</a>
                                                             </td>
                                                             <td><span
-                                                                    class="money">₦{{ number_format($folder->amount ?? 0, 2) }}</span>
+                                                                    class="money">{{ money($folder->amount, $folder->currency_id) }}</span>
                                                             </td>
                                                             <td>{{ $folder->created_at->format('D, M j, Y') }}
                                                             </td>

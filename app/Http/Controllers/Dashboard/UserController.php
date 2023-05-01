@@ -1087,10 +1087,12 @@ class UserController extends Controller
         }
         User::where('email', Auth::user()->email)->update(['team_id' => $team->id]);
         $invite = Invite::where(['email' => Auth::user()->email, 'team_id' => $team->id])->where('status', 'decline')->orWhere('status', null)->first();
-        $invite->status = 'accept';
-        $invite->date_accepted = Carbon::now();
-        $invite->save();
-        Session::flash('success', 'Invite Accepted');
+        if ($invite) {
+            $invite->status = 'accept';
+            $invite->date_accepted = Carbon::now();
+            $invite->save();
+            Session::flash('success', 'Invite Accepted');
+        }
         return redirect()->route('user.index');
     }
 

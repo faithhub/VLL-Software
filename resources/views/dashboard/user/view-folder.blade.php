@@ -88,13 +88,13 @@
                                     <div class="card-body">
                                         <h5><b class="font-weight-bold">Folder Details</h5>
                                         <h5><b class="font-weight-bold">Name: </b>{{ $folder->name }}</h5>
-                                        <h5><b class="font-weight-bold">Amount: {{ money($folder->amount) }}</b>
+                                        <h5><b class="font-weight-bold">Amount: {{ money($folder->amount, $folder->currency_id) }}</b>
                                             /
                                             annual </h5>
                                         <h5><b class="font-weight-bold">No of Materials:
                                                 {{ $folder_mat_count }}</b>
                                         </h5>
-                                        <a onclick="flutterwaveBuyMaterial('{{ $folder->amount }}', '{{ $folder->id }}', 'folder')"
+                                        <a onclick="flutterwaveBuyMaterial('{{ exchange($folder->amount, $folder->currency_id) }}', '{{ $folder->id }}', 'folder')"
                                             class="btn m-2 btn-primary p-3">
                                             Buy Folder
                                         </a>
