@@ -106,31 +106,38 @@ class RegisterController extends Controller
     {
         // dd($data);
         // return back();
-        if ($data['form_type'] == "user") {
-            # code...
-            Mail::to($data['email'])->send(new UserWelcomeEmail($data['name']));
-            return User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'role' => $data['form_type'],
-                'user_type' => $data['type'],
-                'university_id' => $data['university'] ?? null,
-                'country_id' => $data['country'] ?? null,
-                'password' => Hash::make($data['password']),
-            ]);
-        }
+        try {
+            //code...
+            if ($data['form_type'] == "user") {
+                # code...
+                Mail::to($data['email'])->send(new UserWelcomeEmail($data['name']));
+                return User::create([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'role' => $data['form_type'],
+                    'user_type' => $data['type'],
+                    'university_id' => $data['university'] ?? null,
+                    'country_id' => $data['country'] ?? null,
+                    'password' => Hash::make($data['password']),
+                ]);
+            }
 
-        if ($data['form_type'] == "vendor") {
-            Mail::to($data['email'])->send(new VendorWelcomeEmail($data['name']));
-            return User::create([
-                'name' => $data['name'] ?? null,
-                'email' => $data['email'],
-                'role' => $data['form_type'],
-                'vendor_type' => $data['type'],
-                'university_id' => $data['v-university'] ?? null,
-                'country_id' => $data['v-country'] ?? null,
-                'password' => Hash::make($data['password']),
-            ]);
+            if ($data['form_type'] == "vendor"
+            ) {
+                Mail::to($data['email'])->send(new VendorWelcomeEmail($data['name']));
+                return User::create([
+                    'name' => $data['name'] ?? null,
+                    'email' => $data['email'],
+                    'role' => $data['form_type'],
+                    'vendor_type' => $data['type'],
+                    'university_id' => $data['v-university'] ?? null,
+                    'country_id' => $data['v-country'] ?? null,
+                    'password' => Hash::make($data['password']),
+                ]);
+            }
+        } catch (\Throwable $th) {
+            dd($th);
+            //throw $th;
         }
     }
 }
