@@ -15,14 +15,14 @@ class DailyMaterial extends Command
      *
      * @var string
      */
-    protected $signature = 'dailymaterial:cron';
+    protected $signature = 'dailyMaterialUpdate:send';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Daily Material Update for the users via Email';
 
     /**
      * Execute the console command.
@@ -31,11 +31,12 @@ class DailyMaterial extends Command
      */
     public function handle()
     {
-        $materials = Material::whereMonth('date_of_birth', '=', date('m'))->whereDay('date_of_birth', '=', date('d'))->get();
+        $materials = Material::with(['type', 'cover'])->where('status', 'active')->whereMonth('created_at', '=', date('m'))->whereDay('created_at', '=', date('d'))->get();
         $users = User::where('role', 'user')->get('email');
         foreach ($users as $key => $user) {
             Mail::to($user->email)->send(new DailyMaterialMail($materials));
         }
-        return Command::SUCCESS;
+        $this->info('Daily Material Update for the users via Email has been sent successfully');
+        // return Command::SUCCESS;
     }
 }

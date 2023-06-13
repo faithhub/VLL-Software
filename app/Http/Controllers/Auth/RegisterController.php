@@ -129,6 +129,7 @@ class RegisterController extends Controller
                     'name' => $data['name'] ?? null,
                     'email' => $data['email'],
                     'role' => $data['form_type'],
+                    'user_type' => $data['type'],
                     'vendor_type' => $data['type'],
                     'university_id' => $data['v-university'] ?? null,
                     'country_id' => $data['v-country'] ?? null,

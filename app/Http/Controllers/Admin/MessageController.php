@@ -20,7 +20,7 @@ class MessageController extends Controller
             $current_msg_user_new = Session::get('current_msg_user_new');
             // dd($current_msg_user_new);
             $data['title'] = "Messages";
-            $messages = Messages::groupBy('user_id')->orderBy('created_at', 'ASC')->with(['user', 'admin', 'file'])->get();
+            $messages = Messages::groupBy('user_id')->orderBy('created_at', 'DESC')->with(['user', 'admin', 'file'])->get();
             $messages_arr = [];
             if ($current_msg_user_new) {
                 $data['current_user'] = Messages::where(['user_id' => $current_msg_user_new])->with('user')->orderBy('created_at', 'ASC')->first();

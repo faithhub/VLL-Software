@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2 || ^8.0.2",
+        "doctrine/dbal": "^3.6",
         "flutterwavedev/flutterwave-v3": "^1.0",
         "gufy/pdftohtml-php": "~2",
         "guzzlehttp/guzzle": "^7.2",

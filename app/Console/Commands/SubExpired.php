@@ -36,6 +36,6 @@ class SubExpired extends Command
             $sub->isEmailSent = true;
             $sub->save();
         }
-        // return 0;
+        $this->info('2 Hours Expired Subscription check has been sent successfully');
     }
 }

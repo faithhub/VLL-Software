@@ -47,8 +47,9 @@
                                 <div class="p-4 pb-0 border-bottom">
                                     <h6 class="mb-1 mt-1 font-weight-bold h3 mb-5">Messages({{ $messages_count }})</h6>
                                     <div class="input-group"> <input type="text" class="form-control"
-                                            placeholder="Search Friends..."> <button type="button"
-                                            class="btn btn-primary "> <i class="fa fa-search"></i> </button> </div>
+                                            onkeyup="search_animal2()" placeholder="Search Friends..."
+                                            id="user-names-search-bar"> <button type="button" class="btn btn-primary "> <i
+                                                class="fa fa-search"></i> </button> </div>
                                 </div>
                                 <div class="main-chat-list ps ps--active-y" id="ChatList">
                                     @isset($messages)
@@ -59,11 +60,19 @@
                                                     <div class="main-img-user"> <img alt=""
                                                             src="{{ asset($user_message->message->user->profile_pics->url ?? 'assets/dashboard/images/photos/22.jpg') }}"
                                                             class="avatar avatar-md brround">
-                                                            <span>{{ $user_message->msg_count }}</span>
+                                                        {{-- <span>{{ $user_message->msg_count }}</span> --}}
                                                     </div>
                                                     <div class="media-body">
                                                         <div class="media-contact-name">
-                                                            <span>{{ $user_message->message->user->name }} <b class="text-capitalize" style="font-size:10px">({{ $user_message->message->user->user_type}})</b></span>
+                                                            <span class="user-names">{{ $user_message->message->user->name }}
+                                                                <b class="text-capitalize" style="font-size:10px">
+                                                                    @if ($user_message->message->user->role == 'vendor')
+                                                                        (vendor)
+                                                                    @else
+                                                                        ({{ $user_message->message->user->user_type }})
+                                                                    @endif
+                                                                </b>
+                                                            </span>
                                                             <span>{{ $user_message->message->created_at->diffForHumans() }}</span>
                                                         </div>
                                                         <p>{{ $user_message->msg }}</p>
@@ -99,8 +108,8 @@
                                 <div class="main-chat-msg-name" id="main_chat_msg_name">
                                     <div id="main_chat_msg_name">
                                         @isset($current_user)
-                                        <input class="form-control" id="user_id" type="hidden"
-                                            value="{{ $current_user->user->id }}">
+                                            <input class="form-control" id="user_id" type="hidden"
+                                                value="{{ $current_user->user->id }}">
                                             {{-- @dump($current_user) --}}
                                             <h6>{{ $current_user->user->name }}</h6>
                                             <small>{{ $current_user->user->email }}</small>
@@ -119,7 +128,7 @@
                                 <div id="content_inner">
                                     @isset($current_user_messages)
                                         @foreach ($current_user_messages as $message)
-                                            @if ($message->type == "admin")
+                                            @if ($message->type == 'admin')
                                                 <div class="media flex-row-reverse mt-1">
                                                     <div class="main-img-user online">
                                                         <img alt=""src="{{ asset($message->admin->profile_pics->url ?? 'assets/dashboard/images/photos/22.jpg') }}"
@@ -158,7 +167,7 @@
                                                 </div>
                                             @endif
 
-                                            @if ($message->type == "user")
+                                            @if ($message->type == 'user')
                                                 <div class="media mb-5">
                                                     <div class="main-img-user online">
                                                         <img alt=""
@@ -235,5 +244,22 @@
         @csrf
         <input id="inputFile" type="file" name="save_file" style="display: none">
     </form>
+    <script>
+        // JavaScript code
+        function search_animal2() {
+            let input = document.getElementById('user-names-search-bar').value
+            input = input.toLowerCase();
+            let x = document.getElementsByClassName('user-names');
+
+            for (i = 0; i < x.length; i++) {
+                console.log(x[i].innerHTML.toLowerCase().includes(input), x[i].parentNode.parentNode.parentNode);
+                if (!x[i].innerHTML.toLowerCase().includes(input)) {
+                    x[i].parentNode.parentNode.parentNode.style.display = "none";
+                } else {
+                    x[i].parentNode.parentNode.parentNode.style.display = "flex";
+                }
+            }
+        }
+    </script>
     @include('layouts.dashboard.includes.admin-help')
 @endsection

@@ -7,12 +7,10 @@ use App\Mail\Contact;
 use App\Models\FAQ;
 use App\Models\Material;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 
 
 class HomeController extends Controller
@@ -53,14 +51,15 @@ class HomeController extends Controller
     {
         # code...
         $data['title'] = "Contact Us";
-        if ($_POST) {
 
-            $rules = array(
+        if ($request->isMethod('post')) {  // Use of isMethod to check if it is a POST request
+
+            $rules = [
                 'name' => ['required', 'string', 'max:50'],
                 'email' => ['required', 'email', 'string'],
                 'subject' => ['required', 'string', 'max:80'],
                 'message' => ['required', 'string'],
-            );
+            ];
 
             $messages = [];
 

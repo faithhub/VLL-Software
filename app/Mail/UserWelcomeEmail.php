@@ -27,6 +27,6 @@ class UserWelcomeEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Invitation from VLL')->markdown('emails.users.user')->with(['name' => $this->name]);
+        return $this->subject('Welcome to Virtual Law Library')->markdown('emails.users.user')->with(['name' => $this->name]);
     }
 }

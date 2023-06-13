@@ -18,28 +18,34 @@
 
 {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
 <style type="text/css">
+    .jconfirm {
+        z-index: 999999 !important;
+    }
+
     .form-check-input:checked {
         background-color: var(--primary-bg-color);
         border-color: var(--primary-bg-color);
     }
+
     #frame {
 
-  display: flex; 
-  justify-content:center;
-  /* height: 500px;
+        display: flex;
+        justify-content: center;
+        /* height: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid #dbe4ed; 
+  border: 3px solid #dbe4ed;
     background-image: url( asset('materials/icon/v-play.png'));
     background-position: center;
     background-size: cover;  */
-}
-#img2 {
-  position: absolute; 
-  z-index: 2;
-  top: 52.5%;
-}
+    }
+
+    #img2 {
+        position: absolute;
+        z-index: 2;
+        top: 52.5%;
+    }
 
     #video-bookstore-cover {
         position: absolute;
@@ -50,16 +56,18 @@
         left: 50%;
         transform: translate(-50%, -50%)
     }
+
     #video-bookstore-cover-view {
-    position: absolute;
-    justify-content: center;
-    width: 20%;
-    position: absolute;
-    top: 30%;
-    color: #330c0c;
-    left: 50%;
-    transform: translate(-50%, -80%);
-}
+        position: absolute;
+        justify-content: center;
+        width: 20%;
+        position: absolute;
+        top: 30%;
+        color: #330c0c;
+        left: 50%;
+        transform: translate(-50%, -80%);
+    }
+
     .video-bookstore-cover {
         position: absolute;
         justify-content: center;
@@ -185,22 +193,22 @@
         color: white;
     }
 
-        .container-img {
-            position: relative;
-        }
+    .container-img {
+        position: relative;
+    }
 
-        .image__1 {
-            display: block;
-            position: relative;
-            max-width: 100%;
-            height: auto;
-            z-index: 1;
-        }
+    .image__1 {
+        display: block;
+        position: relative;
+        max-width: 100%;
+        height: auto;
+        z-index: 1;
+    }
 
-        .image__2 {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+    .image__2 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 </style>
