@@ -785,6 +785,7 @@ class UserController extends Controller
             $rent_unique_id = 0;
             if ($type == "rented") {
                 # code...
+                //Rent duration is 2 days
                 $date_rented_expired = Carbon::now()->addDays(2);
                 // $rent_pending = MaterialHistory::where(['user_id' => Auth::user()->id, 'type' => 'rented', 'is_rent_expired' => false])->where('rent_count', '<', 2)->latest()->first();;
                 // if ($rent_pending) {

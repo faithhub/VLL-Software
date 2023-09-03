@@ -8,7 +8,8 @@
     function flutterwaveCheckout(amount, sub_id, type) {
         const currency = "{{$currency}}";
         FlutterwaveCheckout({
-            public_key: "FLWPUBK_TEST-006e9a2dde4eb5947f2da2af0c2f3695-X",
+            // public_key: "FLWPUBK_TEST-006e9a2dde4eb5947f2da2af0c2f3695-X",
+            public_key: "FLWPUBK-2e0795000c795271594541388f09b14f-X",
             tx_ref: "VLL-" + Math.floor((Math.random() * 100000000000000) + 1),
             amount: amount,
             currency: currency,

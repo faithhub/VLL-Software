@@ -43,6 +43,7 @@
                 $(this).data('options', $('#universities option').clone());
             }
             var id = $(this).val();
+            console.log($(this).data('options'));
             var options = $(this).data('options').filter('[data-value=' + id + ']');
             console.log(options, id)
             $('#universities').html(options);

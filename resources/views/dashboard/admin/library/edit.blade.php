@@ -621,5 +621,79 @@
             </div>
         </div>
     </div>
+
+    <div class="col-md-6 tags">
+        <div class="form-group" id="tagsInputDiv">
+            <label class="lbl" for="">Tags</label>
+            <input class="form-control tt-input" type="text" name="tags" data-role="tagsinput" id="tags" />
+        </div>
+    </div>
+    <script>
+                const preData = [{
+                value: 1,
+                text: "Amsterdam",
+                continent: "Europe"
+            },
+            {
+                value: 4,
+                text: "Washington",
+                continent: "America"
+            },
+            {
+                value: 7,
+                text: "Sydney",
+                continent: "Australia"
+            },
+            {
+                value: 10,
+                text: "Beijing",
+                continent: "Asia"
+            },
+            {
+                value: 13,
+                text: "Cairo",
+                continent: "Africa"
+            }
+        ];
+        let elt = $('#tags');
+        $(elt).tagsinput({
+            tagClass: (item) => {
+                switch (item.continent) {
+                    case 'Europe':
+                        return 'label label-primary';
+                    case 'America':
+                        return 'label label-danger label-important';
+                    case 'Australia':
+                        return 'label label-success';
+                    case 'Africa':
+                        return 'label label-default';
+                    case 'Asia':
+                        return 'label label-warning';
+                    default:
+                        return 'label label-danger';
+                }
+            },
+            itemValue: "value",
+            itemText: "text",
+        })
+        $(document).ready(() => {
+
+            preData.map((val, index) => {
+                $(elt).tagsinput('add', val);
+            })
+
+            var realInputForTags = $('#tags').tagsinput('input');
+            $(realInputForTags).change((e) => {
+                // you need to customize value, continent value according to your requirements
+                let newItem = {
+                    value: Math.random(),
+                    text: e.target.value,
+                    continent: "xxx continent"
+                }
+                $(elt).tagsinput('add', newItem);
+                e.target.value = "";
+            })
+        });
+    </script>
     @include('layouts.dashboard.includes.material')
 @endsection
