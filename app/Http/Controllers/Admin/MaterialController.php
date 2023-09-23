@@ -170,6 +170,7 @@ class MaterialController extends Controller
             //code...
             if ($_POST) {
                 $rules = array(
+                    // unique:users,email,'.$this->user->id
                     'name' => ['required', 'string', 'unique:folders,name,' . $id],
                     'amount' => ['required', 'string'],
                     'folder_cover_id' => ['mimes:jpeg,png,jpg,gif,svg', 'max:50000'],
@@ -184,6 +185,7 @@ class MaterialController extends Controller
 
                 if ($validator->fails()) {
                     Session::flash('warning', __('All fields are required'));
+                    // dd($validator->errors(), $request->all(), $id);
                     return back()->withErrors($validator)->withInput();
                 }
 
