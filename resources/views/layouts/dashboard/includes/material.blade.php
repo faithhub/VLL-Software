@@ -506,4 +506,73 @@
             $('#select_name_of_court').html(options);
         }).change();
     });
+
+    // $(function() {
+    //     $(document).ready(function() {
+    //         $('#fileUploadForm').ajaxForm({
+    //             beforeSend: function() {
+    //                 var percentage = '0';
+    //             },
+    //             uploadProgress: function(event, position, total, percentComplete) {
+    //                 var percentage = percentComplete;
+    //                 $('.progress .progress-bar').css("width", percentage + '%', function() {
+    //                     return $(this).attr("aria-valuenow", percentage) + "%";
+    //                 })
+    //             },
+    //             complete: function(xhr) {
+    //                 console.log('File has uploaded');
+    //             }
+    //         });
+    //     });
+    // });
+</script>
+{{-- <script data-minify="1" src="https://www.pakainfo.com/wp-content/cache/min/1/jquery.form.js?ver=1695206137"></script> --}}
+<script type="text/javascript">
+    function validate(formData, jqForm, options) {
+        rules: {
+        terms: {
+            required: true
+        },
+        // name: {
+        //     required: function () {
+        //         return $id.val().length > 0;
+        //     }
+        // },
+        // zipcode: {
+        //     required: function () {
+        //         return $id.val().length > 0;
+        //     }
+        // }
+    },
+    }
+    (function() {
+    var bar = $('.bar');
+    var percent = $('.percent');
+    var status = $('#status');
+    $('form').ajaxForm({
+        beforeSubmit: validate,
+        beforeSend: function() {
+            status.empty();
+            var totalValPercentage = '0%';
+            var posterValue = $('input[name=file]').fieldValue();
+            bar.width(totalValPercentage)
+            percent.html(totalValPercentage);
+        },
+        uploadProgress: function(event, position, total, percentComplete) {
+            var totalValPercentage = percentComplete + '%';
+            bar.width(totalValPercentage)
+            percent.html(totalValPercentage);
+        },
+        success: function() {
+            var totalValPercentage = 'Wait, Saving';
+            bar.width(totalValPercentage)
+            percent.html(totalValPercentage);
+        },
+        complete: function(xhr) {
+            status.html(xhr.responseText);
+            alert('Good Luck Your File or Images Uploaded Successfully');
+            window.location.href = "";
+        }
+    });
+    })();
 </script>

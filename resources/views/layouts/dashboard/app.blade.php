@@ -25,6 +25,7 @@
                 </div>
             </div>
         </div>
+        {{-- <div class="recent-activity" style="display: none"></div> --}}
         < !-- End Switcher -->
             <!---Global-loader-->
             {{-- <div id="global-loader" style="display: none;"> <img src="../assets/images/svgs/loader.svg" alt="loader">

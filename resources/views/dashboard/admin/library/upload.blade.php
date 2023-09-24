@@ -317,7 +317,7 @@
                                 Upload Material Information
                             </h6>
                             <form method="POST" action="{{ route('admin.upload') }}" class="validate-form"
-                                enctype="multipart/form-data">
+                                enctype="multipart/form-data" id="fileUploadForm">
                                 @csrf
                                 <input type="hidden" name="material_type_value" value="" id="material_type_value">
                                 <div class="row mt-5 mb-5 settings">
@@ -896,6 +896,17 @@
                                             </span>
                                         @enderror
                                     </div>
+                                    <div class="form-group">
+                                        <div class="progress">
+                                            <div class="bar"></div>
+                                            <div class="percent">0%</div>
+                                        </div>
+                                        {{-- <div class="progress">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                                                role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                                style="width: 0%"></div>
+                                        </div> --}}
+                                    </div>
                                     <div class="col-lg-12 col-xl-12 text-center">
                                         <button type="submit" class="btn btn-primary p-3 pt-3 pt-2"
                                             style="font-size: 18px">Submit</button>
@@ -908,5 +919,6 @@
             </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
     @include('layouts.dashboard.includes.material')
 @endsection
