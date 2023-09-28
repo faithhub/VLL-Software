@@ -48,9 +48,9 @@
 
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-<script src="https://spruko.com/demo/azea/Azea/assets/js/form-editor2.js"></script>
+{{-- <script src="https://spruko.com/demo/azea/Azea/assets/js/form-editor2.js"></script>
 <script src="https://spruko.com/demo/azea/Azea/assets/js/form-editor.js"></script>
-<script src="https://spruko.com/demo/azea/Azea/assets/plugins/wysiwyag/jquery.richtext.js"></script>
+<script src="https://spruko.com/demo/azea/Azea/assets/plugins/wysiwyag/jquery.richtext.js"></script> --}}
 
 <script src="https://parsleyjs.org/dist/parsley.min.js"></script>
 

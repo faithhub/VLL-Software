@@ -55,7 +55,7 @@
                                                             <td>{{ $material->name_of_author ?? '-' }}</td>
                                                             <td>{{ $material->vendor->name ?? '-' }}</td>
                                                             <td>{{ mb_strimwidth($material->material_desc ?? '', 0, 20, '...') }}</td>
-                                                            <td>₦{{ number_format($material->amount ?? 0, 2) }}</td>
+                                                            <td><span class="money">{{ money($material->amount, $material->currency_id) }} </span> </td>
                                                             <td><a class="font-weight-bold"
                                                                     href="{{ asset($material->file->url ?? "") }}">{{ mb_strimwidth($material->title ?? '', 0, 20, '...') }}.pdf</a>
                                                             </td>

@@ -68,6 +68,7 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::match(['post'], 'subscribe',  [App\Http\Controllers\Dashboard\UserController::class, 'subscribe'])->name('subscribe');
         Route::match(['post'], 'buy_rent_material',  [App\Http\Controllers\Dashboard\UserController::class, 'buy_rent_material'])->name('rent.buy')->middleware('sub');
         Route::match(['get'], 'add_to_library/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'add_to_library'])->name('add_to_library')->middleware('sub');
+        Route::match(['get'], 'add_free_folder_to_library/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'add_free_folder_to_library'])->name('add_free_folder_to_library')->middleware('sub');
         Route::match(['get'], 'second_rent/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'second_rent'])->name('second_rent')->middleware('sub');
         Route::match(['get', 'post'], 'access-material/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'access_material'])->name('access_material');
         Route::match(['get', 'post'], 'send-note/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'send_note'])->name('send_note');

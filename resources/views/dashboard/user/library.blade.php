@@ -72,6 +72,9 @@
                                                 @if (in_array($folder->id, $bought_folders))
                                                     <div class="ribbon ribbon-holder ribbon-bought">Bought</div>
                                                 @endif
+                                                @if (in_array($folder->id, $free_folders))
+                                                    <div class="ribbon ribbon-holder ribbon-bought">Free</div>
+                                                @endif
                                                 <a onclick="shiNew(event)" data-type="dark" data-size="l"
                                                     data-title="{{ $folder->name }}"
                                                     href="{{ route('user.view_folder', $folder->id) }}">

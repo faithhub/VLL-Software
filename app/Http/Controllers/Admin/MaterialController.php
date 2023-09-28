@@ -172,11 +172,13 @@ class MaterialController extends Controller
                 $rules = array(
                     // unique:users,email,'.$this->user->id
                     'name' => ['required', 'string', 'unique:folders,name,' . $id],
-                    'amount' => ['required', 'string'],
+                    'amount' => ['required_if:price,Paid'],
+                    'duration' => ['required_if:price,Paid'],
                     'folder_cover_id' => ['mimes:jpeg,png,jpg,gif,svg', 'max:50000'],
                 );
 
                 $messages = [
+                    'name.unique' => __('The Folder name has already been taken'),
                     'folder_cover_id.required_if' => __('The Folder cover is required'),
                 ];
 
@@ -213,7 +215,8 @@ class MaterialController extends Controller
                     "country_id" => $request->country_id,
                     "publisher" => $request->publisher,
                     "tags" => $tags,
-                    "amount" => $request->amount,
+                    "amount" => $request->amount ?? $folder->amount,
+                    "duration" => $request->duration ?? $folder->duration,
                     "folder_cover_id" => $save_cover->id ?? $folder->folder_cover_id,
                 ]);
                 Session::flash('success', __('Folder updated successfully'));
@@ -223,6 +226,7 @@ class MaterialController extends Controller
             $data['material_types'] = $m = MaterialType::where("status", "active")->whereIn('name', ['Law', 'Case Law'])->whereJsonContains('role', $role)->get();
             $data['title'] = "Admin Dashboard - Edit Folder";
             $data['mode'] = "edit";
+            $data['countries'] = Country::all();
             return View('dashboard.admin.modals.add-folder', $data);
         } catch (\Throwable $th) {
             dD($th->getMessage());
@@ -243,12 +247,13 @@ class MaterialController extends Controller
                     $rules = array(
                         'material_type_id' => ['required', 'string', 'max:255'],
                         'folder_id' => ['required', 'string', 'max:255'],
-                        'folder_name' => ['required', 'string', 'max:255'],
+                        'folder_name' => ['required', 'string', 'max:255', 'unique:folders,name'],
                         'name_of_author' => ['required', 'string', 'max:255'],
                         'version' => ['required', 'string', 'max:255'],
                         'country_id' => ['required', 'string', 'max:255'],
                         'price' => ['required', 'string', 'max:255'],
                         'amount' => ['required_if:price,Paid'],
+                        'duration' => ['required_if:price,Paid'],
                         'publisher' => ['required', 'string', 'max:255'],
                         'tags' => ['required', 'string', 'max:255'],
                         'folder_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
@@ -388,6 +393,7 @@ class MaterialController extends Controller
                         "material_type_id" => $request->material_type_id,
                         "name" => $request->folder_name,
                         "amount" => $request->amount ?? 0,
+                        "duration" => $request->duration ?? 'free',
                         "publisher" => $request->publisher,
                         "name_of_author" => $request->name_of_author,
                         "version" => $request->version,

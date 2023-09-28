@@ -63,6 +63,11 @@
                                                                                 Bought
                                                                             </div>
                                                                         @endif
+                                                                        @if (in_array($material[0]['folder']['id'] ?? 0, $free_folders))
+                                                                            <div class="ribbon ribbon-holder ribbon-bought">
+                                                                                Free
+                                                                            </div>
+                                                                        @endif
                                                                         <a onclick="shiNew(event)" data-type="dark" data-size="xl"
                                                                             data-title="{{ $material[0]['folder']['name'] }}"
                                                                             href="{{ route('user.view_folder', $material[0]['folder']['id']) }}">

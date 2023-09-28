@@ -626,6 +626,23 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div id="paidDiv2" class="new_law_div_tag new_csl_div_tag upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12" style="display: none">
+                                        <div class="form-group">
+                                            <label class="form-label">Folder Duration <span>*<span></label>
+                                            <select class="form-control select2" name="duration" id="folder-duration" requiredd
+                                                data-parsley-required-message="Duration is required">
+                                                <option value="">Select duration</option>
+                                                <option value="annual" @selected(old('duration') == 'annual')>Annual</option>
+                                                <option value="quarterly" @selected(old('duration') == 'quarterly')>Quarterly</option>
+                                                <option value="monthly" @selected(old('duration') == 'monthly')>Monthly</option>
+                                            </select>
+                                            @error('duration')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 taa-field material_upload_fields"
                                         id="TAA-data1" style="display: none">
                                         <div class="form-group">
@@ -919,6 +936,5 @@
             </div>
         </div>
     </div>
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script> --}}
     @include('layouts.dashboard.includes.material')
 @endsection

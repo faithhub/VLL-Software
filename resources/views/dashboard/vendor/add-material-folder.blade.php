@@ -3,7 +3,7 @@
         @isset($mode)
             @if ($mode == 'edit')
                 <form class="validate-form" method="POST" enctype="multipart/form-data"
-                    action="{{ route('vendor.edit_folder', $folder->id) }}">
+                    action="{{ route('vendor.edit_folder', $folder->id) }}" data-parsley-valide="">
                     @csrf
                     <input type="hidden" name="material_type_id" value="{{ $folder->material_type_id ?? null }}">
                     <div class="row">
@@ -23,7 +23,7 @@
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xl-6">
                                     <label class="form-label">Name of Author <span>*<span></label>
                                     <input type="text" class="form-control" name="name_of_author"
-                                        value="{{ $folder->name_of_author }}" requiredd=""
+                                        value="{{ $folder->name_of_author }}" required=""
                                         data-parsley-required-message="Name of Author is required" placeholder="">
                                     @error('name_of_author')
                                         <span class="invalid-feedback" role="alert">
@@ -37,7 +37,7 @@
                             <div class="col-lg-6 col-md-12 mb-2 col-sm-12 col-xl-6">
                                 <label class="form-label">Version <span>*<span></label>
                                 <input type="text" class="form-control" placeholder="2nd Version" name="version"
-                                    value="{{ $folder->version }}" requiredd=""
+                                    value="{{ $folder->version }}" required=""
                                     data-parsley-required-message="Version is required">
                                 @error('version')
                                     <span class="invalid-feedback" role="alert">
@@ -49,7 +49,7 @@
                                 <label class="form-label">Country of Publication
                                     <span>*<span></label>
                                 <select onchange="" class="form-control select" name="country_id"
-                                    id="country_of_publication" requiredd=""
+                                    id="country_of_publication" required=""
                                     data-parsley-errors-container="#country_of_publication-error"
                                     data-parsley-required-message="Country of Publication is required">
                                     <option value="">Select Country</option>
@@ -69,23 +69,42 @@
                                     @enderror
                             </div>
                         </div>
+                        {{-- {{$folder}}  --}}
                         <div class="form-row mb-2">
-                            <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6 mb-2">
-                                <label class="form-label">Amount</label>
-                                <input type="number" class="form-control" placeholder="Folder Annual Amount"
-                                    value="{{ $folder->amount }}" name="amount" required=""
-                                    data-parsley-required-message="Folder Amount is required">
-                                @error('amount')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                            @if ($folder->price == 'Paid')
+                                <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6 mb-2">
+                                    <label class="form-label">Amount</label>
+                                    <div class="d-flex">
+                                        <select class="form-control" name="currency_id" id="currency_id"
+                                            style="width: 50% !important" required>
+                                            @isset($app_currencies)
+                                                @foreach ($app_currencies as $app_currency)
+                                                    <option value="{{ $app_currency->id }}" @selected($folder->currency_id == $app_currency->id)
+                                                        style="background-image:url('{{ asset($app_currency->flag) }}');">
+                                                        {{ $app_currency->name }} ({{ $app_currency->symbol }})
+                                                    </option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
+                                        <input type="number" class="form-control" placeholder="Folder Annual Amount"
+                                            value="{{ $folder->amount }}" name="amount" required=""
+                                            data-parsley-errors-container="#amount_error"
+                                            data-parsley-required-message="Amount is required">
+                                    </div>
+                                    <span class="invalid-feedback" id="amount_error" role="alert">
                                     </span>
-                                @enderror
-                            </div>
+                                    @error('amount')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            @endif
                             <div class="col-lg-6 col-md-12 col-sm-12 col-xl-6">
                                 <label class="form-label">Publishers <span>*<span></label>
                                 <input type="text" class="form-control" name="publisher"
-                                    value="{{ $folder->publisher }}" requiredd=""
-                                    data-parsley-required-message="Title of Material is required" placeholder="">
+                                    value="{{ $folder->publisher }}" required=""
+                                    data-parsley-required-message="Publishers is required" placeholder="">
                                 @error('publisher')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -93,17 +112,35 @@
                                 @enderror
                             </div>
                         </div>
+                        @if ($folder->price == 'Paid')
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="form-group">
+                                    <label class="form-label">Duration <span>*<span></label>
+                                    <select class="form-control" name="duration" id="duration" required
+                                        data-parsley-required-message="Duration is required">
+                                        <option value="">Select duration</option>
+                                        <option value="annual" @selected($folder->duration == 'annual')>Annual</option>
+                                        <option value="quarterly" @selected($folder->duration == 'quarterly')>Quarterly</option>
+                                        <option value="monthly" @selected($folder->duration == 'monthly')>Monthly</option>
+                                    </select>
+                                    @error('duration')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        @endif
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                             <div class="form-group">
                                 <label class="form-label">Tags <span>*<span></label>
                                 <input type="" data-role="tagsinput" class="form-control tm-input tm-input-inf"
-                                    placeholder="Input material tags" requiredd=""
+                                    placeholder="Input material tags" required=""
                                     value="@isset($folder->tags)
                                         @foreach ($folder->tags as $tag) 
                                     {{ $tag }} @endforeach
                                     @endisset"
-                                    name="tags" id="tags_input"
-                                    data-parsley-required-message="Title of Material is required">
+                                    name="tags" id="tags_input" data-parsley-required-message="Tags are required">
                                 <div class="col-auto">
                                     <span id="passwordHelpInline" class="form-text">
                                         Input words to aid search in Bookstore (Law, Legal)
@@ -138,11 +175,12 @@
                                     </div>
                                 </div>
                                 <span class="invalid-feedback" id="material-cover2-error" role="alert">
-                                    @error('folder_cover_id')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                </span>
+                                @error('folder_cover_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
                     </div>

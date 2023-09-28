@@ -79,6 +79,8 @@
                                                     </th>
                                                     <th class="sorting" tabindex="0" style="">Amount
                                                     </th>
+                                                    <th class="sorting" tabindex="0" style="">Duration
+                                                    </th>
                                                     <th class="sorting" tabindex="0" style="">Created on
                                                     </th>
                                                     <th class="sorting" tabindex="0" style="">Action
@@ -102,8 +104,15 @@
                                                                 <a class="font-weight-normal1"
                                                                     href="#">{{ $folder->mat_type->name ?? "" }}</a>
                                                             </td>
+                                                            <td>
+                                                                @if ($folder->price == 'Free')
+                                                                Free
+                                                                    @else
+                                                                    <span class="money">{{ money($folder->amount, $folder->currency_id) }}</span>
+                                                                @endif
+                                                            </td>
                                                             <td><span
-                                                                    class="money">{{ money($folder->amount, $folder->currency_id) }}</span>
+                                                                    class="text-capitalize">{{ $folder->duration }}</span>
                                                             </td>
                                                             <td>{{ $folder->created_at->format('D, M j, Y') }}
                                                             </td>

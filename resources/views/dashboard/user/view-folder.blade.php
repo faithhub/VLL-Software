@@ -88,16 +88,28 @@
                                     <div class="card-body">
                                         <h5><b class="font-weight-bold">Folder Details</h5>
                                         <h5><b class="font-weight-bold">Name: </b>{{ $folder->name }}</h5>
-                                        <h5><b class="font-weight-bold">Amount: {{ money($folder->amount, $folder->currency_id) }}</b>
-                                            /
-                                            annual </h5>
+                                        <h5><b class="font-weight-bold">Amount:
+                                                @if ($folder->price == 'Paid')
+                                                    {{ money($folder->amount, $folder->currency_id) }} / <span
+                                                        class="text-capitalize">{{ $folder->duration }}</span>
+                                                @elseif ($folder->price == 'Free')
+                                                    Free
+                                                @endif
+                                            </b></h5>
                                         <h5><b class="font-weight-bold">No of Materials:
                                                 {{ $folder_mat_count }}</b>
                                         </h5>
+                                        @if ($folder->price == 'Paid')
                                         <a onclick="flutterwaveBuyMaterial('{{ exchange($folder->amount, $folder->currency_id) }}', '{{ $folder->id }}', 'folder')"
                                             class="btn m-2 btn-primary p-3">
                                             Buy Folder
                                         </a>
+                                        @elseif ($folder->price == 'Free')
+                                        <a href="{{ route('user.add_free_folder_to_library', $folder->id) }}"
+                                            class="btn btn-primary p-3" onclick="return confirm('Are you sure you want to add this folder to your library?')">
+                                            Add To Library
+                                        </a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

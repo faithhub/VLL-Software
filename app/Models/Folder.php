@@ -14,6 +14,8 @@ class Folder extends Model
         'user_id',
         'name_of_author',
         'amount',
+        'price',
+        'duration',
         'publisher',
         'version',
         'tags',

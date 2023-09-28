@@ -284,6 +284,23 @@
                 elems[i].style.display = 'none';
             }
 
+            var bookPriceSelectValue = $("#bookPriceSelect").val()
+            if (uniqueId == "CSL" || uniqueId == "LAW") {
+                switch (bookPriceSelectValue) {
+                    case "Paid":
+                        document.getElementById('paidDiv2').style.display = 'block';
+                        break;
+                    case "Free":
+                        document.getElementById('paidDiv2').style.display = 'none';
+                        break;
+                    default:
+                        document.getElementById('paidDiv2').style.display = 'none';
+                        break;
+                }
+            } else {
+                document.getElementById('paidDiv2').style.display = 'none';
+            }
+
             switch (uniqueId) {
                 case "TXT":
                     var txt_elems = document.getElementsByClassName('text-field');
@@ -478,7 +495,31 @@
 
     $(document).ready(function() {
         $("#bookPriceSelect").change(function() {
+
             var value = $(this).val()
+
+            var e = document.getElementById("material_type_select");
+            var matId = $("#material_type_select").find(':selected').attr('data-matId');
+            var uniqueId = matId.substring(0, 3);
+            var value2 = e.value;
+            console.log(uniqueId);
+
+            if (uniqueId == "CSL" || uniqueId == "LAW") {
+                switch (value) {
+                    case "Paid":
+                        document.getElementById('paidDiv2').style.display = 'block';
+                        break;
+                    case "Free":
+                        document.getElementById('paidDiv2').style.display = 'none';
+                        break;
+                    default:
+                        document.getElementById('paidDiv2').style.display = 'none';
+                        break;
+                }
+            } else {
+                document.getElementById('paidDiv2').style.display = 'none';
+            }
+
             switch (value) {
                 case "Paid":
                     document.getElementById('paidDiv').style.display = 'block';
@@ -506,73 +547,17 @@
             $('#select_name_of_court').html(options);
         }).change();
     });
-
-    // $(function() {
-    //     $(document).ready(function() {
-    //         $('#fileUploadForm').ajaxForm({
-    //             beforeSend: function() {
-    //                 var percentage = '0';
-    //             },
-    //             uploadProgress: function(event, position, total, percentComplete) {
-    //                 var percentage = percentComplete;
-    //                 $('.progress .progress-bar').css("width", percentage + '%', function() {
-    //                     return $(this).attr("aria-valuenow", percentage) + "%";
-    //                 })
-    //             },
-    //             complete: function(xhr) {
-    //                 console.log('File has uploaded');
-    //             }
-    //         });
-    //     });
-    // });
 </script>
-{{-- <script data-minify="1" src="https://www.pakainfo.com/wp-content/cache/min/1/jquery.form.js?ver=1695206137"></script> --}}
-<script type="text/javascript">
-    function validate(formData, jqForm, options) {
-        rules: {
-        terms: {
-            required: true
-        },
-        // name: {
-        //     required: function () {
-        //         return $id.val().length > 0;
-        //     }
-        // },
-        // zipcode: {
-        //     required: function () {
-        //         return $id.val().length > 0;
-        //     }
-        // }
-    },
-    }
-    (function() {
-    var bar = $('.bar');
-    var percent = $('.percent');
-    var status = $('#status');
-    $('form').ajaxForm({
-        beforeSubmit: validate,
-        beforeSend: function() {
-            status.empty();
-            var totalValPercentage = '0%';
-            var posterValue = $('input[name=file]').fieldValue();
-            bar.width(totalValPercentage)
-            percent.html(totalValPercentage);
-        },
-        uploadProgress: function(event, position, total, percentComplete) {
-            var totalValPercentage = percentComplete + '%';
-            bar.width(totalValPercentage)
-            percent.html(totalValPercentage);
-        },
-        success: function() {
-            var totalValPercentage = 'Wait, Saving';
-            bar.width(totalValPercentage)
-            percent.html(totalValPercentage);
-        },
-        complete: function(xhr) {
-            status.html(xhr.responseText);
-            alert('Good Luck Your File or Images Uploaded Successfully');
-            window.location.href = "";
-        }
+<script src="http://parsleyjs.org/dist/parsley.js"></script>
+<script>
+    var $selector = $('#signupForm'),
+        form = $selector.parsley();
+
+    form.subscribe('parsley:form:success', function(e) {
+
     });
-    })();
+
+    $selector.find('button').click(function() {
+        form.validate();
+    });
 </script>

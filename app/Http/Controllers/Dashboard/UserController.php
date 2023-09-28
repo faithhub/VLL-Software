@@ -57,7 +57,8 @@ class UserController extends Controller
             $mat_type = MaterialType::where('status', 'active')->orderBy('sort', 'ASC')->get();
             $material_array = [];
             $bought_folders = [];
-
+            $free_folders = [];
+            $bought_and_free_folders = [];
 
             $my_materials_arr = [];
             $all_my_materials_arr = [];
@@ -71,7 +72,13 @@ class UserController extends Controller
                     $all_folders = MaterialHistory::where(['user_id' => $user->id, "mat_type" => "folder", 'isFolderExpired' => false])->get();
                     foreach ($all_folders as $key2 => $value2) {
                         # code...
-                        array_push($bought_folders, $value2->folder_id);
+                        array_push($bought_and_free_folders, $value2->folder_id);
+                        if ($value2->type == "bought") {
+                            array_push($bought_folders, $value2->folder_id);
+                        }
+                        if ($value2->type == "free") {
+                            array_push($free_folders, $value2->folder_id);
+                        }
                     }
 
                     foreach ($my_materials as $key => $value) {
@@ -85,7 +92,13 @@ class UserController extends Controller
                 $all_folders = MaterialHistory::where(['user_id' => Auth::user()->id, "mat_type" => "folder", 'isFolderExpired' => false])->get();
                 foreach ($all_folders as $key2 => $value2) {
                     # code...
-                    array_push($bought_folders, $value2->folder_id);
+                    array_push($bought_and_free_folders, $value2->folder_id);
+                    if ($value2->type == "bought") {
+                        array_push($bought_folders, $value2->folder_id);
+                    }
+                    if ($value2->type == "free") {
+                        array_push($free_folders, $value2->folder_id);
+                    }
                 }
 
                 foreach ($my_materials as $key => $value) {
@@ -117,6 +130,7 @@ class UserController extends Controller
 
 
             $data['bought_folders'] = $bought_folders;
+            $data['free_folders'] = $free_folders;
             $data['material_array'] = $material_array;
             $data['my_materials_arr'] = $my_materials_arr;
             $data['all_my_materials_arr'] = $all_my_materials_arr;
@@ -165,6 +179,8 @@ class UserController extends Controller
             $my_materials_arr = [];
             $my_materials_array = [];
             $bought_folders = [];
+            $free_folders = [];
+            $bought_and_free_folders = [];
             if (Auth::user()->team_id) {
                 # code...
                 $team = Team::find(Auth::user()->team_id);
@@ -175,7 +191,13 @@ class UserController extends Controller
                     $all_folders = MaterialHistory::where(['user_id' => $user->id, "mat_type" => "folder", 'isFolderExpired' => false])->get();
                     foreach ($all_folders as $key2 => $value2) {
                         # code...
-                        array_push($bought_folders, $value2->folder_id);
+                        array_push($bought_and_free_folders, $value2->folder_id);
+                        if ($value2->type == "bought") {
+                            array_push($bought_folders, $value2->folder_id);
+                        }
+                        if ($value2->type == "free") {
+                            array_push($free_folders, $value2->folder_id);
+                        }
                     }
                     foreach ($my_materials as $key => $value) {
                         # code...
@@ -187,7 +209,13 @@ class UserController extends Controller
                 $all_folders = MaterialHistory::where(['user_id' => Auth::user()->id, "mat_type" => "folder", 'isFolderExpired' => false])->get();
                 foreach ($all_folders as $key2 => $value2) {
                     # code...
-                    array_push($bought_folders, $value2->folder_id);
+                    array_push($bought_and_free_folders, $value2->folder_id);
+                    if ($value2->type == "bought") {
+                        array_push($bought_folders, $value2->folder_id);
+                    }
+                    if ($value2->type == "free") {
+                        array_push($free_folders, $value2->folder_id);
+                    }
                 }
 
                 foreach ($my_materials as $key => $value) {
@@ -196,6 +224,7 @@ class UserController extends Controller
                     array_push($my_materials_arr, $value->unique_id);
                 }
             }
+            // dd($free_folders, $bought_folders);
 
             if ($_GET) {
                 if (isset($_GET['search']) && !empty($_GET['search'])) {
@@ -220,21 +249,16 @@ class UserController extends Controller
                             $row->title = preg_replace('/(' . $search . ')/i', "<b class='search-text'>$1</b>", [$row->title]);
                             $row->tags = preg_replace('/(' . $search . ')/i', "<b class='search-text'>$1</b>", $row->tags);
                             return $row;
-                        });
-
-                    // dd("hgvhgvh");
+                    });
                     return View('dashboard.user.search', $data);
                 }
             }
-
-            // dd($my_materials_arr,
-            //     Auth::user()->id
-            // );
-
+            
             $data['notes'] = Note::where(['user_id' => Auth::user()->id])->latest()->limit(5)->get();
             $data['title'] = "User Dashboard - My Library";
             $data['bought_folders'] = $bought_folders;
-            $data['folders'] = $fd = Folder::whereIn('id', $bought_folders)->get();
+            $data['free_folders'] = $free_folders;
+            $data['folders'] = $fd = Folder::whereIn('id', $bought_and_free_folders)->get();
             $data['materials'] = $mm = DB::table('material_histories')
                 ->join('materials', 'material_histories.material_id', '=', 'materials.id')
                 ->join('material_types', 'materials.material_type_id', '=', 'material_types.id')
@@ -802,8 +826,29 @@ class UserController extends Controller
                 $type = "bought";
                 $mat_type = "folder";
                 $folder_id = $mat_id;
+                $folder = Folder::find($folder_id);
                 $mat_id = null;
-                $folder_expired_date = Carbon::now()->addMonths(12);
+                switch ($folder->duration) {
+                    case 'annual':
+                        # code...
+                        //Set to expired in a year's time, but working on updates to accept monthly as well
+                        $folder_expired_date = Carbon::now()->addMonths(12);
+                        break;
+                    case 'quarterly':
+                        # code...
+                        //Set to expired in a year's time, but working on updates to accept monthly as well
+                        $folder_expired_date = Carbon::now()->addMonths(3);
+                        break;
+                    case 'monthly':
+                        # code...
+                        //Set to expired in a year's time, but working on updates to accept monthly as well
+                        $folder_expired_date = Carbon::now()->addMonths(1);
+                        break;
+
+                    default:
+                        # code...
+                        break;
+                }
                 $isFolderExpired = false;
             }
 
@@ -873,6 +918,37 @@ class UserController extends Controller
                 'rent_unique_id' => $rent_pending->rent_unique_id,
                 'date_rented_expired' => $rent_pending->date_rented_expired,
                 'type' => 'rented'
+            ]);
+
+            Session::flash('success', 'Material added to my library successfully');
+            return redirect()->route('user.library');
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            //throw $th;
+        }
+    }
+
+    public function add_free_folder_to_library($id)
+    {
+        # code...
+        try {
+            //code...
+            $folder = Folder::find($id);
+
+            if (!$folder) {
+                Session::flash('warning', 'Folder not found');
+                return back();
+            }
+
+            MaterialHistory::create([
+                'user_id' => Auth::user()->id,
+                'material_id' => null,
+                'unique_id' => Str::upper("FOLD" . $this->unique_code(12)),
+                'transaction_id' => null,
+                'date' =>  Carbon::now(),
+                'folder_id' =>  $folder->id,
+                'mat_type' => 'folder',
+                'type' => 'free'
             ]);
 
             Session::flash('success', 'Material added to my library successfully');

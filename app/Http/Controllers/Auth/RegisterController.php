@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\LoginHistory;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Mail\UserWelcomeEmail;
 use App\Mail\VendorWelcomeEmail;
@@ -13,6 +15,9 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Stevebauman\Location\Facades\Location;
+use hisorange\BrowserDetect\Parser as Browser;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -105,13 +110,13 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         // dd($data);
-        // return back();
+       
         try {
             //code...
             if ($data['form_type'] == "user") {
                 # code...
                 Mail::to($data['email'])->send(new UserWelcomeEmail($data['name']));
-                return User::create([
+                $user = User::create([
                     'name' => $data['name'],
                     'email' => $data['email'],
                     'role' => $data['form_type'],
@@ -120,6 +125,10 @@ class RegisterController extends Controller
                     'country_id' => $data['country'] ?? null,
                     'password' => Hash::make($data['password']),
                 ]);
+
+                $this->getLoginLogs($user->id);
+
+                return $user;
             }
 
             if ($data['form_type'] == "vendor"
@@ -136,9 +145,34 @@ class RegisterController extends Controller
                     'password' => Hash::make($data['password']),
                 ]);
             }
+            // dd($data);
         } catch (\Throwable $th) {
             dd($th);
             //throw $th;
         }
+    }
+
+    public function getLoginLogs($user_id)
+    {
+        $ip = Request::getClientIp();
+        $loc = Location::get($ip);
+        $data['details'] = $details = [
+            "user_id" => $user_id,
+            "ip" => $loc->ip ?? "",
+            "browserFamily" => Browser::browserFamily() ?? "",
+            "browserVersion" => Browser::browserVersion() ?? "",
+            "platformVersion" => Browser::platformVersion() ?? "",
+            "platformFamily" => Browser::platformFamily() ?? "",
+            "deviceType" => Browser::deviceType() ?? "",
+            "countryName" => $loc->countryName ?? "",
+            "regionName" => $loc->regionName ?? "",
+            "cityName" => $loc->cityName ?? "",
+            "latitude" => $loc->latitude ?? "",
+            "longitude" => $loc->longitude ?? "",
+            "timezone" => $loc->timezone ?? "",
+            "last_login_at" =>  Carbon::now()->toDateTimeString()
+        ];
+
+        LoginHistory::create($details);
     }
 }

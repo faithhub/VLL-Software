@@ -466,12 +466,13 @@ class VendorController extends Controller
                     $rules = array(
                         'material_type_id' => ['required', 'string', 'max:255'],
                         'folder_id' => ['required', 'string', 'max:255'],
-                        'folder_name' => ['required', 'string', 'max:255'],
+                        'folder_name' => ['required', 'string', 'max:255', 'unique:folders,name'],
                         'name_of_author' => ['required', 'string', 'max:255'],
                         'version' => ['required', 'string', 'max:255'],
                         'country_id' => ['required', 'string', 'max:255'],
                         'price' => ['required', 'string', 'max:255'],
                         'amount' => ['required_if:price,Paid'],
+                        'duration' => ['required_if:price,Paid'],
                         'publisher' => ['required', 'string', 'max:255'],
                         'tags' => ['required', 'string', 'max:255'],
                         'folder_cover_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
@@ -587,11 +588,11 @@ class VendorController extends Controller
                     ]);
                 }
                 if ($request->folder_id == "new_folder") {
-
                     $new_foler = Folder::create([
                         "material_type_id" => $request->material_type_id,
                         "name" => $request->folder_name,
                         "amount" => $request->amount ?? 0,
+                        "duration" => $request->duration ?? 'free',
                         "publisher" => $request->publisher,
                         "name_of_author" => $request->name_of_author,
                         "version" => $request->version,
@@ -888,7 +889,7 @@ class VendorController extends Controller
             Session::forget('new_folder');
             Session::forget('mat_type');
             Session::forget('mat_unique');
-            Session::flash('success', __('Canceled successfully'));
+            Session::flash('success', __('Upload Canceled'));
             return redirect()->route('vendor.index');
         } catch (\Throwable $th) {
             dd($th->getMessage());
@@ -1038,11 +1039,14 @@ class VendorController extends Controller
             if ($_POST) {
                 $rules = array(
                     'name' => ['required', 'string', 'unique:folders,name,' . $id],
-                    'amount' => ['required', 'string'],
+                    // 'amount' => ['required', 'string'],
+                    'amount' => ['required_if:price,Paid'],
+                    'duration' => ['required_if:price,Paid'],
                     'folder_cover_id' => ['mimes:jpeg,png,jpg,gif,svg', 'max:50000'],
                 );
 
                 $messages = [
+                    'name.unique' => __('The Folder name has already been taken'),
                     'folder_cover_id.required_if' => __('The Folder cover is required'),
                 ];
 
@@ -1050,7 +1054,12 @@ class VendorController extends Controller
                 $validator = Validator::make($request->all(), $rules, $messages);
 
                 if ($validator->fails()) {
+                    $errors = $validator->errors();
+                    if ($errors->has('name')) {
+                        Session::flash('warning', $errors->first('name'));
+                    } else {
                     Session::flash('warning', __('All fields are required'));
+                    }
                     return back()->withErrors($validator)->withInput();
                 }
 
@@ -1078,9 +1087,11 @@ class VendorController extends Controller
                     "name_of_author" => $request->name_of_author,
                     "version" => $request->version,
                     "country_id" => $request->country_id,
+                    "currency_id" => $request->currency_id,
                     "publisher" => $request->publisher,
                     "tags" => $tags,
-                    "amount" => $request->amount,
+                    "amount" => $request->amount ?? $folder->amount,
+                    "duration" => $request->duration ?? $folder->duration,
                     "folder_cover_id" => $save_cover->id ?? $folder->folder_cover_id,
                 ]);
                 Session::flash('success', __('Folder updated successfully'));

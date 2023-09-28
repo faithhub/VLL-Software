@@ -21,7 +21,7 @@
                                         data-title="{{ $material->title }}"
                                         href="{{ route('admin.view_material', $material->id) }}" class="book-title mt-2">
                                         <h4 class="text-capitalize">{{ $material->title }}
-                                            ({{ $material->year_of_publication }})
+                                            {{ $material->name_of_court }}
                                         </h4>
                                         <h5 class="text-capitalize">{{ $material->name_of_author }}</h5>
                                     </a>
