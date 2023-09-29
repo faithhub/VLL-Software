@@ -1,6 +1,7 @@
   <script>
         var viewerContainer = document.getElementById('pdfviewer')
-        var license = "{{ config('PDFVIEWERAPI') }}"; // your license key
+        // var license = "{{ config('PDFVIEWERAPI') }}"; // your license key
+        var license = "<4H,V4,VIEWWEB,DGA6S99DV8P1DKA7HSS0K9C>"; // your license key
         // use default options
         // const options = {}
         var options = {
