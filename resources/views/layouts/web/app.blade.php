@@ -11,6 +11,7 @@
     <meta content="" name="author">
     <meta name="keywords" content="Virtual Law Library dashboard">
 
+    <link rel="icon" type="image/png" href="{{ asset('assets/web/logo/vll-b.png') }}">
     <!-- Link of CSS files -->
     @include('layouts.web.includes.style')
 

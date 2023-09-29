@@ -9,6 +9,7 @@
     <meta content="Virtual Law Library Dashboard" name="description">
     <meta content="" name="author">
     <meta name="keywords" content="Virtual Law Library dashboard">
+    <link rel="icon" type="image/png" href="{{ asset('assets/web/logo/vll-b.png') }}">
     <!-- Title -->
     <title>Virtual Law Library Dashboard | {{ $title ?? '' }}</title>
     @include('layouts.dashboard.includes.style')
