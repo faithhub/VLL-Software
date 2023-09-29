@@ -417,7 +417,7 @@
     @endif
 
   @include('layouts.dashboard.includes.pdf-tool-reader')
-    <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
+    {{-- <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script> --}}
     <script type="text/javascript">
         $(document).on("keydown", "form", function(event) {
             return event.key != "Enter";
