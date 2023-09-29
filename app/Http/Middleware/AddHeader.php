@@ -17,8 +17,8 @@ class AddHeader
     public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
-        $response->header('Access-­Control-­Expose-­Headers', 'Content-­Length-Accept-­Ranges-Content-­Range');
-        $response->header('Access-­Control-Allow-­Headers', 'range');
+        // $response->header('Access-­Control-­Expose-­Headers', 'Content-­Length-Accept-­Ranges-Content-­Range');
+        // $response->header('Access-­Control-Allow-­Headers', 'range');
 
         return $response;
     }
