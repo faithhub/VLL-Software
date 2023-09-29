@@ -39,7 +39,7 @@
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Black_cat_eyes.jpg/277px-Black_cat_eyes.jpg');
             background-size: cover;
             /* width: 100%;
-                        height: 100vh; */
+                                        height: 100vh; */
             position: relative;
             float: left;
             width: 350px;
@@ -54,6 +54,48 @@
         }
     </style>
 
+    <style>
+        /* CSS for the container div */
+        .material-img-holder {
+            /* max-width: 100%;
+                height: auto;
+                overflow: hidden;
+                position: relative; */
+            width: 100%;
+            /* Adjust the width as needed */
+            max-height: 300px;
+            /* Set your desired uniform height */
+            overflow: hidden;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* CSS for the responsive image */
+        .material-img-holder img {
+            
+            /* width: 100%; */
+            height: 100%;
+            object-fit: cover;
+            /* This property ensures the image covers the container while maintaining its aspect ratio */
+            max-width: 100%;
+            height: auto;
+            display: block;
+            /* max-width: 100%;
+                height: initial;
+                display: block; */
+            /* Remove any extra spacing below the image */
+        }
+          .centered-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* Adjust the width and height of the small image as needed */
+            width: 50px; /* Adjust to your preferred size */
+            height: 50px; /* Adjust to your preferred size */
+        }
+    </style>
+
     <!-- Start Why Choose Us Area -->
     @isset($materials)
         <section id="about" class="why-choose-us ptb-0 mtb-20 bg-f9faff">
@@ -62,23 +104,34 @@
                     @foreach ($materials as $material)
                         @if (substr($material->type->at_unique_id, 0, 3) != 'TAA')
                             <div class="col-lg-4 col-md-4 mb-5 p-2 justify-content-center text-center">
-
-
                                 <a href="{{ route('user.index') }}">
-                                    <div class="container-img"
+                                    <div class="material-img-holder">
+                                        <img src="{{ asset($material->cover->url ?? '') }}" alt="{{ $material->title ?? '' }}">
+
+                                        @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
+                                        <img src="{{ asset('materials/icon/v-play.png') }}" alt="{{ $material->title }}"
+                                        width="10%" class="centered-image">
+                                        @endif
+                                    </div>
+                                    <!-- Old implementation -->
+                                    {{-- <div class="container-img"
                                         style="background-image: url('{{ asset($material->cover->url ?? '') }}')">
                                         @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
                                             <img src="{{ asset('materials/icon/v-play.png') }}" alt="{{ $material->title }}"
                                                 width="20%" class="center-image">
-                                                @endif
-                                    </div>
+                                        @endif
+                                    </div> --}}
                                     {{-- </div> --}}
                                 </a>
-                                {{-- <div class="image">
-                                </div> --}}
                                 <div class="mat-title">
                                     <a href="{{ route('user.index') }}">
-                                        <h4>{{ $material->title }}</h4>
+                                        <h4>
+                                        @isset($material->folder_id)
+                                        {{$material->folder->name ?? ''}} ({{$material->name_of_court}})
+                                            @else
+                                            {{ $material->title }}
+                                        @endisset
+                                       </h4>
                                     </a>
                                 </div>
                             </div>

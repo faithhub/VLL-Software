@@ -24,6 +24,7 @@
 @extends('layouts/dashboard/app')
 @section('content')
     <div class="main-container container-fluid px-0">
+        <h1>Hellooo</h1>
         <!--Page header-->
         {{-- <div class="page-header">
             <div class="page-leftheader">
