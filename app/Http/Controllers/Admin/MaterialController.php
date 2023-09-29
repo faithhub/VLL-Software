@@ -580,7 +580,6 @@ class MaterialController extends Controller
                             'material_file_id' => ['required', 'mimes:pdf,mp4,mov,ogg,qt', 'max:50000'],
                         );
                     }
-                    // dd("not new_folder", $request->all());
                 } else {
                     // dd("not new_folder", $request->all());
                     $rules = array(
@@ -607,10 +606,12 @@ class MaterialController extends Controller
                         'subject_id' => ['required_if:material_type_value,TXT'],
                         'privacy_code' => ['required_if:material_type_value,TAA'],
                         // 'material_file_id.*' => ['required', 'mimes:pdf', 'max:100'],
-                        'material_file_id' => ['required', 'mimes:pdf,mp4,mp3,mov,ogg,qt', 'max:50000'],
-                        'material_cover_id' => ['required_if:material_type_value,TXT,LOJ,VAA', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
+                        // 'material_file_id' => ['required', 'mimes:pdf,mp4,mp3,mov,ogg,qt', 'max:50000'],
+                        // 'material_cover_id' => ['required_if:material_type_value,TXT,LOJ,VAA', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
+                        'material_file_id' => ['mimes:pdf,mp4,mp3,mov,ogg,qt', 'max:50000'],
+                        'material_cover_id' => ['mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
                         'material_desc' => ['required_if:material_type_value,TXT,LOJ,VAA'],
-                        'terms' => ['required', 'max:255']
+                        // 'terms' => ['required', 'max:255']
                     );
                     // dd("all", $request->all());
                 }
@@ -663,7 +664,7 @@ class MaterialController extends Controller
                     $material_cover_name = 'MaterialCover' . time() . '.' . $material_cover->getClientOriginalExtension();
                     $destinationPath = public_path('/storage/materials/covers');
                     $img = Image::make($material_cover->path());
-                    $img->resize(700, 300, function ($constraint) {
+                    $img->resize(600, 300, function ($constraint) {
                         $constraint->aspectRatio();
                     })->save($destinationPath . '/' . $material_cover_name);
                     $save_cover = File::create([

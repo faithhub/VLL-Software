@@ -242,6 +242,7 @@ class VendorController extends Controller
 
                 // dd($request->all());
                 if ($request->hasFile('avatar')) {
+                    $profile_pics = $request->file('avatar');
                     $profile_pics_name = 'MaterialCover' . time() . '.' . $profile_pics->getClientOriginalExtension();
                     Storage::disk('profile_pics')->put($profile_pics_name, file_get_contents($profile_pics));
                     $save_cover = File::create([
@@ -564,10 +565,23 @@ class VendorController extends Controller
                     ]);
                 }
 
+                // if ($request->hasFile('material_cover_id')) {
+                //     $material_cover = $request->file('material_cover_id');
+                //     $material_cover_name = 'MaterialCover' . time() . '.' . $material_cover->getClientOriginalExtension();
+                //     Storage::disk('material_cover')->put($material_cover_name, file_get_contents($material_cover));
+                //     $save_cover = File::create([
+                //         'name' => $material_cover_name,
+                //         'url' => 'storage/materials/covers/' . $material_cover_name
+                //     ]);
+                // }
                 if ($request->hasFile('material_cover_id')) {
                     $material_cover = $request->file('material_cover_id');
                     $material_cover_name = 'MaterialCover' . time() . '.' . $material_cover->getClientOriginalExtension();
-                    Storage::disk('material_cover')->put($material_cover_name, file_get_contents($material_cover));
+                    $destinationPath = public_path('/storage/materials/covers');
+                    $img = Image::make($material_cover->path());
+                    $img->resize(600, 300, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath . '/' . $material_cover_name);
                     $save_cover = File::create([
                         'name' => $material_cover_name,
                         'url' => 'storage/materials/covers/' . $material_cover_name
@@ -701,6 +715,7 @@ class VendorController extends Controller
                     return redirect()->back();
                 }
 
+                // dd("not new_folder", $request->all());
                 if ($request->folder_id == "new_folder") {
                     $rules = array(
                         'material_type_id' => ['required', 'string', 'max:255'],
@@ -724,10 +739,9 @@ class VendorController extends Controller
                         // 'name_of_author' => ['required', 'string', 'max:255'],
                         'name_of_court' => ['required', 'string', 'max:255'],
                         'tags' => ['required', 'string', 'max:255'],
-                        'material_file_id' => ['required', 'mimes:pdf,mp4,mov,ogg,qt', 'max:50000'],
+                        'material_file_id' => ['mimes:pdf,mp4,mov,ogg,qt', 'max:50000'],
                     );
                 } else {
-                    // dd("not new_folder", $request->all());
                     $rules = array(
                         'title' => ['required', 'string', 'max:255'],
                         // 'name_of_author' => ['required', 'string', 'max:255'],
@@ -784,7 +798,7 @@ class VendorController extends Controller
                 $validator = Validator::make($request->all(), $rules, $messages);
 
                 if ($validator->fails()) {
-                    // dd($validator->errors());
+                    dd($validator->errors());
                     Session::flash('warning', __('All fields are required'));
                     return back()->withErrors($validator)->withInput();
                 }
@@ -801,10 +815,23 @@ class VendorController extends Controller
                     ]);
                 }
 
+                // if ($request->hasFile('material_cover_id')) {
+                //     $material_cover = $request->file('material_cover_id');
+                //     $material_cover_name = 'MaterialCover' . time() . '.' . $material_cover->getClientOriginalExtension();
+                //     Storage::disk('material_cover')->put($material_cover_name, file_get_contents($material_cover));
+                //     $save_cover = File::create([
+                //         'name' => $material_cover_name,
+                //         'url' => 'storage/materials/covers/' . $material_cover_name
+                //     ]);
+                // }
                 if ($request->hasFile('material_cover_id')) {
                     $material_cover = $request->file('material_cover_id');
                     $material_cover_name = 'MaterialCover' . time() . '.' . $material_cover->getClientOriginalExtension();
-                    Storage::disk('material_cover')->put($material_cover_name, file_get_contents($material_cover));
+                    $destinationPath = public_path('/storage/materials/covers');
+                    $img = Image::make($material_cover->path());
+                    $img->resize(600, 300, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath . '/' . $material_cover_name);
                     $save_cover = File::create([
                         'name' => $material_cover_name,
                         'url' => 'storage/materials/covers/' . $material_cover_name

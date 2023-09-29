@@ -339,6 +339,23 @@
                                         @enderror
                                     </div>
                                 </div>
+                                    <div id="paidDiv2" class="new_law_div_tag new_csl_div_tag upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12" style="display: none">
+                                        <div class="form-group">
+                                            <label class="form-label">Folder Duration <span>*<span></label>
+                                            <select class="form-control select2" name="duration" id="folder-duration" requiredd
+                                                data-parsley-required-message="Duration is required">
+                                                <option value="">Select duration</option>
+                                                <option value="annual" @selected(old('duration') == 'annual')>Annual</option>
+                                                <option value="quarterly" @selected(old('duration') == 'quarterly')>Quarterly</option>
+                                                <option value="monthly" @selected(old('duration') == 'monthly')>Monthly</option>
+                                            </select>
+                                            @error('duration')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 taa-field material_upload_fields"
                                     id="TAA-data1" style="display: none">
                                     <div class="form-group">
@@ -621,79 +638,5 @@
             </div>
         </div>
     </div>
-
-    <div class="col-md-6 tags">
-        <div class="form-group" id="tagsInputDiv">
-            <label class="lbl" for="">Tags</label>
-            <input class="form-control tt-input" type="text" name="tags" data-role="tagsinput" id="tags" />
-        </div>
-    </div>
-    <script>
-                const preData = [{
-                value: 1,
-                text: "Amsterdam",
-                continent: "Europe"
-            },
-            {
-                value: 4,
-                text: "Washington",
-                continent: "America"
-            },
-            {
-                value: 7,
-                text: "Sydney",
-                continent: "Australia"
-            },
-            {
-                value: 10,
-                text: "Beijing",
-                continent: "Asia"
-            },
-            {
-                value: 13,
-                text: "Cairo",
-                continent: "Africa"
-            }
-        ];
-        let elt = $('#tags');
-        $(elt).tagsinput({
-            tagClass: (item) => {
-                switch (item.continent) {
-                    case 'Europe':
-                        return 'label label-primary';
-                    case 'America':
-                        return 'label label-danger label-important';
-                    case 'Australia':
-                        return 'label label-success';
-                    case 'Africa':
-                        return 'label label-default';
-                    case 'Asia':
-                        return 'label label-warning';
-                    default:
-                        return 'label label-danger';
-                }
-            },
-            itemValue: "value",
-            itemText: "text",
-        })
-        $(document).ready(() => {
-
-            preData.map((val, index) => {
-                $(elt).tagsinput('add', val);
-            })
-
-            var realInputForTags = $('#tags').tagsinput('input');
-            $(realInputForTags).change((e) => {
-                // you need to customize value, continent value according to your requirements
-                let newItem = {
-                    value: Math.random(),
-                    text: e.target.value,
-                    continent: "xxx continent"
-                }
-                $(elt).tagsinput('add', newItem);
-                e.target.value = "";
-            })
-        });
-    </script>
     @include('layouts.dashboard.includes.material')
 @endsection
