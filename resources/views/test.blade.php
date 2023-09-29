@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -97,5 +97,50 @@
 
     }
 </script>
+
+</html> --}}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script type="text/javascript">
+        /*
+            path to the directory containing the PDF Web Viewer scripts, webassemblies and translations.
+            The path can be absolute or relative to the current document and must be defined before the viewer is loaded
+          */
+        window.PDFTOOLS_FOURHEIGHTS_PDFVIEWING_BASEURL = "/pdfwebviewer/"
+    </script>
+
+    <!-- stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('pdfwebviewer/pdf-web-viewer.css') }}" />
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+    </style>
+
+    <!-- pdf viewer script, for development you can  -->
+    <script src="{{ asset('pdfwebviewer/pdf-web-viewer.min.js') }}"></script>
+
+    <title>PDF Web Viewer</title>
+</head>
+
+<body>
+    <!--
+      HTM element containing the PdfWebViewer.
+      The viewer has the same size as the parent html element
+    -->
+    <div id="pdfviewer" style="height: 100vh; width: 100vw"></div>
+
+  @include('layouts.dashboard.includes.pdf-tool-reader')
+</body>
 
 </html>

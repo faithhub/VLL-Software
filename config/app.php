@@ -55,6 +55,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'PDFVIEWERAPI' => env('PDFVIEWERAPI', '<4H,V4,VIEWWEB,DGA6S99DV8P1DKA7HSS0K9C>'),
 
     'asset_url' => env('ASSET_URL'),
 
