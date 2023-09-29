@@ -70,7 +70,7 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::match(['get'], 'add_to_library/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'add_to_library'])->name('add_to_library')->middleware('sub');
         Route::match(['get'], 'add_free_folder_to_library/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'add_free_folder_to_library'])->name('add_free_folder_to_library')->middleware('sub');
         Route::match(['get'], 'second_rent/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'second_rent'])->name('second_rent')->middleware('sub');
-        Route::match(['get', 'post'], 'access-material/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'access_material'])->name('access_material');
+        Route::match(['get', 'post'], 'access-material/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'access_material'])->name('access_material')->middleware('myHeader');
         Route::match(['get', 'post'], 'send-note/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'send_note'])->name('send_note');
         Route::match(['get', 'post'], 'invite_teammate',  [App\Http\Controllers\Dashboard\UserController::class, 'invite_teammate'])->name('invite_teammate');
         Route::match(['get', 'post'], 'accept/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'accept_invite'])->name('accept_invite');

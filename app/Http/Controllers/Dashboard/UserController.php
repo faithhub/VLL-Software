@@ -1076,9 +1076,7 @@ class UserController extends Controller
             }
             $data['unlocked_tests'] = $unlocked_tests_arr;
             $data['title'] = "User Dashboard - " . $material->title;
-            return response()->view('dashboard.user.view-material', $data)
-            ->header('Access-­Control-­Expose-­Headers', 'Content-­Length-Accept-­Ranges-Content-­Range')
-            ->header('Access-­Control-Allow-­Headers', 'range');
+            return view('dashboard.user.view-material', $data);
         } catch (\Throwable $th) {
             dd($th->getMessage());
             //throw $th;

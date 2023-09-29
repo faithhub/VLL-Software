@@ -73,6 +73,7 @@ class Kernel extends HttpKernel
         'vendor' => \App\Http\Middleware\Vendor::class,
         'sub' => \App\Http\Middleware\Subscription::class,
         'check_sub' => \App\Http\Middleware\CheckSub::class,
+        'myHeader' => \App\Http\Middleware\AddHeader::class,
         'check_rented_materials' => \App\Http\Middleware\CheckRentedMaterials::class,
     ];
 }
