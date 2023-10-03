@@ -242,9 +242,9 @@
                     @else
                         <div class="card-body pt-0">
                             <div class="row">
-                                <iframe src="https://docs.google.com/gview?url={{ asset($material->file->url) }}&embedded=true" style="width:100%; height:80vh;" frameborder="0"></iframe>
+                                {{-- <iframe src="https://docs.google.com/gview?url={{ asset($material->file->url) }}&embedded=true" style="width:100%; height:80vh;" frameborder="0"></iframe> --}}
                                 {{-- <div id="pdfviewer" style="height: 80vh; width:inherit"></div> --}}
-                                {{-- <div id="adobe-dc-view" style="height: 80vh"></div> --}}
+                                <div id="adobe-dc-view" style="height: 80vh"></div>
                             </div>
                         </div>
                     @endif
