@@ -242,6 +242,7 @@
                     @else
                         <div class="card-body pt-0">
                             <div class="row">
+                                <iframe src="https://docs.google.com/gview?url={{ asset($material->file->url) }}&embedded=true" style="width:100%; height:80vh;" frameborder="0"></iframe>
                                 {{-- <div id="pdfviewer" style="height: 80vh; width:inherit"></div> --}}
                                 {{-- <div id="adobe-dc-view" style="height: 80vh"></div> --}}
                             </div>
@@ -369,10 +370,7 @@
             </div>
         </div>
     </div>
-    <embed src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset($material->file->url) }}" width="700" height="375">
-        <iframe src="https://docs.google.com/gview?url={{ asset($material->file->url) }}&embedded=true" style="width:718px; height:700px;" frameborder="0"></iframe>
-
-
+        
 
 
     <div id="myModal" class="modal fade" data-backdrop="static" data-keyboard="false">
