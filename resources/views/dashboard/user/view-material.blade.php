@@ -242,8 +242,8 @@
                     @else
                         <div class="card-body pt-0">
                             <div class="row">
-                                <div id="pdfviewer" style="height: 80vh; width:inherit"></div>
-                                {{-- <div id="adobe-dc-view" style="height: 80vh"></div> --}}
+                                {{-- <div id="pdfviewer" style="height: 80vh; width:inherit"></div> --}}
+                                <div id="adobe-dc-view" style="height: 80vh"></div>
                             </div>
                         </div>
                     @endif
@@ -416,8 +416,8 @@
         @endif
     @endif
 
-  @include('layouts.dashboard.includes.pdf-tool-reader')
-    {{-- <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script> --}}
+  {{-- @include('layouts.dashboard.includes.pdf-tool-reader') --}}
+    <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
     <script type="text/javascript">
         $(document).on("keydown", "form", function(event) {
             return event.key != "Enter";
@@ -510,49 +510,50 @@
             // $("#note_div_section").load(window.location.href + " #note_div_section");
         }
 
-        // const previewConfig = {
-        //     showAnnotationTools: false,
-        //     showDownloadPDF: false,
-        //     showPrintPDF: false,
-        //     enableSearchAPIs: true,
-        //     // hasReadOnlyAccess: true
-        // }
-        // const allowTextSelection = false;
+        const previewConfig = {
+            showAnnotationTools: false,
+            showDownloadPDF: false,
+            showPrintPDF: false,
+            enableSearchAPIs: true,
+            // defaultViewMode: (isMobile ? "SINGLE_PAGE" : "FIT_PAGE"),
+            // hasReadOnlyAccess: true
+        }
+        const allowTextSelection = false;
 
-        // try {
-        //     document.addEventListener("adobe_dc_view_sdk.ready", function() {
-        //         var adobeDCView = new AdobeDC.View({
-        //             clientId: "6dfef512955e46eca21b5e9545cd9ce5",
-        //             // clientId: "6dfef512955e46eca21b5e9545cd9ce5",
-        //             // clientId: "361dd918518a4899a875ef8455d503fa",
-        //             divId: "adobe-dc-view"
-        //         });
+        try {
+            document.addEventListener("adobe_dc_view_sdk.ready", function() {
+                var adobeDCView = new AdobeDC.View({
+                    clientId: "6dfef512955e46eca21b5e9545cd9ce5",
+                    // clientId: "6dfef512955e46eca21b5e9545cd9ce5",
+                    // clientId: "361dd918518a4899a875ef8455d503fa",
+                    divId: "adobe-dc-view"
+                });
 
-        //         var previewFilePromise = adobeDCView.previewFile({
-        //             content: {
-        //                 location: {
-        //                     url: "{{ asset($material->file->url) }}"
-        //                 }
-        //             },
-        //             metaData: {
-        //                 fileName: "{{ $material->title }}"
-        //             }
-        //         }, previewConfig);
+                var previewFilePromise = adobeDCView.previewFile({
+                    content: {
+                        location: {
+                            url: "{{ asset($material->file->url) }}"
+                        }
+                    },
+                    metaData: {
+                        fileName: "{{ $material->title }}"
+                    }
+                }, previewConfig);
 
 
 
-        //         previewFilePromise.then(adobeViewer => {
-        //             adobeViewer.getAPIs().then(apis => {
-        //                 apis.enableTextSelection(allowTextSelection)
-        //                     .then(() => console.log("Success"))
-        //                     .catch(error => console.log(error, "error"));
-        //             });
-        //         });
+                previewFilePromise.then(adobeViewer => {
+                    adobeViewer.getAPIs().then(apis => {
+                        apis.enableTextSelection(allowTextSelection)
+                            .then(() => console.log("Success"))
+                            .catch(error => console.log(error, "error"));
+                    });
+                });
 
-        //     });
-        // } catch (error) {
-        //     console.log(error, "err 888");
-        // }
+            });
+        } catch (error) {
+            console.log(error, "err 888");
+        }
 
         function saveNote(params) {
             const content = sessionStorage.getItem('note-content');
