@@ -243,7 +243,7 @@
                         <div class="card-body pt-0">
                             <div class="row">
                                 {{-- <div id="pdfviewer" style="height: 80vh; width:inherit"></div> --}}
-                                <div id="adobe-dc-view" style="height: 80vh"></div>
+                                {{-- <div id="adobe-dc-view" style="height: 80vh"></div> --}}
                             </div>
                         </div>
                     @endif
@@ -369,6 +369,8 @@
             </div>
         </div>
     </div>
+    <embed src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset($material->file->url) }}" width="700" height="375">
+        <iframe src="https://docs.google.com/gview?url={{ asset($material->file->url) }}&embedded=true" style="width:718px; height:700px;" frameborder="0"></iframe>
 
 
 
