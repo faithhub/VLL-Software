@@ -20,7 +20,7 @@ class HomeController extends Controller
     {
         $data['title'] = "Home";
         $data['banner'] = true;
-        $data['materials'] = Material::with(['type', 'cover', 'folder:name'])->where('status', 'active')->inRandomOrder()->limit(9)->get();
+        $data['materials'] = Material::with(['type', 'cover', 'folder:name'])->where('status', 'active')->inRandomOrder()->limit(6)->get();
         return View('web.index', $data);
     }
 
