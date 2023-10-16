@@ -20,6 +20,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -75,8 +76,9 @@ class VendorController extends Controller
             // dd($m);
             return View('dashboard.vendor.library', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
-            dd($th->getMessage());
         }
     }
 
@@ -104,8 +106,9 @@ class VendorController extends Controller
             // dd($data['transactions']);
             return View('dashboard.vendor.transactions', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
-            dd($th);
         }
     }
 
@@ -118,8 +121,9 @@ class VendorController extends Controller
             $data['sn'] = 1;
             return View('dashboard.vendor.payouts', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
-            dd($th);
         }
     }
 
@@ -132,6 +136,8 @@ class VendorController extends Controller
             $data['transactions'] = $this->materials;
             return View('dashboard.vendor.material-summary', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
         }
     }
@@ -160,8 +166,9 @@ class VendorController extends Controller
             $data['pageCount'] = countPages(public_path($m->file->url));
             return View('dashboard.vendor.view', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
-            dd($th->getMessage());
         }
     }
 
@@ -211,6 +218,8 @@ class VendorController extends Controller
             $data['email'] = "virtuallawlibrary@gmail.com";
             return View('dashboard.vendor.help', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
         }
     }
@@ -278,8 +287,9 @@ class VendorController extends Controller
             $data['title'] = "Vendor Dashboard - Settings";
             return View('dashboard.vendor.settings', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
-            dd($th->getMessage());
         }
     }
 
@@ -292,7 +302,8 @@ class VendorController extends Controller
             $data['subs'] = Subscription::where('type', 'professional')->get();
             return View('dashboard.vendor.subscriptions', $data);
         } catch (\Throwable $th) {
-            dD($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
         }
     }
@@ -390,8 +401,8 @@ class VendorController extends Controller
             User::where('id', Auth::user()->id)->update(['sub_id' => $save_sub->id]);
             return $data;
         } catch (\Throwable $th) {
-            //throw $th;
-            return $th->getMessage();
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
         }
     }
 
@@ -450,7 +461,9 @@ class VendorController extends Controller
                 return $response;
             }
         } catch (\Throwable $th) {
-            return $th;
+            return $th->getMessage();
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
         }
     }
@@ -697,7 +710,8 @@ class VendorController extends Controller
             $data['universities'] = University::Orderby('name', 'ASC')->get();
             return View('dashboard.vendor.upload', $data);
         } catch (\Throwable $th) {
-            dD($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
         }
     }
@@ -903,7 +917,8 @@ class VendorController extends Controller
             $data['universities'] = University::Orderby('name', 'ASC')->get();
             return View('dashboard.vendor.edit', $data);
         } catch (\Throwable $th) {
-            dD($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
         }
     }
@@ -919,7 +934,8 @@ class VendorController extends Controller
             Session::flash('success', __('Upload Canceled'));
             return redirect()->route('vendor.index');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
         }
     }
@@ -938,7 +954,8 @@ class VendorController extends Controller
             Session::flash('success', 'Material deleted successfully');
             return redirect()->route('vendor.index');
         } catch (\Throwable $th) {
-            dD($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
         }
     }
@@ -953,7 +970,8 @@ class VendorController extends Controller
             $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->with('mat_type')->get();
             return View('dashboard.vendor.folders', $data);
         } catch (\Throwable $th) {
-            dD($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
         }
     }
@@ -1027,7 +1045,8 @@ class VendorController extends Controller
             $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id, 'material_type_id' => $mat_id])->get();
             return View('dashboard.vendor.add-material-folder', $data);
         } catch (\Throwable $th) {
-            dD($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
         }
     }
@@ -1046,7 +1065,8 @@ class VendorController extends Controller
             Session::flash('success', 'Folder deleted successfully');
             return redirect()->route('vendor.folders');
         } catch (\Throwable $th) {
-            dD($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
         }
     }
@@ -1130,7 +1150,8 @@ class VendorController extends Controller
             $data['countries'] = Country::all();
             return View('dashboard.vendor.add-material-folder', $data);
         } catch (\Throwable $th) {
-            dD($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
         }
     }
@@ -1145,8 +1166,68 @@ class VendorController extends Controller
             $data['all_materials'] = Material::where(['user_id' => Auth::user()->id, 'folder_id' => $id])->with(['type', 'folder'])->get();
             return View('dashboard.vendor.view-folder', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
             //throw $th;
-            dd($th->getMessage());
+        }
+    }
+
+    public function change_password(Request $request)
+    {
+        try {
+            if ($_POST) {
+                $rules = array(
+                    'current_password'     => ['nullable', 'string', 'max:20'],
+                    'new_password'  => ['required_with:current_password', 'nullable', 'min:8', 'max:16', 'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'regex:/[@$!%*#?&+-]/', 'same:confirm_new_password',],
+                    'confirm_new_password' => ['nullable']
+                );
+
+                $customMessages = [
+                    'new_password.required_with' => 'The :attribute field is required.',
+                    'new_password.min' => 'The :attribute must be at least 8 characters.',
+                    'new_password.max' => 'The :attribute must not more than 16 characters.',
+                    'new_password.regex' => 'The :attribute must include at least one uppercase, one lowercase, one number, and a special character.',
+                    'new_password.required_with' => 'The :attribute field is required.',
+                    'new_password.same' => 'The new password and confirm password must match',
+                ];
+
+                $validator = Validator::make($request->all(), $rules, $customMessages);
+
+                if ($validator->fails()) {
+                    Session::flash('warning', __('All fields are required'));
+                    return back()->withErrors($validator)->withInput();
+                }
+
+                if ($request->current_password) {
+                    # code...
+                    $current_password = Auth::user()->password;
+                    if (!Hash::check($request->current_password, $current_password)) {
+                        Session::flash(__('warning'), __('Incorrect Password'));
+                        return back()->withErrors(['current_password' => __('The current password is incorrect')]);
+                    }
+                }
+
+                $update_user = User::where('id', Auth::user()->id)->first();
+                $update_user->password = Hash::make($request->new_password);
+                $update_user->save();
+
+                if (!$update_user) {
+                    # code...
+                    Session::flash('error', "An error occur when update profile, try again");
+                    return back();
+                }
+
+
+                Session::flash('success', "Password changed successfully");
+                return back();
+            }
+
+            $data = [];
+            return View('dashboard.vendor.change-password', $data);
+        } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
+            //throw $th;
         }
     }
 }

@@ -5,9 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
-class User
+class Teacher
 {
     /**
      * Handle an incoming request.
@@ -20,16 +19,15 @@ class User
     {
         $role = Auth::user()->role;
         $sub_admin = Auth::user()->sub_admin;
-        if ($role == "user") {
+        if ($role == "teacher") {
             return $next($request);
         } else {
             switch ($role) {
                 case "admin":
-                    // Session::flash('permission_warning', 'You no not have access to this page');
                     return redirect('/admin');
                     break;
-                case "teacher":
-                    return redirect('/teacher');
+                case "user":
+                    return redirect('/user');
                     break;
                 case "sub_admin":
                     switch ($sub_admin) {
@@ -56,7 +54,6 @@ class User
                     }
                     break;
                 case "vendor":
-                    // Session::flash('permission_warning', 'You no not have access to this page');
                     return redirect('/vendor');
                     break;
                 default:

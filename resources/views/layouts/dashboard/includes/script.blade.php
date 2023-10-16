@@ -243,6 +243,45 @@
         }
     }
 
+    function viewPassword(data) {
+        try {
+            var cpp = $(data).closest("div.mb-3").find("input[name=current_password]");
+            var p = $(data).closest("div.mb-3").find("input[name=new_password]");
+            var cp = $(data).closest("div.mb-3").find("input[name=confirm_new_password]");
+            var v = null;
+            console.log(p, cp, v);
+            if (p.length > 0) {
+                v = p;
+            } else if (cp.length > 0) {
+                v = cp;
+            } else if (cpp.length > 0) {
+                v = cpp;
+            } else {
+                return false
+            }
+
+            if (v[0].name == "current_password" || v[0].name == "new_password" || v[0].name == "confirm_new_password") {
+                const password = document.querySelector('#' + v[0].id);
+                const type = password.getAttribute('type');
+                switch (type) {
+                    case 'password':
+                        $('#' + v[0].id).get(0).type = 'text';
+                        $(data).addClass('fa-eye-slash');
+                        break;
+                    case 'text':
+                        $('#' + v[0].id).get(0).type = 'password';
+                        $(data).removeClass('fa-eye-slash');
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
 
     $(function() {
         $('.validate-form').parsley().on('field:validated', function() {

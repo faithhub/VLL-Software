@@ -7,7 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class UserSeeder extends Seeder
+class TeacherSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,11 +17,11 @@ class UserSeeder extends Seeder
     public function run()
     {
         $createMultipleUsers = [
-            ['name' => 'Admin', 'email' => 'admin@gmail.com', 'status' => 'active', 'role' => 'admin', 'password' => Hash::make('12345678')],
+            ['name' => 'Teacher', 'email' => 'teacher@gmail.com', 'status' => 'active', 'role' => 'teacher', 'password' => Hash::make('12345678')],
         ];
 
-        $admin = User::where(['email' => 'admin@gmail.com'])->get();
-        if ($admin->count() == 0) {
+        $teacher = User::where(['email' => 'teacher@gmail.com'])->get();
+        if ($teacher->count() == 0) {
             User::insert($createMultipleUsers);
         }
     }

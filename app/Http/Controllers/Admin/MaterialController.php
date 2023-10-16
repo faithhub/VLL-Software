@@ -31,6 +31,10 @@ class MaterialController extends Controller
             $data['materials'] = Material::with(['type', 'file', 'cover', 'vendor'])->orderBy('created_at', 'DESC')->get();
             return View('dashboard.admin.library.index', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -46,6 +50,10 @@ class MaterialController extends Controller
             $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->with('mat_type')->get();
             return View('dashboard.admin.library.folders', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dD($th->getMessage());
             //throw $th;
         }
@@ -118,6 +126,10 @@ class MaterialController extends Controller
             $data['universities'] = University::Orderby('name', 'ASC')->get();
             return View('dashboard.admin.modals.add-folder', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dD($th->getMessage());
             //throw $th;
         }
@@ -133,6 +145,10 @@ class MaterialController extends Controller
             $data['all_materials'] = Material::where(['user_id' => Auth::user()->id, 'folder_id' => $id])->with(['type', 'folder'])->get();
             return View('dashboard.admin.modals.view-folder', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             //throw $th;
             dd($th->getMessage());
         }
@@ -152,6 +168,10 @@ class MaterialController extends Controller
             Session::flash('success', 'Folder deleted successfully');
             return redirect()->route('admin.folders');
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dD($th->getMessage());
             //throw $th;
         }
@@ -229,6 +249,10 @@ class MaterialController extends Controller
             $data['countries'] = Country::all();
             return View('dashboard.admin.modals.add-folder', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dD($th->getMessage());
             //throw $th;
         }
@@ -486,6 +510,10 @@ class MaterialController extends Controller
             $data['universities'] = University::Orderby('name', 'ASC')->get();
             return View('dashboard.admin.library.upload', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -502,6 +530,10 @@ class MaterialController extends Controller
             Session::flash('success', __('Canceled successfully'));
             return redirect()->route('admin.upload');
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -521,6 +553,10 @@ class MaterialController extends Controller
             Session::flash('success', __('Material Type deleted successfully'));
             return redirect()->back();
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -735,6 +771,10 @@ class MaterialController extends Controller
             // dd($f);
             return View('dashboard.admin.library.edit', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dD($th->getMessage());
             //throw $th;
         }
@@ -786,6 +826,10 @@ class MaterialController extends Controller
 
             return View('dashboard.admin.modals.create-material', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -815,6 +859,10 @@ class MaterialController extends Controller
             }
             return View('dashboard.admin.library.view', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -834,6 +882,10 @@ class MaterialController extends Controller
             Session::flash('success', __('Material Type deleted successfully'));
             return redirect()->back()->withInput(['tabName' => 'materialType']);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -884,6 +936,8 @@ class MaterialController extends Controller
             }
             return View('dashboard.admin.modals.create-subject', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -903,6 +957,8 @@ class MaterialController extends Controller
             }
             return View('dashboard.admin.modals.edit-subject', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -922,6 +978,8 @@ class MaterialController extends Controller
             Session::flash('success', __('Subject Type deleted successfully'));
             return redirect()->withInput(['tabName' => 'subjects']);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }

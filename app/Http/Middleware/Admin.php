@@ -32,6 +32,9 @@ class Admin
                         // Session::flash('permission_warning', 'You no not have access to this page');
                         return redirect('/vendor');
                         break;
+                    case "teacher":
+                        return redirect('/teacher');
+                        break;
                     default:
                         break;
                 }

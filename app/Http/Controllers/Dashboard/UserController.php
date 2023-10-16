@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -167,7 +168,8 @@ class UserController extends Controller
             return View('dashboard.user.bookstore', $data);
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
         }
     }
 
@@ -272,7 +274,8 @@ class UserController extends Controller
             return View('dashboard.user.library', $data);
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
         }
     }
 
@@ -325,7 +328,8 @@ class UserController extends Controller
             return View('dashboard.user.view-folder', $data);
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
         }
     }
 
@@ -386,7 +390,8 @@ class UserController extends Controller
             return View('dashboard.user.view-all-material-type', $data);
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
         }
     }
 
@@ -452,7 +457,8 @@ class UserController extends Controller
             $data['folder_mat_count'] = $fmc = Material::where('folder_id', $f->id ?? 0)->count();
             return View('dashboard.user.view', $data);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
             //throw $th;
         }
     }
@@ -468,7 +474,8 @@ class UserController extends Controller
             return View('dashboard.user.transactions', $data);
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
         }
     }
 
@@ -481,6 +488,8 @@ class UserController extends Controller
             return View('dashboard.user.material-summary', $data);
         } catch (\Throwable $th) {
             //throw $th;
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
         }
     }
 
@@ -634,7 +643,9 @@ class UserController extends Controller
             return $data;
         } catch (\Throwable $th) {
             //throw $th;
-            return $th->getMessage();
+            return false;
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
         }
     }
 
@@ -654,7 +665,8 @@ class UserController extends Controller
             // dd($trans->amount);
             return View('dashboard.user.subscriptions', $data);
         } catch (\Throwable $th) {
-            dD($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
             //throw $th;
         }
     }
@@ -674,6 +686,8 @@ class UserController extends Controller
             return View('dashboard.user.sub_text', $data);
         } catch (\Throwable $th) {
             //throw $th;
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
         }
     }
 
@@ -721,7 +735,8 @@ class UserController extends Controller
             $data['email'] = "virtuallawlibrary@gmail.com";
             return View('dashboard.user.help', $data);
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
             //throw $th;
         }
     }
@@ -787,7 +802,8 @@ class UserController extends Controller
             return View('dashboard.user.settings', $data);
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
         }
     }
 
@@ -894,8 +910,8 @@ class UserController extends Controller
 
             return $data;
         } catch (\Throwable $th) {
-            return $th->getMessage();
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
             //throw $th;
         }
     }
@@ -923,7 +939,8 @@ class UserController extends Controller
             Session::flash('success', 'Material added to my library successfully');
             return redirect()->route('user.library');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
             //throw $th;
         }
     }
@@ -954,7 +971,8 @@ class UserController extends Controller
             Session::flash('success', 'Material added to my library successfully');
             return redirect()->route('user.library');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
             //throw $th;
         }
     }
@@ -977,7 +995,8 @@ class UserController extends Controller
             Session::flash('success', 'Material added to my library successfully');
             return redirect()->route('user.library');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
             //throw $th;
         }
     }
@@ -1078,7 +1097,8 @@ class UserController extends Controller
             $data['title'] = "User Dashboard - " . $material->title;
             return view('dashboard.user.view-material', $data);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
             //throw $th;
         }
     }
@@ -1122,7 +1142,8 @@ class UserController extends Controller
             }
             return View('dashboard.user.send-note-modal', $data);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
             //throw $th;
         }
     }
@@ -1226,7 +1247,8 @@ class UserController extends Controller
             // dd($material);
             return View('dashboard.user.add-teammate', $data);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
             //throw $th;
         }
     }
@@ -1239,7 +1261,8 @@ class UserController extends Controller
             $data['notes'] = Note::where(['user_id' => Auth::user()->id])->get();
             return View('dashboard.user.notes', $data);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
             //throw $th;
         }
     }
@@ -1281,7 +1304,8 @@ class UserController extends Controller
             }
             return View('dashboard.user.note-view', $data);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
             //throw $th;
         }
     }
@@ -1316,8 +1340,67 @@ class UserController extends Controller
             }
         } catch (\Throwable $th) {
             return false;
-            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
             //throw $th;
+        }
+    }
+
+    public function change_password(Request $request)
+    {
+        try {
+            if ($_POST) {
+                $rules = array(
+                    'current_password'     => ['nullable', 'string', 'max:20'],
+                    'new_password'  => ['required_with:current_password', 'nullable', 'min:8', 'max:16', 'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'regex:/[@$!%*#?&+-]/', 'same:confirm_new_password',],
+                    'confirm_new_password' => ['nullable']
+                );
+
+                $customMessages = [
+                    'new_password.required_with' => 'The :attribute field is required.',
+                    'new_password.min' => 'The :attribute must be at least 8 characters.',
+                    'new_password.max' => 'The :attribute must not more than 16 characters.',
+                    'new_password.regex' => 'The :attribute must include at least one uppercase, one lowercase, one number, and a special character.',
+                    'new_password.required_with' => 'The :attribute field is required.',
+                    'new_password.same' => 'The new password and confirm password must match',
+                ];
+
+                $validator = Validator::make($request->all(), $rules, $customMessages);
+
+                if ($validator->fails()) {
+                    Session::flash('warning', __('All fields are required'));
+                    return back()->withErrors($validator)->withInput();
+                }
+
+                if ($request->current_password) {
+                    # code...
+                    $current_password = Auth::user()->password;
+                    if (!Hash::check($request->current_password, $current_password)) {
+                        Session::flash(__('warning'), __('Incorrect Password'));
+                        return back()->withErrors(['current_password' => __('The current password is incorrect')]);
+                    }
+                }
+
+                $update_user = User::where('id', Auth::user()->id)->first();
+                $update_user->password = Hash::make($request->new_password);
+                $update_user->save();
+
+                if (!$update_user) {
+                    # code...
+                    Session::flash('error', "An error occur when update profile, try again");
+                    return back();
+                }
+
+
+                Session::flash('success', "Password changed successfully");
+                return back();
+            }
+
+            $data = [];
+            return View('dashboard.user.change-password', $data);
+        } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
         }
     }
 }

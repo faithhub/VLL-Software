@@ -80,6 +80,7 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::match(['get'], 'notes',  [App\Http\Controllers\Dashboard\UserController::class, 'notes'])->name('notes');
         Route::match(['get', 'post'], 'note/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'note'])->name('note');
         Route::match(['post'], 'unlock-test',  [App\Http\Controllers\Dashboard\UserController::class, 'unlock_test'])->name('unlock_test');
+        Route::match(['get', 'post'], 'change-password',  [App\Http\Controllers\Dashboard\UserController::class, 'change_password'])->name('change-password');
     });
 });
 
@@ -109,6 +110,8 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
         Route::match(['get', 'post'], 'edit_folder/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'edit_folder'])->name('edit_folder');
         Route::match(['get'], 'delete_folder/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'delete_folder'])->name('delete_folder');
         // Route::match(['get'], 'view_folder/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'view_folder'])->name('view_folder');
+
+        Route::match(['get', 'post'], 'change-password',  [App\Http\Controllers\Dashboard\VendorController::class, 'change_password'])->name('change-password');
     });
 });
 
@@ -145,7 +148,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::match(['get', 'post'], '/settings',  [App\Http\Controllers\Admin\DashboardController::class, 'settings'])->name('settings')->middleware('admin_only');
         Route::match(['get', 'post'], '/profile',  [App\Http\Controllers\Admin\DashboardController::class, 'profile'])->name('profile')->middleware('admin_only');
         Route::match(['get', 'post'], '/sub',  [App\Http\Controllers\Admin\DashboardController::class, 'sub_admin_profile'])->name('sub_admin_profile');
-
+        Route::match(['get', 'post'], 'change-password',  [App\Http\Controllers\Admin\DashboardController::class, 'change_password'])->name('change-password');
+   
+        
         // Material Type
         Route::match(['get', 'post'], '/add_material',  [App\Http\Controllers\Admin\MaterialController::class, 'add_material'])->name('add_material')->middleware('sub_admin_mat');
         Route::match(['get'], '/view_material/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'view_material'])->name('view_material')->middleware('sub_admin_mat');
@@ -186,6 +191,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 });
 
+
+//Teacher
+Route::prefix('teacher')->name('teacher.')->group(function () {
+    Route::group(['middleware' => ['teacher', 'auth']], function () {
+        Route::get('/',  [App\Http\Controllers\Teacher\DashboardController::class, 'index'])->name('index');
+
+        Route::match(['get', 'post'], '/settings',  [App\Http\Controllers\Teacher\SettingsController::class, 'profile'])->name('settings');
+        Route::match(['get', 'post'], '/profile',  [App\Http\Controllers\Teacher\SettingsController::class, 'profile'])->name('profile');
+        Route::match(['get', 'post'], 'change-password',  [App\Http\Controllers\Teacher\SettingsController::class, 'change_password'])->name('change-password');
+    });
+});
 
 //Admin
 Route::prefix('sub_admin')->name('sub_admin.')->group(function () {

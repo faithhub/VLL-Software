@@ -23,6 +23,8 @@ class SubAdminController extends Controller
             // $data['users'] = [];
             return View('dashboard.admin.sub-admin.index', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -74,6 +76,8 @@ class SubAdminController extends Controller
             $data['users'] = User::where("role", "user")->get();
             return View('dashboard.admin.sub-admin.create', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -93,6 +97,8 @@ class SubAdminController extends Controller
             Session::flash('success', __('Deleted successfully'));
             return redirect()->back();
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }

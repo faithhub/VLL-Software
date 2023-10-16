@@ -55,6 +55,9 @@ class SubAdminChat
                     case "vendor":
                         return redirect('/vendor');
                         break;
+                    case "teacher":
+                        return redirect('/teacher');
+                        break;
                     default:
                         return redirect('/logout');
                         break;

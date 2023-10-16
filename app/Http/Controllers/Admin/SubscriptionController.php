@@ -48,6 +48,8 @@ class SubscriptionController extends Controller
             }
             return View('dashboard.admin.modals.edit-sub', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -67,6 +69,8 @@ class SubscriptionController extends Controller
             }
             return View('dashboard.admin.modals.edit-sub', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -86,6 +90,8 @@ class SubscriptionController extends Controller
             Session::flash('success', __('Subject Type deleted successfully'));
             return redirect()->back()->withInput(['tabName' => 'subscriptions']);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }

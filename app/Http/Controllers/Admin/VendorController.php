@@ -23,6 +23,8 @@ class VendorController extends Controller
             $data['vendors'] = $v = User::where("role", "vendor")->with(['bank', 'dom'])->orderBy('created_at', 'DESC')->get();
             return View('dashboard.admin.vendors.index', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -63,6 +65,8 @@ class VendorController extends Controller
             $data['transactions'] = $mats_arr;
             return View('dashboard.admin.vendors.view', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -109,6 +113,8 @@ class VendorController extends Controller
 
             return redirect()->back();
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }

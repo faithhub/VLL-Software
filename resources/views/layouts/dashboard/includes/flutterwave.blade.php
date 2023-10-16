@@ -5,11 +5,15 @@
 <script type="text/javascript">
     console.log("{{ Auth::user()->default_currency_id }}");
 
+    const pubblicKeyLive = "FLWPUBK-2e0795000c795271594541388f09b14f-X"
+    const pubblicKeyTest = "FLWPUBK_TEST-e1cbb8cf92b2193b7613de4cc1a4fa60-X"
+    const pubblicKeyOld = "FLWPUBK-2e0795000c795271594541388f09b14f-X"
+    const pubblicKeyOld2 = "FLWPUBK_TEST-006e9a2dde4eb5947f2da2af0c2f3695-X"
+
     function flutterwaveCheckout(amount, sub_id, type) {
         const currency = "{{$currency}}";
         FlutterwaveCheckout({
-            // public_key: "FLWPUBK_TEST-006e9a2dde4eb5947f2da2af0c2f3695-X",
-            public_key: "FLWPUBK-2e0795000c795271594541388f09b14f-X",
+            public_key: pubblicKeyLive,
             tx_ref: "VLL-" + Math.floor((Math.random() * 100000000000000) + 1),
             amount: amount,
             currency: currency,
@@ -86,7 +90,7 @@
         const currency = "{{$currency}}";
         console.log(currency, amount);
         FlutterwaveCheckout({
-            public_key: "FLWPUBK_TEST-006e9a2dde4eb5947f2da2af0c2f3695-X",
+            public_key: pubblicKeyLive,
             tx_ref: "VLL-" + Math.floor((Math.random() * 100000000000000) + 1),
             amount: amount,
             currency: currency,

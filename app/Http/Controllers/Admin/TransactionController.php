@@ -7,6 +7,7 @@ use App\Models\MaterialHistory;
 use App\Models\Subscription;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class TransactionController extends Controller
 {
@@ -21,6 +22,8 @@ class TransactionController extends Controller
             $data['transactions'] = Transaction::with(['user'])->orderBy('created_at', 'DESC')->get();
             return View('dashboard.admin.transactions.index', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -44,6 +47,8 @@ class TransactionController extends Controller
             }
             return View('dashboard.admin.transactions.view', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }

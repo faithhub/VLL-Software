@@ -25,6 +25,8 @@ class UserController extends Controller
             // dd($user[0]->last_login->last());
             return View('dashboard.admin.users.index', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }
@@ -49,6 +51,8 @@ class UserController extends Controller
             $data['transactions'] = Transaction::where('user_id', $user->id)->orderBy('created_at', "DESC")->get();
             return View('dashboard.admin.users.view', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
             dd($th->getMessage());
             //throw $th;
         }

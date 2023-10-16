@@ -51,8 +51,8 @@ class FAQController extends Controller
             }
             return View('dashboard.admin.modals.create-faq', $data);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
-            //throw $th;
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
         }
     }
 
@@ -68,8 +68,8 @@ class FAQController extends Controller
             }
             return View('dashboard.admin.modals.edit-faq', $data);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
-            //throw $th;
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
         }
     }
 
@@ -87,8 +87,8 @@ class FAQController extends Controller
             Session::flash('success', __('FAQ deleted successfully'));
             return redirect()->back()->withInput(['tabName' => 'faqDiv']);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
-            //throw $th;
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
         }
     }
 }
