@@ -197,6 +197,11 @@ Route::prefix('teacher')->name('teacher.')->group(function () {
     Route::group(['middleware' => ['teacher', 'auth']], function () {
         Route::get('/',  [App\Http\Controllers\Teacher\DashboardController::class, 'index'])->name('index');
 
+        Route::get('/meetings',  [App\Http\Controllers\Teacher\MeetingController::class, 'index'])->name('meetings');
+        Route::match(['post', 'get'], '/meetings/create',  [App\Http\Controllers\Teacher\MeetingController::class, 'create'])->name('meetings.create');
+        Route::match(['get'], '/meetings/delete/{id}',  [App\Http\Controllers\Teacher\MeetingController::class, 'delete'])->name('meetings.delete');
+        Route::match(['get'], '/meetings/view/{id}',  [App\Http\Controllers\Teacher\MeetingController::class, 'view'])->name('meetings.view');
+
         Route::match(['get', 'post'], '/settings',  [App\Http\Controllers\Teacher\SettingsController::class, 'profile'])->name('settings');
         Route::match(['get', 'post'], '/profile',  [App\Http\Controllers\Teacher\SettingsController::class, 'profile'])->name('profile');
         Route::match(['get', 'post'], 'change-password',  [App\Http\Controllers\Teacher\SettingsController::class, 'change_password'])->name('change-password');

@@ -96,6 +96,11 @@ class User extends Authenticatable
         return $this->hasOne(File::class, 'id', 'avatar')->withDefault();
     }
 
+    public function school()
+    {
+        return $this->hasOne(University::class, 'id', 'university_id')->withDefault();
+    }
+
     public function team()
     {
         return $this->hasOne(Team::class, 'id', 'team_id')->withDefault();

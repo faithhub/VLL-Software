@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sub:expired')->everyTwoHours();
         $schedule->command('dailyCurrencyRateUpdate:currency')->everySixHours();
         $schedule->command('dailyMaterialUpdate:send')->dailyAt("23:59");
+        $schedule->command('webex:refresh')->days(3);
     }
 
     /**
