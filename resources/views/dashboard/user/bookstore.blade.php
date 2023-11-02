@@ -134,7 +134,7 @@
                                                                                     data-size="m"
                                                                                     data-title="{{ $material->title }}"
                                                                                     href="{{ route('user.view_material', $material->id) }}">
-                                                                                    <img src="{{ asset($material->cover->url) }}"
+                                                                                    <img src="{{ asset($material->cover->url ?? "images/new-meeting.png") }}"
                                                                                         alt="{{ $material->title }}"
                                                                                         class="mat_img">
                                                                                     <img id="video-bookstore-cover"
@@ -147,7 +147,7 @@
                                                                                     data-size="m"
                                                                                     data-title="{{ $material->title }}"
                                                                                     href="{{ route('user.view_material', $material->id) }}">
-                                                                                    <img src="{{ asset($material->cover->url) }}"
+                                                                                    <img src="{{ asset($material->cover->url ?? "images/new-meeting.png") }}"
                                                                                         alt="{{ $material->title }}"
                                                                                         class="mat_img">
                                                                             @endif
@@ -160,9 +160,14 @@
                                                                             data-title="{{ $material->title }}"
                                                                             href="{{ route('user.view_material', $material->id) }}"
                                                                             class="book-title mt-2">
+                                                                            @if ($material->citation == "new_meeting")
+                                                                            <h4 class="text-capitalize">{{ $material->title }}
+                                                                            </h4>
+                                                                            @else
                                                                             <h4 class="text-capitalize">{{ $material->title }}
                                                                                 ({{ $material->year_of_publication }})
                                                                             </h4>
+                                                                            @endif
                                                                             <h5 class="text-capitalize">
                                                                                 {{ $material->name_of_author }}
                                                                             </h5>
@@ -208,7 +213,7 @@
                                                                         <a onclick="shiNew(event)" data-type="dark" data-size="m"
                                                                             data-title="{{ $material->title }}"
                                                                             href="{{ route('user.view_material', $material->id) }}">
-                                                                            <img src="{{ asset($material->cover->url) }}"
+                                                                            <img src="{{ asset($material->cover->url ?? "images/new-meeting.png") }}"
                                                                                 alt="{{ $material->title }}" class="mat_img">
                                                                             <img id="video-bookstore-cover"
                                                                                 src="{{ asset('materials/icon/v-play.png') }}"
@@ -219,7 +224,7 @@
                                                                         <a onclick="shiNew(event)" data-type="dark"
                                                                             data-size="m" data-title="{{ $material->title }}"
                                                                             href="{{ route('user.view_material', $material->id) }}">
-                                                                            <img src="{{ asset($material->cover->url) }}"
+                                                                            <img src="{{ asset($material->cover->url ?? "images/new-meeting.png") }}"
                                                                                 alt="{{ $material->title }}" class="mat_img">
                                                                     @endif
                                                                 </div>

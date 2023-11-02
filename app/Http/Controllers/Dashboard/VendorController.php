@@ -568,6 +568,12 @@ class VendorController extends Controller
 
                 $tags = explode(",", $request->tags);
 
+                // dd(
+                //     $request->all(),
+                //     $request->hasFile('material_file_id'),
+                //     $request->hasFile('material_cover_id'),
+                //     $request->hasFile('folder_cover_id')
+                // );
                 if ($request->hasFile('material_file_id')) {
                     $material_file = $request->file('material_file_id');
                     $material_file_name = 'MaterialFile' . time() . '.' . $material_file->getClientOriginalExtension();
@@ -669,7 +675,7 @@ class VendorController extends Controller
                         'subject_id' => $request->subject_id ?? null,
                         'privacy_code' => $request->privacy_code ?? null,
                         'material_file_id' => $save_file->id ?? null,
-                        'material_cover_id' => $save_cover->id ?? $folder->folder_cover_id,
+                        'material_cover_id' => $save_cover->id ?? $folder->folder_cover_id ?? null,
                         'material_desc' => $request->material_desc ?? null
                     ]);
 
@@ -812,7 +818,7 @@ class VendorController extends Controller
                 $validator = Validator::make($request->all(), $rules, $messages);
 
                 if ($validator->fails()) {
-                    dd($validator->errors());
+                    // dd($validator->errors());
                     Session::flash('warning', __('All fields are required'));
                     return back()->withErrors($validator)->withInput();
                 }

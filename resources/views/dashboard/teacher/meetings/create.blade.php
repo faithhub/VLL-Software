@@ -76,7 +76,7 @@
 
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label class="form-label">Meeting Password</label>
+                                                <label class="form-label">Meeting Password <strong class="text-danger">*</strong></label>
                                                 <input name="password" type="text" class="form-control"
                                                     placeholder=""
                                                     data-parsley-required-message="Meeting Password is required"

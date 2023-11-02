@@ -98,6 +98,29 @@ class RegisterController extends Controller
                 ]
             );
         }
+
+        if (
+            $data['form_type'] == "teacher"
+        ) {
+            // dd($data);
+            return Validator::make(
+                $data,
+                [
+                    'type' => ['required', 'string', 'max:255'],
+                    'terms' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'password' => ['required', 'string', 'min:8', 'confirmed'],
+                    't-country' => ['required_if:type,==,institution'],
+                    'name' => ['required_if:type,==,company,entity'],
+                    't-university' => ['required_if:type,==,institution'],
+                ],
+                [
+                    'required_if' => 'The :attribute field is required.',
+                    't-country.required_if' => __('The country field is required'),
+                    't-university.required_if' => __('The university field is required')
+                ]
+            );
+        }
         return back();
     }
 
@@ -142,6 +165,22 @@ class RegisterController extends Controller
                     'vendor_type' => $data['type'],
                     'university_id' => $data['v-university'] ?? null,
                     'country_id' => $data['v-country'] ?? null,
+                    'password' => Hash::make($data['password']),
+                ]);
+            }
+
+            if (
+                $data['form_type'] == "teacher"
+            ) {
+                // Mail::to($data['email'])->send(new VendorWelcomeEmail($data['name']));
+                return User::create([
+                    'name' => $data['name'] ?? null,
+                    'email' => $data['email'],
+                    'role' => $data['form_type'],
+                    'user_type' => $data['type'],
+                    'vendor_type' => $data['type'],
+                    'university_id' => $data['t-university'] ?? null,
+                    'country_id' => $data['t-country'] ?? null,
                     'password' => Hash::make($data['password']),
                 ]);
             }

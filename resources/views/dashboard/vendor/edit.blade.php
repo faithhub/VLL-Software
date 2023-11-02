@@ -360,7 +360,7 @@
                                                 <option value="">Select Country</option>
                                                 @isset($countries)
                                                     @foreach ($countries as $item)
-                                                        <option value="{{ $item->id }}" @selected($material->country_id == $item->id)>
+                                                        <option value="{{ $item->id }}" @selected($material->test_country_id == $item->id)>
                                                             {{ $item->name }}
                                                         </option>
                                                     @endforeach

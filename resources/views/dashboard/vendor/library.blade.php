@@ -75,7 +75,7 @@
                                                     <a onclick="shiNew(event)" data-type="dark" data-size="m"
                                                         data-title="{{ $material->title }}"
                                                         href="{{ route('vendor.view_material', $material->id) }}">
-                                                        <img src="{{ $material->cover->url }}" alt="{{ $material->title }}" class="mat_img">
+                                                        <img src="{{ $material->cover->url ??  "images/new-meeting.png" }}" alt="{{ $material->title }}" class="mat_img">
 
                                                             @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
                                                                 <img id="video-bookstore-cover"

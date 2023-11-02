@@ -303,7 +303,7 @@
                                                                         <tr class="">
                                                                             <td class="sorting_1">{{ $sn++ }}</td>
                                                                             <td class="sorting_1">
-                                                                                <img src="{{ asset($material->cover->url ?? '') }}"
+                                                                                <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}"
                                                                                     style="max-height:60px">
                                                                             </td>
                                                                             <td class="sorting_1"><a class="font-weight-bold"

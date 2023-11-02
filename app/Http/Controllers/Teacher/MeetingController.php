@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
+use App\Models\Material;
 use App\Models\Meeting;
 use App\Models\MeetingDetail;
 use App\Models\Webex;
@@ -86,7 +87,7 @@ class MeetingController extends Controller
                 $rules = array(
                     'university_id' => ['required', 'string', 'max:255'],
                     'title' => ['required', 'string', 'max:50', 'min:5'],
-                    'password' => ['nullable', 'string', 'min:5', 'max:20'],
+                    'password' => ['required', 'string', 'min:5', 'max:20'],
                     'start' => ['required', 'before:end'],
                     'end' => ['required', 'after:start']
                 );
@@ -120,7 +121,6 @@ class MeetingController extends Controller
                     'title' => $title,
                     'start' => $start,
                     'end' => $end,
-                    // 'roomId' => Str::random(15),
                     'password' => $password
                 ];
 
@@ -157,6 +157,23 @@ class MeetingController extends Controller
 
                 MeetingDetail::create([
                     'meeting_id' => $meeting->id,
+                ]);
+
+                Material::create([
+                    'user_id' => Auth::user()->id,
+                    'title' => $title,
+                    'version' => $request->version ?? null,
+                    'citation' => 'new_meeting',
+                    'publisher' => $meeting->id,
+                    'price' => 'free',
+                    'amount' => $request->amount ?? null,
+                    'material_type_id' => 5,
+                    'year_of_publication' => 0,
+                    'privacy_code' => $password,
+                    'test_country_id' => Auth::user()->country_id,
+                    'university_id' => Auth::user()->university_id,
+                    'uploaded_by' => 'teacher',
+                    'material_cover_id' => null,
                 ]);
 
                 Session::flash('success', 'Meeting created successfully');
@@ -244,8 +261,8 @@ class MeetingController extends Controller
     {
         # code...
         try {
-            $meetings = Meeting::where(['user_id' => Auth::user()->id, 'id' => $id])->first();
-            $meetingDetails = MeetingDetail::where('meeting_id', $meetings->id)->first();
+            $meeting = Meeting::where(['user_id' => Auth::user()->id, 'id' => $id])->first();
+            $meetingDetails = MeetingDetail::where('meeting_id', $meeting->id)->first();
 
             $webex_data = $this->refress_token();
             $baseURL =  Crypt::decryptString($webex_data->baseUrl);
@@ -253,8 +270,7 @@ class MeetingController extends Controller
 
 
             $token = "Bearer " . $access_token;
-            // $baseURL = $baseURL . "/meetings/" . $meetings->MTID;
-            $baseURL = $baseURL . "/meetings/89042c05a8144ddf964bc84c316351bb";
+            $baseURL = $baseURL . "/meetings/" . $meeting->MTID;
             $response = Http::accept('application/json')->withHeaders([
                 'Authorization' => $token,
             ])->delete($baseURL);
@@ -268,8 +284,10 @@ class MeetingController extends Controller
                 return back()->withInput()->with(['webex_errors' => $webex_errors]);
             }
 
-            $meetings->delete();
+            Material::where('publisher', $meeting->id)->delete();
+            $meeting->delete();
             $meetingDetails->delete();
+            
             Session::flash('success', 'Meeting deleted successfully');
             return redirect()->route('teacher.meetings');
         } catch (\Throwable $th) {

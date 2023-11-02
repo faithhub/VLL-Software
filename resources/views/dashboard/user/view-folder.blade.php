@@ -53,7 +53,7 @@
                                             <a onclick="shiNew(event)" data-type="dark" data-size="m"
                                                 data-title="{{ $material->title }}"
                                                 href="{{ route('user.view_material', $material->id) }}">
-                                                <img src="{{ asset($material->cover->url ?? '') }}"
+                                                <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}"
                                                     alt="{{ $material->name_of_court }}">
                                             </a>
                                         </div>

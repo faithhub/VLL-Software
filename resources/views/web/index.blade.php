@@ -109,7 +109,7 @@
                             <div class="col-lg-4 col-md-4 mb-5 p-2 justify-content-center text-center">
                                 <a href="{{ route('user.index') }}">
                                     <div class="material-img-holder">
-                                        <img src="{{ asset($material->cover->url ?? '') }}" alt="{{ $material->title ?? '' }}">
+                                        <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}" alt="{{ $material->title ?? '' }}">
 
                                         @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
                                             <img src="{{ asset('materials/icon/v-play.png') }}" alt="{{ $material->title }}"

@@ -524,7 +524,7 @@
                                                 <option value="">Select Country</option>
                                                 @isset($countries)
                                                     @foreach ($countries as $item)
-                                                        <option value="{{ $item->id }}" @selected(Auth::user()->country_id == $item->id)>
+                                                        <option value="{{ $item->id }}" @selected(Auth::user()->country_id ?? old('test_country_id') == $item->id)>
                                                             {{ $item->name }}
                                                         </option>
                                                     @endforeach
@@ -550,7 +550,7 @@
                                                 @isset($universities)
                                                     @foreach ($universities as $item)
                                                         <option data-value="{{ $item->country_id }}" value="{{ $item->id }}"
-                                                            @selected(Auth::user()->university_id == $item->id)>
+                                                            @selected(Auth::user()->university_id ?? old('university_id') == $item->id)>
                                                             {{ $item->name }}
                                                         </option>
                                                     @endforeach

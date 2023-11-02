@@ -8,6 +8,7 @@ use App\Mail\SendNote;
 use App\Models\Currency;
 use App\Models\File;
 use App\Models\Folder;
+use App\Models\Meeting;
 use App\Models\Invite;
 use App\Models\Material;
 use App\Models\MaterialHistory;
@@ -451,12 +452,21 @@ class UserController extends Controller
             $data['typeName'] = '';
             $data['rentedMatCount'] = $rentedMatCount = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false, 'type' => 'rented'])->get()->count();
             // dd($bought_folders);
-            $data['pageCount'] = countPages(public_path($m->file->url));
+            if ($m->file) {
+                $data['pageCount'] = countPages(public_path($m->file->url));
+            }
+            if ($m->citation == "new_meeting") {
+                $data['meeting'] = Meeting::find($m->publisher);
+            } else {
+                $data['meeting'] = [];
+            }
+            $data['pageCount'] = 0;
             $data['folder'] = $f = Folder::find($m->folder_id);
             $data['bought_folders'] = $bought_folders;
             $data['folder_mat_count'] = $fmc = Material::where('folder_id', $f->id ?? 0)->count();
             return View('dashboard.user.view', $data);
         } catch (\Throwable $th) {
+            dd($th);
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('user');
             //throw $th;
