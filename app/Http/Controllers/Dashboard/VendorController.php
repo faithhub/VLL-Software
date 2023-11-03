@@ -597,6 +597,9 @@ class VendorController extends Controller
                     $material_cover = $request->file('material_cover_id');
                     $material_cover_name = 'MaterialCover' . time() . '.' . $material_cover->getClientOriginalExtension();
                     $destinationPath = public_path('/storage/materials/covers');
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 777, true);
+                    }
                     $img = Image::make($material_cover->path());
                     $img->resize(600, 300, function ($constraint) {
                         $constraint->aspectRatio();
@@ -611,6 +614,9 @@ class VendorController extends Controller
                     $folder_cover = $request->file('folder_cover_id');
                     $folder_cover_name = 'FolderCover' . time() . '.' . $folder_cover->getClientOriginalExtension();
                     $destinationPath = public_path('/storage/materials/covers');
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 777, true);
+                    }
                     $img = Image::make($folder_cover->path());
                     $img->resize(600, 300, function ($constraint) {
                         $constraint->aspectRatio();
@@ -848,6 +854,9 @@ class VendorController extends Controller
                     $material_cover = $request->file('material_cover_id');
                     $material_cover_name = 'MaterialCover' . time() . '.' . $material_cover->getClientOriginalExtension();
                     $destinationPath = public_path('/storage/materials/covers');
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 777, true);
+                    }
                     $img = Image::make($material_cover->path());
                     $img->resize(600, 300, function ($constraint) {
                         $constraint->aspectRatio();
@@ -1009,6 +1018,9 @@ class VendorController extends Controller
                     $folder_cover = $request->file('folder_cover_id');
                     $folder_cover_name = 'FolderCover' . time() . '.' . $folder_cover->getClientOriginalExtension();
                     $destinationPath = public_path('/storage/materials/covers');
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 777, true);
+                    }
                     $img = Image::make($folder_cover->path());
                     $img->resize(600, 300, function ($constraint) {
                         $constraint->aspectRatio();
@@ -1123,6 +1135,9 @@ class VendorController extends Controller
                     $folder_cover = $request->file('folder_cover_id');
                     $folder_cover_name = 'FolderCover' . time() . '.' . $folder_cover->getClientOriginalExtension();
                     $destinationPath = public_path('/storage/materials/covers');
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 777, true);
+                    }
                     $img = Image::make($folder_cover->path());
                     $img->resize(600, 300, function ($constraint) {
                         $constraint->aspectRatio();
