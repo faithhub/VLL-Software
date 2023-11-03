@@ -326,7 +326,6 @@
                     break;
                 case "CSL":
                     const folder_csl = "{{ $ff_csl }}";
-                    console.log(old_folder_id, mode, 'old_folder_id');
 
                     let folders_new_csl = folders.filter(item => {
                         console.log(item.material_type_id, id);
@@ -338,9 +337,14 @@
                         }
                     })
 
-                    if (uniqueId == "CSL" && folder_csl != "1") {
+                    console.log(old_folder_id, mode, 'old_folder_id', folder_csl, folders_new_csl);
+
+                    if (uniqueId == "CSL") {
                         folders_new_csl.unshift(firstFolder)
                     }
+                    // if (uniqueId == "CSL" && folder_csl != "1") {
+                    //     folders_new_csl.unshift(firstFolder)
+                    // }
 
                     if (mode == 'edit') {
                         select.innerHTML = folders_new_csl.reduce((options, {
@@ -475,7 +479,25 @@
     $(document).ready(function() {
         $("#folder_select_id").change(function() {
             var value = $(this).val();
-            console.log(value);
+            var csl_elems = document.getElementsByClassName('new_csl_div_tag');
+            var new_folder_elems = document.getElementsByClassName('new-folder');
+            var elems = document.getElementsByClassName('upload-form-fields');
+            for (var i = 0; i < elems.length; i += 1) {
+                elems[i].style.display = 'none';
+            }
+// new_csl_div_tag
+            if (value == "new_folder") {
+                for (var i = 0; i < new_folder_elems.length; i += 1) {
+                    new_folder_elems[i].style.display = 'block';
+                }
+            console.log(value, "new-folder");
+            } else {
+            console.log(value, "new_csl_div_tag");
+                for (var i = 0; i < csl_elems.length; i += 1) {
+                    csl_elems[i].style.display = 'block';
+                }
+            }
+
         });
     });
 

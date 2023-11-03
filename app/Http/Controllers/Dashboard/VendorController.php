@@ -561,7 +561,7 @@ class VendorController extends Controller
                 $validator = Validator::make($request->all(), $rules, $messages);
 
                 if ($validator->fails()) {
-                    // dd($request->all(), $validator->errors());
+                    dd($request->all(), $validator->errors());
                     Session::flash('warning', __('All fields are required'));
                     return back()->withErrors($validator)->withInput();
                 }
@@ -1067,6 +1067,9 @@ class VendorController extends Controller
                 Session::flash('warning', 'No record found for this folder');
                 return redirect()->back();
             }
+            // Material::where(['folder_id' => $folder->id, 'user_id' => Auth::user()->id])->delete();
+            // $mh = MaterialHistory::where(['folder_id' => $folder->id, 'mat_type' => 'folder'])->delete();
+            // dd(MaterialHistory::where(['mat_type' => 'folder'])->get(), $folder);
             $folder->delete();
             Session::flash('success', 'Folder deleted successfully');
             return redirect()->route('vendor.folders');

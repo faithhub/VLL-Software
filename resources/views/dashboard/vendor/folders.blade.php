@@ -119,7 +119,7 @@
                                                             <td>
                                                                 <a onclick="shiNew(event)" data-type="dark" data-size="m" data-title="{{$folder->name}}" href="{{ route('vendor.edit_folder', $folder->id) }}" class="btn btn-sm btn-primary">Edit</a>
                                                                 <a onclick="shiNew(event)" data-type="dark" data-size="xl" data-title="{{$folder->name}}'s Folder" href="{{ route('vendor.view_folder', $folder->id) }}" class="btn btn-sm btn-primary">Materials</a>
-                                                                <a onclick="return confirm('Are you sure you want to delete this folder?')" href="{{ route('vendor.delete_folder', $folder->id) }}" class="btn btn-sm btn-danger">Delete</a>
+                                                                <a onclick="return confirm('Please note that all materials in this folder will deleted as well.\nAre you sure you want to delete this folder?')" href="{{ route('vendor.delete_folder', $folder->id) }}" class="btn btn-sm btn-danger">Delete</a>
                                                             </td>
                                                         </tr>
                                                     @endforeach

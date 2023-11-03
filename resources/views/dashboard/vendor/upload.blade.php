@@ -222,11 +222,12 @@
                                         <div class="form-group">
                                             <label class="form-label">Folder<span>*<span></label>
                                             <select class="form-control select" name="folder_id" id="folder_select_id"
-                                                data-parsley-required-message="Subject is required" requiredd=""
+                                                data-parsley-required-message="Folder is required" requiredd=""
                                                 data-parsley-errors-container="#folder-error"
                                                 data-placeholder="Select folder">
                                                 <option value="">Select folder</option>
                                                 <option value="new">Create folder</option>
+                                                <option value="">Create folder Mew</option>
                                                 @isset($folders)
                                                     @foreach ($folders as $item)
                                                         <option data-value="{{ $item->material_type_id ?? '' }}"
@@ -496,7 +497,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div id="paidDiv2" class="new_law_div_tag new_csl_div_tag upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12" style="display: none">
+                                    <div id="paidDiv2" class="new_law_div_tag new-folder upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12" style="display: none">
                                         <div class="form-group">
                                             <label class="form-label">Folder Duration <span>*<span></label>
                                             <select class="form-control select2" name="duration" id="folder-duration" requiredd

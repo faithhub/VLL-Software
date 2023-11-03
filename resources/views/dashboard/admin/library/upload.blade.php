@@ -626,7 +626,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div id="paidDiv2" class="new_law_div_tag new_csl_div_tag upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12" style="display: none">
+                                    <div id="paidDiv2" class="new_law_div_tag new-folder upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12" style="display: none">
                                         <div class="form-group">
                                             <label class="form-label">Folder Duration <span>*<span></label>
                                             <select class="form-control select2" name="duration" id="folder-duration" requiredd
