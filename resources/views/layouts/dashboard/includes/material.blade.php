@@ -386,7 +386,10 @@
                         }
                     })
 
-                    if (uniqueId == "LAW" && folder_law != "1") {
+                    // if (uniqueId == "LAW" && folder_law != "1") {
+                    //     folders_new_law.unshift(firstFolder)
+                    // }
+                    if (uniqueId == "LAW") {
                         folders_new_law.unshift(firstFolder)
                     }
 
@@ -479,24 +482,54 @@
     $(document).ready(function() {
         $("#folder_select_id").change(function() {
             var value = $(this).val();
+
+            var text = $("#material_type_select").find(':selected').attr('data-text');
+            var matId = $("#material_type_select").find(':selected').attr('data-matId');
+            var uniqueId = matId.substring(0, 3);
+            var law_elems = document.getElementsByClassName('new_law_div_tag');
             var csl_elems = document.getElementsByClassName('new_csl_div_tag');
             var new_folder_elems = document.getElementsByClassName('new-folder');
             var elems = document.getElementsByClassName('upload-form-fields');
             for (var i = 0; i < elems.length; i += 1) {
                 elems[i].style.display = 'none';
             }
-// new_csl_div_tag
+            console.log(uniqueId, "uuuu");
+            switch (uniqueId) {
+                case "CSL":
             if (value == "new_folder") {
                 for (var i = 0; i < new_folder_elems.length; i += 1) {
                     new_folder_elems[i].style.display = 'block';
                 }
-            console.log(value, "new-folder");
+                console.log(value, "new-folder");
             } else {
-            console.log(value, "new_csl_div_tag");
+                console.log(value, "new_csl_div_tag");
                 for (var i = 0; i < csl_elems.length; i += 1) {
                     csl_elems[i].style.display = 'block';
                 }
             }
+                    break;
+                case "LAW":
+                    if (value == "new_folder") {
+                        for (var i = 0; i < new_folder_elems.length; i += 1) {
+                            new_folder_elems[i].style.display = 'block';
+                        }
+                    } else {
+                        document.getElementById("mat_title_div").classList.remove('col-md-6',
+                            'col-lg-6',
+                            'col-xl-6');
+                        document.getElementById("mat_title_div").classList.add('col-md-12', 'col-lg-12',
+                            'col-xl-12');
+                        $("#title_of_material").text("Law");
+                        for (var i = 0; i < law_elems.length; i += 1) {
+                            law_elems[i].style.display = 'block';
+                        }
+                    }
+                    break;
+            
+                default:
+                    break;
+            }
+            // new_csl_div_tag
 
         });
     });
