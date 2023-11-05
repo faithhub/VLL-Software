@@ -83,6 +83,18 @@ class MeetingController extends Controller
     public function create(Request $request)
     {
         try {
+
+            $webex_data = $this->refress_token();
+            $baseURL =  Crypt::decryptString($webex_data->baseUrl);
+            $access_token =  Crypt::decryptString($webex_data->access_token);
+
+            $token = "Bearer " . $access_token;
+            $response = Http::accept('application/json')->withHeaders([
+                'Authorization' => $token,
+            ])->get($baseURL . "/meetingPreferences/sites");
+            $response->json();
+
+            dd($response->json());
             if ($_POST) {
                 $rules = array(
                     'university_id' => ['required', 'string', 'max:255'],

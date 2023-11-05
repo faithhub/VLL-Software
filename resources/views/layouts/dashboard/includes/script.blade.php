@@ -87,7 +87,7 @@
 <script type="text/javascript">
     function makePayment2() {
         FlutterwaveCheckout({
-            public_key: "FLWPUBK_TEST-006e9a2dde4eb5947f2da2af0c2f3695-X",
+            public_key: "FLWPUBK-2e0795000c795271594541388f09b14f-X",
             // public_key: "FLWPUBK_TEST-SANDBOXDEMOKEY-X",
             tx_ref: "VLL_" + Math.floor((Math.random() * 1000000000) + 1),
             amount: 3400,
