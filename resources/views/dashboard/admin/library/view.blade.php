@@ -32,12 +32,12 @@
                     </div>
                     <div class="mat-title">
                              <h4 class="h2 font-weight-bold text-center mt-3">
-                            {{ $material->title ?? $material->name_of_court }}</h4>
+                            {{ $material->title ?? $material->name_of_party }}</h4>
                         @isset($material->title)
                             <h5><b class="font-weight-bold">Title: </b>{{ $material->title }}</h5>
                         @endisset
                         @if (substr($material->type->mat_unique_id, 0, 3) == 'CSL')
-                            <h5><b class="font-weight-bold">Name of Court: </b>{{ $material->name_of_court ?? '' }}</h5>
+                            <h5><b class="font-weight-bold">Name of Court: </b>{{ $material->name_of_party ?? '' }}</h5>
                             <h5><b class="font-weight-bold">Name of Party: </b>{{ $material->name_of_party ?? '' }}</h5>
                             <h5><b class="font-weight-bold">Citation: </b>{{ $material->citation ?? '' }}</h5>
                             <h5><b class="font-weight-bold">Publisher: </b>{{ $folder->publisher ?? '' }}</h5>

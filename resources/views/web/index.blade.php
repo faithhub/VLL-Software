@@ -133,7 +133,8 @@
                                                 {{ $material->title }}
                                             @else
                                                 @isset($material->folder_id)
-                                                    {{ $material->folder->name ?? '' }} ({{ $material->name_of_court }})
+                                                    {{ $material->folder->name ?? '' }} ({{ $material->name_of_party }})
+                                                    {{-- {{ $material->folder->name ?? '' }} ({{ $material->name_of_party }}) --}}
                                                 @endisset
                                             @endif
                                         </h4>

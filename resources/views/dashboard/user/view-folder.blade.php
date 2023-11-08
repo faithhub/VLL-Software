@@ -54,7 +54,7 @@
                                                 data-title="{{ $material->title }}"
                                                 href="{{ route('user.view_material', $material->id) }}">
                                                 <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}"
-                                                    alt="{{ $material->name_of_court }}">
+                                                    alt="{{ $material->name_of_party }}">
                                             </a>
                                         </div>
                                     </div>
@@ -62,9 +62,9 @@
                                         <div class="mt-2">
                                         </div>
                                         <a onclick="shiNew(event)" data-type="dark" data-size="m"
-                                            data-title="{{ $material->name_of_court }}"
+                                            data-title="{{ $material->name_of_party }}"
                                             href="{{ route('user.view_material', $material->id) }}" class="book-title mt-2">
-                                            <h4 class="text-capitalize">{{ $material->name_of_court ?? $material->title }}
+                                            <h4 class="text-capitalize">{{ $material->name_of_party ?? $material->title }}
                                                 {{-- ({{ $material->year_of_publication }}) --}}
                                             </h4>
                                             {{-- <h5 class="text-capitalize">{{ $material->name_of_party }}</h5> --}}

@@ -45,8 +45,8 @@
                                                                     onclick="shiNew(event)" data-type="dark" data-size="m"
                                                                     data-title="{{ $material->invoice_id }}"
                                                                     href="{{ route('admin.view_material', $material->id) }}">
-                                                                    @isset($material->name_of_court)
-                                                                    {{ mb_strimwidth($material->name_of_court ?? '', 0, 30, '...') }}
+                                                                    @isset($material->name_of_party)
+                                                                    {{ mb_strimwidth($material->name_of_party ?? '', 0, 30, '...') }}
                                                                         @else
                                                                         {{ mb_strimwidth($material->title ?? '', 0, 30, '...') }}
                                                                     @endisset
