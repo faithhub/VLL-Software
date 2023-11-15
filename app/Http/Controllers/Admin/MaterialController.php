@@ -75,7 +75,7 @@ class MaterialController extends Controller
                     'folder_cover_id.required_if' => __('The Folder cover is required'),
                 ];
 
-                // dd($request->all());
+                dd($request->all());
                 $validator = Validator::make($request->all(), $rules, $messages);
 
                 if ($validator->fails()) {
