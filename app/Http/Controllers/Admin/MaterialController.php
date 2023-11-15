@@ -421,12 +421,13 @@ class MaterialController extends Controller
                         mkdir($destinationPath, 777, true);
                     }
                     $img = Image::make($folder_cover->path());
-                    
+
+
                     // $img->resize(600, 300, function ($constraint) {
                     //     $constraint->aspectRatio();
                     // })->save($destinationPath . '/' . $folder_cover_name);
 
-
+                    dd($img);
                     $img->resize(600, 300, function ($constraint) {
                         $constraint->aspectRatio();
                     })->save(public_path('/storage/materials/covers/' . $folder_cover_name));
