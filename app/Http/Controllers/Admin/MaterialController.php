@@ -430,7 +430,7 @@ class MaterialController extends Controller
                     //     $constraint->aspectRatio();
                     // })->save($destinationPath . '/' . $folder_cover_name);
 
-                    dd($img);
+                    // dd($img);
                     $img->resize(600, 300, function ($constraint) {
                         $constraint->aspectRatio();
                     })->save(public_path('/storage/materials/covers/' . $folder_cover_name));
