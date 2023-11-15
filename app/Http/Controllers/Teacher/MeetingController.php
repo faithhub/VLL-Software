@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Offlineagency\LaravelWebex\LaravelWebex;
 
 class MeetingController extends Controller
 {
@@ -67,6 +68,14 @@ class MeetingController extends Controller
         }
     }
 
+    public function bearerToken()
+    {
+        $header = $this->header('Authorization', '');
+        if (Str::startsWith($header, 'Bearer ')) {
+            return Str::substr($header, 7);
+        }
+    }
+
     public function index(Request $request)
     {
         # code...
@@ -75,7 +84,7 @@ class MeetingController extends Controller
             $data['meetings'] = Meeting::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get();
             return View('dashboard.teacher.meetings.index', $data);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            dd($th);
             //throw $th;
         }
     }
@@ -83,18 +92,6 @@ class MeetingController extends Controller
     public function create(Request $request)
     {
         try {
-
-            // $webex_data = $this->refress_token();
-            // $baseURL =  Crypt::decryptString($webex_data->baseUrl);
-            // $access_token =  Crypt::decryptString($webex_data->access_token);
-
-            // $token = "Bearer " . $access_token;
-            // $response = Http::accept('application/json')->withHeaders([
-            //     'Authorization' => $token,
-            // ])->get($baseURL . "/meetingPreferences/sites");
-            // $response->json();
-
-            // dd($response->json());
             if ($_POST) {
                 $rules = array(
                     'university_id' => ['required', 'string', 'max:255'],
@@ -239,6 +236,7 @@ class MeetingController extends Controller
             ])->get('https://webexapis.com/v1/meetingParticipants', ['meetingId' => $meeting->MTID]);
             $response3->json();
 
+            // dd($response3->json());
             $response = Http::accept('application/json')->withHeaders([
                 'Authorization' => $token,
             ])->get($baseURL);
