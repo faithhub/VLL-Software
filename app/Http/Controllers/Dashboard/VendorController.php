@@ -697,6 +697,7 @@ class VendorController extends Controller
             $role = ['vendor'];
             $data['ff_csl'] = false;
             $data['ff_law'] = false;
+            $ff_csl_arr = [];
             $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->with('mat_type')->get();
             foreach ($f as $key => $value) {
                 # code...
@@ -704,6 +705,7 @@ class VendorController extends Controller
                     if (
                         substr($value->mat_type->mat_unique_id, 0, 3) == "CSL"
                     ) {
+                        array_push($ff_csl_arr, $value);
                         $data['ff_csl'] = true;
                     }
                     if (
@@ -713,6 +715,7 @@ class VendorController extends Controller
                     }
                 }
             }
+            $data['ff_csl_arr'] = $ff_csl_arr;
             $data['material_types'] = $m = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
             $data['subjects'] = Subject::where("status", "active")->get();
             $data['countries'] = Country::all();
@@ -982,7 +985,7 @@ class VendorController extends Controller
             //code...
             $data['title'] = "Vendor Dashboard - All Folder";
             $data['sn'] = 1;
-            $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->with('mat_type')->get();
+            $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->with('mat_type')->orderBy('id', 'DESC')->get();
             return View('dashboard.vendor.folders', $data);
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());

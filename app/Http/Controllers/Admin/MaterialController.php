@@ -47,7 +47,7 @@ class MaterialController extends Controller
             //code...
             $data['title'] = "Admin Dashboard - All Folder";
             $data['sn'] = 1;
-            $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->with('mat_type')->get();
+            $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->with('mat_type')->orderBy('id', 'DESC')->get();
             return View('dashboard.admin.library.folders', $data);
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());
@@ -421,16 +421,11 @@ class MaterialController extends Controller
                         mkdir($destinationPath, 777, true);
                     }
                     $img = Image::make($folder_cover->path());
-
-
-                    if (!file_exists(public_path('/storage/materials/covers'))) {
-                        mkdir(public_path('/storage/materials/covers'), 755, true);
-                    }
+                    
                     // $img->resize(600, 300, function ($constraint) {
                     //     $constraint->aspectRatio();
                     // })->save($destinationPath . '/' . $folder_cover_name);
 
-                    // dd($img);
                     $img->resize(600, 300, function ($constraint) {
                         $constraint->aspectRatio();
                     })->save(public_path('/storage/materials/covers/' . $folder_cover_name));
@@ -515,7 +510,9 @@ class MaterialController extends Controller
 
             $data['title'] = "Upload Material";
             $data['ff_csl'] = false;
+            $ff_csl_arr = [];
             $data['ff_law'] = false;
+            $ff_law_arr = [];
             $role = ['admin'];
             $data['material_types'] = $m = MaterialType::where("status", "active")->whereJsonContains('role', $role)->get();
             $data['subjects'] = Subject::where("status", "active")->get();
@@ -528,15 +525,19 @@ class MaterialController extends Controller
                     if (
                         substr($value->mat_type->mat_unique_id, 0, 3) == "CSL"
                     ) {
+                        array_push($ff_csl_arr, $value);
                         $data['ff_csl'] = true;
                     }
                     if (
                         substr($value->mat_type->mat_unique_id, 0, 3) == "LAW"
                     ) {
+                        array_push($ff_law_arr, $value);
                         $data['ff_law'] = true;
                     }
                 }
             }
+            $data['ff_csl_arr'] = $ff_csl_arr;
+            $data['ff_law_arr'] = $ff_law_arr;
             $data['universities'] = University::Orderby('name', 'ASC')->get();
             return View('dashboard.admin.library.upload', $data);
         } catch (\Throwable $th) {

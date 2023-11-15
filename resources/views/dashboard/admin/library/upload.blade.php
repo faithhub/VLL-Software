@@ -28,10 +28,34 @@
                                         @csrf
                                         <input type="hidden" name="material_type_value"
                                             value="{{ Session::get('mat_unique') }}" id="material_type_value">
-                                        <input type="hidden" name="folder_id" value="{{ Session::get('new_folder')->id }}">
+                                        {{-- <input type="hidden" name="folder_id" value="{{ Session::get('new_folder')->id }}"> --}}
                                         <div class="row mt-5 mb-5 settings">
                                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-
+                                                <div class="form-group">
+                                                    <label class="form-label">Folder<span>*<span></label>
+                                                    <select class="form-control select" name="folder_id"
+                                                        data-parsley-required-message="Subject is required" requiredd=""
+                                                        data-parsley-errors-container="#folder-error"
+                                                        data-placeholder="Select folder">
+                                                        <option value="">Select folder</option>
+                                                        @isset($ff_csl_arr)
+                                                            @foreach ($ff_csl_arr as $item)
+                                                                <option data-value="{{ $item->material_type_id ?? '' }}"
+                                                                    @selected(Session::get('new_folder')->id == $item->id)
+                                                                    value="{{ $item->id }}">
+                                                                    {{ $item->name }}</option>
+                                                            @endforeach
+                                                        @endisset
+                                                    </select>
+                                                    <span class="invalid-feedback" id="folder-error" role="alert">
+                                                        @error('folder_id')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                                 <div class="form-group">
                                                     <label class="form-label">Name of Party <span>*<span></label>
                                                     <input type="text" class="form-control" id="custom-select"
@@ -192,13 +216,31 @@
                                         @csrf
                                         <input type="hidden" name="material_type_value"
                                             value="{{ Session::get('mat_unique') }}" id="material_type_value">
-                                        <input type="hidden" name="folder_id" value="{{ Session::get('new_folder')->id }}">
+                                        {{-- <input type="hidden" name="folder_id" value="{{ Session::get('new_folder')->id }}"> --}}
                                         <div class="row mt-5 mb-5 settings">
                                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">Folder</label>
-                                                    <input readonly type="text" class="form-control" name=""
-                                                        value="{{ Session::get('new_folder')->name }}">
+                                                    <label class="form-label">Folder<span>*<span></label>
+                                                    <select class="form-control select" name="folder_id"
+                                                        data-parsley-required-message="Subject is required" requiredd=""
+                                                        data-parsley-errors-container="#folder-error"
+                                                        data-placeholder="Select folder">
+                                                        <option value="">Select folder</option>
+                                                        @isset($ff_law_arr)
+                                                            @foreach ($ff_law_arr as $item)
+                                                                <option data-value="{{ $item->material_type_id ?? '' }}"
+                                                                    @selected(Session::get('new_folder')->id == $item->id)
+                                                                    value="{{ $item->id }}">
+                                                                    {{ $item->name }}</option>
+                                                            @endforeach
+                                                        @endisset
+                                                    </select>
+                                                    <span class="invalid-feedback" id="folder-error" role="alert">
+                                                        @error('folder_id')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
                                                 </div>
                                             </div>
                                             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -626,11 +668,13 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div id="paidDiv2" class="new-folder upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12" style="display: none">
+                                    <div id="paidDiv2"
+                                        class="new-folder upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12"
+                                        style="display: none">
                                         <div class="form-group">
                                             <label class="form-label">Folder Duration <span>*<span></label>
-                                            <select class="form-control select2" name="duration" id="folder-duration" requiredd
-                                                data-parsley-required-message="Duration is required">
+                                            <select class="form-control select2" name="duration" id="folder-duration"
+                                                requiredd data-parsley-required-message="Duration is required">
                                                 <option value="">Select duration</option>
                                                 <option value="annual" @selected(old('duration') == 'annual')>Annual</option>
                                                 <option value="quarterly" @selected(old('duration') == 'quarterly')>Quarterly</option>
