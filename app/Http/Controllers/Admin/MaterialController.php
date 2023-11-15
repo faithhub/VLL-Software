@@ -423,6 +423,9 @@ class MaterialController extends Controller
                     $img = Image::make($folder_cover->path());
 
 
+                    if (!file_exists(public_path('/storage/materials/covers'))) {
+                        mkdir(public_path('/storage/materials/covers'), 755, true);
+                    }
                     // $img->resize(600, 300, function ($constraint) {
                     //     $constraint->aspectRatio();
                     // })->save($destinationPath . '/' . $folder_cover_name);
