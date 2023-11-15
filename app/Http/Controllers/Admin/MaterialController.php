@@ -75,7 +75,7 @@ class MaterialController extends Controller
                     'folder_cover_id.required_if' => __('The Folder cover is required'),
                 ];
 
-                dd($request->all());
+                // dd($request->all());
                 $validator = Validator::make($request->all(), $rules, $messages);
 
                 if ($validator->fails()) {
@@ -421,9 +421,16 @@ class MaterialController extends Controller
                         mkdir($destinationPath, 777, true);
                     }
                     $img = Image::make($folder_cover->path());
+                    
+                    // $img->resize(600, 300, function ($constraint) {
+                    //     $constraint->aspectRatio();
+                    // })->save($destinationPath . '/' . $folder_cover_name);
+
+
                     $img->resize(600, 300, function ($constraint) {
                         $constraint->aspectRatio();
-                    })->save($destinationPath . '/' . $folder_cover_name);
+                    })->save(public_path('/storage/materials/covers/' . $folder_cover_name));
+
                     $save_folder_cover = File::create([
                         'name' => $folder_cover_name,
                         'url' => 'storage/materials/covers/' . $folder_cover_name
