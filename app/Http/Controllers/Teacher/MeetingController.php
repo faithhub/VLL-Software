@@ -79,11 +79,18 @@ class MeetingController extends Controller
     public function index(Request $request)
     {
         # code...
+        // $webex_data = $this->refress_token();
+        // $baseURL =  Crypt::decryptString($webex_data->baseUrl);
+        // $access_token =  Crypt::decryptString($webex_data->access_token);
+        // dd($access_token);
         try {
             $data['title'] = "Meetings";
+            $data['date_now'] = Carbon::now();
             $data['meetings'] = Meeting::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get();
             return View('dashboard.teacher.meetings.index', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('teacher');
             dd($th);
             //throw $th;
         }
@@ -192,6 +199,8 @@ class MeetingController extends Controller
             $data['title'] = "";
             return View('dashboard.teacher.meetings.create', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('teacher');
             dd($th->getMessage());
             //throw $th;
         }
@@ -262,6 +271,8 @@ class MeetingController extends Controller
             // dd($response3->json(), $response3->status());
             return View('dashboard.teacher.meetings.view', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('teacher');
             dd($th);
             //throw $th;
         }
@@ -301,6 +312,8 @@ class MeetingController extends Controller
             Session::flash('success', 'Meeting deleted successfully');
             return redirect()->route('teacher.meetings');
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('teacher');
             dd($th->getMessage());
             //throw $th;
         }

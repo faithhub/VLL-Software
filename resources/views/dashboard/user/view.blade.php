@@ -31,13 +31,13 @@
                                 {{ $material->title ?? $material->name_of_party }}
                             </h4>
                             <h5><b class="font-weight-bold">Meeting Title: </b>{{ $meeting->title ?? "" }}</h5>
-                            <h5><b class="font-weight-bold">Meeting Password: </b>{{ $meeting->password ?? "" }}
+                            {{-- <h5><b class="font-weight-bold">Meeting Password: </b>{{ $meeting->password ?? "" }}
                                         <button class="btn btn-sm btn-outline-dark"
-                                            onclick="copyMeetingPassword('{{ $meeting->password ?? '' }}')">Copy</button></h5>
+                                            onclick="copyMeetingPassword('{{ $meeting->password ?? '' }}')">Copy</button></h5> --}}
                             <h5><b class="font-weight-bold">Meeting Date: </b> {{ \Carbon\Carbon::parse($meeting->start)->format('D, M j, Y H:i:s') }} -
                                         {{ \Carbon\Carbon::parse($meeting->end)->format('D, M j, Y H:i:s') }}</h5>
-                            <h5 style="line-break: anywhere;"><b class="font-weight-bold">Meeting Link: </b>{{ $meeting->link }} <button class="btn btn-sm btn-outline-dark"
-                                            onclick="copyMeeting('{{ $meeting->link }}')">Copy</button></h5>
+                            {{-- <h5 style="line-break: anywhere;"><b class="font-weight-bold">Meeting Link: </b>{{ $meeting->link }} <button class="btn btn-sm btn-outline-dark"
+                                            onclick="copyMeeting('{{ $meeting->link }}')">Copy</button></h5> --}}
 
                             <a href="{{ $meeting->link }}" target="blank" class="sub-link btn p-2 font-weight-bold h4 btn-primary">Join Meeting</a>
                         </div>

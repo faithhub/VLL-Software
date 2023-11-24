@@ -24,6 +24,7 @@
                                                     <th class="sorting sorting_asc" style="">No</th>
                                                     <th scope="row" class="sorting" style="">Title</th>
                                                     <th class="sorting" tabindex="0" style="">Password</th>
+                                                    <th class="sorting" tabindex="0" style="">Status</th>
                                                     <th class="sorting" tabindex="0" style="">Meeting Date</th>
                                                     <th class="sorting" tabindex="0" style="">Link</th>
                                                     <th class="sorting" tabindex="0" style="">Created At</th>
@@ -41,14 +42,20 @@
                                                             <td><strong>{{ $meeting->title }}</strong></td>
                                                             <td>{{ $meeting->password }}</td>
                                                             <td>
+                                                                @if (\Carbon\Carbon::parse($meeting->end)->lt($date_now))
+                                                                    <span class="badge bg-danger text-capitalize">Expired</span>
+                                                                @else
+                                                                    <span class="badge bg-success text-capitalize">Active</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
                                                                 {{ \Carbon\Carbon::parse($meeting->start)->format('D, M j, Y H:i:s') }}
                                                                 -
                                                                 {{ \Carbon\Carbon::parse($meeting->end)->format('D, M j, Y H:i:s') }}
                                                             </td>
                                                             <td>
                                                                 {{-- {{ substr($meeting->link, 35, 20) }} --}}
-                                                                <button
-                                                                    class="btn btn-sm btn-outline-dark"
+                                                                <button class="btn btn-sm btn-outline-dark"
                                                                     onclick="copyMeeting('{{ $meeting->link }}')">Copy</button>
                                                             </td>
                                                             <td>

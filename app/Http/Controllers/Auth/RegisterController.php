@@ -172,7 +172,6 @@ class RegisterController extends Controller
             if (
                 $data['form_type'] == "teacher"
             ) {
-                return redirect('login');
                 // Mail::to($data['email'])->send(new VendorWelcomeEmail($data['name']));
                 return User::create([
                     'name' => $data['name'] ?? null,

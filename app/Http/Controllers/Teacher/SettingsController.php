@@ -69,6 +69,8 @@ class SettingsController extends Controller
             $data['title'] = "Profile";
             return View('dashboard.teacher.settings.index', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('teacher');
             dd($th->getMessage());
             return redirect()->route('teacher')->with('error', $th->getMessage());
         }
@@ -127,6 +129,8 @@ class SettingsController extends Controller
             $data = [];
             return View('dashboard.teacher.settings.change-password', $data);
         } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('teacher');
             dd($th->getMessage());
             return redirect()->route('teacher')->with('error', $th->getMessage());
             //throw $th;

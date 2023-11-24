@@ -67,7 +67,6 @@ class VendorController extends Controller
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('admin');
-            dd($th->getMessage());
             //throw $th;
         }
     }
@@ -115,7 +114,6 @@ class VendorController extends Controller
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('admin');
-            dd($th->getMessage());
             //throw $th;
         }
     }
