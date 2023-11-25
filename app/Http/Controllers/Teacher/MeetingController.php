@@ -62,6 +62,20 @@ class MeetingController extends Controller
                 }
             }
             return $webex;
+
+
+            Webex::create([
+                'refresh_token' => Crypt::encryptString("DQ4M2RkZmItN2NiZi00OWUyLWI4YzUtOTZhYWFkM2IyNzE4NTRkMGE4ZTEtZDk0_PE93_8419c701-37c9-4dbf-b218-12dcd2362fa6"),
+                'baseURL' => Crypt::encryptString("https://webexapis.com/v1"),
+                'client_id' => Crypt::encryptString("C8d8e2787e4bc4fb9ccd20f0c5db3ed00b340fab128168581282ea2d50273d1a7"),
+                'client_secret' => Crypt::encryptString("c685d4aa33aa2fb34f34cf4d7522db58b6292bf06f8683c3f507c6bc32b09f7a"),
+                'redirect_uri' => Crypt::encryptString("https://virtuallawlibrary.com/"),
+                'access_token' => Crypt::encryptString("NDYyN2I0NTItYTIyNy00YzdhLTg1OGEtOTYxM2FkMDhlMDU0NTdiZTE4OWItN2Q0_PE93_8419c701-37c9-4dbf-b218-12dcd2362fa6"),
+                'access_token_expires' => Crypt::encryptString(Carbon::now()->addSeconds("2023-11-26 21:13:16")->format('Y-m-d H:i:s')),
+                'refresh_token_expires' => Crypt::encryptString(Carbon::now()->addSeconds("2024-02-10 21:13:16")->format('Y-m-d H:i:s')),
+                'refresh_token_active' => true,
+                'access_token_active' => true,
+            ]);
         } catch (\Throwable $th) {
             return $th->getMessage();
             //throw $th;
@@ -78,7 +92,6 @@ class MeetingController extends Controller
 
     public function index(Request $request)
     {
-        # code...
         try {
             $data['title'] = "Meetings";
             $data['date_now'] = Carbon::now();

@@ -15,7 +15,7 @@ class Webex extends Model
         'redirect_uri',
         'refresh_token',
         'code',
-        'baseUrl',
+        'baseURL',
         'access_token',
         'access_token_expires',
         'refresh_token_expires',
