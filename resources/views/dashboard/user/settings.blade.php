@@ -50,9 +50,21 @@
                                 </div>
 
                                 <div class="row mt-5 settings">
-
                                     @if (Auth::user()->user_type == 'student')
                                         <div class="col-lg-12 col-xl-12">
+                                            @if (Auth::user()->user_type == 'student')
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">
+                                                            School
+                                                        </label>
+                                                        <input name="" type="text" class="form-control"
+                                                            required=""
+                                                            data-parsley-required-message="School is required" disabled
+                                                            placeholder="School" value="{{ Auth::user()->school->name }}">
+                                                    </div>
+                                                </div>
+                                            @endif
                                         @else
                                             <div class="col-lg-6 col-xl-6">
                                     @endif
