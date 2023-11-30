@@ -127,6 +127,16 @@
                                     </h5>
                                 </div>
                             </div>
+                            <div class="row align-items-center mb-3">
+                                <div class="col-2">
+                                    <h5>Join Meeting:</h5>
+                                </div>
+                                <div class="col-10">
+                                    <h5 class="font-weight-bold">
+                                        <a href="{{ $meeting->link }}" target="blank" class="btn btn-primary">Join Now</a>
+                                    </h5>
+                                </div>
+                            </div>
                         </div>
                         <hr>
                         <div class="row pt-1 mt-1">
