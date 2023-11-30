@@ -4,6 +4,9 @@
 /public/storage
 /storage/*.key
 /vendor
+/webex.virtuallawlibrary.com
+/dev.virtuallawlibrary.com
+/meeting.virtuallawlibrary.com
 .env
 .env.backup
 .phpunit.result.cache
