@@ -17,10 +17,10 @@
                 <div class="card border-10 pt-5">
                     <div class="card-header border-bottom-0 mb-4">
                         <h6 class="mb-1 mt-1 font-weight-bold h6">
-                           <a href="{{ route('user.library') }}">
-                             <i class="fa fa-arrow-left"></i>&nbsp&nbsp
-                            Back
-                           </a>
+                            <a href="{{ route('user.library') }}">
+                                <i class="fa fa-arrow-left"></i>&nbsp&nbsp
+                                Back
+                            </a>
                         </h6>
                         <div class="card-options" style="margin-right:2.5%">
                             {{-- <a href="javascript:void(0);" class="btn btn-sm btn-primary">View All</a> --}}
@@ -33,7 +33,15 @@
                                     <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
                                         <div class="image">
                                             <a href="{{ $material->link }}">
-                                                <img src="{{ $material->img }}" alt="{{ $material->title }}">
+
+                                                @if ($material->folder)
+                                                    <img src="{{ asset($material->folder->folder_cover->url ?? 'images/new-meeting.png') }}"
+                                                        alt="{{ $material->title }}">
+                                                @else
+                                                    <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
+                                                        alt="{{ $material->title }}">
+                                                @endif
+                                                {{-- <img src="{{ $material->img }}" alt="{{ $material->title }}"> --}}
                                             </a>
                                         </div>
                                         <div class="mat-title">
@@ -66,19 +74,21 @@
                                 <div class="card-header border-bottom-0 pb-1">
                                     {{-- <h4 class="card-title font-weight-bold h2" style="text-transform:initial;">Note One</h4> --}}
                                     <div class="card-options">
-                                        <a href="javascript:void(0);" class="btn btn-sm font-weight-bold">{{ date('d M, Y') }}</a>
+                                        <a href="javascript:void(0);"
+                                            class="btn btn-sm font-weight-bold">{{ date('d M, Y') }}</a>
                                     </div>
                                 </div>
                                 <div class="card-body pt-2">
                                     {{-- <h4 class="font-weight-bold h5">The Introduction to Business Law</h4> --}}
-                                    <div class="editable editable-title" contenteditable="true" placeholder="Note Title here...."></div>
+                                    <div class="editable editable-title" contenteditable="true"
+                                        placeholder="Note Title here...."></div>
                                     <div class="editable" contenteditable="true" placeholder="Write note here...."></div>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-    </div>
-@endsection
+        </div>
+    @endsection

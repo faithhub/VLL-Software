@@ -11,16 +11,18 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-
+use MacsiDigital\Zoom\Facades\Zoom;
 
 class HomeController extends Controller
 {
 
     public function index()
     {
+        // $meeting = Zoom::meeting();
+        // dd($meeting);
         $data['title'] = "Home";
         $data['banner'] = true;
-        $data['materials'] = Material::with(['type', 'cover', 'folder:name'])->where('status', 'active')->inRandomOrder()->limit(6)->get();
+        $data['materials'] = Material::with(['type', 'cover', 'folder:*'])->where('status', 'active')->inRandomOrder()->limit(6)->get();
         return View('web.index', $data);
     }
 

@@ -47,7 +47,8 @@ class MaterialController extends Controller
             //code...
             $data['title'] = "Admin Dashboard - All Folder";
             $data['sn'] = 1;
-            $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->with('mat_type')->orderBy('id', 'DESC')->get();
+            // $data['folders'] = $f = Folder::where(['user_id' => Auth::user()->id])->with('mat_type')->orderBy('id', 'DESC')->get();
+            $data['folders'] = $f = Folder::with(['mat_type', 'user'])->orderBy('id', 'DESC')->get();
             return View('dashboard.admin.library.folders', $data);
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());
@@ -887,20 +888,22 @@ class MaterialController extends Controller
         try {
             //code...
             $data['status'] = false;
-            $data['material'] = $material = Material::with(['type', 'vendor', 'file', 'cover', 'country', 'subject'])->find($id);
+            $data['material'] = $material = Material::with(['type', 'vendor', 'file', 'cover', 'country', 'subject'])->withTrashed()->find($id);
             if ($material) {
                 $data['status'] = true;
                 $data['title'] = $material->title;
                 $data['histories'] = MaterialHistory::where('material_id', $material->id)->with(['trans', 'user'])->get();
                 $data['totalRented'] = MaterialHistory::where(['material_id' => $material->id, 'type' => 'rented'])->get()->count();
                 $data['totalBought'] = MaterialHistory::where(['material_id' => $material->id, 'type' => 'bought'])->get()->count();
-                $data['pageCount'] = countPages(public_path($material->file->url));
+                $pageCount = 0;
+                if ($material->file) {
+                    $pageCount = countPages(public_path($material->file->url ?? ""));
+                }
+                $data['pageCount'] = $pageCount;
                 $data['folder'] = $f = Folder::find($material->folder_id);
             }
             return View('dashboard.admin.library.view', $data);
         } catch (\Throwable $th) {
-            Session::flash('warning', $th->getMessage());
-            return back() ?? redirect()->route('admin');
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('admin');
             dd($th->getMessage());
@@ -924,6 +927,46 @@ class MaterialController extends Controller
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('admin');
+            dd($th->getMessage());
+            //throw $th;
+        }
+    }
+
+    public function restore_material($id)
+    {
+        # code...
+        try {
+            //code...
+            $material =   Material::onlyTrashed()->find($id);
+            if (!$material) {
+                Session::flash('error', __('Not record found'));
+                return redirect()->back()->withInput(['tabName' => 'deletedMaterials']);
+            }
+            $material->restore();
+            Session::flash('success', __('Material restored successfully'));
+            return redirect()->back()->withInput(['tabName' => 'deletedMaterials']);
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            //throw $th;
+        }
+    }
+
+    public function restore_material_type($id)
+    {
+        # code...
+        try {
+            //code...
+            $material_type =   MaterialType::onlyTrashed()->find($id);
+            if (!$material_type) {
+                Session::flash('error', __('Not record found'));
+                return redirect()->back()->withInput(['tabName' => 'deletedMaterialType']);
+            }
+            $material_type->restore();
+            Session::flash('success', __('Material Type restored successfully'));
+            return redirect()->back()->withInput(['tabName' => 'deletedMaterialType']);
+        } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('admin');
             dd($th->getMessage());

@@ -29,7 +29,7 @@
                         <div class="d-flex">
                             <div class="media mt-4">
                                 <div class="media-body">
-                                    <h6 class="mb-1 mt-1 font-weight-bold h3">Search resulsut for
+                                    <h6 class="mb-1 mt-1 font-weight-bold h3">Search result for
                                         "{{ request()->get('search') }}"</h6>
                                     <small class="h5"><b class="font-weight-bold">{{ $material_array->count() }}</b>
                                         material(s) found </small>
@@ -99,8 +99,17 @@
                                                     <a onclick="shiNew(event)" data-type="dark" data-size="m"
                                                         data-title="{!! $material->title[0] !!}"
                                                         href="{{ route('user.view_material', $material->id) }}">
-                                                        <img src="{{ asset($material->mat_cover ?? $material->cover->url) }}"
-                                                            alt="{!! $material->name_of_author !!}" class="mat_img">
+                                                        {{-- <img src="{{ asset($material->mat_cover ?? $material->cover->url) }}"
+                                                            alt="{!! $material->name_of_author !!}" class="mat_img"> --}}
+                                                        @if ($material->folder)
+                                                            <img src="{{ asset($material->folder->folder_cover->url ?? 'images/new-meeting.png') }}"
+                                                                alt="{!! $material->name_of_author !!}"
+                                                                class="mat_img">
+                                                        @else
+                                                            <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
+                                                                alt="{!! $material->name_of_author !!}"
+                                                                class="mat_img">
+                                                        @endif
 
                                                         @isset($material->type->mat_unique_id)
                                                             @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')

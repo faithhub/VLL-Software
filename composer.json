@@ -20,6 +20,7 @@
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.0",
+        "macsidigital/laravel-zoom": "^8.0",
         "offline-agency/laravel-webex": "^1.1",
         "smalot/pdfparser": "^2.3",
         "stevebauman/location": "^6.5"

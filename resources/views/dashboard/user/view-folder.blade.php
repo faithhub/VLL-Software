@@ -53,8 +53,15 @@
                                             <a onclick="shiNew(event)" data-type="dark" data-size="m"
                                                 data-title="{{ $material->title }}"
                                                 href="{{ route('user.view_material', $material->id) }}">
-                                                <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}"
-                                                    alt="{{ $material->name_of_party }}">
+                                                {{-- <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}"
+                                                    alt="{{ $material->name_of_party }}"> --}}
+                                                @if ($material->folder)
+                                                    <img src="{{ asset($material->folder->folder_cover->url ?? 'images/new-meeting.png') }}"
+                                                        alt="{{ $material->name_of_party }}">
+                                                @else
+                                                    <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
+                                                        alt="{{ $material->name_of_party }}">
+                                                @endif
                                             </a>
                                         </div>
                                     </div>
@@ -100,15 +107,16 @@
                                                 {{ $folder_mat_count }}</b>
                                         </h5>
                                         @if ($folder->price == 'Paid')
-                                        <a onclick="flutterwaveBuyMaterial('{{ exchange($folder->amount, $folder->currency_id) }}', '{{ $folder->id }}', 'folder')"
-                                            class="btn m-2 btn-primary p-3">
-                                            Buy Folder
-                                        </a>
+                                            <a onclick="flutterwaveBuyMaterial('{{ exchange($folder->amount, $folder->currency_id) }}', '{{ $folder->id }}', 'folder')"
+                                                class="btn m-2 btn-primary p-3">
+                                                Buy Folder
+                                            </a>
                                         @elseif ($folder->price == 'Free')
-                                        <a href="{{ route('user.add_free_folder_to_library', $folder->id) }}"
-                                            class="btn btn-primary p-3" onclick="return confirm('Are you sure you want to add this folder to your library?')">
-                                            Add To Library
-                                        </a>
+                                            <a href="{{ route('user.add_free_folder_to_library', $folder->id) }}"
+                                                class="btn btn-primary p-3"
+                                                onclick="return confirm('Are you sure you want to add this folder to your library?')">
+                                                Add To Library
+                                            </a>
                                         @endif
                                     </div>
                                 </div>

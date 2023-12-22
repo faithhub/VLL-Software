@@ -114,9 +114,18 @@
                                                                                     data-size="m"
                                                                                     data-title="{{ $material->title }}"
                                                                                     href="{{ route('user.view_material', $material->id) }}">
-                                                                                    <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}"
+                                                                                    {{-- <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}"
+                                                                                        alt="{{ $material->title }}"
+                                                                                        class="mat_img"> --}}
+                                                                                @if ($material->folder)
+                                                                                    <img src="{{ asset($material->folder->folder_cover->url ?? 'images/new-meeting.png') }}"
                                                                                         alt="{{ $material->title }}"
                                                                                         class="mat_img">
+                                                                                @else
+                                                                                    <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
+                                                                                        alt="{{ $material->title }}"
+                                                                                        class="mat_img">
+                                                                                @endif
                                                                                     <img id="img-2"
                                                                                         src="{{ asset('materials/icon/v-play.png' ?? "") }}"
                                                                                         alt="{{ $material->title }}" align="middle"

@@ -5,13 +5,14 @@
             <div class="card-body">
                 <div class="row">
                     @isset($all_materials)
-                        @foreach ($all_materials as $material)
+                    @foreach ($all_materials as $material)
                             <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
                                 <div class="image">
                                     <a onclick="shiNew(event)" data-type="dark" data-size="m"
                                         data-title="{{ $material->title }}"
                                         href="{{ route('admin.view_material', $material->id) }}">
-                                        <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}" alt="{{ $material->title }}">
+                                        <img src="{{ asset($material->folder->folder_cover->url ??  "images/new-meeting.png") }}" alt="{{ $material->title }}">
+                                        {{-- <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}" alt="{{ $material->title }}"> --}}
                                     </a>
                                 </div>
                                 <div class="mat-title">

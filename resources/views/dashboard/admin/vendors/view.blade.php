@@ -241,8 +241,9 @@
                                     <li><a href="#tab-8" data-bs-toggle="tab" class="fs-14" aria-selected="false"
                                             role="tab" tabindex="-1">Transactions</a></li>
                                 @endif
-                                <li><a href="#tab-9" data-bs-toggle="tab" class="fs-14 @if (Auth::user()->sub_admin == 'user') active @endif" aria-selected="false"
-                                        role="tab" tabindex="-1">Login History</a> </li>
+                                <li><a href="#tab-9" data-bs-toggle="tab"
+                                        class="fs-14 @if (Auth::user()->sub_admin == 'user') active @endif"
+                                        aria-selected="false" role="tab" tabindex="-1">Login History</a> </li>
                             </ul>
                         </div>
                     </div>
@@ -303,10 +304,18 @@
                                                                         <tr class="">
                                                                             <td class="sorting_1">{{ $sn++ }}</td>
                                                                             <td class="sorting_1">
-                                                                                <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}"
-                                                                                    style="max-height:60px">
+                                                                                @if ($material->folder)
+                                                                                    <img src="{{ asset($material->folder->folder_cover->url ?? 'images/new-meeting.png') }}"
+                                                                                        alt="{{ $material->title }}"
+                                                                                        style="max-height:60px">
+                                                                                @else
+                                                                                    <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
+                                                                                        alt="{{ $material->title }}"
+                                                                                        style="max-height:60px">
+                                                                                @endif
                                                                             </td>
-                                                                            <td class="sorting_1"><a class="font-weight-bold"
+                                                                            <td class="sorting_1">
+                                                                                <a class="font-weight-bold"
                                                                                     onclick="shiNew(event)" data-type="dark"
                                                                                     data-size="m"
                                                                                     data-title="{{ $material->invoice_id }}"
@@ -326,6 +335,11 @@
                                                                             </td>
                                                                             <td>
                                                                                 <div class="d-flex">
+                                                                                    <a onclick="shiNew(event)"
+                                                                                        data-type="dark" data-size="m"
+                                                                                        data-title="{{ $material->invoice_id }}"
+                                                                                        href="{{ route('admin.view_material', $material->id) }}"
+                                                                                        class="btn m-1 btn-sm btn-primary">View</a>
                                                                                     <a onclick="return confirm('Are you sure you want to delete this material?')"
                                                                                         href="{{ route('admin.delete.library', $material->id) }}"
                                                                                         class="btn btn-sm m-1 btn-primary">
@@ -440,7 +454,8 @@
                                 </div>
                             </div>
                         @endif
-                        <div class="tab-pane @if (Auth::user()->sub_admin == 'user') active show @endif" id="tab-9" role="tabpanel">
+                        <div class="tab-pane @if (Auth::user()->sub_admin == 'user') active show @endif" id="tab-9"
+                            role="tabpanel">
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">Login History</h3>

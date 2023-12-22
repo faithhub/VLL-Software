@@ -6,8 +6,15 @@
                     <div class="image text-center">
                         <div id="frame">
                             <a href="#">
-                                <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
-                                    alt="{{ $material->title }}">
+                                {{-- <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
+                                    alt="{{ $material->title }}"> --}}
+                                @if ($material->folder)
+                                    <img src="{{ asset($material->folder->folder_cover->url ?? 'images/new-meeting.png') }}"
+                                        alt="{{ $material->title }}">
+                                @else
+                                    <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
+                                        alt="{{ $material->title }}">
+                                @endif
                                 @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
                                     <img id="video-bookstore-cover-view" src="{{ asset('materials/icon/v-play.png') }}"
                                         alt="{{ $material->title }}" align="middle" style="color: black">
@@ -30,16 +37,18 @@
                             <h4 class="h2 font-weight-bold text-center mt-3">
                                 {{ $material->title ?? $material->name_of_party }}
                             </h4>
-                            <h5><b class="font-weight-bold">Meeting Title: </b>{{ $meeting->title ?? "" }}</h5>
+                            <h5><b class="font-weight-bold">Meeting Title: </b>{{ $meeting->title ?? '' }}</h5>
                             {{-- <h5><b class="font-weight-bold">Meeting Password: </b>{{ $meeting->password ?? "" }}
                                         <button class="btn btn-sm btn-outline-dark"
                                             onclick="copyMeetingPassword('{{ $meeting->password ?? '' }}')">Copy</button></h5> --}}
-                            <h5><b class="font-weight-bold">Meeting Date: </b> {{ \Carbon\Carbon::parse($meeting->start)->format('D, M j, Y H:i:s') }} -
-                                        {{ \Carbon\Carbon::parse($meeting->end)->format('D, M j, Y H:i:s') }}</h5>
+                            <h5><b class="font-weight-bold">Meeting Date: </b>
+                                {{ \Carbon\Carbon::parse($meeting->start)->format('D, M j, Y H:i:s') }} -
+                                {{ \Carbon\Carbon::parse($meeting->end)->format('D, M j, Y H:i:s') }}</h5>
                             {{-- <h5 style="line-break: anywhere;"><b class="font-weight-bold">Meeting Link: </b>{{ $meeting->link }} <button class="btn btn-sm btn-outline-dark"
                                             onclick="copyMeeting('{{ $meeting->link }}')">Copy</button></h5> --}}
 
-                            <a href="{{ $meeting->link }}" target="blank" class="sub-link btn p-2 font-weight-bold h4 btn-primary">Join Meeting</a>
+                            <a href="{{ $meeting->link }}" target="blank"
+                                class="sub-link btn p-2 font-weight-bold h4 btn-primary">Join Meeting</a>
                         </div>
                     @else
                         <div class="mat-title mt-3">
@@ -246,24 +255,24 @@
 </div>
 </div>
 
-    <script>
-        function copyMeetingPassword(password) {
-            // console.log(password);
-            navigator.clipboard.writeText(password).then(function() {
-                console.log('Async: Copying to clipboard was successful!');
-                toastr.success("Meeting password copied", "Success");
-            }, function(err) {
-                console.error('Async: Could not copy text: ', err);
-            });
-        }
+<script>
+    function copyMeetingPassword(password) {
+        // console.log(password);
+        navigator.clipboard.writeText(password).then(function() {
+            console.log('Async: Copying to clipboard was successful!');
+            toastr.success("Meeting password copied", "Success");
+        }, function(err) {
+            console.error('Async: Could not copy text: ', err);
+        });
+    }
 
-        function copyMeeting(link) {
-            // console.log(link);
-            navigator.clipboard.writeText(link).then(function() {
-                console.log('Async: Copying to clipboard was successful!');
-                toastr.success("Meeting link copied", "Success");
-            }, function(err) {
-                console.error('Async: Could not copy text: ', err);
-            });
-        }
-    </script>
+    function copyMeeting(link) {
+        // console.log(link);
+        navigator.clipboard.writeText(link).then(function() {
+            console.log('Async: Copying to clipboard was successful!');
+            toastr.success("Meeting link copied", "Success");
+        }, function(err) {
+            console.error('Async: Could not copy text: ', err);
+        });
+    }
+</script>

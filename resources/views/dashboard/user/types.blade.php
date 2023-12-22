@@ -49,7 +49,14 @@
                                             <a onclick="shiNew(event)" data-type="dark" data-size="l"
                                                 data-title="{{ $material->title }}"
                                                 href="{{ route('vendor.view_material', $material->id) }}">
-                                                <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}" alt="{{ $material->title }}">
+                                                {{-- <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}" alt="{{ $material->title }}"> --}}
+                                                @if ($material->folder)
+                                                    <img src="{{ asset($material->folder->folder_cover->url ?? 'images/new-meeting.png') }}"
+                                                        alt="{{ $material->title }}">
+                                                @else
+                                                    <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
+                                                        alt="{{ $material->title }}">
+                                                @endif
                                             </a>
                                         </div>
                                         <div class="mat-title">

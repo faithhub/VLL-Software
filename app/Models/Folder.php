@@ -37,4 +37,9 @@ class Folder extends Model
     {
         return $this->hasOne(MaterialType::class, 'id', 'material_type_id');
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

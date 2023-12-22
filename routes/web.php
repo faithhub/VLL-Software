@@ -145,6 +145,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/transactions',  [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions')->middleware('sub_admin_trans');
         Route::get('/transactions/{id}',  [App\Http\Controllers\Admin\TransactionController::class, 'view'])->name('transaction.view')->middleware('sub_admin_trans');
+        Route::match(['get'], '/recycle-bin',  [App\Http\Controllers\Admin\RecycleBinController::class, 'index'])->name('recycle-bin')->middleware('admin_only');
+        Route::get('/restore-material/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'restore_material'])->name('restore_material')->middleware('admin_only');
+        Route::get('/restore-material-type/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'restore_material_type'])->name('restore_material_type')->middleware('admin_only');
         Route::match(['get', 'post'], '/settings',  [App\Http\Controllers\Admin\DashboardController::class, 'settings'])->name('settings')->middleware('admin_only');
         Route::match(['get', 'post'], '/profile',  [App\Http\Controllers\Admin\DashboardController::class, 'profile'])->name('profile')->middleware('admin_only');
         Route::match(['get', 'post'], '/sub',  [App\Http\Controllers\Admin\DashboardController::class, 'sub_admin_profile'])->name('sub_admin_profile');

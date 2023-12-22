@@ -1,24 +1,30 @@
 <div class="row">
     <style>
-.user-role{
-        font-size: 10px;
-        padding: 2px;
-        /* padding-top: 2px; */
-        font-weight: 800;
-        font-family: fantasy !important;
-}
-        </style>
+        .user-role {
+            font-size: 10px;
+            padding: 2px;
+            /* padding-top: 2px; */
+            font-weight: 800;
+            font-family: fantasy !important;
+        }
+    </style>
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div class="card border-10 pt-2 card-primary">
             <div class="card-body">
                 <div class="row">
                     <div class="image text-center">
                         <a href="#">
-                            <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}" alt="{{ $material->title }}">
-                                @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
-                                    <img id="video-bookstore-cover-view" src="{{ asset('materials/icon/v-play.png') }}"
-                                        alt="{{ $material->title }}" align="middle" style="color: black">
-                                @endif
+                            @if ($material->folder)
+                                <img src="{{ asset($material->folder->folder_cover->url ?? 'images/new-meeting.png') }}"
+                                    alt="{{ $material->title }}">
+                            @else
+                                <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
+                                    alt="{{ $material->title }}">
+                            @endif
+                            @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
+                                <img id="video-bookstore-cover-view" src="{{ asset('materials/icon/v-play.png') }}"
+                                    alt="{{ $material->title }}" align="middle" style="color: black">
+                            @endif
                         </a>
                     </div>
                     <div class="rating text-center">
@@ -31,7 +37,7 @@
                         </h4> --}}
                     </div>
                     <div class="mat-title">
-                             <h4 class="h2 font-weight-bold text-center mt-3">
+                        <h4 class="h2 font-weight-bold text-center mt-3">
                             {{ $material->title ?? $material->name_of_party }}</h4>
                         @isset($material->title)
                             <h5><b class="font-weight-bold">Title: </b>{{ $material->title }}</h5>
@@ -93,27 +99,41 @@
                         <h5><b class="font-weight-bold">Total Bought: </b>{{ $totalBought }}</h5>
 
                         @isset($material->vendor)
-                        <h5><b class="font-weight-bold">Uploaded By: 
-                            @if ($material->vendor->role == "vendor")
-                            <a href="{{ route('admin.vendor', $material->user->id) }}">{{ $material->user->name }}</a> <span class="text-capitalize user-role btn-sm btn btn-primary">{{$material->vendor->role}}</span>
-                            @else
-                            {{ $material->user->name }} <span class="text-capitalize user-role btn-sm btn btn-primary">{{$material->vendor->role}}</span>
-                            @endif
-                            </b></h5>
+                            <h5><b class="font-weight-bold">Uploaded By:
+                                    @if ($material->vendor->role == 'vendor')
+                                        <a
+                                            href="{{ route('admin.vendor', $material->user->id) }}">{{ $material->user->name }}</a>
+                                        <span
+                                            class="text-capitalize user-role btn-sm btn btn-primary">{{ $material->vendor->role }}</span>
+                                    @else
+                                        {{ $material->user->name }} <span
+                                            class="text-capitalize user-role btn-sm btn btn-primary">{{ $material->vendor->role }}</span>
+                                    @endif
+                                </b></h5>
                         @endisset
-                        
+                        <h5><b class="font-weight-bold">Date Uploaded:
+                            </b>{{ $material->created_at->format('D, M j, Y h:i a') }}</h5>
+
                         <h5><b class="font-weight-bold">Summary: </b></h5>
                         <p>
                             {{ $material->material_desc }}
                         </p>
-                        <a href="{{ route('admin.edit.library', $material->id) }}" class="btn btn-primary p-3 m-2">
-                            <i class="fa fa-pencil"></i>&nbsp&nbspEdit
-                        </a>
-                        <a href="{{ route('admin.delete.library', $material->id) }}"
-                            onclick="return confirm('Are you sure you want to delete this meterial?')"
-                            class="btn btn-dark p-3 btn-outline-primary">
-                            <i class="fa fa-trash"></i>&nbsp&nbspDelete
-                        </a>
+                        @if ($material->trashed())
+                            <a onclick="return confirm('Are you sure you want to restore this material?')"
+                                href="{{ route('admin.delete.library', $material->id) }}"
+                                class="btn font-weight-bold btn-primary p-3 m-2">
+                                Restore Material
+                            </a>
+                        @else
+                            <a href="{{ route('admin.edit.library', $material->id) }}" class="btn btn-primary p-3 m-2">
+                                <i class="fa fa-pencil"></i>&nbsp&nbspEdit
+                            </a>
+                            <a href="{{ route('admin.delete.library', $material->id) }}"
+                                onclick="return confirm('Are you sure you want to delete this meterial?')"
+                                class="btn btn-dark p-3 btn-outline-primary">
+                                <i class="fa fa-trash"></i>&nbsp&nbspDelete
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>

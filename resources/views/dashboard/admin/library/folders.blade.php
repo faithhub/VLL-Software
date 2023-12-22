@@ -75,6 +75,8 @@
                                                     </th>
                                                     <th scope="row" class="sorting" style="">Name
                                                     </th>
+                                                    <th scope="row" class="sorting" style="">User
+                                                    </th>
                                                     <th scope="row" class="sorting" style="">Material
                                                     </th>
                                                     <th class="sorting" tabindex="0" style="">Amount
@@ -97,8 +99,11 @@
                                                                     style="max-height:40px">
                                                             </td>
                                                             <td class="sorting_1">
-                                                                <a class="font-weight-normal1"
-                                                                    href="#">{{ $folder->name }}</a>
+                                                                <a class="font-weight-bold"
+                                                                    onclick="shiNew(event)" data-type="dark" data-size="xl" data-title="{{$folder->name}}'s Folder" href="{{ route('admin.view_folder', $folder->id) }}">{{ $folder->name }}</a>
+                                                            </td>
+                                                            <td class="sorting_1">
+                                                                <h6 class="font-weight-bold">{{ $folder->user->name }}</h6>
                                                             </td>
                                                             <td class="sorting_1">
                                                                 <a class="font-weight-normal1"
