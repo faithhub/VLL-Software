@@ -156,7 +156,8 @@ class MaterialController extends Controller
             //code...
             $data['sn'] = 1;
             $data['title'] = "Admin Dashboard - Materials";
-            $data['all_materials'] = Material::where(['user_id' => Auth::user()->id, 'folder_id' => $id])->with(['type', 'folder'])->get();
+            $data['all_materials'] = Material::where(['folder_id' => $id])->with(['type', 'folder'])->get();
+            // $data['all_materials'] = Material::where(['user_id' => Auth::user()->id, 'folder_id' => $id])->with(['type', 'folder'])->get();
             return View('dashboard.admin.modals.view-folder', $data);
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());
@@ -173,7 +174,8 @@ class MaterialController extends Controller
         # code...
         try {
             //code...
-            $folder = Folder::where(['user_id' => Auth::user()->id, 'id' => $id])->first();
+            $folder = Folder::where(['id' => $id])->first();
+            // $folder = Folder::where(['user_id' => Auth::user()->id, 'id' => $id])->first();
             if (!$folder) {
                 Session::flash('warning', 'No record found for this folder');
                 return redirect()->back();
@@ -195,7 +197,8 @@ class MaterialController extends Controller
     {
         # code...
         try {
-            $data['folder'] = $folder = Folder::where(['user_id' => Auth::user()->id, 'id' => $id])->first();
+            $data['folder'] = $folder = Folder::where(['id' => $id])->first();
+            // $data['folder'] = $folder = Folder::where(['user_id' => Auth::user()->id, 'id' => $id])->first();
 
             if (!$folder) {
                 Session::flash('warning', __('No record found'));
@@ -244,7 +247,8 @@ class MaterialController extends Controller
 
                 $tags = explode(",", $request->tags);
 
-                Folder::where(['user_id' => Auth::user()->id, 'id' => $id])->update([
+                // Folder::where(['user_id' => Auth::user()->id, 'id' => $id])->update([
+                Folder::where(['id' => $id])->update([
                     "material_type_id" => $request->material_type_id,
                     "name" => $request->name,
                     "name_of_author" => $request->name_of_author,
