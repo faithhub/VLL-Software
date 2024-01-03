@@ -139,7 +139,8 @@
                                 </div>
                                 <div class="col-10">
                                     <h5 class="font-weight-bold">
-                                        <a href="{{ $meeting->link }}" target="blank" class="btn btn-primary">Join Now</a>
+                                        
+                                        <a href="{{ route('join.meeting', $meeting->token) }}" target="blank" class="btn btn-primary">Join Now</a>
                                     </h5>
                                 </div>
                             </div>

@@ -545,7 +545,7 @@ class MeetingController extends Controller
             ])
             ->get('https://api.zoom.us/v2/meetings/' . $meeting->MTID);
 
-            dd($response->json());
+            // dd($response->json());
             $data['participants'] = $participants = [];
 
             // if ($response->status() != 200) {
