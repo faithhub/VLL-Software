@@ -38,6 +38,13 @@
                                     </li>
                                 </ul>
                             @endif
+                            @if (Auth::user()->role == 'teacher')
+                                <ul class="navbar-nav mx-auto">
+                                    <li class="nav-item"><a class="nav-link login-btn"
+                                            href="{{ route('teacher.index') }}">Dashboard</a>
+                                    </li>
+                                </ul>
+                            @endif
                             @if (Auth::user()->role == 'admin' || Auth::user()->role == 'sub_admin')
                                 <ul class="navbar-nav mx-auto">
                                     <li class="nav-item"><a class="nav-link login-btn"

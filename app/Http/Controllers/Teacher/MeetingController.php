@@ -489,6 +489,7 @@ class MeetingController extends Controller
         try {
             $data['meeting'] = $meeting = Meeting::where(['user_id' => Auth::user()->id, 'id' => $id])->first();
 
+            $data['date_now'] = Carbon::now();
             if (!$meeting) {
                 Session::flash('error', "No record");
                 return back();

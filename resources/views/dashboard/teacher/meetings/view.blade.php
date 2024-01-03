@@ -58,7 +58,7 @@
                                 <div class="col-10">
                                     <h5 class="font-weight-bold">
                                         {{ \Carbon\Carbon::parse($meeting->start)->format('D, M j, Y H:i:s') }}
-                                         {{-- -
+                                        {{-- -
                                         {{ \Carbon\Carbon::parse($meeting->end)->format('D, M j, Y H:i:s') }} --}}
                                     </h5>
                                 </div>
@@ -81,8 +81,13 @@
                                 <div class="col-10">
                                     {{-- <iframe src="{{ $meeting->link }}" allow="camera; microphone"></iframe> --}}
                                     <h5 class="font-weight-bold">
-                                        <span class="badge bg-warning text-capitalize">{{ $meeting->status }}</span>
-                                        @isset($meeting_res['state'])
+                                        @if (\Carbon\Carbon::parse($meeting->start)->lt($date_now))
+                                            <span class="badge bg-danger text-capitalize">Expired</span>
+                                        @else
+                                            <span class="badge bg-success text-capitalize">{{ $meeting->status }}</span>
+                                        @endif
+                                        {{-- <span class="badge bg-warning text-capitalize">{{ $meeting->status }}</span> --}}
+                                        {{-- @isset($meeting_res['state'])
                                         @if ($meeting_res['state'])
                                             @switch($meeting_res['state'])
                                                 @case('scheduled')
@@ -128,8 +133,7 @@
                                                 @default
                                             @endswitch
                                         @endif
-                                            
-                                        @endisset
+                                        @endisset --}}
                                     </h5>
                                 </div>
                             </div>
@@ -139,8 +143,8 @@
                                 </div>
                                 <div class="col-10">
                                     <h5 class="font-weight-bold">
-                                        
-                                        <a href="{{ route('join.meeting', $meeting->token) }}" target="blank" class="btn btn-primary">Join Now</a>
+                                        <a href="{{ route('join.meeting', $meeting->token) }}" target="blank"
+                                            class="btn btn-primary">Join Now</a>
                                     </h5>
                                 </div>
                             </div>
