@@ -17,9 +17,130 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Offlineagency\LaravelWebex\LaravelWebex;
+use App\Models\Setting;
+use Illuminate\Support\Facades\Cache;
+use Stevebauman\Location\Facades\Location;
+use hisorange\BrowserDetect\Parser as Browser;
 
 class MeetingController extends Controller
 {
+
+    public function settings()
+    {
+        try {
+            $settings =
+                Setting::all([
+                    'key', 'value'
+                ])
+                ->keyBy('key')
+                ->transform(function ($setting) {
+                    return $setting->value;
+                });
+
+            if (Carbon::now() >= $settings['zoom_refresh_token_expires']) {
+
+                $params = "code=" . $settings['zoom_code'] . "&grant_type=refresh_token&refresh_token=" . $settings['zoom_refresh_token'];
+                // $params = [
+                //     'grant_type' => 'refresh_token',
+                //     'code' => $settings['zoom_code'],
+                //     'refresh_token' => $settings['zoom_refresh_token']
+                // ];
+                // dd($settings, $params, $settings['zoom_refresh_token_expires'], 'fff');
+                // dd($settings, $params, $settings['zoom_refresh_token_expires']);
+                $response = Http::withHeaders([
+                    'Authorization' => 'Basic ' . base64_encode($settings['zoom_client_id'] . ':' . $settings['zoom_client_secret']),
+                    'Content-Type'  => 'application/x-www-form-urlencoded',
+                ])
+                    ->post('https://zoom.us/oauth/token', $params);
+
+                $data = $response->json();
+                if ($response->status() == 200) {
+
+                    $params = [
+                        'zoom_access_token' => $data['access_token'],
+                        'zoom_refresh_token' => $data['refresh_token'],
+                        'zoom_refresh_token_expires' => Carbon::now()->addSeconds($data['expires_in']),
+                    ];
+
+                    foreach ($params as $key => $value) {
+                        $settings = Setting::where('key', $key)->first();
+                        if (empty($settings)) {
+                            $req = array("key" => $key, "value" => $value);
+                            Setting::create($req);
+                        } else {
+                            $settings->value = $value;
+                            $settings->save();
+                        }
+                    }
+
+                    return
+                        Setting::all([
+                            'key', 'value'
+                        ])
+                        ->keyBy('key')
+                        ->transform(function ($setting) {
+                            return $setting->value;
+                        });
+                } else {
+                    return false;
+                }
+            } else {
+
+                //code...
+                return $settings;
+            }
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            //throw $th;
+        }
+    }
+
+    public function refress_access_token()
+    {
+        try {
+            //code...
+            $settings = $this->settings();
+            $params = "code=" . $settings['zoom_code'] . "&grant_type=refresh_token&refresh_token=" . $settings['zoom_refresh_token'];
+            // $params = [
+            //     'grant_type' => 'refresh_token',
+            //     'code' => $settings['zoom_code'],
+            //     'refresh_token' => $settings['zoom_refresh_token']
+            // ];
+            // dd($settings, $params, $settings['zoom_refresh_token_expires'], 'fff');
+            // dd($settings, $params, $settings['zoom_refresh_token_expires']);
+            $response = Http::withHeaders([
+                'Authorization' => 'Basic ' . base64_encode($settings['zoom_client_id'] . ':' . $settings['zoom_client_secret']),
+                'Content-Type'  => 'application/x-www-form-urlencoded',
+            ])
+                ->post('https://zoom.us/oauth/token', $params);
+
+            $data = $response->json();
+            if ($response->status() == 200) {
+
+                $params = [
+                    'zoom_access_token' => $data['access_token'],
+                    'zoom_refresh_token' => $data['refresh_token'],
+                    'zoom_refresh_token_expires' => Carbon::now()->addSeconds($data['expires_in']),
+                ];
+
+                foreach ($params as $key => $value) {
+                    $settings = Setting::where('key', $key)->first();
+                    if (empty($settings)) {
+                        $req = array("key" => $key, "value" => $value);
+                        Setting::create($req);
+                    } else {
+                        $settings->value = $value;
+                        $settings->save();
+                    }
+                }
+            } else {
+                return false;
+            }
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            //throw $th;
+        }
+    }
 
     public function refress_token()
     {
@@ -62,9 +183,6 @@ class MeetingController extends Controller
                 }
             }
             return $webex;
-
-
-           
         } catch (\Throwable $th) {
             return $th->getMessage();
             //throw $th;
@@ -121,26 +239,32 @@ class MeetingController extends Controller
     public function create(Request $request)
     {
         try {
+            // $ip = $request->getClientIp();
+            // $loc = Location::get($ip);
+            // dd(Carbon::now()->timezone($loc->timezone ?? "Africa/Lagos")->addSeconds(3599), $loc);
+            
             if ($_POST) {
                 $rules = array(
                     'university_id' => ['required', 'string', 'max:255'],
-                    'title' => ['required', 'string', 'max:50', 'min:5'],
+                    'title' => ['required', 'string', 'max:50', 'min:3'],
+                    'duration' => ['required'],
                     'password' => ['required', 'string', 'min:5', 'max:20'],
-                    'start' => ['required', 'before:end'],
-                    'end' => ['required', 'after:start']
+                    'start' => ['required'],
+                    // 'start' => ['required', 'before:end'],
+                    // 'end' => ['required', 'after:start']
                 );
 
                 $messages = [
                     'title.required' => "The Meeting Title is required",
                     'title.string' => "The Meeting Title must be string",
                     'title.max' => "The Meeting Title must not more than 50 characters",
-                    'title.min' => "The Meeting Title must not less than 10 characters",
+                    'title.min' => "The Meeting Title must not less than 3 characters",
                     'password.min' => "The Meeting Password must not less than 5 characters",
                     'password.max' => "The Meeting Password must not more than 20 characters",
                     'start.required' => "The Meeting Start Date is required",
                     'start.before' => "The Meeting Start Date must be a date before the Meeting End Date",
-                    'end.after' => "The Meeting End Date must be a date after the Meeting Start date",
-                    'end.required' => "The Meeting End Date is required",
+                    // 'end.after' => "The Meeting End Date must be a date after the Meeting Start date",
+                    // 'end.required' => "The Meeting End Date is required",
                 ];
 
                 $validator = Validator::make($request->all(), $rules, $messages);
@@ -151,82 +275,213 @@ class MeetingController extends Controller
                 }
 
                 $start = Carbon::parse($request->start)->format('Y-m-d H:i:s');
-                $end = Carbon::parse($request->end)->format('Y-m-d H:i:s');
+                // $end = Carbon::parse($request->end)->format('Y-m-d H:i:s');
                 $title = $request->title;
+                $duration = $request->duration;
                 $password = $request->password ?? Str::random(10);
 
                 $params = [
-                    'title' => $title,
-                    'start' => $start,
-                    'end' => $end,
-                    'password' => $password
+                    'topic' => $title,
+                    'type'  => 2,
+                    'start_time' => $start,
+                    'duration' => $duration,
+                    'password' => $password,
+                    'settings'   => [
+                        'host_video'        => false,
+                        'participant_video' => true,
+                        'cn_meeting'        => false,
+                        'in_meeting'        => false,
+                        'join_before_host'  => true,
+                        'mute_upon_entry'   => true,
+                        'watermark'         => false,
+                        'use_pmi'           => false,
+                        'approval_type'     => 0,
+                        'registration_type' => 0,
+                        'audio'             => 'voip',
+                        'auto_recording'    => 'none',
+                        'waiting_room'      => false,
+                    ],
                 ];
 
+                // $this->refress_access_token();
 
-                $webex_data = $this->refress_token();
-                $baseURL =  Crypt::decryptString($webex_data->baseUrl);
-                $access_token =  Crypt::decryptString($webex_data->access_token);
+                $response = Http::withHeaders([
+                    'Authorization' => 'Bearer ' . $this->settings()['zoom_access_token'],
+                    'Content-Type'  => 'application/json',
+                    'cache-control' => 'no-cache',
+                ])
+                    ->withOptions([
+                        'verify' => false, // Skip SSL verification
+                    ])
+                    ->post('https://api.zoom.us/v2/users/me/meetings', $params);
 
-                $token = "Bearer " . $access_token;
-                $response = Http::accept('application/json')->withHeaders([
-                    'Authorization' => $token,
-                ])->post($baseURL . "/meetings", $params);
-                $response->json();
+                if ($response->successful()) {
+                    $meeting = Meeting::create([
+                        'user_id' => Auth::user()->id,
+                        'university_id' => $request->university_id,
+                        'MTID' => $response->json()['id'],
+                        'link' => $response->json()['join_url'],
+                        'title' => $title,
+                        'status' => $response->json()['status'],
+                        'start' => $start,
+                        'token' => md5(Str::orderedUuid()),
+                        'end' => $duration,
+                        'details' => $response->json(),
+                        'password' => $password
+                    ]);
 
-                if ($response->status() != 200) {
-                    # code...
+                    MeetingDetail::create([
+                        'meeting_id' => $meeting->id,
+                    ]);
+
+                    Material::create([
+                        'user_id' => Auth::user()->id,
+                        'title' => $title,
+                        'version' => $request->version ?? null,
+                        'citation' => 'new_meeting',
+                        'publisher' => $meeting->id,
+                        'version' => $meeting->token,
+                        'price' => 'free',
+                        'amount' => $request->amount ?? null,
+                        'material_type_id' => 5,
+                        'year_of_publication' => 0,
+                        'privacy_code' => $password,
+                        'test_country_id' => Auth::user()->country_id,
+                        'university_id' => Auth::user()->university_id,
+                        'uploaded_by' => 'teacher',
+                        'material_cover_id' => null,
+                    ]);
+
+                    Session::flash('success', 'Meeting created successfully');
+                    return redirect()->route('teacher.meetings');
+                } else {
+
+                    // dd($response->json(), $response->json()['message']);
                     $data['err_msg'] = $err_msg = $response->json()['message'];
-                    $data['webex_errors'] = $webex_errors = $response->json()['errors'];
                     Session::flash('error', $err_msg);
-                    return back()->withInput()->with(['webex_errors' => $webex_errors]);
+                    return back()->withInput();
                 }
-
-                $meeting = Meeting::create([
-                    'user_id' => Auth::user()->id,
-                    'university_id' => $request->university_id,
-                    'MTID' => $response->json()['id'],
-                    'link' => $response->json()['webLink'],
-                    'title' => $title,
-                    'start' => $start,
-                    'end' => $end,
-                    'details' => $response->json(),
-                    'password' => $password
-                ]);
-
-                MeetingDetail::create([
-                    'meeting_id' => $meeting->id,
-                ]);
-
-                Material::create([
-                    'user_id' => Auth::user()->id,
-                    'title' => $title,
-                    'version' => $request->version ?? null,
-                    'citation' => 'new_meeting',
-                    'publisher' => $meeting->id,
-                    'price' => 'free',
-                    'amount' => $request->amount ?? null,
-                    'material_type_id' => 5,
-                    'year_of_publication' => 0,
-                    'privacy_code' => $password,
-                    'test_country_id' => Auth::user()->country_id,
-                    'university_id' => Auth::user()->university_id,
-                    'uploaded_by' => 'teacher',
-                    'material_cover_id' => null,
-                ]);
-
-                Session::flash('success', 'Meeting created successfully');
-                return redirect()->route('teacher.meetings');
             }
             //code...
             $data['title'] = "";
             return View('dashboard.teacher.meetings.create', $data);
         } catch (\Throwable $th) {
+            // dd($th->getMessage());
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('teacher');
-            dd($th->getMessage());
             //throw $th;
         }
     }
+
+    // public function create(Request $request)
+    // {
+    //     try {
+    //         if ($_POST) {
+    //             $rules = array(
+    //                 'university_id' => ['required', 'string', 'max:255'],
+    //                 'title' => ['required', 'string', 'max:50', 'min:5'],
+    //                 'password' => ['required', 'string', 'min:5', 'max:20'],
+    //                 'start' => ['required', 'before:end'],
+    //                 'end' => ['required', 'after:start']
+    //             );
+
+    //             $messages = [
+    //                 'title.required' => "The Meeting Title is required",
+    //                 'title.string' => "The Meeting Title must be string",
+    //                 'title.max' => "The Meeting Title must not more than 50 characters",
+    //                 'title.min' => "The Meeting Title must not less than 10 characters",
+    //                 'password.min' => "The Meeting Password must not less than 5 characters",
+    //                 'password.max' => "The Meeting Password must not more than 20 characters",
+    //                 'start.required' => "The Meeting Start Date is required",
+    //                 'start.before' => "The Meeting Start Date must be a date before the Meeting End Date",
+    //                 'end.after' => "The Meeting End Date must be a date after the Meeting Start date",
+    //                 'end.required' => "The Meeting End Date is required",
+    //             ];
+
+    //             $validator = Validator::make($request->all(), $rules, $messages);
+
+    //             if ($validator->fails()) {
+    //                 Session::flash('warning', __('All fields are required'));
+    //                 return back()->withErrors($validator)->withInput();
+    //             }
+
+    //             $start = Carbon::parse($request->start)->format('Y-m-d H:i:s');
+    //             $end = Carbon::parse($request->end)->format('Y-m-d H:i:s');
+    //             $title = $request->title;
+    //             $password = $request->password ?? Str::random(10);
+
+    //             $params = [
+    //                 'title' => $title,
+    //                 'start' => $start,
+    //                 'end' => $end,
+    //                 'password' => $password
+    //             ];
+
+
+    //             $webex_data = $this->refress_token();
+    //             $baseURL =  Crypt::decryptString($webex_data->baseUrl);
+    //             $access_token =  Crypt::decryptString($webex_data->access_token);
+
+    //             $token = "Bearer " . $access_token;
+    //             $response = Http::accept('application/json')->withHeaders([
+    //                 'Authorization' => $token,
+    //             ])->post($baseURL . "/meetings", $params);
+    //             $response->json();
+
+    //             if ($response->status() != 200) {
+    //                 # code...
+    //                 $data['err_msg'] = $err_msg = $response->json()['message'];
+    //                 $data['webex_errors'] = $webex_errors = $response->json()['errors'];
+    //                 Session::flash('error', $err_msg);
+    //                 return back()->withInput()->with(['webex_errors' => $webex_errors]);
+    //             }
+
+    //             $meeting = Meeting::create([
+    //                 'user_id' => Auth::user()->id,
+    //                 'university_id' => $request->university_id,
+    //                 'MTID' => $response->json()['id'],
+    //                 'link' => $response->json()['webLink'],
+    //                 'title' => $title,
+    //                 'start' => $start,
+    //                 'end' => $end,
+    //                 'details' => $response->json(),
+    //                 'password' => $password
+    //             ]);
+
+    //             MeetingDetail::create([
+    //                 'meeting_id' => $meeting->id,
+    //             ]);
+
+    //             Material::create([
+    //                 'user_id' => Auth::user()->id,
+    //                 'title' => $title,
+    //                 'version' => $request->version ?? null,
+    //                 'citation' => 'new_meeting',
+    //                 'publisher' => $meeting->id,
+    //                 'price' => 'free',
+    //                 'amount' => $request->amount ?? null,
+    //                 'material_type_id' => 5,
+    //                 'year_of_publication' => 0,
+    //                 'privacy_code' => $password,
+    //                 'test_country_id' => Auth::user()->country_id,
+    //                 'university_id' => Auth::user()->university_id,
+    //                 'uploaded_by' => 'teacher',
+    //                 'material_cover_id' => null,
+    //             ]);
+
+    //             Session::flash('success', 'Meeting created successfully');
+    //             return redirect()->route('teacher.meetings');
+    //         }
+    //         //code...
+    //         $data['title'] = "";
+    //         return View('dashboard.teacher.meetings.create', $data);
+    //     } catch (\Throwable $th) {
+    //         Session::flash('warning', $th->getMessage());
+    //         return back() ?? redirect()->route('teacher');
+    //         dd($th->getMessage());
+    //         //throw $th;
+    //     }
+    // }
 
     public function view($id)
     {
@@ -241,12 +496,12 @@ class MeetingController extends Controller
 
             $data['meetingDetails'] = $meetingDetails = MeetingDetail::where('meeting_id', $meeting->id)->first();
 
-            $webex_data = $this->refress_token();
-            $baseURL =  Crypt::decryptString($webex_data->baseUrl);
-            $access_token =  Crypt::decryptString($webex_data->access_token);
+            // $webex_data = $this->refress_token();
+            // $baseURL =  Crypt::decryptString($webex_data->baseUrl);
+            // $access_token =  Crypt::decryptString($webex_data->access_token);
 
 
-            $token = "Bearer " . $access_token;
+            // $token = "Bearer " . $access_token;
             // $baseURL = $baseURL . "/meetings";
             // $response = Http::accept('application/json')->withHeaders([
             //     'Authorization' => $token,
@@ -256,30 +511,42 @@ class MeetingController extends Controller
 
 
 
-            $baseURL = $baseURL . "/meetings/" . $meeting->MTID;
+            // $baseURL = $baseURL . "/meetings/" . $meeting->MTID;
             // $response2 = Http::accept('application/json')->withHeaders([
             //     'Authorization' => $token,
             // ])->get('https://webexapis.com/v1/meetings/postMeetingChats', ['meetingId' => $meeting->MTID]);
             // $response2->json();
 
-            $response3 = Http::accept('application/json')->withHeaders([
-                'Authorization' => $token,
-            ])->get('https://webexapis.com/v1/meetingParticipants', ['meetingId' => $meeting->MTID]);
-            $response3->json();
+            // $response3 = Http::accept('application/json')->withHeaders([
+            //     'Authorization' => $token,
+            // ])->get('https://webexapis.com/v1/meetingParticipants', ['meetingId' => $meeting->MTID]);
+            // $response3->json();
 
-            // dd($response3->json());
-            $response = Http::accept('application/json')->withHeaders([
-                'Authorization' => $token,
-            ])->get($baseURL);
-            $response->json();
+            // // dd($response3->json());
+            // $response = Http::accept('application/json')->withHeaders([
+            //     'Authorization' => $token,
+            // ])->get($baseURL);
+            // $response->json();
 
-            $data['meeting_res'] = $meeting_res = $response->json();
+            // $data['meeting_res'] = $meeting_res = $response->json();
 
-            if (!empty($response3->json())) {
-                $data['participants'] = $participants = $response3->json()['items'] ?? [];
-            } else {
-                $data['participants'] = $participants = [];
-            }
+            // if (!empty($response3->json())) {
+            //     $data['participants'] = $participants = $response3->json()['items'] ?? [];
+            // } else {
+            // }
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->settings()['zoom_access_token'],
+                'Content-Type'  => 'application/json',
+                'cache-control' => 'no-cache',
+            ])
+            ->withOptions([
+                'verify' => false, // Skip SSL verification
+            ])
+            ->get('https://api.zoom.us/v2/meetings/' . $meeting->MTID);
+
+            dd($response->json());
+            $data['participants'] = $participants = [];
 
             // if ($response->status() != 200) {
             //     # code...
@@ -307,30 +574,44 @@ class MeetingController extends Controller
             $meeting = Meeting::where(['user_id' => Auth::user()->id, 'id' => $id])->first();
             $meetingDetails = MeetingDetail::where('meeting_id', $meeting->id)->first();
 
-            $webex_data = $this->refress_token();
-            $baseURL =  Crypt::decryptString($webex_data->baseUrl);
-            $access_token =  Crypt::decryptString($webex_data->access_token);
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->settings()['zoom_access_token'],
+                'Content-Type'  => 'application/json',
+                'cache-control' => 'no-cache',
+            ])
+                ->withOptions([
+                    'verify' => false, // Skip SSL verification
+                ])
+                ->delete('https://api.zoom.us/v2/meetings/' . $meeting->MTID);
+                // ->delete('https://api.zoom.us/v2/meetings/75438753466');
+
+            // dd($meeting, $meetingDetails);
+            // dd($meeting, $meetingDetails, $response->json());
+            // dd($response->json());
+            // $webex_data = $this->refress_token();
+            // $baseURL =  Crypt::decryptString($webex_data->baseUrl);
+            // $access_token =  Crypt::decryptString($webex_data->access_token);
 
 
-            $token = "Bearer " . $access_token;
-            $baseURL = $baseURL . "/meetings/" . $meeting->MTID;
-            $response = Http::accept('application/json')->withHeaders([
-                'Authorization' => $token,
-            ])->delete($baseURL);
-            $response->json();
+            // $token = "Bearer " . $access_token;
+            // $baseURL = $baseURL . "/meetings/" . $meeting->MTID;
+            // $response = Http::accept('application/json')->withHeaders([
+            //     'Authorization' => $token,
+            // ])->delete($baseURL);
+            // $response->json();
 
-            if ($response->status() != 204) {
-                # code...
-                $data['err_msg'] = $err_msg = $response->json()['message'];
-                $data['webex_errors'] = $webex_errors = $response->json()['errors'];
-                Session::flash('error', $err_msg);
-                return back()->withInput()->with(['webex_errors' => $webex_errors]);
-            }
+            // if ($response->status() != 204) {
+            //     # code...
+            //     $data['err_msg'] = $err_msg = $response->json()['message'];
+            //     $data['webex_errors'] = $webex_errors = $response->json()['errors'];
+            //     Session::flash('error', $err_msg);
+            //     return back()->withInput()->with(['webex_errors' => $webex_errors]);
+            // }
 
             Material::where('publisher', $meeting->id)->delete();
             $meeting->delete();
             $meetingDetails->delete();
-            
+
             Session::flash('success', 'Meeting deleted successfully');
             return redirect()->route('teacher.meetings');
         } catch (\Throwable $th) {

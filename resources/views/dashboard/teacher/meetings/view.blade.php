@@ -57,8 +57,9 @@
                                 </div>
                                 <div class="col-10">
                                     <h5 class="font-weight-bold">
-                                        {{ \Carbon\Carbon::parse($meeting->start)->format('D, M j, Y H:i:s') }} -
-                                        {{ \Carbon\Carbon::parse($meeting->end)->format('D, M j, Y H:i:s') }}
+                                        {{ \Carbon\Carbon::parse($meeting->start)->format('D, M j, Y H:i:s') }}
+                                         {{-- -
+                                        {{ \Carbon\Carbon::parse($meeting->end)->format('D, M j, Y H:i:s') }} --}}
                                     </h5>
                                 </div>
                             </div>
@@ -78,7 +79,10 @@
                                     <h5>Meeting Status:</h5>
                                 </div>
                                 <div class="col-10">
+                                    {{-- <iframe src="{{ $meeting->link }}" allow="camera; microphone"></iframe> --}}
                                     <h5 class="font-weight-bold">
+                                        <span class="badge bg-warning text-capitalize">{{ $meeting->status }}</span>
+                                        @isset($meeting_res['state'])
                                         @if ($meeting_res['state'])
                                             @switch($meeting_res['state'])
                                                 @case('scheduled')
@@ -124,6 +128,8 @@
                                                 @default
                                             @endswitch
                                         @endif
+                                            
+                                        @endisset
                                     </h5>
                                 </div>
                             </div>

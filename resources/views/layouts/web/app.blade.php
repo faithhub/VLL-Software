@@ -1,8 +1,5 @@
 <!doctype html>
 <html lang="en">
-
-<!-- Mirrored from templates.envytheme.com/goldmedi/default/index-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 25 Sep 2022 21:59:24 GMT -->
-
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -64,7 +61,4 @@
     <!-- Link of JS files -->
     @include('layouts.web.includes.script')
 </body>
-
-<!-- Mirrored from templates.envytheme.com/goldmedi/default/index-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 25 Sep 2022 22:00:08 GMT -->
-
 </html>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ZoomController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('start', [ZoomController::class, 'index']);
+Route::any('zoom-meeting-create', [ZoomController::class, 'index']);
+
 
 Route::get('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
 Route::match(['get', 'post'], '/register/vendor', [App\Http\Controllers\Auth\RegisterController::class, 'vendor'])->name('vendor_reg');
@@ -44,6 +48,9 @@ Route::prefix('google')->name('google.')->group(function () {
 
 Route::group(['middleware' => ['auth']], function () {
     //Change currency
+    Route::get('/join-meeting/{token}',  [App\Http\Controllers\Web\HomeController::class, 'zoom'])->name('join.meeting');
+
+    
     Route::match(['post'], 'change-currency',  [App\Http\Controllers\Admin\DashboardController::class, 'change_currency'])->name('change_currency');
     //Payment Confrimation
     Route::get('/confirm-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'confirm'])->name('confirm.payment');

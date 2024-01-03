@@ -77,9 +77,8 @@
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
                                                 <label class="form-label">Meeting Password <strong class="text-danger">*</strong></label>
-                                                <input name="password" type="text" class="form-control"
-                                                    placeholder=""
-                                                    data-parsley-required-message="Meeting Password is required"
+                                                <input name="password" type="text" class="form-control" placeholder=""
+                                                    data-parsley-required-message="Meeting Password is required" required
                                                     value="{{ old('password') }}">
                                                 @error('password')
                                                     <span class="invalid-feedback" role="alert">
@@ -107,6 +106,20 @@
 
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
+                                                <label class="form-label">Duration <strong
+                                                        class="text-danger">*</strong></label>
+                                                <input name="duration" type="number" class="form-control"
+                                                    data-parsley-required-message="Meeting Duration is required"
+                                                    required placeholder="30min" value="{{ old('duration') }}">
+                                                @error('duration')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        {{-- <div class="col-sm-12 col-md-12">
+                                            <div class="form-group">
                                                 <label class="form-label">End Time <strong
                                                         class="text-danger">*</strong></label>
                                                 <input name="end" type="datetime-local" class="form-control"
@@ -118,7 +131,7 @@
                                                     </span>
                                                 @enderror
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                     </div>
                                     <div class="col-lg-12 col-xl-12 text-center">

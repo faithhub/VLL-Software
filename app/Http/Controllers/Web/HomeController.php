@@ -6,8 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Mail\Contact;
 use App\Models\FAQ;
 use App\Models\Material;
+use App\Models\Meeting;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -18,12 +22,42 @@ class HomeController extends Controller
 
     public function index()
     {
-        // $meeting = Zoom::meeting();
-        // dd($meeting);
         $data['title'] = "Home";
         $data['banner'] = true;
         $data['materials'] = Material::with(['type', 'cover', 'folder:*'])->where('status', 'active')->inRandomOrder()->limit(6)->get();
         return View('web.index', $data);
+    }
+
+    public function zoom($token)
+    {
+        # code...
+
+        if (Auth::user()->role = "user") {
+            $this->middleware('check_sub');
+        }
+
+        $data['meeting'] = $meeting = Meeting::where(['token' => $token])->first();
+        $data['title'] = "Join Meeting - " . $meeting->title;
+
+        // dd($token, $meeting);
+
+
+        // const zoomMeeting = {
+        //     sdkKey: "{{$settings['zoom_client_id']}}",
+        //     sdkSecret: "{{$settings['zoom_client_secret']}}",
+        //     meetingNumber: '{{$meeting->MTID}}',
+        //     userName: '{{Auth::user()->name}}',
+        //     userEmail: '{{Auth::user()->email}}',
+        //     passWord: '{{$meeting->password}}',
+        //     leaveUrl: '{{url('')}}',
+        //     role: 0, // 0 for attendee, 1 for host
+        // };
+        if (!$meeting) {
+            Session::flash('error', "Meeting not found");
+            return back() ?? url('');
+        }
+
+        return View('web.zoom', $data);
     }
 
     public function privacy()

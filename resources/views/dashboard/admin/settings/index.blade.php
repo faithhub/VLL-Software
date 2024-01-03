@@ -91,6 +91,9 @@
                                     <li><a href="#subscriptions"
                                             class="{{ !empty(old('tabName')) && old('tabName') == 'subscriptions' ? 'active' : '' }}">Subscriptions</a>
                                     </li>
+                                    <li><a href="#zoomauth"
+                                            class="{{ !empty(old('tabName')) && old('tabName') == 'zoomauth' ? 'active' : '' }}">Zoom Auth</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -802,6 +805,121 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{ !empty(old('tabName')) && old('tabName') == 'zoomauth' ? 'active' : '' }}"
+                                id="zoomauth">
+                                <div class="row pt-4 mt-3">
+                                    <div class="row mt-5 settings">
+                                        <form method="POST" class="general-settings-form" action="{{ route('admin.settings') }}">
+                                            @csrf
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Client ID</label>
+                                                        <input name="zoom_client_id" type="passwordd" class="form-control"
+                                                            placeholder="" required=""
+                                                            data-parsley-required-message="Client ID is required"
+                                                            value="{{ $settings['zoom_client_id'] ?? '' }}">
+                                                        @error('zoom_client_id')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Client Secret</label>
+                                                        <input name="zoom_client_secret" type="passwordd" class="form-control"
+                                                            placeholder="" required=""
+                                                            data-parsley-required-message="Client Secret is required"
+                                                            value="{{ $settings['zoom_client_secret'] ?? '' }}">
+                                                        @error('zoom_client_secret')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Code </label>
+                                                        <input name="zoom_code" type="passwordd" class="form-control"
+                                                            placeholder="" required=""
+                                                            data-parsley-required-message="Code is required"
+                                                            value="{{ $settings['zoom_code'] ?? '' }}">
+                                                        @error('zoom_code')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Redirect URL</label>
+                                                        <input name="zoom_redirect_url" type="passwordd" class="form-control"
+                                                            placeholder="" required=""
+                                                            data-parsley-required-message="Redirect URL is required"
+                                                            value="{{ $settings['zoom_redirect_url'] ?? '' }}">
+                                                        @error('zoom_redirect_url')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Access Token</label>
+                                                        <input name="zoom_access_token" type="passwordd" class="form-control"
+                                                            placeholder="" required=""
+                                                            data-parsley-required-message="Client Secret is required"
+                                                            value="{{ $settings['zoom_access_token'] ?? '' }}">
+                                                        @error('zoom_access_token')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Refresh Token</label>
+                                                        <input name="zoom_refresh_token" type="passwordd" class="form-control"
+                                                            placeholder="" required=""
+                                                            data-parsley-required-message="Refresh Token is required"
+                                                            value="{{ $settings['zoom_refresh_token'] ?? '' }}">
+                                                        @error('zoom_refresh_token')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Refresh Token Expires</label>
+                                                        <input name="zoom_refresh_token_expires" type="passwordd" class="form-control"
+                                                            placeholder="" required=""
+                                                            data-parsley-required-message="Refresh Token Expires is required"
+                                                            value="{{ $settings['zoom_refresh_token_expires'] ?? '' }}">
+                                                        @error('zoom_refresh_token_expires')
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-xl-12 text-left mt-4">
+                                                    <button class="btn btn-primary p-3 pt-2 pt-2"
+                                                        style="font-size: 18px">Update</button>
+                                                </div>
+
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

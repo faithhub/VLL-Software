@@ -472,7 +472,6 @@ class UserController extends Controller
             //throw $th;
         }
     }
-
     public function transactions()
     {
         # code...

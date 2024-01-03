@@ -17,6 +17,7 @@ class Meeting extends Model
         'password',
         'start',
         'link',
+        'token',
         'end',
         'status',
         'details',
