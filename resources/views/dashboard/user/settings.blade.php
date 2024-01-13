@@ -162,11 +162,29 @@
                                                         </b>{{ date('D, M j, Y', strtotime($sub->start_date)) }}</h6>
                                                     <h6><b class="font-weight-bold">Expired On:
                                                         </b>{{ date('D, M j, Y', strtotime($sub->expired_date)) }}</h6>
-                                                    <h6><b class="font-weight-bold">Status: </b>
+                                                    <h6>
+                                                        <b class="font-weight-bold">Status: </b>
                                                         @if ($sub->isActive)
                                                             <span class="badge badge-gradient-success">Active</span>
                                                         @else
                                                             <span class="badge badge-gradient-danger">Expired</span>
+                                                        @endif
+                                                    </h6>
+                                                    <h6>
+                                                        @if ($sub->isActive) 
+                                                        @else
+                                                            <a class="btn btn-sm btn-success"
+                                                                @isset($sub->session)
+                                                                onclick="flutterwaveCheckout('{{ exchange($sub->session) }}', '{{ $sub->id }}', 'session')"
+                                                                @endisset
+                                                                @isset($sub->system)
+                                                                onclick="flutterwaveCheckout('{{ exchange($sub->system) }}', '{{ $sub->id }}', 'system')"
+                                                                @endisset
+                                                                >
+                                                                @if (Auth::user()->sub->subscription_id)
+                                                                    Renew
+                                                                @endif
+                                                            </a>
                                                         @endif
                                                     </h6>
                                                 </div>
