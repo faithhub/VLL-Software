@@ -174,11 +174,11 @@
                                                         @if ($sub->isActive) 
                                                         @else
                                                             <a class="btn btn-sm btn-success"
-                                                                @isset($sub->session)
-                                                                onclick="flutterwaveCheckout('{{ exchange($sub->session) }}', '{{ $sub->id }}', 'session')"
+                                                                @isset($sub->sub->session)
+                                                                onclick="flutterwaveCheckout('{{ exchange($sub->sub->session) }}', '{{ $sub->sub->id }}', 'session')"
                                                                 @endisset
-                                                                @isset($sub->system)
-                                                                onclick="flutterwaveCheckout('{{ exchange($sub->system) }}', '{{ $sub->id }}', 'system')"
+                                                                @isset($sub->sub->system)
+                                                                onclick="flutterwaveCheckout('{{ exchange($sub->sub->system) }}', '{{ $sub->sub->id }}', 'system')"
                                                                 @endisset
                                                                 >
                                                                 @if (Auth::user()->sub->subscription_id)
