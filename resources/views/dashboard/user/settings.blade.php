@@ -171,20 +171,56 @@
                                                         @endif
                                                     </h6>
                                                     <h6>
-                                                        @if ($sub->isActive) 
+                                                        @if ($sub->isActive)
                                                         @else
-                                                            <a class="btn btn-sm btn-success"
-                                                                @isset($sub->sub->session)
+                                                            @if ($sub->sub->type == 'student')
+                                                                <a class="btn btn-sm btn-success"
+                                                                    @isset($sub->sub->session)
                                                                 onclick="flutterwaveCheckout('{{ exchange($sub->sub->session) }}', '{{ $sub->sub->id }}', 'session')"
                                                                 @endisset
-                                                                @isset($sub->sub->system)
+                                                                    @isset($sub->sub->system)
                                                                 onclick="flutterwaveCheckout('{{ exchange($sub->sub->system) }}', '{{ $sub->sub->id }}', 'system')"
-                                                                @endisset
-                                                                >
-                                                                @if (Auth::user()->sub->subscription_id)
-                                                                    Renew
-                                                                @endif
-                                                            </a>
+                                                                @endisset>
+                                                                    @if (Auth::user()->sub->subscription_id)
+                                                                        Renew
+                                                                    @endif
+                                                                </a>
+                                                            @elseif($sub->sub->type == 'professional')
+                                                                @php
+                                                                    $proToDate = Carbon\Carbon::parse($sub->start_date);
+                                                                    $proFromDate = Carbon\Carbon::parse($sub->expired_date);
+
+                                                                    $monthsDiff = $proToDate->diffInMonths($proFromDate);
+                                                                    $weeksDiff = $proToDate->diffInWeeks($proFromDate);
+                                                                    $intervalMonths = '';
+                                                                @endphp
+                                                                <a class="btn btn-sm btn-success"
+                                                                    @switch($monthsDiff)
+                                                                    @case('12')
+                                                                    onclick="flutterwaveCheckout('{{ exchange($sub->sub->annual) }}', '{{ $sub->sub->id }}', 'annual')"
+                                                                        @break
+                                                                    @case('4')
+                                                                    onclick="flutterwaveCheckout('{{ exchange($sub->sub->quarterly) }}', '{{ $sub->sub->id }}', 'quarterly')"
+                                                                        @break
+                                                                    @case('4')
+                                                                    onclick="flutterwaveCheckout('{{ exchange($sub->sub->quarterly) }}', '{{ $sub->sub->id }}', 'quarterly')"
+                                                                        @break
+                                                                    @case('1')
+                                                                    onclick="flutterwaveCheckout('{{ exchange($sub->sub->monthly) }}', '{{ $sub->sub->id }}', 'monthly')"
+                                                                        @break
+                                                                    @case('0')
+                                                                            @if ($weeksDiff == 1)
+                                                                    onclick="flutterwaveCheckout('{{ exchange($sub->sub->weekly) }}', '{{ $sub->sub->id }}', 'weekly')"
+                                                                            @endif
+                                                                        @break
+                                                                    @default
+                                                                        
+                                                                @endswitch>
+                                                                    @if (Auth::user()->sub->subscription_id)
+                                                                        Renew
+                                                                    @endif
+                                                                </a>
+                                                            @endif
                                                         @endif
                                                     </h6>
                                                 </div>

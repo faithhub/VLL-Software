@@ -34,14 +34,32 @@
                                             </li>
                                             <li class="mb-4">
                                                 @isset($sub->session)
-                                                    <strong>{{ $sub->session_duration }} months</strong>
+                                                    <strong>{{ $sub->session_duration }} months
+                                                        @if (Auth::user()->sub->subscription_id == $sub->id)
+                                                            @if (!Auth::user()->sub->isActive)
+                                                                <i class="btn btn-sm btn-danger font-weight-bold"> - Expired</i>
+                                                            @endif
+                                                        @endif
+                                                    </strong>
                                                 @endisset
                                             </li>
                                         </ul>
                                         <div class="panel-footer text-center border-top-0 mb-4">
                                             @if (Auth::user()->sub->subscription_id == $sub->id)
-                                                <a class="btn btn-lg btn-gray text-white" @disabled(true)
-                                                    style="cursor: no-drop">Subcribed</a>
+                                                @if (Auth::user()->sub->isActive)
+                                                    <a class="btn btn-lg btn-gray text-white" @disabled(true)
+                                                        style="cursor: no-drop">Subcribed</a>
+                                                @else
+                                                    <a class="btn btn-lg btn-success"
+                                                        @isset($sub->session)
+                                                            onclick="flutterwaveCheckout('{{ exchange($sub->session) }}', '{{ $sub->id }}', 'session')"
+                                                            @endisset
+                                                        @isset($sub->system)
+                                                            onclick="flutterwaveCheckout('{{ exchange($sub->system) }}', '{{ $sub->id }}', 'system')"
+                                                            @endisset>
+                                                        Renew
+                                                    </a>
+                                                @endif
                                             @else
                                                 <a class="btn btn-lg btn-warning"
                                                     @isset($sub->session)
@@ -91,14 +109,32 @@
                                             </li>
                                             <li class="mb-4">
                                                 @isset($sub->session)
-                                                    <strong>{{ $sub->session_duration }} months</strong>
+                                                    <strong>{{ $sub->session_duration }} months
+                                                        @if (Auth::user()->sub->subscription_id == $sub->id)
+                                                            @if (!Auth::user()->sub->isActive)
+                                                                <i class="btn btn-sm btn-danger font-weight-bold"> - Expired</i>
+                                                            @endif
+                                                        @endif
+                                                    </strong>
                                                 @endisset
                                             </li>
                                         </ul>
                                         <div class="panel-footer text-center border-top-0 mb-4">
                                             @if (Auth::user()->sub->subscription_id == $sub->id)
-                                                <a class="btn btn-lg btn-gray text-white" @disabled(true)
-                                                    style="cursor: no-drop">Subcribed</a>
+                                                @if (Auth::user()->sub->isActive)
+                                                    <a class="btn btn-lg btn-gray text-white" @disabled(true)
+                                                        style="cursor: no-drop">Subcribed</a>
+                                                @else
+                                                    <a class="btn btn-lg btn-success"
+                                                        @isset($sub->session)
+                                                            onclick="flutterwaveCheckout('{{ exchange($sub->session) }}', '{{ $sub->id }}', 'session')"
+                                                            @endisset
+                                                        @isset($sub->system)
+                                                            onclick="flutterwaveCheckout('{{ exchange($sub->system) }}', '{{ $sub->id }}', 'system')"
+                                                            @endisset>
+                                                        Renew
+                                                    </a>
+                                                @endif
                                             @else
                                                 <a class="btn btn-lg btn-success"
                                                     @isset($sub->session)
@@ -153,14 +189,28 @@
                                         <li class="mb-4">
                                             @isset($sub->max_teammate)
                                                 <strong>{{ $sub->max_teammate }}
-                                                    Users</strong>
+                                                    Users
+                                                    @if (Auth::user()->sub->subscription_id == $sub->id)
+                                                        @if (!Auth::user()->sub->isActive)
+                                                            <i class="btn btn-sm btn-danger font-weight-bold"> - Expired</i>
+                                                        @endif
+                                                    @endif
+                                                </strong>
                                             @endisset
                                         </li>
+
                                     </ul>
                                     <div class="panel-footer text-center border-top-0 mb-4">
                                         @if (Auth::user()->sub->subscription_id == $sub->id && $sub_amount == $sub->annual)
-                                            <a class="btn btn-lg btn-gray text-white" @disabled(true)
-                                                style="cursor: no-drop">Subcribed</a>
+                                            @if (Auth::user()->sub->isActive)
+                                                <a class="btn btn-lg btn-gray text-white" @disabled(true)
+                                                    style="cursor: no-drop">Subcribed</a>
+                                            @else
+                                                <a onclick="flutterwaveCheckout('{{ exchange($sub->annual) }}', '{{ $sub->id }}', 'annual')"
+                                                    class="btn btn-lg text-white font-weight-bold bg-success" href="#">
+                                                    Renew
+                                                </a>
+                                            @endif
                                         @else
                                             <a onclick="flutterwaveCheckout('{{ exchange($sub->annual) }}', '{{ $sub->id }}', 'annual')"
                                                 class="btn btn-lg text-white font-weight-bold
@@ -202,14 +252,27 @@
                                         <li class="mb-4">
                                             @isset($sub->max_teammate)
                                                 <strong>{{ $sub->max_teammate }}
-                                                    Users</strong>
+                                                    Users
+                                                    @if (Auth::user()->sub->subscription_id == $sub->id)
+                                                        @if (!Auth::user()->sub->isActive)
+                                                            <i class="btn btn-sm btn-danger font-weight-bold"> - Expired</i>
+                                                        @endif
+                                                    @endif
+                                                </strong>
                                             @endisset
                                         </li>
                                     </ul>
                                     <div class="panel-footer text-center border-top-0 mb-4">
                                         @if (Auth::user()->sub->subscription_id == $sub->id && $sub_amount == $sub->quarterly)
-                                            <a class="btn btn-lg btn-gray text-white" @disabled(true)
-                                                style="cursor: no-drop">Subcribed</a>
+                                            @if (Auth::user()->sub->isActive)
+                                                <a class="btn btn-lg btn-gray text-white" @disabled(true)
+                                                    style="cursor: no-drop">Subcribed</a>
+                                            @else
+                                                <a onclick="flutterwaveCheckout('{{ exchange($sub->quarterly) }}', '{{ $sub->id }}', 'quarterly')"
+                                                    class="btn btn-lg text-white font-weight-bold bg-success" href="#">
+                                                    Renew
+                                                </a>
+                                            @endif
                                         @else
                                             <a onclick="flutterwaveCheckout('{{ exchange($sub->quarterly) }}', '{{ $sub->id }}', 'quarterly')"
                                                 class="btn btn-lg text-white font-weight-bold
@@ -251,14 +314,27 @@
                                         <li class="mb-4">
                                             @isset($sub->max_teammate)
                                                 <strong>{{ $sub->max_teammate }}
-                                                    Users</strong>
+                                                    Users
+                                                    @if (Auth::user()->sub->subscription_id == $sub->id)
+                                                        @if (!Auth::user()->sub->isActive)
+                                                            <i class="btn btn-sm btn-danger font-weight-bold"> - Expired</i>
+                                                        @endif
+                                                    @endif
+                                                </strong>
                                             @endisset
                                         </li>
                                     </ul>
                                     <div class="panel-footer text-center border-top-0 mb-4">
                                         @if (Auth::user()->sub->subscription_id == $sub->id && $sub_amount == $sub->monthly)
-                                            <a class="btn btn-lg btn-gray text-white" @disabled(true)
-                                                style="cursor: no-drop">Subcribed</a>
+                                            @if (Auth::user()->sub->isActive)
+                                                <a class="btn btn-lg btn-gray text-white" @disabled(true)
+                                                    style="cursor: no-drop">Subcribed</a>
+                                            @else
+                                                <a onclick="flutterwaveCheckout('{{ exchange($sub->monthly) }}', '{{ $sub->id }}', 'monthly')"
+                                                    class="btn btn-lg text-white font-weight-bold bg-success" href="#">
+                                                    Renew
+                                                </a>
+                                            @endif
                                         @else
                                             <a onclick="flutterwaveCheckout('{{ exchange($sub->monthly) }}', '{{ $sub->id }}', 'monthly')"
                                                 class="btn btn-lg text-white font-weight-bold
@@ -300,14 +376,27 @@
                                         <li class="mb-4">
                                             @isset($sub->max_teammate)
                                                 <strong>{{ $sub->max_teammate }}
-                                                    Users</strong>
+                                                    Users
+                                                    @if (Auth::user()->sub->subscription_id == $sub->id)
+                                                        @if (!Auth::user()->sub->isActive)
+                                                            <i class="btn btn-sm btn-danger font-weight-bold"> - Expired</i>
+                                                        @endif
+                                                    @endif
+                                                </strong>
                                             @endisset
                                         </li>
                                     </ul>
                                     <div class="panel-footer text-center border-top-0 mb-4">
                                         @if (Auth::user()->sub->subscription_id == $sub->id && $sub_amount == $sub->weekly)
-                                            <a class="btn btn-lg btn-gray text-white" @disabled(true)
-                                                style="cursor: no-drop">Subcribed</a>
+                                            @if (Auth::user()->sub->isActive)
+                                                <a class="btn btn-lg btn-gray text-white" @disabled(true)
+                                                    style="cursor: no-drop">Subcribed</a>
+                                            @else
+                                                <a onclick="flutterwaveCheckout('{{ exchange($sub->weekly) }}', '{{ $sub->id }}', 'weekly')"
+                                                    class="btn btn-lg text-white font-weight-bold bg-success" href="#">
+                                                    Renew
+                                                </a>
+                                            @endif
                                         @else
                                             <a onclick="flutterwaveCheckout('{{ exchange($sub->weekly) }}', '{{ $sub->id }}', 'weekly')"
                                                 class="btn btn-lg text-white font-weight-bold

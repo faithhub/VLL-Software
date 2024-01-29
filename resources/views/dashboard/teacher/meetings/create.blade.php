@@ -17,10 +17,10 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="card border-10 pt-2 card-primary">
                     <div class="card-header border-bottom-0 mb-4 mt-3">
-                        <h6 class="mb-1 mt-1 font-weight-bold h3">Create Meeting</h6>
+                        <h6 class="mb-1 mt-1 font-weight-bold h3">Create Classes</h6>
                         <div class="card-options" style="margin-right:2.5%">
                             <a href="{{ route('teacher.meetings') }}" class="btn btn-bg btn-primary p-3"><b><i
-                                        class="fa fa-arrow-left"></i>&nbsp;&nbsp; Back to Meetings</b></a>
+                                        class="fa fa-arrow-left"></i>&nbsp;&nbsp; Back to Classes</b></a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -60,11 +60,11 @@
 
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label class="form-label">Meeting Title <strong
+                                                <label class="form-label">Class Title <strong
                                                         class="text-danger">*</strong></label>
                                                 <input name="title" type="text" class="form-control" placeholder=""
                                                     required=""
-                                                    data-parsley-required-message="Meeting Title is required"
+                                                    data-parsley-required-message="Class Title is required"
                                                     value="{{ old('title') }}">
                                                 @error('title')
                                                     <span class="invalid-feedback" role="alert">
@@ -76,9 +76,9 @@
 
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label class="form-label">Meeting Password <strong class="text-danger">*</strong></label>
+                                                <label class="form-label">Class Password <strong class="text-danger">*</strong></label>
                                                 <input name="password" type="text" class="form-control" placeholder=""
-                                                    data-parsley-required-message="Meeting Password is required" required
+                                                    data-parsley-required-message="Class Password is required" required
                                                     value="{{ old('password') }}">
                                                 @error('password')
                                                     <span class="invalid-feedback" role="alert">
@@ -94,7 +94,7 @@
                                                 <label class="form-label">Start Time <strong
                                                         class="text-danger">*</strong></label>
                                                 <input name="start" type="datetime-local" class="form-control"
-                                                    data-parsley-required-message="Meeting Start Time is required"
+                                                    data-parsley-required-message="Class Start Time is required"
                                                     required placeholder="" value="{{ old('start') }}">
                                                 @error('start')
                                                     <span class="invalid-feedback" role="alert">
@@ -109,7 +109,7 @@
                                                 <label class="form-label">Duration <strong
                                                         class="text-danger">*</strong></label>
                                                 <input name="duration" type="number" class="form-control"
-                                                    data-parsley-required-message="Meeting Duration is required"
+                                                    data-parsley-required-message="Class Duration is required"
                                                     required placeholder="30min" value="{{ old('duration') }}">
                                                 @error('duration')
                                                     <span class="invalid-feedback" role="alert">

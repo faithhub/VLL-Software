@@ -12,10 +12,10 @@
 
                 <div class="card border-10">
                     <div class="card-header border-bottom-0 mb-4 mt-3">
-                        <h6 class="mb-1 mt-1 font-weight-bold h3">Meetings</h6>
+                        <h6 class="mb-1 mt-1 font-weight-bold h3">Classes</h6>
                         <div class="card-options" style="margin-right:2.5%">
                             <a href="{{ route('teacher.meetings.create') }}" class="btn btn-bg btn-primary p-3"><b>Create
-                                    Meeting</b></a>
+                                    Class</b></a>
                         </div>
                     </div>
                     <div class="card-body pt-0">
@@ -74,7 +74,7 @@
                                                                     class="btn btn-sm btn-outline-primary">View</i></a>
                                                                 <a href="{{ route('teacher.meetings.delete', $meeting->id) }}"
                                                                     class="btn btn-sm btn-outline-danger"
-                                                                    onclick="return confirm('Are you sure you want to delete this meeting?')">Delete</i></a>
+                                                                    onclick="return confirm('Are you sure you want to delete this class?')">Delete</i></a>
                                                                 {{-- <a href="{{ route('admin.user', $meeting->id) }}"
                                                                     class="btn btn-sm btn-outline-warning">Edit</i></a> --}}
                                                             </td>

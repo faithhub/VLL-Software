@@ -25,16 +25,16 @@
                         <h6 class="mb-1 mt-1 font-weight-bold h3">{{ $meeting->title }}</h6>
                         <div class="card-options" style="margin-right:2.5%">
                             <a href="{{ route('teacher.meetings') }}" class="btn btn-bg btn-primary p-3"><b><i
-                                        class="fa fa-arrow-left"></i>&nbsp;&nbsp; Back to Meetings</b></a>
+                                        class="fa fa-arrow-left"></i>&nbsp;&nbsp; Back to Classes</b></a>
                         </div>
                     </div>
                     <div class="card-body mt-0 pt-2">
                         <hr>
                         <div class="row pt-1 mt-1">
-                            <h4 class="font-weight-bold">Meeting Details</h4>
+                            <h4 class="font-weight-bold">Class Details</h4>
                             <div class="row align-items-center mb-3">
                                 <div class="col-2">
-                                    <h5>Meeting Title:</h5>
+                                    <h5>Class Title:</h5>
                                 </div>
                                 <div class="col-10">
                                     <h5 class="font-weight-bold">{{ $meeting->title }}</h5>
@@ -42,7 +42,7 @@
                             </div>
                             <div class="row align-items-center mb-3">
                                 <div class="col-2">
-                                    <h5>Meeting Password:</h5>
+                                    <h5>Class Password:</h5>
                                 </div>
                                 <div class="col-10">
                                     <h5 class="font-weight-bold">{{ $meeting->password }}
@@ -53,7 +53,7 @@
                             </div>
                             <div class="row align-items-center mb-3">
                                 <div class="col-2">
-                                    <h5>Meeting Date:</h5>
+                                    <h5>Class Date:</h5>
                                 </div>
                                 <div class="col-10">
                                     <h5 class="font-weight-bold">
@@ -65,7 +65,7 @@
                             </div>
                             <div class="row align-items-center mb-3">
                                 <div class="col-2">
-                                    <h5>Meeting Link:</h5>
+                                    <h5>Class Link:</h5>
                                 </div>
                                 <div class="col-10">
                                     <h5 class="font-weight-bold">{{ $meeting->link }}
@@ -76,7 +76,7 @@
                             </div>
                             <div class="row align-items-center mb-3">
                                 <div class="col-2">
-                                    <h5>Meeting Status:</h5>
+                                    <h5>Class Status:</h5>
                                 </div>
                                 <div class="col-10">
                                     {{-- <iframe src="{{ $meeting->link }}" allow="camera; microphone"></iframe> --}}
@@ -139,7 +139,7 @@
                             </div>
                             <div class="row align-items-center mb-3">
                                 <div class="col-2">
-                                    <h5>Join Meeting:</h5>
+                                    <h5>Join Class:</h5>
                                 </div>
                                 <div class="col-10">
                                     <h5 class="font-weight-bold">

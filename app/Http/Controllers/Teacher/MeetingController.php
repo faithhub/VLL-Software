@@ -224,7 +224,7 @@ class MeetingController extends Controller
         //     'access_token_active' => true,
         // ]);
         try {
-            $data['title'] = "Meetings";
+            $data['title'] = "Classes";
             $data['date_now'] = Carbon::now();
             $data['meetings'] = Meeting::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get();
             return View('dashboard.teacher.meetings.index', $data);
@@ -255,16 +255,16 @@ class MeetingController extends Controller
                 );
 
                 $messages = [
-                    'title.required' => "The Meeting Title is required",
-                    'title.string' => "The Meeting Title must be string",
-                    'title.max' => "The Meeting Title must not more than 50 characters",
-                    'title.min' => "The Meeting Title must not less than 3 characters",
-                    'password.min' => "The Meeting Password must not less than 5 characters",
-                    'password.max' => "The Meeting Password must not more than 20 characters",
-                    'start.required' => "The Meeting Start Date is required",
-                    'start.before' => "The Meeting Start Date must be a date before the Meeting End Date",
-                    // 'end.after' => "The Meeting End Date must be a date after the Meeting Start date",
-                    // 'end.required' => "The Meeting End Date is required",
+                    'title.required' => "The Class Title is required",
+                    'title.string' => "The Class Title must be string",
+                    'title.max' => "The Class Title must not more than 50 characters",
+                    'title.min' => "The Class Title must not less than 3 characters",
+                    'password.min' => "The Class Password must not less than 5 characters",
+                    'password.max' => "The Class Password must not more than 20 characters",
+                    'start.required' => "The Class Start Date is required",
+                    'start.before' => "The Class Start Date must be a date before the Class End Date",
+                    // 'end.after' => "The Class End Date must be a date after the Class Start date",
+                    // 'end.required' => "The Class End Date is required",
                 ];
 
                 $validator = Validator::make($request->all(), $rules, $messages);
@@ -352,7 +352,7 @@ class MeetingController extends Controller
                         'material_cover_id' => null,
                     ]);
 
-                    Session::flash('success', 'Meeting created successfully');
+                    Session::flash('success', 'Class created successfully');
                     return redirect()->route('teacher.meetings');
                 } else {
 
@@ -613,7 +613,7 @@ class MeetingController extends Controller
             $meeting->delete();
             $meetingDetails->delete();
 
-            Session::flash('success', 'Meeting deleted successfully');
+            Session::flash('success', 'Class deleted successfully');
             return redirect()->route('teacher.meetings');
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());

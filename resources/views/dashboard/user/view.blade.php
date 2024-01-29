@@ -37,22 +37,22 @@
                             <h4 class="h2 font-weight-bold text-center mt-3">
                                 {{ $material->title ?? $material->name_of_party }}
                             </h4>
-                            <h5><b class="font-weight-bold">Meeting Title: </b>{{ $meeting->title ?? '' }}</h5>
+                            <h5><b class="font-weight-bold">Class Title: </b>{{ $meeting->title ?? '' }}</h5>
                             {{-- <h5><b class="font-weight-bold">Meeting Password: </b>{{ $meeting->password ?? "" }}
                                         <button class="btn btn-sm btn-outline-dark"
                                             onclick="copyMeetingPassword('{{ $meeting->password ?? '' }}')">Copy</button></h5> --}}
-                            <h5><b class="font-weight-bold">Meeting Date: </b>
+                            <h5><b class="font-weight-bold">Class Date: </b>
                                 {{ \Carbon\Carbon::parse($meeting->start)->format('D, M j, Y H:i:s') }}
                                 {{-- {{ \Carbon\Carbon::parse($meeting->end)->format('D, M j, Y H:i:s') }} --}}
                             </h5>
-                            <h5><b class="font-weight-bold">Meeting Duration: </b> {{$meeting->end}} min
+                            <h5><b class="font-weight-bold">Class Duration: </b> {{$meeting->end}} min
                                 {{-- <span class="badge bg-success text-capitalize">{{ $meeting->status }}</span> --}}
                             </h5>
                             {{-- <h5 style="line-break: anywhere;"><b class="font-weight-bold">Meeting Link: </b>{{ $meeting->link }} <button class="btn btn-sm btn-outline-dark"
                                             onclick="copyMeeting('{{ $meeting->link }}')">Copy</button></h5> --}}
                             {{-- <iframe src="{{ $meeting->link }}" allow="camera; microphone"></iframe> --}}
                             <a href="{{ route('join.meeting', $material->version) }}" target="blank"
-                                class="sub-link btn p-2 font-weight-bold h4 btn-primary">Join Meeting</a>
+                                class="sub-link btn p-2 font-weight-bold h4 btn-primary">Join Class</a>
                         </div>
                     @else
                         <div class="mat-title mt-3">
