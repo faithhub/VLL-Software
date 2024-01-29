@@ -50,7 +50,7 @@
 
         const zoomMeeting = {
             meetingNumber: '{{$meeting->MTID}}',
-            userName: '{{Auth::user()->name}}',
+            userName: '{{Auth::user()->name ?? Auth::user()->email}}',
             passWord: '{{$meeting->password}}',
             leaveUrl: '{{url("/")}}',
             role: 0, // 0 for attendee, 1 for host
