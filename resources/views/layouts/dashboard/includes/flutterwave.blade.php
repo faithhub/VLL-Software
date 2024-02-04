@@ -5,7 +5,7 @@
 <script type="text/javascript">
     console.log("{{ Auth::user()->default_currency_id }}");
 
-    const PUBLIC_KEY = ""; //"{{ getenv('PUBLIC_KEY') }}"
+    const PUBLIC_KEY = "{{ getenv('PUBLIC_KEY') }}"
 
 
     function flutterwaveCheckout(amount, sub_id, type) {

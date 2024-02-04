@@ -45,7 +45,7 @@
                                 {{ \Carbon\Carbon::parse($meeting->start)->format('D, M j, Y H:i:s') }}
                                 {{-- {{ \Carbon\Carbon::parse($meeting->end)->format('D, M j, Y H:i:s') }} --}}
                             </h5>
-                            <h5><b class="font-weight-bold">Class Duration: </b> {{$meeting->end}} min
+                            <h5><b class="font-weight-bold">Class Duration: </b> {{ $meeting->end }} min
                                 {{-- <span class="badge bg-success text-capitalize">{{ $meeting->status }}</span> --}}
                             </h5>
                             {{-- <h5 style="line-break: anywhere;"><b class="font-weight-bold">Meeting Link: </b>{{ $meeting->link }} <button class="btn btn-sm btn-outline-dark"
@@ -148,19 +148,31 @@
                                             <div class="card"
                                                 style="width: fit-content; box-shadow: 0 0.76rem 1.52rem rgb(18 36 63 / 43%);">
                                                 <div class="card-body">
-                                                    <h5><b class="font-weight-bold">Folder Name: </b>{{ $folder->name }}
-                                                    </h5>
-                                                    <h5><b class="font-weight-bold">Folder Amount:
-                                                            {{ money($folder->amount, $folder->currency_id) }}</b>
-                                                        /
-                                                        annual </h5>
+                                                    <h5><b class="font-weight-bold">Folder Details</h5>
+                                                    <h5><b class="font-weight-bold">Name: </b>{{ $folder->name }}</h5>
+                                                    <h5><b class="font-weight-bold">Amount:
+                                                            @if ($folder->price == 'Paid')
+                                                                {{ money($folder->amount, $folder->currency_id) }} / <span
+                                                                    class="text-capitalize">{{ $folder->duration }}</span>
+                                                            @elseif ($folder->price == 'Free')
+                                                                Free
+                                                            @endif
+                                                        </b></h5>
                                                     <h5><b class="font-weight-bold">No of Materials:
                                                             {{ $folder_mat_count }}</b>
                                                     </h5>
-                                                    <a onclick="flutterwaveBuyMaterial('{{ exchange($folder->amount, $folder->currency_id) }}', '{{ $material->id }}', 'folder')"
-                                                        class="btn m-2 btn-primary p-3">
-                                                        Buy Folder
-                                                    </a>
+                                                    @if ($folder->price == 'Paid')
+                                                        <a onclick="flutterwaveBuyMaterial('{{ exchange($folder->amount, $folder->currency_id) }}', '{{ $folder->id }}', 'folder')"
+                                                            class="btn m-2 btn-primary p-3">
+                                                            Buy Folder
+                                                        </a>
+                                                    @elseif ($folder->price == 'Free')
+                                                        <a href="{{ route('user.add_free_folder_to_library', $folder->id) }}"
+                                                            class="btn btn-primary p-3"
+                                                            onclick="return confirm('Are you sure you want to add this folder to your library?')">
+                                                            Add To Library
+                                                        </a>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
