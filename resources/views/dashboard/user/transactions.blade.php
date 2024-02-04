@@ -43,13 +43,29 @@
                                                             <td>{{ $sn++ }}</td>
                                                             <td class="">
                                                                 <a class="font-weight-normal1"
-                                                                    href="#">{{$transaction->invoice_id}} {{$transaction->id}}</a>
+                                                                    href="#">{{$transaction->invoice_id}}</a>
                                                                 </td>
                                                             <td>{{$transaction->created_at->format('D, M j, Y h:i a')}}</td>
                                                             <td>
-                                                                @if ($transaction->type == 'bought')
-                                                                    <span
-                                                                        class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->type }}</span>
+                                                                @switch($transaction->type)
+                                                                    @case('bought')
+                                                                         <span class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->type }}</span>
+                                                                        @break
+                                                                    @case('rented')
+                                                                         <span class="badge bg-warning-light border-warning text-capitalize type-text">{{ $transaction->type }}</span>
+                                                                        @break
+                                                                    @case('subscription')
+                                                                         <span class="badge bg-secondary-light border-secondary text-capitalize type-text">{{ $transaction->type }}</span>
+                                                                        @break
+                                                                    @case('folder')
+                                                                         <span class="badge bg-success-light border-success text-capitalize type-text">Folder</span>
+                                                                        @break
+                                                                    @default
+                                                                        
+                                                                @endswitch
+
+                                                                {{-- @if ($transaction->type == 'bought')
+                                                                    <span class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->type }}</span>
                                                                 @endif
                                                                 @if ($transaction->type == 'rented')
                                                                     <span
@@ -58,7 +74,7 @@
                                                                 @if ($transaction->type == 'subscription')
                                                                     <span
                                                                         class="badge bg-secondary-light border-secondary text-capitalize type-text">{{ $transaction->type }}</span>
-                                                                @endif
+                                                                @endif --}}
                                                             </td>
                                                             <td>
                                                                 <span class="money">{{ money($transaction->amount) }}</span>

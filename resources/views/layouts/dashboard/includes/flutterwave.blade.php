@@ -5,33 +5,33 @@
 <script type="text/javascript">
     console.log("{{ Auth::user()->default_currency_id }}");
 
-    const pubblicKeyLive = "FLWPUBK-2e0795000c795271594541388f09b14f-X"
-    const pubblicKeyTest = "FLWPUBK_TEST-e1cbb8cf92b2193b7613de4cc1a4fa60-X"
-    const pubblicKeyOld = "FLWPUBK-2e0795000c795271594541388f09b14f-X"
-    const pubblicKeyOld2 = "FLWPUBK_TEST-006e9a2dde4eb5947f2da2af0c2f3695-X"
+    const PUBLIC_KEY = "{{ getenv('PUBLIC_KEY') }}"
+
 
     function flutterwaveCheckout(amount, sub_id, type) {
-        const currency = "{{$currency}}";
+        const currency = "{{ $currency }}";
         FlutterwaveCheckout({
-            public_key: pubblicKeyLive,
-            tx_ref: "VLL-" + Math.floor((Math.random() * 100000000000000) + 1),
+            public_key: PUBLIC_KEY,
+            tx_ref: sub_id + "#" + type + "@VLL-SUB-" + Math.floor((Math.random() * 100000000000000) + 1),
             amount: amount,
             currency: currency,
-            // redirect_url: "{{ route('confirm.payment') }}",
-            payment_options: "card",
+            redirect_url: "{{ route('confirm.payment') }}",
+            // payment_options: "card",
             callback: function(payment) {
-                if (payment.status == "successful") {
-                    console.log(payment);
-                    save(sub_id, type, payment)
-                    setTimeout(function() {
-                    window.location.href = "{{ route('user.transactions') }}";
-                    }, 2000);
-                    return toastr.success("{{ session('success') }}", "Payment Successful");
-                } else {
-                    return toastr.error("{{ session('error') }}", "Payment Failed");
-                }
+                console.log(payment);
+                // if (payment.status == "successful") {
+                //     console.log(payment);
+                //     // save(sub_id, type, payment)
+                //     setTimeout(function() {
+                //     window.location.href = "{{ route('user.transactions') }}";
+                //     }, 2000);
+                //     return toastr.success("{{ session('success') }}", "Payment Successful");
+                // } else {
+                //     return toastr.error("{{ session('error') }}", "Payment Failed");
+                // }
             },
             onclose: function(incomplete) {
+                console.log(incomplete);
                 if (incomplete || window.verified === false) {
                     console.log(incomplete, 'failed');
                 } else {
@@ -86,22 +86,24 @@
         }
     }
 
-     function flutterwaveBuyMaterial(amount, sub_id, type) {
-        const currency = "{{$currency}}";
-        console.log(currency, amount);
+    function flutterwaveBuyMaterial(amount, mat_id, type) {
+        const currency = "{{ $currency }}";
+        console.log(currency, amount, mat_id, type);
         FlutterwaveCheckout({
-            public_key: pubblicKeyLive,
-            tx_ref: "VLL-" + Math.floor((Math.random() * 100000000000000) + 1),
+            public_key: PUBLIC_KEY,
+            tx_ref: mat_id + "#" + type + "@VLL-MATERIAL-" + Math.floor((Math.random() * 100000000000000) + 1),
+            // tx_ref: "VLL-" + Math.floor((Math.random() * 100000000000000) + 1),
             amount: amount,
             currency: currency,
-            // redirect_url: "{{ route('confirm.payment') }}",
+            redirect_url: "{{ route('material.payment') }}",
             payment_options: "card",
             callback: function(payment) {
+                console.log(payment);
                 if (payment.status == "successful") {
                     console.log(payment);
-                    saveMaterial(amount, sub_id, type, payment)
+                    // saveMaterial(amount, mat_id, type, payment)
                     setTimeout(function() {
-                    window.location.href = "{{ route('user.library') }}";
+                        window.location.href = "{{ route('user.library') }}";
                     }, 2000);
                     return toastr.success("{{ session('success') }}", "Payment Successful");
                 } else {
@@ -109,6 +111,7 @@
                 }
             },
             onclose: function(incomplete) {
+                console.log(incomplete);
                 if (incomplete || window.verified === false) {
                     console.log(incomplete, 'failed');
                 } else {

@@ -35,7 +35,7 @@
                                                     {{-- <th class="sorting" tabindex="0" style="">Currency</th> --}}
                                                     <th class="sorting" tabindex="0" style="">Type of transaction
                                                     </th>
-                                                    <th class="sorting" tabindex="0" style=""></th>
+                                                    {{-- <th class="sorting" tabindex="0" style=""></th> --}}
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -58,8 +58,26 @@
                                                                     href="">{{ $transaction->user->name }}</a></td>
                                                             <td>{{ $transaction->user->email }}</td>
                                                             <td><b class="money">{{ money($transaction->amount) }}</b></td>
-                                                            <td><b class="text-capitalize">{{ $transaction->type }}</b></td>
-                                                            <td><a href=""><i class="fa fa-trash"></i></a></td>
+                                                            <td>
+                                                                @switch($transaction->type)
+                                                                    @case('bought')
+                                                                         <span class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->type }}</span>
+                                                                        @break
+                                                                    @case('rented')
+                                                                         <span class="badge bg-warning-light border-warning text-capitalize type-text">{{ $transaction->type }}</span>
+                                                                        @break
+                                                                    @case('subscription')
+                                                                         <span class="badge bg-secondary-light border-secondary text-capitalize type-text">{{ $transaction->type }}</span>
+                                                                        @break
+                                                                    @case('folder')
+                                                                         <span class="badge bg-success-light border-success text-capitalize type-text">Folder</span>
+                                                                        @break
+                                                                    @default
+                                                                        
+                                                                @endswitch
+                                                                {{-- <b class="text-capitalize">{{ $transaction->type }}</b> --}}
+                                                            </td>
+                                                            {{-- <td><a href=""><i class="fa fa-trash"></i></a></td> --}}
                                                         </tr>
                                                     @endforeach
                                                 @endisset

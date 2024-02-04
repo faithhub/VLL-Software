@@ -54,6 +54,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::match(['post'], 'change-currency',  [App\Http\Controllers\Admin\DashboardController::class, 'change_currency'])->name('change_currency');
     //Payment Confrimation
     Route::get('/confirm-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'confirm'])->name('confirm.payment');
+    Route::get('/material-confirm-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'confirm_material'])->name('material.payment');
     Route::post('/save-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'save_transaction'])->name('save.transaction');
 });
 
