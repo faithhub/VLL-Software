@@ -35,7 +35,7 @@ class FlutterwaveController extends Controller
             $transaction_id = $_GET['transaction_id'];
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer ' . getenv('SECRET_KEY_NEW'),
+                'Authorization' => 'Bearer ' . getenv('SECRET_KEY'),
             ])->get('https://api.flutterwave.com/v3/transactions/' . $transaction_id . '/verify');
 
             // You can access the response body like this:
