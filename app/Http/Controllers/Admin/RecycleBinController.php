@@ -14,7 +14,7 @@ class RecycleBinController extends Controller
     {
         # code...
         try {
-            $data['materials'] = Material::onlyTrashed()->get();
+            $data['materials'] = Material::onlyTrashed()->orderBy('deleted_at', 'DESC')->get();
             return View('dashboard.admin.settings.recycle-bin', $data);
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());

@@ -53,6 +53,8 @@
                                                                 <tr role="row">
                                                                     <th class="sorting sorting_asc" style="">No
                                                                     </th>
+                                                                    {{-- <th scope="row" class="sorting" style="">
+                                                                    </th> --}}
                                                                     <th scope="row" class="sorting" style="">
                                                                         Book </th>
                                                                     <th class="sorting" tabindex="0" style="">
@@ -79,6 +81,13 @@
                                                                     @foreach ($materials as $material)
                                                                         <tr class="">
                                                                             <td class="sorting_1">{{ $sn++ }}</td>
+                                                                            {{-- <td class="sorting_1">
+                                                                                <div class="form-check">
+                                                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                                                    </label>
+                                                                                </div>
+                                                                            </td> --}}
                                                                             <td class="sorting_1">
                                                                                 <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
                                                                                     style="max-height:60px">
