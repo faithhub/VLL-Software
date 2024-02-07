@@ -236,7 +236,7 @@
                                 <video width="100%" height="auto" controls controlsList="nodownload">
                                     <source src="{{ asset($material->file->url) }}">
                                 </video>
-                                {{-- <div id="adobe-dc-view" style="height: 80vh"></div> --}}
+                                <div id="adobe-dc-view" style="height: 80vh"></div>
                             </div>
                         </div>
                     @else
