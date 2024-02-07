@@ -25,6 +25,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('title')->nullable();
             $table->longText('content')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -194,9 +194,9 @@
 
     <script type="text/javascript">
         /*
-                path to the directory containing the PDF Web Viewer scripts, webassemblies and translations.
-                The path can be absolute or relative to the current document and must be defined before the viewer is loaded
-              */
+                        path to the directory containing the PDF Web Viewer scripts, webassemblies and translations.
+                        The path can be absolute or relative to the current document and must be defined before the viewer is loaded
+                      */
         window.PDFTOOLS_FOURHEIGHTS_PDFVIEWING_BASEURL = "/pdfwebviewer/"
     </script>
 
@@ -244,7 +244,7 @@
                             <div class="row">
                                 {{-- <iframe src="https://docs.google.com/gview?url={{ asset($material->file->url) }}&embedded=true" style="width:100%; height:80vh;" frameborder="0"></iframe> --}}
                                 {{-- <div id="pdfviewer" style="height: 80vh; width:inherit"></div> --}}
-                                <div id="adobe-dc-view" style="height: 80vh"></div>
+                                {{-- <div id="adobe-dc-view" style="height: 80vh"></div> --}}
                             </div>
                         </div>
                     @endif
@@ -340,6 +340,9 @@
                                                                     <div class="card-options">
                                                                         <a href="javascript:void(0);"
                                                                             class="btn btn-sm font-weight-bold">{{ $note->created_at->format('D j, Y') }}</a>
+                                                                        <a href="javascript:void(0);"
+                                                                            onclick="deleteNote({{ $note->id }})"
+                                                                            class="btn btn-sm btn-danger font-weight-bold">Delete</a>
                                                                     </div>
                                                                 </div>
                                                                 <div class="card-body pt-0">
@@ -370,7 +373,7 @@
             </div>
         </div>
     </div>
-        
+
 
 
     <div id="myModal" class="modal fade" data-backdrop="static" data-keyboard="false">
@@ -416,7 +419,7 @@
         @endif
     @endif
 
-  {{-- @include('layouts.dashboard.includes.pdf-tool-reader') --}}
+    {{-- @include('layouts.dashboard.includes.pdf-tool-reader') --}}
     <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
     <script type="text/javascript">
         $(document).on("keydown", "form", function(event) {
@@ -472,6 +475,10 @@
                 alert("Select a note to send an try again");
                 return false;
             }
+            // const current_note_id = "{{ Session::get('current_note') }}";
+            // const current_note_data = "{{ \App\Models\Note::where(['id' => Session::get('current_note')])->pluck('id')->first() }}";
+            // console.log(current_note_id, current_note_data, "yo man");
+            // return false;
             document.getElementById("send_note").click();
         }
 
@@ -579,11 +586,10 @@
         }
 
         function saveNote() {
-            console.log("bad");
             if (!($('#save_note_form').parsley().validate())) {
                 return false;
             }
-            console.log("good");
+            console.log("save note");
 
             var form = $('#save_note_form');
             var actionUrl = form.attr('action');
@@ -601,6 +607,36 @@
                     return toastr.error("{{ session('error') }}", "Note not saved");
                 }
             });
+        }
+
+        function deleteNote(id) {
+            var confirmNote = confirm('Do you want to delete this note?');
+            if (confirmNote === true) {
+                console.log("delete note");
+                $.ajax({
+                    type: 'post',
+                    url: "{{ route('user.delete_note') }}",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        note_id: id,
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        if (response) {
+                            $("#note_div_section").load(window.location.href + " #note_div_section");
+                            return toastr.success("{{ session('success') }}", "Note Delete");
+                        } else {
+                            return toastr.error("{{ session('error') }}", "Note did not delete");
+                        }
+                    },
+                    error: function(err) {
+                        console.log(err);
+                        return toastr.error("{{ session('error') }}", "Note did not delete");
+                    }
+                });
+            } else {
+                console.log("delete note bad");
+            }
         }
 
         // $(function() {

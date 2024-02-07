@@ -1038,16 +1038,17 @@ class UserController extends Controller
 
             if ($current_note) {
                 $note = Note::where(['id' => $current_note, 'user_id' => Auth::user()->id])->first();
-            } else {
-                $note = Note::where(['material_id' => $id, 'user_id' => Auth::user()->id])->first();
             }
+            //  else {
+            //     $note = Note::where(['material_id' => $id, 'user_id' => Auth::user()->id])->first();
+            // }
 
             if (isset($note)) {
                 Session::put('current_note', $note->id);
             }
             $data['note'] = $note;
             $data['current_note'] = $current_note;
-            $data['notes'] = Note::where(['user_id' => Auth::user()->id])->get();
+            $data['notes'] = Note::where(['user_id' => Auth::user()->id])->orderBy('id', 'DESC')->get();
 
             if ($_POST) {
                 # code...
@@ -1062,6 +1063,7 @@ class UserController extends Controller
                     return back()->withErrors($validator)->withInput();
                 }
 
+                // return $data;
                 if (!$note) {
                     $save_note = Note::create([
                         'user_id' => Auth::user()->id,
@@ -1112,6 +1114,27 @@ class UserController extends Controller
         }
     }
 
+    public function delete_note(Request $request)
+    {
+
+        try {
+            //code...
+            $id = $request->note_id;
+            $note = Note::where(['user_id' => Auth::user()->id, 'id' => $id])->first();
+            $note->delete();
+            if ($note) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\Throwable $th) {
+            return false;
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
+            //throw $th;
+        }
+    }
+    
     public function send_note(Request $request, $id)
     {
 
@@ -1120,10 +1143,11 @@ class UserController extends Controller
             $current_note = Session::get('current_note');
             $data['title'] = "User Dashboard - Send Note";
             $data['note'] = $note = Note::where(['user_id' => Auth::user()->id, 'id' => $current_note])->first();
+            $data['found_note'] = true;
 
             if (!$note) {
-                Session::flash('warning', 'No note found');
-                return redirect()->back();
+                // Session::flash('warning', 'No note found');
+                $data['found_note'] = false;
             }
 
             if ($_POST) {

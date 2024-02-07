@@ -1,4 +1,5 @@
-<div class="row">
+@if ($found_note)
+    <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div class="card border-10 pt-2 card-primary">
             <div class="card-body">
@@ -92,3 +93,19 @@
         }
     }
 </script>
+
+@else
+    <div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card border-10 pt-2 card-primary">
+            <div class="card-body">
+                <div class="row">
+                    <div class="text-center">
+                        <h4>No note found, select a note and try again</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
