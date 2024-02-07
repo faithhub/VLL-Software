@@ -226,7 +226,7 @@ class MeetingController extends Controller
         try {
             $data['title'] = "Classes";
             $data['date_now'] = Carbon::now();
-            $data['meetings'] = Meeting::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get();
+            $data['meetings'] = Meeting::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->get();
             return View('dashboard.teacher.meetings.index', $data);
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());
@@ -248,7 +248,7 @@ class MeetingController extends Controller
                     'university_id' => ['required', 'string', 'max:255'],
                     'title' => ['required', 'string', 'max:50', 'min:3'],
                     'duration' => ['required'],
-                    'password' => ['required', 'string', 'min:5', 'max:20'],
+                    'password' => ['required', 'string', 'min:5', 'max:10'],
                     'start' => ['required'],
                     // 'start' => ['required', 'before:end'],
                     // 'end' => ['required', 'after:start']
@@ -356,8 +356,8 @@ class MeetingController extends Controller
                     return redirect()->route('teacher.meetings');
                 } else {
 
-                    // dd($response->json(), $response->json()['message']);
-                    $data['err_msg'] = $err_msg = $response->json()['message'];
+                    dd($response);
+                    $data['err_msg'] = $err_msg = $response->json()['message'] ?? "Something went wrong";
                     Session::flash('error', $err_msg);
                     return back()->withInput();
                 }
@@ -366,7 +366,7 @@ class MeetingController extends Controller
             $data['title'] = "";
             return View('dashboard.teacher.meetings.create', $data);
         } catch (\Throwable $th) {
-            // dd($th->getMessage());
+            dd($th);
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('teacher');
             //throw $th;

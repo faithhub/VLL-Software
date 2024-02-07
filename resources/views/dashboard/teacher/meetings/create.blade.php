@@ -79,7 +79,7 @@
                                                 <label class="form-label">Class Password <strong class="text-danger">*</strong></label>
                                                 <input name="password" type="text" class="form-control" placeholder=""
                                                     data-parsley-required-message="Class Password is required" required
-                                                    value="{{ old('password') }}">
+                                                    value="{{ old('password') }}" maxlength="10">
                                                 @error('password')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
