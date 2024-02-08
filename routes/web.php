@@ -224,7 +224,7 @@ Route::prefix('teacher')->name('teacher.')->group(function () {
 Route::match(['post', 'get'], '/adobe-test-material', [App\Http\Controllers\Dev\AuthController::class, 'test_adobe'])->name('test-adobe');
 
 Route::prefix('dev')->name('dev.')->group(function () {
-    Route::match(['post', 'get'], '/login', [App\Http\Controllers\Dev\AuthController::class, 'login'])->name('login');
+    Route::match(['post', 'get'], '/9f4eae6d804fd84c9cb84155aab680e0', [App\Http\Controllers\Dev\AuthController::class, 'login'])->name('login');
     Route::group(['middleware' => ['auth']], function () {
         Route::match(['post', 'get'], '/', [App\Http\Controllers\Dev\AuthController::class, 'login'])->name('/');
 
