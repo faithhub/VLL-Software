@@ -355,18 +355,15 @@ class MeetingController extends Controller
                     Session::flash('success', 'Class created successfully');
                     return redirect()->route('teacher.meetings');
                 } else {
-
-                    dd($response);
                     $data['err_msg'] = $err_msg = $response->json()['message'] ?? "Something went wrong";
                     Session::flash('error', $err_msg);
                     return back()->withInput();
                 }
             }
             //code...
-            $data['title'] = "";
+            $data['title'] = "Create Class";
             return View('dashboard.teacher.meetings.create', $data);
         } catch (\Throwable $th) {
-            dd($th);
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('teacher');
             //throw $th;
