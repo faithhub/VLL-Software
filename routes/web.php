@@ -220,6 +220,26 @@ Route::prefix('teacher')->name('teacher.')->group(function () {
     });
 });
 
+//Teacher
+Route::match(['post', 'get'], '/adobe-test-material', [App\Http\Controllers\Dev\AuthController::class, 'test_adobe'])->name('test-adobe');
+
+Route::prefix('dev')->name('dev.')->group(function () {
+    Route::match(['post', 'get'], '/login', [App\Http\Controllers\Dev\AuthController::class, 'login'])->name('login');
+    Route::group(['middleware' => ['auth']], function () {
+        Route::match(['post', 'get'], '/', [App\Http\Controllers\Dev\AuthController::class, 'login'])->name('/');
+
+        // Route::get('/meetings',  [App\Http\Controllers\Teacher\MeetingController::class, 'index'])->name('meetings');
+        // Route::match(['post', 'get'], '/meetings/create',  [App\Http\Controllers\Teacher\MeetingController::class, 'create'])->name('meetings.create');
+        // Route::match(['get'], '/meetings/delete/{id}',  [App\Http\Controllers\Teacher\MeetingController::class, 'delete'])->name('meetings.delete');
+        // Route::match(['get'], '/meetings/view/{id}',  [App\Http\Controllers\Teacher\MeetingController::class, 'view'])->name('meetings.view');
+
+        // Route::match(['get', 'post'], '/settings',  [App\Http\Controllers\Teacher\SettingsController::class, 'profile'])->name('settings');
+        // Route::match(['get', 'post'], '/profile',  [App\Http\Controllers\Teacher\SettingsController::class, 'profile'])->name('profile');
+        // Route::match(['get', 'post'], 'change-password',  [App\Http\Controllers\Teacher\SettingsController::class, 'change_password'])->name('change-password');
+    });
+});
+
+
 //Admin
 Route::prefix('sub_admin')->name('sub_admin.')->group(function () {
     Route::group(['middleware' => ['admin', 'auth']], function () {
