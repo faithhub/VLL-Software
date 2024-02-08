@@ -14,7 +14,8 @@
 
         document.addEventListener("adobe_dc_view_sdk.ready", function() {
             var adobeDCView = new AdobeDC.View({
-                clientId: "{{ getenv('ADOBECLIENTIDNEW') }}",
+                // clientId: "{{ getenv('ADOBECLIENTIDNEW') }}",
+                clientId: "6dfef512955e46eca21b5e9545cd9ce5",
                 divId: "adobe-dc-view"
             });
             var previewFilePromise = adobeDCView.previewFile({
