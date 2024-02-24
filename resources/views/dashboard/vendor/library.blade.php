@@ -25,7 +25,6 @@
                                 </select>
                             </form>
                         </div>
-
                         <div class="card-options" style="margin-right:2.5%"> <a href="{{ route('vendor.upload') }}"
                                 class="btn btn-bg btn-primary p-3"><i class="fa fa-upload"></i>&nbsp&nbspUpload a
                                 Material</a>

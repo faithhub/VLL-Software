@@ -43,7 +43,9 @@ class TransactionController extends Controller
                 $data['sub'] = Subscription::find($tran->subscription_id);
             }
             if ($tran->type == "rented" || $tran->type == "bought") {
-                $data['mat_his'] = MaterialHistory::where('invoice_id', $tran->invoice_id)->with(['mat'])->first();
+                // $data['mat_his'] = $mat_his = MaterialHistory::where('invoice_id', $tran->invoice_id)->with(['mat'])->first();
+                $data['mat_his'] = $mat_his = MaterialHistory::where('invoice_id', $tran->transaction_id)->with(['mat'])->get('material_id')->first();
+                // dd($mat_his, $tran->invoice_id, $mat_his2);
             }
             return View('dashboard.admin.transactions.view', $data);
         } catch (\Throwable $th) {

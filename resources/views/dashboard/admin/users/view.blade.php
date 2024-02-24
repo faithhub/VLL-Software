@@ -20,7 +20,6 @@
                                 <h4 class="pro-user-username mb-3 font-weight-bold">{{ $user->name }}
                                 </h4>
                                 <ul class="mb-0 pro-details">
-
                                     <li>
                                         <span class="profile-icon bg-success-transparent text-success">
                                             <i class="fe fe-mail"></i>
@@ -42,13 +41,18 @@
                                         </span>
                                     </li>
                                     <li><span class="profile-icon bg-info-transparent text-info"><i
-                                                class="fe fe-flag"></i></span><span class="h6 mt-3">
-                                            {{ $user->country->name ?? '--' }}
+                                                class="fe fe-user"></i></span><span class="h6 mt-3 text-capitalize">
+                                            {{ $user->user_type ?? '--' }}
                                         </span>
                                     </li>
                                     <li><span class="profile-icon bg-info-transparent text-info"><i
-                                                class="fe fe-user"></i></span><span class="h6 mt-3 text-capitalize">
-                                            {{ $user->user_type ?? '--' }}
+                                                class="fe fe-home"></i></span><span class="h6 mt-3 text-capitalize">
+                                            {{ $user->school->name ?? '--' }}
+                                        </span>
+                                    </li>
+                                    <li><span class="profile-icon bg-info-transparent text-info"><i
+                                                class="fe fe-flag"></i></span><span class="h6 mt-3">
+                                            {{ $user->country->name ?? '--' }}
                                         </span>
                                     </li>
                                 </ul>

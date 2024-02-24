@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Currency;
 use App\Models\Folder;
+use App\Models\Material;
 use App\Models\MaterialHistory;
 use App\Models\SubHistory;
 use App\Models\Subscription;
 use App\Models\Team;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\Wallet;
+use App\Models\Withdrawal;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class FlutterwaveController extends Controller
@@ -28,7 +33,7 @@ class FlutterwaveController extends Controller
         return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
     }
 
-    public function confirm()
+    public function confirm_subscription_transaction()
     {
         try {
             //code...
@@ -225,10 +230,11 @@ class FlutterwaveController extends Controller
         }
     }
 
-    public function confirm_material()
+    public function confirm_material_transaction()
     {
         try {
             //code...
+            $rented_days = \getenv('RENTED_DAYS');
             $transaction_id = $_GET['transaction_id'];
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
@@ -244,11 +250,6 @@ class FlutterwaveController extends Controller
                 return back() ?? redirect()->route('user');
             }
 
-            // dd(
-            //     $responseBody,
-            //     $transaction_id
-            // );
-
             $tx_ref = $responseBody['data']['tx_ref'];
             $trans = Transaction::where('trxref', $tx_ref)->first();
             $amount = $responseBody['data']['amount'];
@@ -258,22 +259,26 @@ class FlutterwaveController extends Controller
             $mat_id = strstr($mat_data, "#", true); //get material id
             $type = substr($mat_data, strpos($mat_data, "#") + 1); //get payment type (buy or rent)
             $tx_ref = substr($tx_ref, strpos($tx_ref, "@") + 1); //get payment ref
-
+            
             $invoice_id = Str::upper("TRX" . $this->unique_code(12));
 
-            // dd($responseBody, $mat_id, $type, $tx_ref);
-            $trans = Transaction::create([
-                'user_id' => Auth::user()->id,
-                'invoice_id' => $invoice_id,
-                'material_id' => $mat_id,
-                'date' => $responseBody['data']['created_at'],
-                'amount' => $responseBody['data']['amount'],
-                'status' => $responseBody['data']['status'],
-                'currency_id' => Auth::user()->currency->id,
-                'reference' => $responseBody['data']['id'],
-                'trxref' => $tx_ref,
-                'type' => $type
-            ]);
+            $check_trans = Transaction::where('trxref', $tx_ref)->get();
+            if ($check_trans->count() < 1) {
+                $trans = Transaction::create([
+                    'user_id' => Auth::user()->id,
+                    'invoice_id' => $invoice_id,
+                    'material_id' => $mat_id,
+                    'date' => $responseBody['data']['created_at'],
+                    'amount' => $responseBody['data']['amount'],
+                    'status' => $responseBody['data']['status'],
+                    'currency_id' => Auth::user()->currency->id,
+                    'reference' => $responseBody['data']['id'],
+                    'trxref' => $tx_ref,
+                    'type' => $type
+                ]);
+            } else {
+                $trans = $check_trans->first();
+            }
 
 
             if (
@@ -295,54 +300,100 @@ class FlutterwaveController extends Controller
             $folder_id = null;
             $mat_type = "material";
             $rent_unique_id = 0;
-            if ($type == "rented") {
-                # code...
-                //Rent duration is 2 days
-                $date_rented_expired = Carbon::now()->addDays(2);
-                // $rent_pending = MaterialHistory::where(['user_id' => Auth::user()->id, 'type' => 'rented', 'is_rent_expired' => false])->where('rent_count', '<', 2)->latest()->first();;
-                // if ($rent_pending) {
-                //     MaterialHistory::where(['user_id' => Auth::user()->id, 'type' => 'rented', 'is_rent_expired' => false, 'id' => $rent_pending->id, 'rent_unique_id' => $rent_pending->rent_unique_id])->update(['rent_count' => 2]);
-                //     $rent_count = 2;
-                //     $rent_unique_id = $rent_pending->rent_unique_id;
-                // } else {
-                $rent_count = 1;
-                $rent_unique_id = Str::upper("TRX" . $this->unique_code(17));
-                // }
+            $currency = $responseBody['data']['currency'];
+
+            switch ($type) {
+                case 'rented':
+                    # code...
+                    $mat_details = Material::find($mat_id);
+                    $date_rented_expired = Carbon::now()->addDays($rented_days);
+                    $rent_unique_id = Str::upper("TRX" . $this->unique_code(17));
+                    $folder_id = null;
+
+                    //Calc payment for rented material to vendore wallets
+                    $percentage = \getenv('PERCENTAGE_PAYOUT_FOR_RENTED_BOOK');
+                    $payout_for_mat = ($percentage / 100) * $responseBody['data']['amount'];
+                    break;
+
+                case 'bought':
+                    # code...
+                    $type = "bought";
+                    $mat_details = Material::find($mat_id);
+                    $folder_id = null;
+
+                    //Calc payment for bought material to vendore wallets
+                    $percentage = \getenv('PERCENTAGE_PAYOUT_FOR_BOUGHT_BOOK');
+                    $payout_for_mat = ($percentage / 100) * $responseBody['data']['amount'];
+                    break;
+
+                case 'folder':
+                    # code...
+                    $type = "bought";
+                    $mat_type = "folder";
+                    $folder = Folder::find($mat_id);
+                    $mat_details = $folder;
+                    $mat_id = null;
+                    $folder_id = $folder->id;
+
+                    //Payment for folder material to vendor wallets
+                    $percentage = \getenv('PERCENTAGE_PAYOUT_FOR_FOLDER_BOOK');
+                    $payout_for_mat = ($percentage / 100) * $responseBody['data']['amount'];
+
+                    switch ($folder->duration) {
+                        case 'annual':
+                            # code...
+                            //Set to expired in a year's time, but working on updates to accept monthly as well
+                            $folder_expired_date = Carbon::now()->addMonths(12);
+                            break;
+                        case 'quarterly':
+                            # code...
+                            //Set to expired in a year's time, but working on updates to accept monthly as well
+                            $folder_expired_date = Carbon::now()->addMonths(3);
+                            break;
+                        case 'monthly':
+                            # code...
+                            //Set to expired in a year's time, but working on updates to accept monthly as well
+                            $folder_expired_date = Carbon::now()->addMonths(1);
+                            break;
+
+                        default:
+                            # code...
+                            break;
+                    }
+
+                    $isFolderExpired = false;
+                    break;
+
+                default:
+                    # code...
+                    break;
             }
 
-            if ($type == "folder") {
-                $type = "bought";
-                $mat_type = "folder";
-                $folder_id = $mat_id;
-                $folder = Folder::find($folder_id);
-                $mat_id = null;
-                switch ($folder->duration) {
-                    case 'annual':
-                        # code...
-                        //Set to expired in a year's time, but working on updates to accept monthly as well
-                        $folder_expired_date = Carbon::now()->addMonths(12);
-                        break;
-                    case 'quarterly':
-                        # code...
-                        //Set to expired in a year's time, but working on updates to accept monthly as well
-                        $folder_expired_date = Carbon::now()->addMonths(3);
-                        break;
-                    case 'monthly':
-                        # code...
-                        //Set to expired in a year's time, but working on updates to accept monthly as well
-                        $folder_expired_date = Carbon::now()->addMonths(1);
-                        break;
+            if (!$mat_details) {
+                Session::flash('warning', 'Unable to confirm payment');
+                return back() ?? redirect()->route('user');
+            }
 
-                    default:
-                        # code...
-                        break;
+            $vendor = User::where(['id' => $mat_details->user_id])->first();
+
+            if ($vendor->role == "vendor" || $vendor->role == "admin" || $vendor->role == "sub_admin") {
+                $wallet = Wallet::where(['user_id' => $vendor->id, 'code' => $currency])->first();
+                if ($wallet) {
+                    $wallet->amount = $wallet->amount + $payout_for_mat; //save to vendor wallet if wallet does exist
+                    $wallet->save();
+                } else {
+                    $curr = Currency::where('code', $currency)->first(); //create wallet and save to vendor wallet
+                    Wallet::create([
+                        'user_id' => $vendor->id,
+                        'currency_id' => $curr->id,
+                        'code' => $currency,
+                        'amount' => $payout_for_mat
+                    ]);
                 }
-                $isFolderExpired = false;
             }
-
+            
             $data['invoice_id'] = $invoice_id = Str::upper("TRX" . $this->unique_code(12));
             $data['date'] = $date = Carbon::now();
-
 
 
             $my_materials_arr = [];
@@ -361,9 +412,9 @@ class FlutterwaveController extends Controller
                 'unique_id' => Str::upper("MATHIS" . $this->unique_code(12)),
                 'rent_count' => $rent_count,
                 'rent_unique_id' => $rent_unique_id,
-                'date_rented_expired' => $date_rented_expired ?? null,
+                'date_rented_expired' => $date_rented_expired ?? 0,
                 'type' => $type,
-                'folder_expired_date' => $folder_expired_date ?? null,
+                'folder_expired_date' => $folder_expired_date ?? 0,
                 'isFolderExpired' => $isFolderExpired ?? false,
                 'mat_type' => $mat_type
             ]);
@@ -732,6 +783,194 @@ class FlutterwaveController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             return $th->getMessage();
+        }
+    }
+
+    public function withdraw(Request $request)
+    {
+        try {
+            //code...
+            $currency = $request->currency ?? null;
+            $currency_id = $request->currency_id ?? null;
+            $amount = $request->amount ?? null;
+            $percentage = \getenv('PERCENTAGE_BANK_CHARGE_FOR_WITHDRAWALS'); //Withdrawal percentage 
+            $NGN_max = \getenv('NGN_MAX_PAYOUT');
+            $USD_max = \getenv('USD_MAX_PAYOUT');
+
+            switch ($currency) {
+                case 'NGN':
+                    # code...
+                    $rules = array(
+                        'currency' => ['required', 'string'],
+                        'currency_id' => ['required', 'string'],
+                        'amount' => ['required', 'numeric', 'min:' . $NGN_max],
+                    );
+
+                    $messages = [
+                        'amount.min' => __('The minimun payout amount is ' . $currency . number_format($NGN_max, 2)),
+                    ];
+                    break;
+                case 'USD':
+                    # code...
+                    $rules = array(
+                        'currency' => ['required', 'string'],
+                        'currency_id' => ['required', 'string'],
+                        'amount' => ['required', 'numeric', 'min:' . $USD_max],
+                    );
+
+                    $messages = [
+                        'amount.min' => __('The minimun payout amount is ' . $currency . number_format($USD_max, 2)),
+                    ];
+                    break;
+
+                default:
+                    Session::flash('warning', 'Currency not found');
+                    return back() ?? redirect()->route('vendor.payouts') ?? redirect()->route('vendor');
+                    # code...
+                    break;
+            }
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                if ($errors->has('amount')) {
+                    Session::flash('warning', $errors->first('amount'));
+                } else {
+                    Session::flash('warning', __('All fields are required'));
+                }
+                return back()->withErrors($validator)->withInput();
+            }
+
+            //Reference number
+            $randomNumber = Str::upper("TRX" . $this->unique_code(12));
+            $narration = "VLL Withdrawal";
+            $reference = "VLL-PAYOUT-" . $randomNumber;
+
+            //Check if user has enough money to withdraw
+            $wallet = Wallet::where(['id' => $currency_id, 'code' => $currency, 'user_id' => Auth::user()->id])->first();
+            if (!$wallet) {
+                Session::flash('warning', 'Wallet not found');
+                return back() ?? redirect()->route('vendor.payouts') ?? redirect()->route('vendor');
+            }
+
+            if (!($wallet->amount >= $amount)) {
+                Session::flash('warning', 'You do not have enough fund to withdraw');
+                return back() ?? redirect()->route('vendor.payouts') ?? redirect()->route('vendor');
+            }
+
+            //Debit the user wallet
+            $percentage = \getenv('PERCENTAGE_BANK_CHARGE_FOR_WITHDRAWALS'); //Withdrawal percentage
+            $percentage_for_payout = ($percentage / 100) * $amount;
+            $payable_amount = $amount - $percentage_for_payout;
+
+            //Check if the currency is USD or NGN
+            switch ($currency) {
+                case 'NGN':
+                    # code...
+                    //Check if the user meet up with Min amount to withdraw
+                    if ($amount < $NGN_max) {
+                        Session::flash('warning', 'The minimun payout amount is ' . $currency . number_format($NGN_max, 2));
+                        return back();
+                    }
+                    $account_bank = Auth::user()->bank->code;
+                    $account_number = Auth::user()->acc_number;
+                    break;
+                case 'USD':
+                    # code...
+                    //Check if the user meet up with Min amount to withdraw
+                    if ($amount < $USD_max) {
+                        Session::flash('warning', 'The minimun payout amount is ' . $currency . number_format($USD_max, 2));
+                        return back();
+                    }
+                    $account_bank = Auth::user()->dom_bank_id->code;
+                    $account_number = Auth::user()->dom_acc_number;
+                    break;
+
+                default:
+                    # code...
+                    Session::flash('warning', 'Currency not found');
+                    return back();
+                    break;
+            }
+
+            // dd($account_bank);
+            $params = [
+                // "account_bank" => "044",
+                // "account_number" => "0690000040",
+                "account_bank" => $account_bank,
+                "account_number" => $account_number,
+                "amount" => $payable_amount,
+                "narration" => $narration,
+                "currency" => $currency,
+                "reference" => $reference,
+                "callback_url" => "https://www.flutterwave.com/ng/",
+                "debit_currency" => $currency
+            ];
+
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . getenv('SECRET_KEY'),
+            ])->post('https://api.flutterwave.com/v3/transfers', $params);
+
+
+            // You can access the response body like this:
+            $responseBody = $response->json();
+
+            $response_status = $responseBody['status'];
+            switch ($response_status) {
+                case 'error':
+                    # code...
+                    // dd($responseBody, $responseBody['data']);
+                    Withdrawal::create([
+                        "user_id" => Auth::user()->id,
+                        "wallet_id" => $wallet->id,
+                        "tran_id" => Str::upper("TRX" . $this->unique_code(12)),
+                        "status" => $responseBody['data']['status'],
+                        "amount_paid" => $responseBody['data']['amount'],
+                        "fee" => $responseBody['data']['fee'],
+                        "amount_withdraw" => $amount
+                    ]);
+                    Session::flash('warning', $responseBody['message']);
+                    return back() ?? redirect()->route('vendor.payouts') ?? redirect()->route('vendor');
+                    break;
+                case 'success':
+                    # code...
+                    //Debit the user waller
+                    $percentage_for_payout = ($percentage / 100) * $amount;
+                    $wallet->amount = $wallet->amount - $amount;
+                    $wallet->save();
+
+                    //Save record to payout table
+                    Withdrawal::create([
+                        "user_id" => Auth::user()->id,
+                        "wallet_id" => $wallet->id,
+                        "tran_id" => Str::upper("TRX" . $this->unique_code(12)),
+                        "status" => $responseBody['data']['status'],
+                        "amount_paid" => $responseBody['data']['amount'],
+                        "fee" => $responseBody['data']['fee'],
+                        "amount_withdraw" => $amount
+                    ]);
+
+                    //Sent success response
+                    Session::flash('success', $responseBody['message']);
+                    return redirect()->route('vendor.payouts');
+
+                    //Send PDF to email
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+
+            Session::flash('warning', 'Try again!');
+            return redirect()->route('vendor.payouts');
+
+            // if ($responseBody['status'] == "error") {
+            // }
+        } catch (\Throwable $th) {
+            dd($th);
+            //throw $th;
         }
     }
 }

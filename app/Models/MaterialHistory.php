@@ -19,6 +19,7 @@ class MaterialHistory extends Model
         "invoice_id",
         "date",
         "folder_expired_date",
+        "date_rented_expired",
         "isFolderExpired",
         "rent_count",
         "unique_id",
@@ -35,6 +36,10 @@ class MaterialHistory extends Model
     public function mat()
     {
         return $this->hasOne(Material::class, 'id', 'material_id');
+    }
+    public function folder()
+    {
+        return $this->hasOne(Folder::class, 'id', 'folder_id');
     }
 
     public function user()

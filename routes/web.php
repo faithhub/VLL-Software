@@ -53,9 +53,10 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::match(['post'], 'change-currency',  [App\Http\Controllers\Admin\DashboardController::class, 'change_currency'])->name('change_currency');
     //Payment Confrimation
-    Route::get('/confirm-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'confirm'])->name('confirm.payment');
-    Route::get('/material-confirm-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'confirm_material'])->name('material.payment');
+    Route::get('/confirm-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'confirm_subscription_transaction'])->name('confirm.payment');
+    Route::get('/material-confirm-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'confirm_material_transaction'])->name('material.payment');
     Route::post('/save-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'save_transaction'])->name('save.transaction');
+    Route::post('/withdraw-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'withdraw'])->name('withdraw.transaction');
 });
 
 //User
@@ -64,6 +65,7 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::get('/',  [App\Http\Controllers\Dashboard\UserController::class, 'index'])->name('index')->middleware('check_rented_materials');
         Route::get('library',  [App\Http\Controllers\Dashboard\UserController::class, 'library'])->name('library')->middleware('check_rented_materials');
         Route::get('transactions',  [App\Http\Controllers\Dashboard\UserController::class, 'transactions'])->name('transactions');
+        Route::get('view-transaction/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'view_transaction'])->name('view_transaction');
         Route::get('view/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'view_material'])->name('view')->middleware('check_rented_materials');
         Route::get('summary/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'summary_material'])->name('summary');
         Route::get('view-folder/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'view_folder'])->name('view_folder');
@@ -98,6 +100,7 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
     Route::group(['middleware' => ['vendor', 'auth']], function () {
         Route::match(['get'], '/',  [App\Http\Controllers\Dashboard\VendorController::class, 'index'])->name('index');
         // Route::get('library',  [App\Http\Controllers\Dashboard\VendorController::class, 'library'])->name('library');
+        Route::match(['get'], 'withdraw/{code}',  [App\Http\Controllers\Dashboard\VendorController::class, 'withdraw'])->name('withdraw');
         Route::match(['get', 'post'], 'settings',  [App\Http\Controllers\Dashboard\VendorController::class, 'settings'])->name('settings');
         Route::match(['get', 'post'], 'help',  [App\Http\Controllers\Dashboard\VendorController::class, 'help'])->name('help');
         Route::get('transactions',  [App\Http\Controllers\Dashboard\VendorController::class, 'transactions'])->name('transactions');

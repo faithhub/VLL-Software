@@ -17,6 +17,8 @@ use App\Models\Subscription;
 use App\Models\Transaction;
 use App\Models\University;
 use App\Models\User;
+use App\Models\Wallet;
+use App\Models\Withdrawal;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -89,7 +91,7 @@ class VendorController extends Controller
             //code...
             $data['title'] = "Vendor Dashboard - Transactions";
             $data['sn'] = 1;
-            $matHis = MaterialHistory::with(['trans', 'mat'])->get();
+            $matHis = MaterialHistory::with(['trans', 'mat', 'folder'])->get();
             $mats_arr3 = [];
 
             foreach ($matHis as $key => $mat_h) {
@@ -99,8 +101,15 @@ class VendorController extends Controller
                         array_push($mats_arr3, $mat_h->transaction_id);
                     }
                 }
+                if (isset($mat_h->folder->user_id)) {
+                    if ($mat_h->folder->user_id == Auth::user()->id && $mat_h->transaction_id != null) {
+                        array_push($mats_arr3, $mat_h->transaction_id);
+                    }
+                }
             }
 
+            // $data['transactions'] = $transactions = Transaction::where('user_id', Auth::user()->id)->with('mat_his')->orderBy('created_at', 'DESC')->get();
+            // dd($transactions);
             $data['transactions'] = Transaction::whereIn('id', $mats_arr3)->with('mat_his')->orderBy('created_at', 'DESC')->get();
             // $data['transactions'] = $mats_arr2;
             // dd($data['transactions']);
@@ -119,6 +128,8 @@ class VendorController extends Controller
             //code...
             $data['title'] = "Vendor Dashboard - Payouts";
             $data['sn'] = 1;
+            $data['wallets'] = Wallet::where('user_id', Auth::user()->id)->with('currency')->get();
+            $data['withdrawals'] = Withdrawal::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->with('wallet')->get();
             return View('dashboard.vendor.payouts', $data);
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());
@@ -1251,6 +1262,22 @@ class VendorController extends Controller
 
             $data = [];
             return View('dashboard.vendor.change-password', $data);
+        } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
+            //throw $th;
+        }
+    }
+
+    public function withdraw($code)
+    {
+        # code...
+        try {
+            //code...
+            $data['title'] = "Vendor Dashboard - Withdraw";
+            $data['wallets'] = Wallet::where('user_id', Auth::user()->id)->get();
+            $data['wallet'] = Wallet::where(['user_id' => Auth::user()->id, 'code' => $code])->first();
+            return View('dashboard.vendor.withdraw', $data);
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('vendor');

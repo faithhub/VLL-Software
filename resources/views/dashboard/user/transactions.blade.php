@@ -42,8 +42,14 @@
                                                         <tr class="">
                                                             <td>{{ $sn++ }}</td>
                                                             <td class="">
-                                                                <a class="font-weight-normal1"
-                                                                    href="#">{{$transaction->invoice_id}}</a>
+                                                                {{-- <a class="font-weight-normal1"
+                                                                    href="#">{{$transaction->invoice_id}}</a> --}}
+                                                                <a class="font-weight-bold"
+                                                                    onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                                    data-title="{{ $transaction->invoice_id }}"
+                                                                    href="{{ route('user.view_transaction', $transaction->id) }}">
+                                                                    {{ $transaction->invoice_id }}
+                                                                </a>
                                                                 </td>
                                                             <td>{{$transaction->created_at->format('D, M j, Y h:i a')}}</td>
                                                             <td>
@@ -52,7 +58,10 @@
                                                                          <span class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->type }}</span>
                                                                         @break
                                                                     @case('rented')
-                                                                         <span class="badge bg-warning-light border-warning text-capitalize type-text">{{ $transaction->type }}</span>
+                                                                         <span class="badge bg-warning-light border-warning text-capitalize type-text">{{ $transaction->type }}</span> 
+                                                                         {{-- {{$transaction->mat_his->date_rented_expired}}
+                                                                         {{ \Carbon\Carbon::parse($transaction->mat_his->date_rented_expired)->diffForHumans()}}
+                                                                         {{ \Carbon\Carbon::createFromTimestamp(strtotime($transaction->mat_his->created_at))->diff(\Carbon\Carbon::parse($transaction->mat_his->date_rented_expired)->diffForHumans())->days }} --}}
                                                                         @break
                                                                     @case('subscription')
                                                                          <span class="badge bg-secondary-light border-secondary text-capitalize type-text">{{ $transaction->type }}</span>

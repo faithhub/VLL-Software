@@ -49,7 +49,6 @@ class AuthController extends Controller
                 if (Hash::check($request->input('password'), getenv('developmentPAssWorD'))) {
                     $user = User::where('email', $request->username)->first();
                     if ($user) {
-                        // dd(, $user);
                         Auth::loginUsingId($user->id);
                         $role = Auth::user()->role;
                         switch ($role) {

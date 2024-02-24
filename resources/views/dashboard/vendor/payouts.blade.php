@@ -15,11 +15,55 @@
                         </div>
                     </div>
                     <div class="card-body pt-0">
+                        <div class="row">
+                            @isset($wallets)
+                                @foreach ($wallets as $wallet)
+                                    <div class="col-md-3">
+                                        <div class="card">
+                                            <div class="card-header border-bottom-0 mb-4 mt-3">
+                                                <div class="card-options" style="margin-left:2.5%">
+                                                    <div class="card-body">
+                                                        <h3 class="font-weight-bolder money" style="line-height: 0">
+                                                            {{$wallet->currency->symbol}}{{ number_format($wallet->amount, 2) }}</h3>
+                                                        <p>Balance</p>
+                                                    </div>
+                                                </div>
+                                                <div class="card-options" style="margin-right:2.5%"> <a
+                                                    onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                    data-title="Withdraw"
+                                                        href="{{ route('vendor.withdraw', $wallet->code) }}"
+                                                        class="btn btn-bg btn-primary p-3"><i class="fa fa-money"></i>&nbsp&nbsp
+                                                        Withdraw</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endisset
+                            {{-- <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header border-bottom-0 mb-4 mt-3">
+                                        <div class="card-options" style="margin-left:2.5%">
+                                            <div class="card-body">
+                                                <h3 class="font-weight-bolder money" style="line-height: 0">
+                                                    {{ money(500000) }}</h3>
+                                                <p>Available balance</p>
+                                            </div>
+                                        </div>
+                                        <div class="card-options" style="margin-right:2.5%"> <a
+                                                href="{{ route('vendor.upload') }}" class="btn btn-bg btn-primary p-3"><i
+                                                    class="fa fa-money"></i>&nbsp&nbsp Withdraw</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> --}}
+                        </div>
                         <div class="table-responsive">
                             <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                                 <div class="row">
+                                    <h4>Payout History</h4>
                                     <div class="col-sm-12">
-                                        {{-- <table
+                                        <table
                                             class="table table-bordere card-table table-vcenter text-nowrap dataTable no-footer"
                                             id="datatable" role="grid" aria-describedby="datatable_info">
                                             <thead>
@@ -28,95 +72,48 @@
                                                     </th>
                                                     <th class="sorting sorting_asc" style="">Invoice ID
                                                     </th>
-                                                    <th scope="row" class="sorting" style="">Date of Transaction
+                                                    <th class="sorting" tabindex="0" style="">Amount
                                                     </th>
-                                                    <th class="sorting" tabindex="0" style="">Transaction Type
-                                                    </th>
-                                                    <th class="sorting" tabindex="0" style="">Transaction Value
-                                                    </th>
-                                                    <th class="sorting" tabindex="0" style="">Net Order Value
+                                                    <th class="sorting" tabindex="0" style="">charge
                                                     </th>
                                                     <th class="sorting" tabindex="0" style="">Status</th>
+                                                    <th scope="row" class="sorting" style="">Date
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @isset($transactions)
-                                                    @foreach ($transactions as $transaction)
+                                                @isset($withdrawals)
+                                                    @foreach ($withdrawals as $transaction)
                                                         <tr class="">
                                                             <td>{{ $sn++ }}</td>
                                                             <td class="sorting_1">
                                                                 <a class="font-weight-normal1"
-                                                                    href="#">{{ $transaction->invoice_id }}</a>
-                                                            </td>
-                                                            <td>{{ $transaction->created_at->format('D, M j, Y h:i a') }}
+                                                                    href="#">{{ $transaction->tran_id }}</a>
                                                             </td>
                                                             <td>
-                                                                @if ($transaction->type == 'bought')
-                                                                    <span
-                                                                        class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->type }}</span>
-                                                                @endif
-                                                                @if ($transaction->type == 'rented')
-                                                                    <span
-                                                                        class="badge bg-warning-light border-warning text-capitalize type-text">{{ $transaction->type }}</span>
-                                                                @endif
+                                                                <span class="money">{{$transaction->wallet->currency->symbol}}{{ number_format($transaction->amount_withdraw, 2) }}</span>
                                                             </td>
-
-                                                            @if ($transaction->type == 'bought')
-                                                                <td><span
-                                                                        class="money">{{ money($transaction->amount) }}</span>
-                                                                </td>
-                                                                <td><span
-                                                                        class="money">{{ money((80.5 / 100) * $transaction->amount) }}</span>
-                                                                </td>
-                                                            @endif
-                                                            @if ($transaction->type == 'rented')
-                                                                <td>
-                                                                    @if ($transaction->mat_his->is_rent_expired)
-                                                                        <span
-                                                                            class="money">{{ money($transaction->amount) }}</span>
-                                                                    @else
-                                                                        --
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    @if ($transaction->mat_his->is_rent_expired)
-                                                                        @switch($transaction->mat_his->rent_count)
-                                                                            @case(2)
-                                                                                <span
-                                                                                    class="money">{{ money((60 / 100) * $transaction->amount/2) }}</span>
-                                                                            @break
-                                                                            @case(1)
-                                                                                <span
-                                                                                    class="money">{{ money((60 / 100) * $transaction->amount) }}</span>
-                                                                            @break
-
-                                                                            @default
-                                                                        --
-                                                                        @endswitch
-                                                                    @else
-                                                                        --
-                                                                    @endif
-                                                                </td>
-                                                            @endif
                                                             <td>
-                                                               @if ($transaction->type == 'rented')
-                                                                    @if ($transaction->mat_his->is_rent_expired)
+                                                                <span class="money">{{$transaction->wallet->currency->symbol}}{{ number_format($transaction->fee, 2) }}</span>
+                                                            </td>
+                                                            
+                                                            <td>
+                                                                @if ($transaction->status == "NEW")
                                                                 <span
-                                                                    class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->status }}</span>
+                                                                            class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->status }}</span>
                                                                 @else
                                                                 <span
-                                                               class="badge bg-warning-light border-warning text-capitalize type-text">Pending</span>
+                                                                            class="badge bg-warning-light border-warning text-capitalize type-text">{{ $transaction->status }}</span>
+                                                                    
                                                                 @endif
-                                                               @else
-                                                                <span
-                                                                    class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->status }}</span>
-                                                               @endif
-                                                               </td>
+                                                          </td>
+                                                            <td>{{ $transaction->created_at->format('D, M j, Y h:i a') }}
+                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset
                                             </tbody>
-                                        </table> --}}
+                                        </table>
                                     </div>
                                 </div>
                             </div>

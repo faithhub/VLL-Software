@@ -191,7 +191,11 @@
                                             </a>
                                         @endif
                                         @if ($material->price == 'Paid')
-                                            @if ($rentedMatCount >= 2)
+                                            <a class="btn m-2 btn-dark p-2 btn-outline-primary"
+                                                onclick="flutterwaveBuyMaterial('{{ exchange($settings['rent'] ?? getenv('RENTED_AMOUNT')) }}', '{{ $material->id }}', 'rented')">
+                                                Rent Book
+                                            </a>
+                                            {{-- @if ($rentedMatCount >= 2)
                                                 <a aria-readonly="true" class="btn m-2 btn-primary p-2"
                                                     @disabled(true) style="cursor: no-drop">
                                                     Maximum rent reached
@@ -206,7 +210,7 @@
                                                     onclick="flutterwaveBuyMaterial('{{ exchange($settings['rent'] ?? 700) }}', '{{ $material->id }}', 'rented')">
                                                     Rent Book
                                                 </a>
-                                            @endif
+                                            @endif --}}
                                             <a onclick="flutterwaveBuyMaterial('{{ exchange($material->amount, $material->currency_id) }}', '{{ $material->id }}', 'bought')"
                                                 class="btn m-2 btn-primary p-2">
                                                 Buy Book
@@ -228,7 +232,11 @@
                                         </a>
                                     @endif
                                     @if ($material->price == 'Paid')
-                                        @if ($rentedMatCount >= 2)
+                                        <a class="btn m-2 btn-dark p-2 btn-outline-primary"
+                                            onclick="flutterwaveBuyMaterial('{{ exchange($settings['rent'] ?? getenv('RENTED_AMOUNT')) }}', '{{ $material->id }}', 'rented')">
+                                            Rent Book
+                                        </a>
+                                        {{-- @if ($rentedMatCount >= 2)
                                             <a aria-readonly="true" class="btn m-2 btn-primary p-2"
                                                 @disabled(true) style="cursor: no-drop">
                                                 Maximum rent reached
@@ -243,7 +251,7 @@
                                                 onclick="flutterwaveBuyMaterial('{{ exchange($settings['rent'] ?? 700) }}', '{{ $material->id }}', 'rented')">
                                                 Rent Book
                                             </a>
-                                        @endif
+                                        @endif --}}
                                         <a onclick="flutterwaveBuyMaterial('{{ exchange($material->amount) }}', '{{ $material->id }}', 'bought')"
                                             class="btn m-2 btn-primary p-2">
                                             Buy Book

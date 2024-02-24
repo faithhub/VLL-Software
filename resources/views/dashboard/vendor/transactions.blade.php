@@ -51,14 +51,8 @@
                                                             <td>{{ $transaction->created_at->format('D, M j, Y h:i a') }}
                                                             </td>
                                                             <td>
-                                                                @if ($transaction->type == 'bought')
-                                                                    <span
-                                                                        class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->type }}</span>
-                                                                @endif
-                                                                @if ($transaction->type == 'rented')
                                                                     <span
                                                                         class="badge bg-warning-light border-warning text-capitalize type-text">{{ $transaction->type }}</span>
-                                                                @endif
                                                             </td>
 
                                                             @if ($transaction->type == 'bought')
@@ -66,20 +60,31 @@
                                                                         class="money">{{ money($transaction->amount) }}</span>
                                                                 </td>
                                                                 <td><span
-                                                                        class="money">{{ money((80.5 / 100) * $transaction->amount) }}</span>
+                                                                        class="money">{{ money((getenv('PERCENTAGE_PAYOUT_FOR_BOUGHT_BOOK') / 100) * $transaction->amount) }}</span>
+                                                                </td>
+                                                            @endif
+                                                            @if ($transaction->type == 'folder')
+                                                                <td><span
+                                                                        class="money">{{ money($transaction->amount) }}</span>
+                                                                </td>
+                                                                <td><span
+                                                                        class="money">{{ money((getenv('PERCENTAGE_PAYOUT_FOR_FOLDER_BOOK') / 100) * $transaction->amount) }}</span>
                                                                 </td>
                                                             @endif
                                                             @if ($transaction->type == 'rented')
                                                                 <td>
-                                                                    @if ($transaction->mat_his->is_rent_expired)
-                                                                        <span
-                                                                            class="money">{{ money($transaction->amount) }}</span>
+                                                                    <span
+                                                                        class="money">{{ money($transaction->amount) }}</span>
+                                                                    {{-- @if ($transaction->mat_his->is_rent_expired)
+                                                                        <span class="money">{{ money($transaction->amount) }}</span>
                                                                     @else
                                                                         --
-                                                                    @endif
+                                                                    @endif --}}
                                                                 </td>
                                                                 <td>
-                                                                    @if ($transaction->mat_his->is_rent_expired)
+                                                                    <span
+                                                                        class="money">{{ money((getenv('PERCENTAGE_PAYOUT_FOR_RENTED_BOOK') / 100) * $transaction->amount) }}</span>
+                                                                    {{-- @if ($transaction->mat_his->is_rent_expired)
                                                                         @switch($transaction->mat_his->rent_count)
                                                                             @case(2)
                                                                                 <span
@@ -95,23 +100,25 @@
                                                                         @endswitch
                                                                     @else
                                                                         --
-                                                                    @endif
+                                                                    @endif --}}
                                                                 </td>
                                                             @endif
                                                             <td>
-                                                               @if ($transaction->type == 'rented')
+                                                                <span
+                                                                    class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->status }}</span>
+                                                                {{-- @if ($transaction->type == 'rented')
                                                                     @if ($transaction->mat_his->is_rent_expired)
-                                                                <span
-                                                                    class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->status }}</span>
+                                                                        <span
+                                                                            class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->status }}</span>
+                                                                    @else
+                                                                        <span
+                                                                            class="badge bg-warning-light border-warning text-capitalize type-text">Pending</span>
+                                                                    @endif
                                                                 @else
-                                                                <span
-                                                               class="badge bg-warning-light border-warning text-capitalize type-text">Pending</span>
-                                                                @endif
-                                                               @else
-                                                                <span
-                                                                    class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->status }}</span>
-                                                               @endif
-                                                               </td>
+                                                                    <span
+                                                                        class="badge bg-success-light border-success text-capitalize type-text">{{ $transaction->status }}</span>
+                                                                @endif --}}
+                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                 @endisset

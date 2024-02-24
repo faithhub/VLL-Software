@@ -488,6 +488,30 @@ class UserController extends Controller
         }
     }
 
+    public function view_transaction($id)
+    {
+        # code...
+        try {
+            $data['status'] = false;
+            $data['tran'] = $tran = Transaction::where(['id' => $id, 'user_id' => Auth::user()->id])->with(['user'])->first();
+            if ($tran) {
+                $data['status'] = true;
+            }
+            if ($tran->subscription_id) {
+                $data['sub'] = Subscription::find($tran->subscription_id);
+            }
+            if ($tran->type == "rented" || $tran->type == "bought") {
+                $data['mat_his'] = $mat_his = MaterialHistory::where(['invoice_id' => $tran->transaction_id, 'user_id' => Auth::user()->id])->with(['mat'])->get('material_id')->first();
+            }
+            return View('dashboard.user.view-transaction', $data);
+        } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('admin');
+            dd($th->getMessage());
+            //throw $th;
+        }
+    }
+
     public function summary_material($id)
     {
         # code...
@@ -834,8 +858,9 @@ class UserController extends Controller
             $rent_unique_id = 0;
             if ($type == "rented") {
                 # code...
-                //Rent duration is 2 days
-                $date_rented_expired = Carbon::now()->addDays(2);
+                //Rent duration
+                $RENTED_DAYS = \getenv('RENTED_DAYS');
+                $date_rented_expired = Carbon::now()->addDays($RENTED_DAYS);
                 // $rent_pending = MaterialHistory::where(['user_id' => Auth::user()->id, 'type' => 'rented', 'is_rent_expired' => false])->where('rent_count', '<', 2)->latest()->first();;
                 // if ($rent_pending) {
                 //     MaterialHistory::where(['user_id' => Auth::user()->id, 'type' => 'rented', 'is_rent_expired' => false, 'id' => $rent_pending->id, 'rent_unique_id' => $rent_pending->rent_unique_id])->update(['rent_count' => 2]);
