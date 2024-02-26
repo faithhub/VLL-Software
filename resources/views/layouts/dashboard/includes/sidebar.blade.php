@@ -375,6 +375,35 @@
                         </li>
                     @endif
                 @endif
+
+                {{-- Payout --}}
+                @if (Auth::user()->role == 'admin')
+                    @if (Auth::user()->sub_admin == 'payout' || Auth::user()->role == 'admin')
+                        <li class="slide is-expanded" id="sidebar">
+                            <a class="side-menu__item side_menus {{ request()->is('admin/payouts') ? 'active' : '' }}"
+                                href="{{ route('admin.payouts') }}">
+                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="24.000000pt"
+                                    height="24.000000pt" viewBox="0 0 24.000000 24.000000"
+                                    preserveAspectRatio="xMidYMid meet" class="side-menu__icon">
+                                    <g transform="translate(0.000000,24.000000) scale(0.100000,-0.100000)"
+                                        fill="{{ request()->is('admin/payouts') ? '#fff' : '#1D3557' }}"
+                                        stroke="none">
+                                        <path d="M115 210 l-60 -19 78 2 c63 2 77 5 75 17 -4 21 -24 21 -93 0z" />
+                                        <path
+                                            d="M20 110 l0 -60 55 0 c65 0 74 17 13 22 -42 3 -43 4 -43 38 l0 35 69 3 c53 2 72 -1 87 -14 18 -16 19 -16 19 9 l0 27 -100 0 -100 0 0 -60z" />
+                                        <path
+                                            d="M94 125 c-4 -8 -4 -22 0 -30 7 -19 36 -20 36 -1 0 8 5 16 12 18 18 60 28 -23 28 -11 0 -22 -7 -25 -15z" />
+                                        <path
+                                            d="M60 110 c0 -5 5 -10 10 -10 6 0 10 5 10 10 0 6 -4 10 -10 10 -5 0-10 -4 -10 -10z" />
+                                        <path
+                                            d="M168 99 c-10 -5 -18 -20 -18 -32 0 -28 26 -67 45 -67 19 0 45 39 4567 0 12 -9 27 -19 33 -24 12 -31 12 -53 -1z" />
+                                    </g>
+                                </svg>
+                                <span class="side-menu__label">payouts</span>
+                            </a>
+                        </li>
+                    @endif
+                @endif
                 {{-- @endif --}}
 
                 @if (Auth::user()->role == 'sub_admin' || Auth::user()->role == 'admin')

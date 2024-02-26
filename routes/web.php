@@ -104,6 +104,7 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
         Route::match(['get', 'post'], 'settings',  [App\Http\Controllers\Dashboard\VendorController::class, 'settings'])->name('settings');
         Route::match(['get', 'post'], 'help',  [App\Http\Controllers\Dashboard\VendorController::class, 'help'])->name('help');
         Route::get('transactions',  [App\Http\Controllers\Dashboard\VendorController::class, 'transactions'])->name('transactions');
+        Route::get('view-transaction/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'view_transaction'])->name('view-transaction');
         Route::get('payouts',  [App\Http\Controllers\Dashboard\VendorController::class, 'payouts'])->name('payouts');
         Route::get('summary/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'summary'])->name('summary');
         Route::get('subscriptions',  [App\Http\Controllers\Dashboard\VendorController::class, 'subscriptions'])->name('subscriptions');
@@ -153,6 +154,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::match(['get'], '/library/view/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'view'])->name('view.library')->middleware('sub_admin_mat');
         Route::match(['get'], '/library/delete/{id}',  [App\Http\Controllers\Admin\MaterialController::class, 'delete'])->name('delete.library')->middleware('sub_admin_mat');
         Route::match(['get'], '/library/cancel',  [App\Http\Controllers\Admin\MaterialController::class, 'cancel'])->name('cancel.library')->middleware('sub_admin_mat');
+
+
+        Route::get('/payouts',  [App\Http\Controllers\Admin\TransactionController::class, 'payouts'])->name('payouts')->middleware('sub_admin_trans');
+        Route::get('/payout/{id}',  [App\Http\Controllers\Admin\TransactionController::class, 'view_payout'])->name('payout.view')->middleware('sub_admin_trans');
 
 
         Route::get('/transactions',  [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions')->middleware('sub_admin_trans');

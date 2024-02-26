@@ -24,4 +24,8 @@ class Withdrawal extends Model
     {
         return $this->hasOne(Wallet::class, 'id', 'wallet_id');
     }
+    public function vendor()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

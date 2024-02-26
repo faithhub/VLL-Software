@@ -44,9 +44,18 @@
                                                     @foreach ($transactions as $transaction)
                                                         <tr class="">
                                                             <td>{{ $sn++ }}</td>
-                                                            <td class="sorting_1">
+                                                            {{-- <td class="sorting_1">
                                                                 <a class="font-weight-normal1"
                                                                     href="#">{{ $transaction->invoice_id }}</a>
+                                                            </td> --}}
+
+                                                            <td class="sorting_1">
+                                                                <a class="font-weight-bold"
+                                                                    onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                                    data-title="{{ $transaction->invoice_id }}"
+                                                                    href="{{ route('vendor.view-transaction', $transaction->id) }}">
+                                                                    {{ $transaction->invoice_id }}
+                                                                </a>
                                                             </td>
                                                             <td>{{ $transaction->created_at->format('D, M j, Y h:i a') }}
                                                             </td>

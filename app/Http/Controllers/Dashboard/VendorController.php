@@ -121,6 +121,40 @@ class VendorController extends Controller
         }
     }
 
+    public function view_transaction($id)
+    {
+        # code...
+        try {
+            //code...
+
+            $data['title'] = "Vendor Dashboard - View Transaction";
+            $data['status'] = false;
+            $data['tran'] = $tran = Transaction::where('id', $id)->with(['user'])->first();
+            if ($tran) {
+                $data['status'] = true;
+            }
+            if ($tran->subscription_id) {
+                $data['sub'] = Subscription::find($tran->subscription_id);
+            }
+            if ($tran->type == "rented" || $tran->type == "bought") {
+                // $data['mat_his'] = $mat_his = MaterialHistory::where('invoice_id', $tran->invoice_id)->with(['mat'])->first();
+                $data['mat_his'] = $mat_his = MaterialHistory::where('transaction_id', $tran->id)->with(['mat'])->get('material_id')->first();
+            }
+            if ($tran->type == "folder") {
+                $data['mat_folder'] = $mat_folder = MaterialHistory::where('transaction_id', $tran->id)->with(['folder'])->get('folder_id')->first();
+            }
+
+            // dd($tran->id, $mat_folder->folder);
+
+            return View('dashboard.vendor.view-transaction', $data);
+        } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
+            //throw $th;
+        }
+    }
+
+
     public function payouts()
     {
         # code...
