@@ -12,7 +12,19 @@
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script> --}}
-
+<script type="text/javascript">
+    window.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+            e.preventDefault();
+            // alert('You can\'t print');
+        }
+    });
+</script>
+<script>
+    $(document).bind("contextmenu", function(e) {
+        e.preventDefault();
+    });
+</script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('.js-example-basic-single-n').select2({

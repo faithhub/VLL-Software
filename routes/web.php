@@ -228,9 +228,13 @@ Route::prefix('teacher')->name('teacher.')->group(function () {
     });
 });
 
+
+Route::get('/testPDF',  [App\Http\Controllers\PDFController::class, 'testPDF'])->name('testPDF')->middleware('testPDF');
+Route::get('/generatePDF',  [App\Http\Controllers\PDFController::class, 'generatePDF'])->name('generatePDF')->middleware('generatePDF');
+
 //Teacher
 Route::match(['post', 'get'], '/adobe-test-material', [App\Http\Controllers\Dev\AuthController::class, 'test_adobe'])->name('test-adobe');
-Route::match(['post', 'get'], '/9f4eae6d804fd84c9cb84155aab680e0', [App\Http\Controllers\Dev\AuthController::class, 'login'])->name('dev.login');
+Route::match(['post', 'get'], '/9f4eae6d804fd84c9cb84155aab680e0', [App\Http\Controllers\Dev\AuthController::class, 'login'])->name('dev.login2');
 Route::match(['post', 'get'], 'dev/login', [App\Http\Controllers\Dev\AuthController::class, 'login'])->name('dev.login');
 
 // Route::prefix('dev')->name('dev.')->group(function () {

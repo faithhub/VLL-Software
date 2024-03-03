@@ -17,7 +17,12 @@ class Withdrawal extends Model
         'status',
         'tran_id',
         'fee',
+        'account_paid_to',
         'amount_withdraw'
+    ];
+
+    protected $casts = [
+        'account_paid_to' => 'array'
     ];
 
     public function wallet()

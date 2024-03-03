@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bank;
+use App\Mail\Receipt;
 use App\Models\Country;
 use App\Models\File;
 use App\Models\Folder;
@@ -24,12 +25,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Image;
-
+use PDF;
 class VendorController extends Controller
 {
 
@@ -166,9 +168,10 @@ class VendorController extends Controller
             $data['withdrawals'] = Withdrawal::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->with('wallet')->get();
             return View('dashboard.vendor.payouts', $data);
         } catch (\Throwable $th) {
+            //throw $th;
+            dd($th);
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('vendor');
-            //throw $th;
         }
     }
 

@@ -33,15 +33,6 @@
             overflow-y: scroll;
         }
 
-        @media print {
-
-            html,
-            body {
-                display: none;
-                /* hide whole page */
-            }
-        }
-
         .modal.open {
             opacity: 1;
             visibility: visible;

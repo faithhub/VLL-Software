@@ -22,3 +22,12 @@
     // toggle the eye slash icon
     this.classList.toggle('fa-eye-slash');
 }); --}}
+<style type="text/css">
+    @media print {
+        html,
+        body {
+            display: none !important;
+            /* hide whole page */
+        }
+    }
+</style>

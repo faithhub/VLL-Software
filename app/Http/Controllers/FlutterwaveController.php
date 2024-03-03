@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Receipt;
+use App\Mail\Withdraw;
 use App\Models\Currency;
 use App\Models\Folder;
 use App\Models\Material;
@@ -17,6 +19,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -259,7 +262,7 @@ class FlutterwaveController extends Controller
             $mat_id = strstr($mat_data, "#", true); //get material id
             $type = substr($mat_data, strpos($mat_data, "#") + 1); //get payment type (buy or rent)
             $tx_ref = substr($tx_ref, strpos($tx_ref, "@") + 1); //get payment ref
-            
+
             $invoice_id = Str::upper("TRX" . $this->unique_code(12));
 
             $check_trans = Transaction::where('trxref', $tx_ref)->get();
@@ -376,22 +379,34 @@ class FlutterwaveController extends Controller
 
             $vendor = User::where(['id' => $mat_details->user_id])->first();
 
-            if ($vendor->role == "vendor" || $vendor->role == "admin" || $vendor->role == "sub_admin") {
-                $wallet = Wallet::where(['user_id' => $vendor->id, 'code' => $currency])->first();
-                if ($wallet) {
-                    $wallet->amount = $wallet->amount + $payout_for_mat; //save to vendor wallet if wallet does exist
-                    $wallet->save();
-                } else {
-                    $curr = Currency::where('code', $currency)->first(); //create wallet and save to vendor wallet
-                    Wallet::create([
-                        'user_id' => $vendor->id,
-                        'currency_id' => $curr->id,
-                        'code' => $currency,
-                        'amount' => $payout_for_mat
-                    ]);
+            if (!$trans->amount_paid) {
+                if ($vendor->role == "vendor" || $vendor->role == "admin" || $vendor->role == "sub_admin") {
+                    $wallet = Wallet::where(['user_id' => $vendor->id, 'code' => $currency])->first();
+                    if ($wallet) {
+                        $wallet->amount = $wallet->amount + $payout_for_mat; //save to vendor wallet if wallet does exist
+                        $save_with = $wallet->save();
+                        if ($save_with) {
+                            $trans->paid_to_vendor = true;
+                            $trans->amount_paid = $payout_for_mat;
+                            $trans->save();
+                        }
+                    } else {
+                        $curr = Currency::where('code', $currency)->first(); //create wallet and save to vendor wallet
+                        $new_wallet = Wallet::create([
+                            'user_id' => $vendor->id,
+                            'currency_id' => $curr->id,
+                            'code' => $currency,
+                            'amount' => $payout_for_mat
+                        ]);
+                        if ($new_wallet->id) {
+                            $trans->paid_to_vendor = true;
+                            $trans->amount_paid = $payout_for_mat;
+                            $trans->save();
+                        }
+                    }
                 }
             }
-            
+
             $data['invoice_id'] = $invoice_id = Str::upper("TRX" . $this->unique_code(12));
             $data['date'] = $date = Carbon::now();
 
@@ -402,6 +417,26 @@ class FlutterwaveController extends Controller
                 # code...
                 array_push($my_materials_arr, $value->material_id);
             }
+
+            $object = new \stdClass();
+            $object->name = Auth::user()->name;
+            $object->currency = $responseBody['data']['currency'];
+            $object->amount = $responseBody['data']['amount'];
+            $object->date = $responseBody['data']['created_at'];
+            $object->type = $type;
+            $object->mat_type = $mat_type;
+            $object->payment_type = 'material_trans';
+            if ($type == 'rented') {
+                $object->expires_on = $date_rented_expired;
+            }
+            if ($mat_type == 'folder') {
+                $object->material = $mat_details->name;
+            } else {
+                $object->material = $mat_details->title;
+            }
+            $object->ref = $tx_ref;
+
+            Mail::to(Auth::user()->email)->send(new Receipt($object));
 
             MaterialHistory::create([
                 'user_id' => Auth::user()->id,
@@ -862,6 +897,7 @@ class FlutterwaveController extends Controller
             $percentage = \getenv('PERCENTAGE_BANK_CHARGE_FOR_WITHDRAWALS'); //Withdrawal percentage
             $percentage_for_payout = ($percentage / 100) * $amount;
             $payable_amount = $amount - $percentage_for_payout;
+            $wallet->amount = $wallet->amount - $amount;
 
             //Check if the currency is USD or NGN
             switch ($currency) {
@@ -895,10 +931,10 @@ class FlutterwaveController extends Controller
 
             // dd($account_bank);
             $params = [
-                // "account_bank" => "044",
-                // "account_number" => "0690000040",
-                "account_bank" => $account_bank,
-                "account_number" => $account_number,
+                "account_bank" => "044",
+                "account_number" => "0690000040",
+                // "account_bank" => $account_bank,
+                // "account_number" => $account_number,
                 "amount" => $payable_amount,
                 "narration" => $narration,
                 "currency" => $currency,
@@ -917,6 +953,8 @@ class FlutterwaveController extends Controller
             $responseBody = $response->json();
 
             $response_status = $responseBody['status'];
+            // dd($responseBody['data'], $responseBody);
+            
             switch ($response_status) {
                 case 'error':
                     # code...
@@ -936,25 +974,44 @@ class FlutterwaveController extends Controller
                 case 'success':
                     # code...
                     //Debit the user waller
-                    $percentage_for_payout = ($percentage / 100) * $amount;
-                    $wallet->amount = $wallet->amount - $amount;
-                    $wallet->save();
+                    $save_wallet = $wallet->save();
 
-                    //Save record to payout table
-                    Withdrawal::create([
-                        "user_id" => Auth::user()->id,
-                        "wallet_id" => $wallet->id,
-                        "tran_id" => Str::upper("TRX" . $this->unique_code(12)),
-                        "status" => $responseBody['data']['status'],
-                        "amount_paid" => $responseBody['data']['amount'],
-                        "fee" => $responseBody['data']['fee'],
-                        "amount_withdraw" => $amount
-                    ]);
+                    if ($save_wallet) {
+                        //Send Mail
+                        $object = new \stdClass();
+                        $object->name = Auth::user()->name;
+                        $object->currency = $responseBody['data']['currency'];
+                        $object->amount = $amount;
+                        $object->fee = $responseBody['data']['fee'];
+                        $object->date = $responseBody['data']['created_at'];
+                        $object->ref = $responseBody['data']['reference'];
+                        $object->acc_name = $responseBody['data']['full_name'];
+                        $object->bank = $responseBody['data']['bank_name'];
+                        $object->acc_num = $responseBody['data']['account_number'];
+                        $object->payment_type = 'withdraw';
 
-                    //Sent success response
-                    Session::flash('success', $responseBody['message']);
-                    return redirect()->route('vendor.payouts');
+                        Mail::to(Auth::user()->email)->send(new Withdraw($object));
 
+                        //Save record to payout table
+                        Withdrawal::create([
+                            "user_id" => Auth::user()->id,
+                            "wallet_id" => $wallet->id,
+                            "tran_id" => $responseBody['data']['reference'],
+                            "status" => $responseBody['data']['status'],
+                            "amount_paid" => $responseBody['data']['amount'],
+                            "fee" => $responseBody['data']['fee'],
+                            "account_paid_to" => $responseBody['data'],
+                            "amount_withdraw" => $amount
+                        ]);
+
+                        //Sent success response
+                        Session::flash('success', $responseBody['message']);
+                        return redirect()->route('vendor.payouts');
+                    } else {
+                        //Sent error response
+                        Session::flash('error', 'An error occur');
+                        return redirect()->route('vendor.payouts');
+                    }
                     //Send PDF to email
                     break;
 

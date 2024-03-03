@@ -20,6 +20,8 @@ class Transaction extends Model
         "amount",
         "status",
         "type",
+        "paid_to_vendor",
+        "amount_paid ",
         'reference',
         'trxref'
     ];
