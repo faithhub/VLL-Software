@@ -64,9 +64,21 @@
 
 <script type="text/javascript">
     window.addEventListener('keydown', function(e) {
+
+        if (e.ctrlKey == true && (e.which == '80')) {
+            e.preventDefault();
+            alert('You can\'t print Windows 1');
+        }
         if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
             e.preventDefault();
-            // alert('You can\'t print');
+            alert('You can\'t print Mac');
+        }
+        if (e.keyCode === 80 && e.shiftKey && (e.ctrlKey || e.metaKey)) {
+            // Pre browser print dialog
+            e.preventDefault();
+            alert('You can\'t print Windows 2');
+            // Prevent dev tools command palette from opening
+            e.stopPropagation();
         }
     });
 </script>

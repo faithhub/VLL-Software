@@ -14,6 +14,7 @@
 <link href="{{ asset('assets/dashboard/switcher/css/switcher.css') }}" rel="stylesheet" />
 <link href="{{ asset('assets/dashboard/switcher/demo.css') }}" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
+{{-- <link rel="alternate" media="print" href="alternativeUrlForPrint.ext" /> --}}
 <!-- Theme included stylesheets -->
 
 {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
