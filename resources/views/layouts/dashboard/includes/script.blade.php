@@ -83,9 +83,9 @@
     });
 </script>
 <script>
-    $(document).bind("contextmenu", function(e) {
-        e.preventDefault();
-    });
+    // $(document).bind("contextmenu", function(e) {
+    //     e.preventDefault();
+    // });
 
     if (location.hash) {
         $('a[href=\'' + location.hash + '\']').tab('show');

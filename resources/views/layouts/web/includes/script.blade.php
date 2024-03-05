@@ -33,9 +33,9 @@
     });
 </script>
 <script>
-    $(document).bind("contextmenu", function(e) {
-        e.preventDefault();
-    });
+    // $(document).bind("contextmenu", function(e) {
+    //     e.preventDefault();
+    // });
 </script>
 <script type="text/javascript">
     $(document).ready(function() {
