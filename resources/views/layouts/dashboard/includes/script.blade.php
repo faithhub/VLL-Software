@@ -67,18 +67,11 @@
 
         if (e.ctrlKey == true && (e.which == '80')) {
             e.preventDefault();
-            alert('You can\'t print Windows 1');
+            alert('You can\'t print W');
         }
         if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
             e.preventDefault();
-            alert('You can\'t print Mac');
-        }
-        if (e.keyCode === 80 && e.shiftKey && (e.ctrlKey || e.metaKey)) {
-            // Pre browser print dialog
-            e.preventDefault();
-            alert('You can\'t print Windows 2');
-            // Prevent dev tools command palette from opening
-            e.stopPropagation();
+            alert('You can\'t print M');
         }
     });
 </script>
