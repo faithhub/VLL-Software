@@ -1,6 +1,12 @@
 @extends('layouts/dashboard/app')
 @section('content')
     <style>
+        @media print {
+            .noprint {
+                display: none !important;
+            }
+        }
+
         #img-2 {
             position: absolute;
             justify-content: center;
@@ -185,9 +191,9 @@
 
     <script type="text/javascript">
         /*
-                        path to the directory containing the PDF Web Viewer scripts, webassemblies and translations.
-                        The path can be absolute or relative to the current document and must be defined before the viewer is loaded
-                      */
+                            path to the directory containing the PDF Web Viewer scripts, webassemblies and translations.
+                            The path can be absolute or relative to the current document and must be defined before the viewer is loaded
+                          */
         window.PDFTOOLS_FOURHEIGHTS_PDFVIEWING_BASEURL = "/pdfwebviewer/"
     </script>
 
@@ -235,7 +241,7 @@
                             <div class="row">
                                 {{-- <iframe src="https://docs.google.com/gview?url={{ asset($material->file->url) }}&embedded=true" style="width:100%; height:80vh;" frameborder="0"></iframe> --}}
                                 {{-- <div id="pdfviewer" style="height: 80vh; width:inherit"></div> --}}
-                                <div id="adobe-dc-view" style="height: 80vh"></div>
+                                <div id="adobe-dc-view" class="noprint" style="height: 80vh"></div>
                             </div>
                         </div>
                     @endif
