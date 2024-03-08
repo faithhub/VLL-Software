@@ -139,15 +139,35 @@ class RegisterController extends Controller
             if ($data['form_type'] == "user") {
                 # code...
                 Mail::to($data['email'])->send(new UserWelcomeEmail($data['name']));
-                $user = User::create([
-                    'name' => $data['name'],
-                    'email' => $data['email'],
-                    'role' => $data['form_type'],
-                    'user_type' => $data['type'],
-                    'university_id' => $data['university'] ?? null,
-                    'country_id' => $data['country'] ?? null,
-                    'password' => Hash::make($data['password']),
-                ]);
+
+                switch ($data['type']) {
+                    case 'student':
+                        # code...
+                        $user = User::create([
+                            'name' => $data['name'],
+                            'email' => $data['email'],
+                            'password' => Hash::make($data['password']),
+                            'role' => $data['form_type'],
+                            'user_type' => $data['type'],
+                            'university_id' => $data['university'],
+                            'country_id' => $data['country'],
+                        ]);
+                        break;
+                    case 'professionals':
+                        # code...
+                        $user = User::create([
+                            'name' => $data['name'],
+                            'email' => $data['email'],
+                            'role' => $data['form_type'],
+                            'password' => Hash::make($data['password']),
+                            'user_type' => $data['type'],
+                        ]);
+                        break;
+
+                    default:
+                        # code...
+                        break;
+                }
 
                 $this->getLoginLogs($user->id);
 
@@ -157,16 +177,42 @@ class RegisterController extends Controller
             if ($data['form_type'] == "vendor"
             ) {
                 Mail::to($data['email'])->send(new VendorWelcomeEmail($data['name']));
-                return User::create([
-                    'name' => $data['name'] ?? null,
-                    'email' => $data['email'],
-                    'role' => $data['form_type'],
-                    'user_type' => $data['type'],
-                    'vendor_type' => $data['type'],
-                    'university_id' => $data['v-university'] ?? null,
-                    'country_id' => $data['v-country'] ?? null,
-                    'password' => Hash::make($data['password']),
-                ]);
+                if ($data['type'] == "entity" || $data['type'] == "company") {
+                    # code...
+                    $user = User::create([
+                        'name' => $data['name'],
+                        'email' => $data['email'],
+                        'password' => Hash::make($data['password']),
+                        'role' => $data['form_type'],
+                        'user_type' => $data['type'],
+                        'vendor_type' => $data['type'],
+                    ]);
+                } elseif ($data['type'] == "institution") {
+                    # code...
+                    $user = User::create([
+                        'email' => $data['email'],
+                        'role' => $data['form_type'],
+                        'user_type' => $data['type'],
+                        'vendor_type' => $data['type'],
+                        'university_id' => $data['v-university'],
+                        'country_id' => $data['v-country'],
+                        'password' => Hash::make($data['password']),
+                    ]);
+                }
+
+                $this->getLoginLogs($user->id);
+
+                return $user;
+                // return User::create([
+                //     'name' => $data['name'] ?? null,
+                //     'email' => $data['email'],
+                //     'role' => $data['form_type'],
+                //     'user_type' => $data['type'],
+                //     'vendor_type' => $data['type'],
+                //     'university_id' => $data['v-university'] ?? null,
+                //     'country_id' => $data['v-country'] ?? null,
+                //     'password' => Hash::make($data['password']),
+                // ]);
             }
 
             if (
