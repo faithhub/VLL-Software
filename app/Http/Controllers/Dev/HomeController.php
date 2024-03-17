@@ -95,7 +95,7 @@ class HomeController extends Controller
             //code...
 
             //code...
-            $trans = Transaction::where(['paid_to_vendor' => false, 'status' => 'successful'])->whereIn('type', ['rented', 'bought'])->get();
+            $trans = Transaction::where(['paid_to_vendor' => true, 'status' => 'successful'])->whereIn('type', ['rented', 'bought'])->get();
             foreach ($trans as $key => $value) {
 
                 $mat = MaterialHistory::where(['transaction_id' => $value->id, 'type' => $value->type])->first();
@@ -112,12 +112,12 @@ class HomeController extends Controller
                         $payout_amt = ($percentage_bought / 100) * $value->amount;
                     }
                     $vendor = User::where('id', $matt->user_id)->whereIn('role', ['vendor', 'admin'])->first();
-                    if ($vendor && $value->paid_to_vendor == false) {
-                        $wallet = Wallet::where(['user_id' => $vendor->id, 'currency_id' => $value->currency_id ?? 1])->first();
+                    if ($vendor && $value->paid_to_vendor == true) {
+                        // $wallet = Wallet::where(['user_id' => $vendor->id, 'currency_id' => $value->currency_id ?? 1])->first();
                         // dd($vendor, $payout_amt, $mat, $matt, $wallet, $value);
-                        $wallet->amount = $wallet->amount + $payout_amt;
-                        $wallet->save();
-                        $value->paid_to_vendor = true;
+                        // $wallet->amount = $wallet->amount + $payout_amt;
+                        // $wallet->save();
+                        $value->amount_paid = $payout_amt;
                         $value->save();
                     }
                 }
