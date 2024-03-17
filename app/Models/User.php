@@ -83,7 +83,7 @@ class User extends Authenticatable
 
     public function dom()
     {
-        return $this->hasOne(Bank::class, 'id', 'dom_bank_id');
+        return $this->hasOne(Bank::class, 'id', 'dom_bank_id')->withDefault();
     }
 
     public function country()
