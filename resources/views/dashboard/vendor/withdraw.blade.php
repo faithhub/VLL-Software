@@ -58,8 +58,8 @@
                                 </div>
                             </form>
                         @else
-                            <h3>Update your account details from the <a href="{{ route('vendor.settings') }}">Settings
-                                    page</a></h3>
+                            <h3>Update your account details from the <a href="{{ route('vendor.settings') }}"><b>Settings
+                                    page</b></a></h3>
                         @endif
                     @endif
                     @if ($wallet->code == 'NGN')
@@ -117,8 +117,8 @@
                                 </div>
                             </form>
                         @else
-                            <h3>Update your account details from the <a href="{{ route('vendor.settings') }}">Settings
-                                    page</a></h3>
+                            <h3>Update your account details from the <a href="{{ route('vendor.settings') }}"><b>Settings
+                                    page</b></a></h3>
                         @endif
                     @endif
                 </div>
