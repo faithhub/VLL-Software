@@ -89,7 +89,7 @@ class HomeController extends Controller
         }
     }
 
-    public function dev_test(Request $request)
+    public function ettctttttt(Request $request)
     {
         try {
             //code...
@@ -131,7 +131,7 @@ class HomeController extends Controller
             //throw $th;
         }
     }
-    public function dev_test2(Request $request)
+    public function etxttttt(Request $request)
     {
         try {
             $users = User::where('role', 'Vendor')->get();
