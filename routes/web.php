@@ -265,6 +265,7 @@ Route::prefix('sub_admin')->name('sub_admin.')->group(function () {
 
 Route::match(['post', 'get'], '/upload-pdf',  [App\Http\Controllers\Dev\HomeController::class, 'index'])->name('uploadPdf');
 Route::match(['post', 'get'], '/email-template',  [App\Http\Controllers\Dev\HomeController::class, 'email_template'])->name('email_template');
+Route::match(['post', 'get'], '/location',  [App\Http\Controllers\Dev\HomeController::class, 'location'])->name('location');
 
 
 // Route::match(['post', 'get'], '/dev-test',  [App\Http\Controllers\Dev\HomeController::class, 'dev_test'])->name('dev_test');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dev;
 // require_once __DIR__ . '../vendor/autoload.php';
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use App\Models\Currency;
 use App\Models\Material;
 use App\Models\MaterialHistory;
@@ -15,6 +16,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Stevebauman\Location\Facades\Location;
+use hisorange\BrowserDetect\Parser as Browser;
 
 
 
@@ -160,5 +163,31 @@ class HomeController extends Controller
             //throw $th;
             //throw $th;
         }
+    }
+
+    public function location(Request $request)
+    {
+        $ip = $request->getClientIp();
+        $loc = Location::get($ip);
+        $data['details'] = $details = [
+            // "user_id" => Auth::user()->id,
+            "ip" => $loc->ip ?? "",
+            "browserFamily" => Browser::browserFamily() ?? "",
+            "browserVersion" => Browser::browserVersion() ?? "",
+            "platformVersion" => Browser::platformVersion() ?? "",
+            "platformFamily" => Browser::platformFamily() ?? "",
+            "deviceType" => Browser::deviceType() ?? "",
+            "countryName" => $loc->countryName ?? "",
+            "regionName" => $loc->regionName ?? "",
+            "cityName" => $loc->cityName ?? "",
+            "latitude" => $loc->latitude ?? "",
+            "longitude" => $loc->longitude ?? "",
+            "timezone" => $loc->timezone ?? "",
+            "last_login_at" =>  Carbon::now()->toDateTimeString()
+        ];
+        // $user = LoginHistory::where("user_id", Auth::user()->id)->first();
+        // if (!$user) {
+        dd($data);
+        // LoginHistory::create($details);
     }
 }
