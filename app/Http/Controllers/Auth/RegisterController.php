@@ -48,6 +48,12 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
+        $ip = Request::getClientIp();
+        $loc = Location::get($ip);
+        $countryName = $loc->countryName ?? "";
+        if ($countryName == "Afghanistan") {
+            return false;
+        }
         $this->middleware('guest');
     }
 

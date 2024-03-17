@@ -170,8 +170,7 @@ class HomeController extends Controller
         $ip = $request->getClientIp();
         $loc = Location::get($ip);
         $countryName = $loc->countryName ?? "";
-        // if($countryName == "Afghanistan"){
-        if ($countryName == "Nigeria") {
+        if ($countryName == "Afghanistan") {
             return false;
         }
         dd($countryName);
