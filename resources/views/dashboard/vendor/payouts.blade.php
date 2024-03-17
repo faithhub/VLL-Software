@@ -18,23 +18,25 @@
                         <div class="row">
                             @isset($wallets)
                                 @foreach ($wallets as $wallet)
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
                                         <div class="card">
                                             <div class="card-header border-bottom-0 mb-4 mt-3">
                                                 <div class="card-options" style="margin-left:2.5%">
                                                     <div class="card-body">
                                                         <h3 class="font-weight-bolder money" style="line-height: 0">
                                                             {{$wallet->currency->symbol}}{{ number_format($wallet->amount, 2) }}</h3>
-                                                        <p>Balance</p>
+                                                        <p><b>{{$wallet->currency->name}}</b> Balance</p>
                                                     </div>
                                                 </div>
-                                                <div class="card-options" style="margin-right:2.5%"> <a
+                                                @if ($wallet->code == "NGN" || $wallet->code == "USD")
+                                                <div class="card-options" style="margin-right:2.5%"><a
                                                     onclick="shiNew(event)" data-type="dark" data-size="m"
                                                     data-title="Withdraw"
-                                                        href="{{ route('vendor.withdraw', $wallet->code) }}"
-                                                        class="btn btn-bg btn-primary p-3"><i class="fa fa-money"></i>&nbsp&nbsp
-                                                        Withdraw</a>
+                                                    href="{{ route('vendor.withdraw', $wallet->code) }}"
+                                                    class="btn btn-bg btn-primary p-3"><i class="fa fa-money"></i>&nbsp&nbsp
+                                                    Withdraw</a>
                                                 </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

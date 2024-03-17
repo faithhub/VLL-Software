@@ -860,7 +860,7 @@ class FlutterwaveController extends Controller
                     break;
 
                 default:
-                    Session::flash('warning', 'Currency not found');
+                    Session::flash('warning', 'The system only support NGN and USD payout at the moment');
                     return back() ?? redirect()->route('vendor.payouts') ?? redirect()->route('vendor');
                     # code...
                     break;
