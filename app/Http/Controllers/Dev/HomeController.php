@@ -169,25 +169,11 @@ class HomeController extends Controller
     {
         $ip = $request->getClientIp();
         $loc = Location::get($ip);
-        $data['details'] = $details = [
-            // "user_id" => Auth::user()->id,
-            "ip" => $loc->ip ?? "",
-            "browserFamily" => Browser::browserFamily() ?? "",
-            "browserVersion" => Browser::browserVersion() ?? "",
-            "platformVersion" => Browser::platformVersion() ?? "",
-            "platformFamily" => Browser::platformFamily() ?? "",
-            "deviceType" => Browser::deviceType() ?? "",
-            "countryName" => $loc->countryName ?? "",
-            "regionName" => $loc->regionName ?? "",
-            "cityName" => $loc->cityName ?? "",
-            "latitude" => $loc->latitude ?? "",
-            "longitude" => $loc->longitude ?? "",
-            "timezone" => $loc->timezone ?? "",
-            "last_login_at" =>  Carbon::now()->toDateTimeString()
-        ];
-        // $user = LoginHistory::where("user_id", Auth::user()->id)->first();
-        // if (!$user) {
-        dd($data);
-        // LoginHistory::create($details);
+        $countryName = $loc->countryName ?? "";
+        // if($countryName == "Afghanistan"){
+        if ($countryName == "Nigeria") {
+            return false;
+        }
+        dd($countryName);
     }
 }
