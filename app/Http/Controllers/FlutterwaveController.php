@@ -267,6 +267,7 @@ class FlutterwaveController extends Controller
 
             $check_trans = Transaction::where('trxref', $tx_ref)->get();
             if ($check_trans->count() < 1) {
+                $curr_used = Currency::where('code', $responseBody['data']['currency'])->first();
                 $trans = Transaction::create([
                     'user_id' => Auth::user()->id,
                     'invoice_id' => $invoice_id,
@@ -274,7 +275,7 @@ class FlutterwaveController extends Controller
                     'date' => $responseBody['data']['created_at'],
                     'amount' => $responseBody['data']['amount'],
                     'status' => $responseBody['data']['status'],
-                    'currency_id' => Auth::user()->currency->id,
+                    'currency_id' => $curr_used->id,
                     'reference' => $responseBody['data']['id'],
                     'trxref' => $tx_ref,
                     'type' => $type
