@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Teacher\MeetingController;
 use App\Models\Bank;
 use App\Mail\Receipt;
 use App\Models\Country;
 use App\Models\File;
 use App\Models\Folder;
+use App\Models\MasterClass;
 use App\Models\Material;
 use App\Models\MaterialHistory;
 use App\Models\MaterialType;
@@ -1315,6 +1317,193 @@ class VendorController extends Controller
             $data['wallets'] = Wallet::where('user_id', Auth::user()->id)->get();
             $data['wallet'] = Wallet::where(['user_id' => Auth::user()->id, 'code' => $code])->first();
             return View('dashboard.vendor.withdraw', $data);
+        } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
+            //throw $th;
+        }
+    }
+
+
+    public function setup_master_class(Request $request)
+    {
+        # code...
+        try {
+            //code...
+            // dd(env('APP_URL'));
+            $data['mode'] = "create";
+            $data['scriptWithoutJquery'] = true;
+            $data['scriptWitJquery'] = false;
+            $data['image'] = $image = Storage::disk('master_class_cover')->get('MasterClassCover1712527125.jpg');
+            $data['image2'] = $image2 = Storage::disk('material_cover')->get('MaterialCover1695551044.jpeg');
+
+
+            if ($_POST) {
+                $createZoom = new MeetingController;
+
+
+                $rules = array(
+                    // 'material_type_id' => ['required', 'string', 'max:255'],
+                    'title' => ['required', 'string', 'max:255'],
+                    'interval' => ['required', 'string', 'max:255'],
+                    'duration' => ['required', 'string', 'max:255'],
+                    'time' => ['required', 'string', 'max:255'],
+                    'currency_id' => ['required', 'string', 'max:255'],
+                    'price' => ['required', 'string', 'max:255'],
+                    'amount' => ['required_if:price,Paid'],
+                    'instructor_name' => ['required', 'string', 'max:255'],
+                    'special_guest' => ['required', 'string', 'max:255'],
+                    'master_class_id' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:5000'],
+                    'terms' => ['required', 'max:255'],
+                    'g-recaptcha-response' => ['required', 'recaptcha']
+                );
+
+                $messages = [
+                    'g-recaptcha-response.recaptcha' => __('Captcha verification failed'),
+                    'g-recaptcha-response.required' => __('Please complete the captcha'),
+                    'publisher.required_if' => __('Publisher is required'),
+                    'name_of_party.required_if' => __('Name of Party is required'),
+                    'name_of_author.required_if' => __('Name of Author is required'),
+                    'name_of_court.required_if' => __('Name of Court is required'),
+                    'citation.required_if' => __('Citation is required'),
+                    'privacy_code.required_if' => __('Test privacy code is required'),
+                    'amount.required_if' => __('Amount is required'),
+                    'year_of_publication.required_if' => __('Year of Publication is required'),
+                    'country_id.required_if' => __('Country of Publication is required'),
+                    'test_country_id.required_if' => __('Country is required'),
+                    'university_id.required_if' => __('The University is required'),
+                    'material_type_id.required' => __('The Material Type is required'),
+                    'country_id.required' => __('Country of Publication is required'),
+                    'desc.required' => __('The Description is required'),
+                    'folder_id.required_if' => __('The Folder name is required'),
+                    'material_file_id.required' => __('The Material File is required'),
+                    'material_file_id.required_if' => __('The Material File is required'),
+                    'material_file_id.max' => __('The Material File size must not more than 50MB'),
+                    'master_class_id.required' => __('The Master Class Cover is required'),
+                    'master_class_id.max' => __('The Master Class Cover size must not more that 5MB')
+                ];
+
+                $validator = Validator::make($request->all(), $rules, $messages);
+
+                if ($validator->fails()) {
+                    Session::flash('warning', __('All fields are required'));
+                    return back()->withErrors($validator)->withInput();
+                }
+
+                $dates = explode(",", $request->dates);
+
+
+                // dd(
+                //     $request->all(),
+                //     $dates,
+                //     $request->hasFile('master_class_id'),
+                //     public_path('/storage/materials/covers'),
+                //     Storage::disk('private')->path(''),
+                // );
+
+                if ($request->hasFile('master_class_id')) {
+                    $material_file = $request->file('master_class_id');
+                    $material_file_name = 'MasterClassCover' . time() . '.' . $material_file->getClientOriginalExtension();
+                    $destinationPath = Storage::disk('private')->path('');
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 777, true);
+                    }
+                    $img = Image::make($material_file->path());
+                    $img->resize(600, 300, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath . '/' . $material_file_name);
+
+                    $save_cover = File::create([
+                        'name' => $material_file_name,
+                        'url' => 'storage/materials/covers/' . $material_file_name
+                    ]);
+                }
+
+                $meeting = $createZoom->create_meeting($request->only('title', 'time'), $dates);
+                if ($meeting['status']) {
+                    $save = MasterClass::create([
+                        'user_id' => Auth::user()->id,
+                        'uploaded_by' => 'vendor',
+                        'title' => $request->title,
+                        'duration' => $request->duration,
+                        'interval' => $request->interval,
+                        'dates' => $dates,
+                        'time' => $request->time,
+                        'price' => $request->price,
+                        'amount' => $request->amount ?? 0,
+                        'currency_id' => $request->currency_id ?? Auth::user()->currency->id,
+                        'instructor_name' => $request->instructor_name,
+                        'special_guest' => $request->special_guest,
+                        'desc' => $request->desc ?? null,
+                        'master_class_id' => $save_cover->id ?? null,
+                        'status' => 'pending',
+                        'meeting_id' => $meeting['meeting']['id']
+                    ]);
+
+                    if ($save) {
+                        Session::flash('success', 'Material uploaded successfully');
+                        return redirect()->route('vendor.setup_master_class');
+                    } else {
+                        Session::flash('error', 'Not saved, try again!');
+                        return back();
+                    }
+                } else {
+                    Session::flash('error', 'Unable to create meeting, try again!');
+                    return back();
+                }
+            }
+
+            $data['title'] = "Vendor Dashboard - Setup Master Class";
+            $data['universities'] = University::Orderby('name', 'ASC')->get();
+            return View('dashboard.vendor.master-class.create', $data);
+        } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
+            //throw $th;
+        }
+    }
+
+    public function master_classes()
+    {
+        try {
+            $data['title'] = "Vendor Dashboard - Master Classes";
+            $data['classes'] = MasterClass::where('user_id', Auth::user()->id)->with(['meeting', 'cover'])->Orderby('created_at', 'ASC')->get();
+            return View('dashboard.vendor.master-class.index', $data);
+        } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
+            //throw $th;
+        }
+    }
+
+    public function master_class($id)
+    {
+        try {
+            $data['class'] = $class = MasterClass::where(['user_id' => Auth::user()->id, 'id' => $id])->with(['meeting', 'cover'])->first();
+            if (!$class) {
+                Session::flash('warning', 'No record found');
+                return back() ?? redirect()->route('vendor.master_classes');
+            }
+            $data['title'] = "Vendor Dashboard - Master Class";
+            return View('dashboard.vendor.master-class.view', $data);
+        } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('vendor');
+            //throw $th;
+        }
+    }
+
+    public function delete_master_class($id)
+    {
+        try {
+            $data['class'] = $class = MasterClass::where(['user_id' => Auth::user()->id, 'id' => $id])->first();
+            if (!$class) {
+                Session::flash('warning', 'No record found');
+                return back() ?? redirect()->route('vendor.master_classes');
+            }
+            $class->delete();
+            Session::flash('success', 'Class deleted');
+            return back() ?? redirect()->route('vendor.master_classes');
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('vendor');

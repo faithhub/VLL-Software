@@ -13,7 +13,7 @@
         "doctrine/dbal": "^3.6",
         "flutterwavedev/flutterwave-v3": "^1.0",
         "gufy/pdftohtml-php": "~2",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.5",
         "hisorange/browser-detect": "^4.5",
         "intervention/image": "^2.7",
         "laravel/framework": "^9.19",
@@ -22,6 +22,7 @@
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.0",
         "macsidigital/laravel-zoom": "^8.0",
+        "mpdf/mpdf": "^6.1",
         "offline-agency/laravel-webex": "^1.1",
         "smalot/pdfparser": "^2.3",
         "stevebauman/location": "^6.5"

@@ -11,6 +11,7 @@
             background: #fff !important;
         }
     </style>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
     <!-- Start Why Choose Us Area -->
     <section id="about" class="why-choose-us bg-f9faff">
         <div class="container">
@@ -66,6 +67,12 @@
                                 </p>
                             </div>
                             <div class="mb-3">
+                                <div class="checkbox mb-3">
+                                    <!-- The following line controls and configures the Turnstile widget. -->
+                                    <div class="cf-turnstile" data-sitekey="{{ getenv('TURNSTILE_SITE_KEY') }}"
+                                        data-theme="light"></div>
+                                    <!-- end. -->
+                                </div>
                             </div>
                             <div class="d-grid gap-2">
                                 <button class="sign-up-form-btn mb-2" type="submit">Login</button>

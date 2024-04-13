@@ -40,4 +40,10 @@ return [
         'client_secret' => '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', //USE FROM Google DEVELOPER ACCOUNT
         'redirect' => 'http://127.0.0.1:8000/google/callback/'
     ],
+
+    //Add these Configurations
+    'recaptcha' => [
+        'key' => env('RECAPTCHA_SITE_KEY'),
+        'secret' => env('RECAPTCHA_SITE_SECRET'),
+    ]
 ];

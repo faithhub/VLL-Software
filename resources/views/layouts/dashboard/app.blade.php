@@ -27,7 +27,6 @@
             </div>
         </div>
         {{-- <div class="recent-activity" style="display: none"></div> --}}
-        < !-- End Switcher -->
             <!---Global-loader-->
             {{-- <div id="global-loader" style="display: none;"> <img src="../assets/images/svgs/loader.svg" alt="loader">
             </div> --}}
@@ -59,5 +58,6 @@
             <!-- Jquery js-->
     </div>
 </body>
-@include('layouts.dashboard.includes.script')
+@includeWhen($scriptWithoutJquery ?? false, 'layouts.dashboard.includes.script-2')
+@includeWhen($scriptWitJquery ?? true, 'layouts.dashboard.includes.script')
 </html>

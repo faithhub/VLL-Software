@@ -160,6 +160,22 @@
         }
     });
 
+    $('#master_class').bind('change', function() {
+        if (this.files[0]) {
+            var fileName = this.files[0].name;
+            var fileSize = this.files[0].size;
+            var size = parseFloat(fileSize / 1000).toFixed(0);
+            document.getElementById('master_class_img').src = window.URL.createObjectURL(this
+                .files[0])
+            $("#master_class_name").text(fileName);
+            $("#master_class_size").text(`${size} KB`);
+            document.getElementById('master_class_preview').style.display = 'block';
+        } else {
+            document.getElementById('master_class_preview').style.display = 'none';
+        }
+    });
+
+
     $(document).ready(function() {
 
         $('#material_cover').bind('change', function() {
@@ -240,6 +256,7 @@
                 document.getElementById('material_file_preview5').style.display = 'none';
             }
         });
+
 
         $("#material_type_select").change(function() {
 
@@ -496,17 +513,17 @@
             console.log(uniqueId, "uuuu");
             switch (uniqueId) {
                 case "CSL":
-            if (value == "new_folder") {
-                for (var i = 0; i < new_folder_elems.length; i += 1) {
-                    new_folder_elems[i].style.display = 'block';
-                }
-                console.log(value, "new-folder");
-            } else {
-                console.log(value, "new_csl_div_tag");
-                for (var i = 0; i < csl_elems.length; i += 1) {
-                    csl_elems[i].style.display = 'block';
-                }
-            }
+                    if (value == "new_folder") {
+                        for (var i = 0; i < new_folder_elems.length; i += 1) {
+                            new_folder_elems[i].style.display = 'block';
+                        }
+                        console.log(value, "new-folder");
+                    } else {
+                        console.log(value, "new_csl_div_tag");
+                        for (var i = 0; i < csl_elems.length; i += 1) {
+                            csl_elems[i].style.display = 'block';
+                        }
+                    }
                     break;
                 case "LAW":
                     if (value == "new_folder") {
@@ -525,7 +542,7 @@
                         }
                     }
                     break;
-            
+
                 default:
                     break;
             }
@@ -605,14 +622,14 @@
 </script>
 <script src="http://parsleyjs.org/dist/parsley.js"></script>
 <script>
-    var $selector = $('#signupForm'),
-        form = $selector.parsley();
+    // var $selector = $('#signupForm'),
+    //     form = $selector.parsley();
 
-    form.subscribe('parsley:form:success', function(e) {
+    // form.subscribe('parsley:form:success', function(e) {
 
-    });
+    // });
 
-    $selector.find('button').click(function() {
-        form.validate();
-    });
+    // $selector.find('button').click(function() {
+    //     form.validate();
+    // });
 </script>

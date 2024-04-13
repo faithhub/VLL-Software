@@ -18,8 +18,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Stevebauman\Location\Facades\Location;
 use hisorange\BrowserDetect\Parser as Browser;
-
-
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -27,6 +26,8 @@ class HomeController extends Controller
     {
         # code...
         try {
+            // $pass = Hash::make("Admin@123");
+            // dd($pass);
 
             if ($_POST) {
 

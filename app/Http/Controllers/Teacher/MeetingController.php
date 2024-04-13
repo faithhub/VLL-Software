@@ -242,7 +242,7 @@ class MeetingController extends Controller
             // $ip = $request->getClientIp();
             // $loc = Location::get($ip);
             // dd(Carbon::now()->timezone($loc->timezone ?? "Africa/Lagos")->addSeconds(3599), $loc);
-            
+
             if ($_POST) {
                 $rules = array(
                     'university_id' => ['required', 'string', 'max:255'],
@@ -581,7 +581,7 @@ class MeetingController extends Controller
                     'verify' => false, // Skip SSL verification
                 ])
                 ->delete('https://api.zoom.us/v2/meetings/' . $meeting->MTID);
-                // ->delete('https://api.zoom.us/v2/meetings/75438753466');
+            // ->delete('https://api.zoom.us/v2/meetings/75438753466');
 
             // dd($meeting, $meetingDetails);
             // dd($meeting, $meetingDetails, $response->json());
@@ -617,6 +617,82 @@ class MeetingController extends Controller
             return back() ?? redirect()->route('teacher');
             dd($th->getMessage());
             //throw $th;
+        }
+    }
+
+    public function create_meeting($data, $dates)
+    {
+        try {
+            //code...
+            $start = Carbon::parse($dates[0])->format('Y-m-d H:i:s');
+            // $end = Carbon::parse($request->end)->format('Y-m-d H:i:s');
+            $title = $data['title'];
+            // return [$data, $dates[0], $title];
+            $duration = 60;
+            $password = Str::random(10);
+
+            $params = [
+                'topic' => $title,
+                'type'  => 2,
+                'start_time' => $start,
+                'duration' => $duration,
+                'password' => $password,
+                'settings'   => [
+                    'host_video'        => false,
+                    'participant_video' => true,
+                    'cn_meeting'        => false,
+                    'in_meeting'        => false,
+                    'join_before_host'  => true,
+                    'mute_upon_entry'   => true,
+                    'watermark'         => false,
+                    'use_pmi'           => false,
+                    'approval_type'     => 0,
+                    'registration_type' => 0,
+                    'audio'             => 'voip',
+                    'auto_recording'    => 'none',
+                    'waiting_room'      => false,
+                ],
+            ];
+
+            // $this->refress_access_token();
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->settings()['zoom_access_token'],
+                'Content-Type'  => 'application/json',
+                'cache-control' => 'no-cache',
+            ])
+                ->withOptions([
+                    'verify' => false, // Skip SSL verification
+                ])
+                ->post('https://api.zoom.us/v2/users/me/meetings', $params);
+
+            if ($response->successful()) {
+                $meeting = Meeting::create([
+                    'user_id' => Auth::user()->id,
+                    // 'university_id' => $request->university_id,
+                    'MTID' => $response->json()['id'],
+                    'link' => $response->json()['join_url'],
+                    'title' => $title,
+                    'status' => $response->json()['status'],
+                    'start' => $start,
+                    'token' => md5(Str::orderedUuid()),
+                    'end' => $duration,
+                    'details' => $response->json(),
+                    'password' => $password
+                ]);
+
+                MeetingDetail::create([
+                    'meeting_id' => $meeting->id,
+                ]);
+
+                return ['meeting' => $meeting, 'status' => true];
+            } else {
+                return false;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return $th;
+            return false;
         }
     }
 }

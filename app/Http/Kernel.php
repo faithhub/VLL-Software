@@ -76,5 +76,8 @@ class Kernel extends HttpKernel
         'check_sub' => \App\Http\Middleware\CheckSub::class,
         'myHeader' => \App\Http\Middleware\AddHeader::class,
         'check_rented_materials' => \App\Http\Middleware\CheckRentedMaterials::class,
+        // Other middleware entries...
+        'protected' => \App\Http\Middleware\ProtectedMiddleware::class,
+
     ];
 }

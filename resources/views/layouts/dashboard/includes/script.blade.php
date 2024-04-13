@@ -12,7 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.slim.min.js"
     integrity="sha512-jxwTCbLJmXPnV277CvAjAcWAjURzpephk0f0nO2lwsvcoDMqBdy1rh1jEwWWTabX1+Grdmj9GFAgtN22zrV0KQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
-
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <script src="{{ asset('assets/dashboard/plugins/bootstrap/popper.min.js') }}"></script>
 <script src="{{ asset('assets/dashboard/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/dashboard/plugins/sidemenu/sidemenu.js') }}"></script>
@@ -38,6 +38,7 @@
 <script src="{{ asset('assets/dashboard/plugins/simplebar/js/simplebar.min.js') }}"></script>
 <script src="{{ asset('assets/dashboard/plugins/uploads/upload.js') }}"></script>
 <script src="{{ asset('assets/dashboard/js/rounded-barchart.js') }}"></script>
+
 <!--INTERNAL Index js-->
 <script src="{{ asset('assets/dashboard/js/index1.js') }}"></script>
 <script src="{{ asset('assets/dashboard/js/themeColors.js') }}"></script>

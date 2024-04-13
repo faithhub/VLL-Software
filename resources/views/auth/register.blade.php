@@ -15,6 +15,7 @@
             -webkit-backface-visibility: hidden !important;
         }
     </style>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
     <!-- Start Why Choose Us Area -->
     <section id="about" class="why-choose-us bg-f9faff">
         <div class="container">
@@ -180,6 +181,14 @@
                                         @enderror
                                     @endif
                                 </div>
+                                <div class="mb-3">
+                                    <div class="checkbox mb-3">
+                                        <!-- The following line controls and configures the Turnstile widget. -->
+                                        <div class="cf-turnstile" data-sitekey="{{ getenv('TURNSTILE_SITE_KEY') }}"
+                                            data-theme="light"></div>
+                                        <!-- end. -->
+                                    </div>
+                                </div>
                                 <div class="d-grid gap-2">
                                     <button class="sign-up-form-btn mb-2" type="submit">Sign up</button>
                                     {{-- <a href="{{ route('google.login') }}" class="sign-up-google-form-btn">
@@ -339,7 +348,8 @@
                                 <div class="mb-3">
                                     <input type="password" name="password_confirmation" class="form-control"
                                         placeholder="Confirm Password" requiredd=""
-                                        data-parsley-required-message="The Confirm Password is required" id="password_confirmation68768969u989"
+                                        data-parsley-required-message="The Confirm Password is required"
+                                        id="password_confirmation68768969u989"
                                         data-parsley-equalto-message="The Confirm Password didn't match">
                                     <span toggle="#password-field" onclick="viewPassword(this)"
                                         class="fa fa-fw fa-eye field-icon"></span>
@@ -350,6 +360,14 @@
                                             </span>
                                         @enderror
                                     @endif
+                                </div>
+                                <div class="mb-3">
+                                    <div class="checkbox mb-3">
+                                        <!-- The following line controls and configures the Turnstile widget. -->
+                                        <div class="cf-turnstile" data-sitekey="{{ getenv('TURNSTILE_SITE_KEY') }}"
+                                            data-theme="light"></div>
+                                        <!-- end. -->
+                                    </div>
                                 </div>
                                 <div class="d-grid gap-2">
                                     <button class="sign-up-form-btn mb-2" type="submit">Sign up</button>
@@ -446,7 +464,8 @@
                                             <option value=""></option>
                                             @isset($universities)
                                                 @foreach ($universities as $university)
-                                                    <option data-value="{{ $university->country_id }}" value="{{ $university->id }}"
+                                                    <option data-value="{{ $university->country_id }}"
+                                                        value="{{ $university->id }}"
                                                         @if (old('form_type') == 'teacher') {{ old('t-university') == $university->id ? 'selected' : '' }} @endif>
                                                         {{ $university->name }}
                                                     </option>
@@ -491,8 +510,8 @@
                                     @endif
                                 </div>
                                 <div class="mb-3">
-                                    <input type="password" name="password" id="password6786868686867866" class="form-control"
-                                        placeholder="Enter Password" requiredd=""
+                                    <input type="password" name="password" id="password6786868686867866"
+                                        class="form-control" placeholder="Enter Password" requiredd=""
                                         data-parsley-required-message="The Password is required"
                                         data-parsley-length="[3, 20]">
                                     <span toggle="#password-field" onclick="viewPassword(this)"
@@ -520,6 +539,14 @@
                                             </span>
                                         @enderror
                                     @endif
+                                </div>
+                                <div class="mb-3">
+                                    <div class="checkbox mb-3">
+                                        <!-- The following line controls and configures the Turnstile widget. -->
+                                        <div class="cf-turnstile" data-sitekey="{{ getenv('TURNSTILE_SITE_KEY') }}"
+                                            data-theme="light"></div>
+                                        <!-- end. -->
+                                    </div>
                                 </div>
                                 <div class="d-grid gap-2">
                                     <button class="sign-up-form-btn mb-2" type="submit">Sign up</button>

@@ -25,7 +25,12 @@
                                 </select>
                             </form>
                         </div>
-                        <div class="card-options" style="margin-right:2.5%"> <a href="{{ route('vendor.upload') }}"
+                        <div class="card-options" style="margin-right:2.5%">
+                            @if (Auth::user()->email == 'vendor2@virtuallawlibrary.com' || Auth::user()->email == "vendor2@gmail.com")
+                            <a href="{{ route('vendor.setup_master_class') }}"
+                            class="btn btn-bg btn-grey btn-outline-primary p-3"><i class="fa fa-upload"></i>&nbspSetup Masterclass</a> &nbsp;
+                            @endif
+                            <a href="{{ route('vendor.upload') }}"
                                 class="btn btn-bg btn-primary p-3"><i class="fa fa-upload"></i>&nbsp&nbspUpload a
                                 Material</a>
                         </div>
@@ -54,6 +59,8 @@
                                                     href="{{ route('vendor.view_folder', $materiall[0]['folder']['id']) }}">
                                                     <img src="{{ $materiall[0]['folder']['folder_cover']['url'] }}" class="mat_img"
                                                         alt="{{ $materiall[0]['folder']['name'] }}">
+                                                    {{-- <img src="{{ route('material.cover', $materiall[0]['folder']['folder_cover']['name']) }}" class="mat_img"
+                                                        alt="{{ $materiall[0]['folder']['name'] }}"> --}}
                                                 </a>
                                             </div>
                                             <div class="mat-title">

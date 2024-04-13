@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Currency;
 use App\Models\Setting;
+// use App\Validators;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,6 +33,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Validator::extend('recaptcha', 'App\Validators\ReCaptcha@validate');
+        
         $settings = Cache::remember('settings', 3600, function () {
             return Setting::all([
                 'key', 'value'

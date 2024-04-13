@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\ZoomController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,20 @@ Route::get('/', function () {
 // Route::get('/test', function () {
 //     return view('test');
 // });
+
+// Route::any('/assets/dashboard/images/photos{any}', function (Request $request, $file) {
+//     abort_if(!Storage::disk('profile_pics')->exists($file), 404, "File doesn't exist.");
+//     return Storage::disk('profile_pics')->response($file);
+// })->middleware('auth')->where('any', '.*');
+
+//Master Class Cover
+Route::get('private/{filename}', [App\Http\Controllers\ImageController::class, 'private'])->name('image.private');
+
+Route::get('private-testPDF', [App\Http\Controllers\ImageController::class, 'pdf'])->name('image.pdf');
+Route::get('avatars/{filename}', [App\Http\Controllers\ImageController::class, 'avatars'])->name('avatars.show');
+Route::get('material/cover/{filename}', [App\Http\Controllers\ImageController::class, 'material_cover'])->name('material.cover');
+Route::get('images/{filename}', [App\Http\Controllers\ImageController::class, 'show'])->name('image.show')->middleware('protected');
+Route::get('storage/materials/covers/{filename}', [App\Http\Controllers\ImageController::class, 'show2'])->name('image.show2');
 
 Auth::routes();
 
@@ -115,16 +131,22 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
         Route::match(['get', 'post'], 'upload',  [App\Http\Controllers\Dashboard\VendorController::class, 'upload'])->name('upload');
         Route::match(['get', 'post'], 'edit/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'edit'])->name('edit');
         Route::match(['get'], 'delete/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'delete'])->name('delete');
-
+        
         Route::match(['get'], '/material/cancel',  [App\Http\Controllers\Dashboard\VendorController::class, 'cancel'])->name('cancel.library');
-
+        
         Route::match(['get'], 'folders',  [App\Http\Controllers\Dashboard\VendorController::class, 'folders'])->name('folders');
         Route::match(['get', 'post'], 'add_folder',  [App\Http\Controllers\Dashboard\VendorController::class, 'add_folder'])->name('add_folder');
         Route::match(['get', 'post'], 'edit_folder/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'edit_folder'])->name('edit_folder');
         Route::match(['get'], 'delete_folder/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'delete_folder'])->name('delete_folder');
         // Route::match(['get'], 'view_folder/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'view_folder'])->name('view_folder');
-
+        
         Route::match(['get', 'post'], 'change-password',  [App\Http\Controllers\Dashboard\VendorController::class, 'change_password'])->name('change-password');
+
+
+        Route::match(['get', 'post'], 'setup-master-class',  [App\Http\Controllers\Dashboard\VendorController::class, 'setup_master_class'])->name('setup_master_class');
+        Route::match(['get', 'post'], 'master-classes',  [App\Http\Controllers\Dashboard\VendorController::class, 'master_classes'])->name('master_classes');
+        Route::match(['get'], 'master-class/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'master_class'])->name('master_class');
+        Route::match(['get'], 'delete-master-class/{id}',  [App\Http\Controllers\Dashboard\VendorController::class, 'delete_master_class'])->name('delete_master_class');
     });
 });
 

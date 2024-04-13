@@ -224,7 +224,6 @@
                             </a>
                         </h6>
                         <div class="card-options" style="margin-right:2.5%">
-                            {{-- <a href="javascript:void(0);" class="btn btn-sm btn-primary">View All</a> --}}
                         </div>
                     </div>
                     @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
@@ -233,14 +232,11 @@
                                 <video width="100%" height="auto" controls controlsList="nodownload">
                                     <source src="{{ asset($material->file->url) }}">
                                 </video>
-                                {{-- <div id="adobe-dc-view" style="height: 80vh"></div> --}}
                             </div>
                         </div>
                     @else
                         <div class="card-body pt-0">
                             <div class="row">
-                                {{-- <iframe src="https://docs.google.com/gview?url={{ asset($material->file->url) }}&embedded=true" style="width:100%; height:80vh;" frameborder="0"></iframe> --}}
-                                {{-- <div id="pdfviewer" style="height: 80vh; width:inherit"></div> --}}
                                 <div id="adobe-dc-view" class="noprint" style="height: 80vh"></div>
                             </div>
                         </div>
