@@ -1493,7 +1493,7 @@ class VendorController extends Controller
                 dd($ip->json('timezone'));
                 return $ip->json('timezone');
             }
-            dd($ipp);
+            dd($ipp, $ip);
             $data['title'] = "Vendor Dashboard - Master Classes";
             $data['classes'] = $classes = MasterClass::where('user_id', Auth::user()->id)->with(['cover'])->Orderby('created_at', 'DESC')->get();
             return View('dashboard.vendor.master-class.index', $data);
