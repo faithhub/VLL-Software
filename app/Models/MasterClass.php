@@ -27,11 +27,13 @@ class MasterClass extends Model
         'desc',
         'master_class_id',
         'status',
-        'meeting_id',
+        'timezone',
+        'meeting_ids',
     ];
 
     protected $casts = [
-        'dates' => 'array'
+        'dates' => 'array',
+        'meeting_ids' => 'array'
     ];
 
     public function cover()
@@ -41,6 +43,11 @@ class MasterClass extends Model
 
     public function meeting()
     {
-        return $this->hasOne(Meeting::class, 'id', 'meeting_id');
+        return $this->belongsToMany(Meeting::class);
     }
+
+    // public function getMeetingIdsAttribute()
+    // {
+    //     return $this->meeting->pluck('meeting_ids');
+    // }
 }

@@ -90,6 +90,7 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::get('subscriptions',  [App\Http\Controllers\Dashboard\UserController::class, 'subscriptions'])->name('subscriptions');
         Route::get('sub_text/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'sub_text'])->name('sub.text');
         Route::match(['get'], 'view_material/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'view_material'])->name('view_material');
+        Route::match(['get'], 'view-class/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'view_class'])->name('view_class');
         Route::match(['get'], 'view_material_type/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'view_material_type'])->name('view_material_type');
         Route::match(['post'], 'subscribe',  [App\Http\Controllers\Dashboard\UserController::class, 'subscribe'])->name('subscribe');
         Route::match(['post'], 'buy_rent_material',  [App\Http\Controllers\Dashboard\UserController::class, 'buy_rent_material'])->name('rent.buy')->middleware('sub');

@@ -113,32 +113,51 @@
         width: 5rem;
         height: 5rem;
     }
-    .textarea { min-height: auto !important; }
+
+    .textarea {
+        min-height: auto !important;
+    }
 </style>
-
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha512-lzilC+JFd6YV8+vQRNRtU7DOqv5Sa9Ek53lXt/k91HZTJpytHS1L6l1mMKR9K6VVoDt4LiEXaa6XBrYk1YhGTQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
+{{-- <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"
+    integrity="sha512-lzilC+JFd6YV8+vQRNRtU7DOqv5Sa9Ek53lXt/k91HZTJpytHS1L6l1mMKR9K6VVoDt4LiEXaa6XBrYk1YhGTQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js" integrity="sha512-Y+0b10RbVUTf3Mi0EgJue0FoheNzentTMMIE2OreNbqnUPNbQj8zmjK3fs5D2WhQeGWIem2G2UkKjAL/bJ/UXQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"
     integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+<script src="//jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.timepicker').timepicker({
+            // timeFormat: 'h:mm p',
+            // interval: 15,
+            // minTime: '01',
+            // maxTime: '12:00pm',
+            // defaultTime: '1',
+            // startTime: '10:00',
+            // dynamic: true,
+            // dropdown: true,
+            // scrollbar: true
+        });
+    });
+</script>
 <script type="text/javascript">
+    // var timezone = moment.tz.guess();
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    $('#timezone').val(timezone);
+    console.log(timezone, Intl.DateTimeFormat().resolvedOptions());
+
     $('#dateRangeNow').datepicker({
         multidateSeparator: ", ",
-        todayHighlight:true,
+        todayHighlight: true,
         multidate: true,
         // controls: ['calendar', 'time'],
         format: 'dd-mm-yyyy'
-    });
-
-    $('#datetimePickerNow').datetimepicker({
-        format: 'LT'
     });
 
 

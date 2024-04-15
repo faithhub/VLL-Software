@@ -14,6 +14,7 @@ use App\Models\Material;
 use App\Models\MaterialHistory;
 use App\Models\MaterialType;
 use App\Models\Messages;
+use App\Models\MasterClass;
 use App\Models\Note;
 use App\Models\SubHistory;
 use App\Models\Subscription;
@@ -119,6 +120,12 @@ class UserController extends Controller
                     $object = new \stdClass();
                     $object->type = $value;
                     $object->materials = $material_grp;
+                    array_push($material_array, $object);
+                } elseif (substr($value->mat_unique_id, 0, 3) == "MCL") {
+                    $data['classes'] = $classes = MasterClass::with(['cover'])->inRandomOrder()->limit(4)->get();
+                    $object = new \stdClass();
+                    $object->type = $value;
+                    $object->materials = $classes;
                     array_push($material_array, $object);
                 } else {
                     # code...
@@ -396,6 +403,36 @@ class UserController extends Controller
         }
     }
 
+    public function view_class($id)
+    {
+
+        try {
+            //code...
+            $object = new \stdClass();
+            $data['class'] = $class = MasterClass::where('id', $id)->with('cover')->first();
+            if (!$class) {
+                $object->status = false;
+                $object->msg = "No record found";
+                $data['response'] = $object;
+                return View('dashboard.user.classes.view', $data);
+            }
+            $object->status = true;
+            $meetings_arr = [];
+            $meetings = $class->meeting_ids;
+            foreach ($meetings as $meeting) {
+                $meeting_details = Meeting::where('id', $meeting)->first();
+                array_push($meetings_arr, $meeting_details);
+            }
+            $data['response'] = $object;
+            $data['meetings_arr'] = $meetings_arr;
+            return View('dashboard.user.classes.view', $data);
+        } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
+            //throw $th;
+        }
+    }
+
     public function view_material($id)
     {
         function countPages($path)
@@ -466,12 +503,12 @@ class UserController extends Controller
             $data['folder_mat_count'] = $fmc = Material::where('folder_id', $f->id ?? 0)->count();
             return View('dashboard.user.view', $data);
         } catch (\Throwable $th) {
-            dd($th);
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('user');
             //throw $th;
         }
     }
+
     public function transactions()
     {
         # code...

@@ -1,3 +1,6 @@
+@php
+    use Carbon\Carbon;
+@endphp
 <div class="row">
     <style>
         .user-role {
@@ -53,22 +56,71 @@
                                 @endif
                             </b>
                         </h5>
-                        <h5 class="text-capitalize"><b class="font-weight-bold">Dates: </b>
+                        {{-- <h5 class="text-capitalize"><b class="font-weight-bold">Dates: </b>
                             @isset($class->dates)
                                 @foreach ($class->dates as $date)
                                     {{ date('D, M j, Y', strtotime($date)) }}
                                 @endforeach
                             @endisset
-                        </h5>
+                        </h5> --}}
                         <h5><b class="font-weight-bold">Summary: </b></h5>
                         <p>
                             {{ $class->desc }}
                         </p>
 
+                        <h5 class="text-capitalize"><b class="font-weight-bold">Meetings:</b>
+                            @isset($meetings_arr)
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>S/N</th>
+                                            <th>Dates</th>
+                                            <th>Link</th>
+                                            <th>Password</th>
+                                        </tr>
+                                        @php
+                                            $sn = 1;
+                                        @endphp
+                                        @foreach ($class->dates as $key => $date)
+                                            <tr>
+                                                <th scope="col">{{ $sn++ }}</th>
+                                                <th scope="col">
+                                                    @php
+                                                        $carbonDate = new Carbon($date . ' ' . $class->time);
+                                                        $carbonDate->timezone = $class->timezone;
+                                                        $new_date = $carbonDate->toDayDateTimeString();
+                                                    @endphp
+                                                    {{ $new_date }}
+                                                    {{-- {{ date('D, M j, Y h:i:s A', strtotime($new_date)) }} --}}
+                                                </th>
+                                                <th scope="col">
+                                                    @if (array_key_exists($key, $meetings_arr))
+                                                        @php
+                                                            $link = $meetings_arr[$key]->link;
+                                                        @endphp
+                                                        <b>{{ substr($link, 0, 20) }}...</b>
+                                                        <button class="btn btn-sm btn-outline-dark"
+                                                            onclick="copyMeeting('{{ $meetings_arr[$key]->link }}')">Copy
+                                                            Meeting Link</button>
+                                                    @endif
+                                                </th>
+                                                <th scope="col">
+                                                    @if (array_key_exists($key, $meetings_arr))
+                                                        <button class="btn btn-sm btn-outline-dark"
+                                                            onclick="copyMeetingPassword('{{ $meetings_arr[$key]->password }}')">Copy
+                                                            Meeting Password</button>
+                                                    @endif
+                                                </th>
+                                            </tr>
+                                        @endforeach
+                                    </thead>
+                                </table>
+                            @endisset
+                        </h5>
 
-                        <a href="{{ route('vendor.edit', $class->id) }}" class="btn btn-primary p-3 m-2">
+                        {{-- <a href="{{ route('vendor.edit', $class->id) }}" class="btn btn-primary p-3 m-2">
                             <i class="fa fa-pencil"></i>&nbsp&nbspEdit
-                        </a>
+                        </a> --}}
                         <a href="{{ route('vendor.delete_master_class', $class->id) }}"
                             onclick="return confirm('Are you sure you want to delete this class?')"
                             class="btn btn-dark p-3 btn-outline-primary">
@@ -80,3 +132,24 @@
         </div>
     </div>
 </div>
+<script>
+    function copyMeetingPassword(password) {
+        // console.log(password);
+        navigator.clipboard.writeText(password).then(function() {
+            console.log('Async: Copying to clipboard was successful!');
+            toastr.success("Meeting password copied", "Success");
+        }, function(err) {
+            console.error('Async: Could not copy text: ', err);
+        });
+    }
+
+    function copyMeeting(link) {
+        // console.log(link);
+        navigator.clipboard.writeText(link).then(function() {
+            console.log('Async: Copying to clipboard was successful!');
+            toastr.success("Meeting link copied", "Success");
+        }, function(err) {
+            console.error('Async: Could not copy text: ', err);
+        });
+    }
+</script>

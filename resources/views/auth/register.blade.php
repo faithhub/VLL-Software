@@ -16,6 +16,7 @@
         }
     </style>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
+{{-- <script src='https://www.google.com/recaptcha/api.js'></script> --}}
     <!-- Start Why Choose Us Area -->
     <section id="about" class="why-choose-us bg-f9faff">
         <div class="container">
@@ -181,14 +182,18 @@
                                         @enderror
                                     @endif
                                 </div>
-                                <div class="mb-3">
-                                    <div class="checkbox mb-3">
-                                        <!-- The following line controls and configures the Turnstile widget. -->
-                                        <div class="cf-turnstile" data-sitekey="{{ getenv('TURNSTILE_SITE_KEY') }}"
-                                            data-theme="light"></div>
-                                        <!-- end. -->
+                                @if (config('services.recaptcha.key'))
+                                    <div class="mb-3">
+                                        <div class="g-recaptcha mt-4"
+                                            data-sitekey="{{ config('services.recaptcha.key') }}">
+                                        </div>
+                                        @error('g-recaptcha-response-user')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
-                                </div>
+                                @endif
                                 <div class="d-grid gap-2">
                                     <button class="sign-up-form-btn mb-2" type="submit">Sign up</button>
                                     {{-- <a href="{{ route('google.login') }}" class="sign-up-google-form-btn">
@@ -361,14 +366,19 @@
                                         @enderror
                                     @endif
                                 </div>
-                                <div class="mb-3">
-                                    <div class="checkbox mb-3">
-                                        <!-- The following line controls and configures the Turnstile widget. -->
-                                        <div class="cf-turnstile" data-sitekey="{{ getenv('TURNSTILE_SITE_KEY') }}"
-                                            data-theme="light"></div>
-                                        <!-- end. -->
+
+                                @if (config('services.recaptcha.key'))
+                                    <div class="mb-3">
+                                        <div class="g-recaptcha mt-4"
+                                            data-sitekey="{{ config('services.recaptcha.key') }}">
+                                        </div>
+                                        @error('g-recaptcha-response-vendor')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
-                                </div>
+                                @endif
                                 <div class="d-grid gap-2">
                                     <button class="sign-up-form-btn mb-2" type="submit">Sign up</button>
                                     {{-- <a href="{{ route('google.login') }}" class="sign-up-google-form-btn">
@@ -540,14 +550,19 @@
                                         @enderror
                                     @endif
                                 </div>
-                                <div class="mb-3">
-                                    <div class="checkbox mb-3">
-                                        <!-- The following line controls and configures the Turnstile widget. -->
-                                        <div class="cf-turnstile" data-sitekey="{{ getenv('TURNSTILE_SITE_KEY') }}"
-                                            data-theme="light"></div>
-                                        <!-- end. -->
+
+                                @if (config('services.recaptcha.key'))
+                                    <div class="mb-3">
+                                        <div class="g-recaptcha mt-4"
+                                            data-sitekey="{{ config('services.recaptcha.key') }}">
+                                        </div>
+                                        @error('g-recaptcha-response-teacher')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
-                                </div>
+                                @endif
                                 <div class="d-grid gap-2">
                                     <button class="sign-up-form-btn mb-2" type="submit">Sign up</button>
                                 </div>

@@ -45,6 +45,7 @@ class User extends Authenticatable
         'sub_id',
         'sub_admin',
         'default_currency_id',
+        'timezone',
         'acc_verified'
     ];
 

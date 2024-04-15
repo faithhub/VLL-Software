@@ -139,13 +139,13 @@
                                                                 @endif
                                                             </td>
                                                             <td>
-                                                                <span class="text-capitalize">
+                                                                {{-- <span class="text-capitalize">
                                                                     @isset($class->dates)
                                                                         @foreach ($class->dates as $date)
                                                                             {{ date('D, M j, Y', strtotime($date))  }}<br>
                                                                         @endforeach
                                                                     @endisset
-                                                                </span>
+                                                                </span> --}}
                                                             </td>
                                                             <td>{{ $class->created_at->format('D, M j, Y') }}
                                                             </td>

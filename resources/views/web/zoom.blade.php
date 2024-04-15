@@ -67,11 +67,15 @@
                 console.error('Error signature meeting:', res);
             },
         });
-
+        // disableInvite
         ZoomMtg.init({
+            disableInvite: true,
             leaveUrl: zoomMeeting.leaveUrl,
             isSupportAV: true,
             success: function() {
+                 ZoomMtg.showInviteFunction({
+                show: 0,
+            }),
                 ZoomMtg.join({
                     meetingNumber: zoomMeeting.meetingNumber,
                     userName: zoomMeeting.userName,

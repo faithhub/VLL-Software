@@ -167,7 +167,7 @@
                         </a>
                     </li>
 
-                    {{-- <li class="slide is-expanded" id="sidebar">
+                    <li class="slide is-expanded" id="sidebar">
                         <a class="side-menu__item side_menus {{ request()->is('vendor/master-classes') ? 'active' : '' }}"
                             href="{{ route('vendor.master_classes') }}">
                             <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
@@ -178,7 +178,7 @@
                             </svg>
                             <span class="side-menu__label">Master Classes</span>
                         </a>
-                    </li> --}}
+                    </li>
 
                     <li class="slide is-expanded" id="sidebar">
                         <a class="side-menu__item side_menus {{ request()->is('vendor/folders') ? 'active' : '' }}"

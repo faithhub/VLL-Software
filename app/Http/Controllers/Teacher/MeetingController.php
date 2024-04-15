@@ -370,115 +370,6 @@ class MeetingController extends Controller
         }
     }
 
-    // public function create(Request $request)
-    // {
-    //     try {
-    //         if ($_POST) {
-    //             $rules = array(
-    //                 'university_id' => ['required', 'string', 'max:255'],
-    //                 'title' => ['required', 'string', 'max:50', 'min:5'],
-    //                 'password' => ['required', 'string', 'min:5', 'max:20'],
-    //                 'start' => ['required', 'before:end'],
-    //                 'end' => ['required', 'after:start']
-    //             );
-
-    //             $messages = [
-    //                 'title.required' => "The Meeting Title is required",
-    //                 'title.string' => "The Meeting Title must be string",
-    //                 'title.max' => "The Meeting Title must not more than 50 characters",
-    //                 'title.min' => "The Meeting Title must not less than 10 characters",
-    //                 'password.min' => "The Meeting Password must not less than 5 characters",
-    //                 'password.max' => "The Meeting Password must not more than 20 characters",
-    //                 'start.required' => "The Meeting Start Date is required",
-    //                 'start.before' => "The Meeting Start Date must be a date before the Meeting End Date",
-    //                 'end.after' => "The Meeting End Date must be a date after the Meeting Start date",
-    //                 'end.required' => "The Meeting End Date is required",
-    //             ];
-
-    //             $validator = Validator::make($request->all(), $rules, $messages);
-
-    //             if ($validator->fails()) {
-    //                 Session::flash('warning', __('All fields are required'));
-    //                 return back()->withErrors($validator)->withInput();
-    //             }
-
-    //             $start = Carbon::parse($request->start)->format('Y-m-d H:i:s');
-    //             $end = Carbon::parse($request->end)->format('Y-m-d H:i:s');
-    //             $title = $request->title;
-    //             $password = $request->password ?? Str::random(10);
-
-    //             $params = [
-    //                 'title' => $title,
-    //                 'start' => $start,
-    //                 'end' => $end,
-    //                 'password' => $password
-    //             ];
-
-
-    //             $webex_data = $this->refress_token();
-    //             $baseURL =  Crypt::decryptString($webex_data->baseUrl);
-    //             $access_token =  Crypt::decryptString($webex_data->access_token);
-
-    //             $token = "Bearer " . $access_token;
-    //             $response = Http::accept('application/json')->withHeaders([
-    //                 'Authorization' => $token,
-    //             ])->post($baseURL . "/meetings", $params);
-    //             $response->json();
-
-    //             if ($response->status() != 200) {
-    //                 # code...
-    //                 $data['err_msg'] = $err_msg = $response->json()['message'];
-    //                 $data['webex_errors'] = $webex_errors = $response->json()['errors'];
-    //                 Session::flash('error', $err_msg);
-    //                 return back()->withInput()->with(['webex_errors' => $webex_errors]);
-    //             }
-
-    //             $meeting = Meeting::create([
-    //                 'user_id' => Auth::user()->id,
-    //                 'university_id' => $request->university_id,
-    //                 'MTID' => $response->json()['id'],
-    //                 'link' => $response->json()['webLink'],
-    //                 'title' => $title,
-    //                 'start' => $start,
-    //                 'end' => $end,
-    //                 'details' => $response->json(),
-    //                 'password' => $password
-    //             ]);
-
-    //             MeetingDetail::create([
-    //                 'meeting_id' => $meeting->id,
-    //             ]);
-
-    //             Material::create([
-    //                 'user_id' => Auth::user()->id,
-    //                 'title' => $title,
-    //                 'version' => $request->version ?? null,
-    //                 'citation' => 'new_meeting',
-    //                 'publisher' => $meeting->id,
-    //                 'price' => 'free',
-    //                 'amount' => $request->amount ?? null,
-    //                 'material_type_id' => 5,
-    //                 'year_of_publication' => 0,
-    //                 'privacy_code' => $password,
-    //                 'test_country_id' => Auth::user()->country_id,
-    //                 'university_id' => Auth::user()->university_id,
-    //                 'uploaded_by' => 'teacher',
-    //                 'material_cover_id' => null,
-    //             ]);
-
-    //             Session::flash('success', 'Meeting created successfully');
-    //             return redirect()->route('teacher.meetings');
-    //         }
-    //         //code...
-    //         $data['title'] = "";
-    //         return View('dashboard.teacher.meetings.create', $data);
-    //     } catch (\Throwable $th) {
-    //         Session::flash('warning', $th->getMessage());
-    //         return back() ?? redirect()->route('teacher');
-    //         dd($th->getMessage());
-    //         //throw $th;
-    //     }
-    // }
 
     public function view($id)
     {
@@ -620,11 +511,11 @@ class MeetingController extends Controller
         }
     }
 
-    public function create_meeting($data, $dates)
+    public function create_meeting($data, $dates, $timezone, $time)
     {
         try {
             //code...
-            $start = Carbon::parse($dates[0])->format('Y-m-d H:i:s');
+            $start = Carbon::parse($dates[0] . ' ' . $time)->format('Y-m-d H:i:s');
             // $end = Carbon::parse($request->end)->format('Y-m-d H:i:s');
             $title = $data['title'];
             // return [$data, $dates[0], $title];
@@ -637,6 +528,8 @@ class MeetingController extends Controller
                 'start_time' => $start,
                 'duration' => $duration,
                 'password' => $password,
+                'timezone' => $timezone,
+                'host_email' => Auth::user()->email,
                 'settings'   => [
                     'host_video'        => false,
                     'participant_video' => true,
@@ -644,6 +537,7 @@ class MeetingController extends Controller
                     'in_meeting'        => false,
                     'join_before_host'  => true,
                     'mute_upon_entry'   => true,
+                    'show_share_button' => false,
                     'watermark'         => false,
                     'use_pmi'           => false,
                     'approval_type'     => 0,

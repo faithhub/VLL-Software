@@ -77,11 +77,14 @@ class RegisterController extends Controller
                     'v-country' => ['required_if:type,==,institution'],
                     'name' => ['required_if:type,==,company,entity'],
                     'v-university' => ['required_if:type,==,institution'],
+                    'g-recaptcha-response-vendor' => ['required', 'recaptcha']
                 ],
                 [
                     'required_if' => 'The :attribute field is required.',
                     'v-country.required_if' => __('The country field is required'),
-                    'v-university.required_if' => __('The university field is required')
+                    'v-university.required_if' => __('The university field is required'),
+                    'g-recaptcha-response-vendor.recaptcha' => __('Captcha verification failed'),
+                    'g-recaptcha-response-vendor.required' => __('Please complete the captcha'),
                 ]
             );
         }
@@ -98,9 +101,12 @@ class RegisterController extends Controller
                     'password' => ['required', 'string', 'min:8', 'confirmed'],
                     'university' => ['required_if:type,==,student'],
                     'country' => ['required_if:type,==,student'],
+                    'g-recaptcha-response-user' => ['required', 'recaptcha']
                 ],
                 [
-                    'required_if' => 'The :attribute field is required.'
+                    'required_if' => 'The :attribute field is required.',
+                    'g-recaptcha-response-user.recaptcha' => __('Captcha verification failed'),
+                    'g-recaptcha-response-user.required' => __('Please complete the captcha'),
                 ]
             );
         }
@@ -119,11 +125,14 @@ class RegisterController extends Controller
                     't-country' => ['required_if:type,==,institution'],
                     'name' => ['required_if:type,==,company,entity'],
                     't-university' => ['required_if:type,==,institution'],
+                    'g-recaptcha-response-teacher' => ['required', 'recaptcha']
                 ],
                 [
                     'required_if' => 'The :attribute field is required.',
                     't-country.required_if' => __('The country field is required'),
-                    't-university.required_if' => __('The university field is required')
+                    't-university.required_if' => __('The university field is required'),
+                    'g-recaptcha-response-teacher.recaptcha' => __('Captcha verification failed'),
+                    'g-recaptcha-response-teacher.required' => __('Please complete the captcha'),
                 ]
             );
         }

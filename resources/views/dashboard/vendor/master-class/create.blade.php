@@ -1,13 +1,10 @@
 @extends('layouts/dashboard/app')
 @section('content')
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
     {{-- <link href="{{ asset('date-time/css/mobiscroll.jquery.min.css') }}" rel="stylesheet" /> --}}
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css"
         integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css"
-        integrity="sha512-mQ8Fj7epKOfW0M7CwuuxdPtzpmtIB5rI4rl76MSd3mm5dCYBKjzPk7EU/2buhPMs0KmC6YOPR/MQlQwpkdNcpQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <div class="main-container container-fluid px-0">
         <div class="row">
@@ -26,6 +23,7 @@
                         </h6>
                         <form method="POST" action="{{ route('vendor.setup_master_class') }}" class="validate-form"
                             enctype="multipart/form-data">
+                            <input type="hiddenn" name="timezone" id="timezone">
                             @csrf
                             <div class="row mt-5 mb-5 settings">
                                 <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 new_law_div_tag text-field taa-field vaa-field loj-field material_upload_fields"
@@ -88,7 +86,7 @@
                                 <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Time: <span class="imp">*<span></label>
-                                        <input type="time" id="" class="form-control" placeholder="Select Time"
+                                        <input type="text" id="" class="form-control timepicker" placeholder="Select Time"
                                             value="{{ old('time') }}" name="time" requiredd=""
                                             data-parsley-required-message="Time is required">
 
@@ -163,7 +161,7 @@
                                 </div>
                                 <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
-                                        <label class="form-label">Special Guest<span class="imp">*<span></label>
+                                        <label class="form-label">Special Guest <span class="imp">*<span></label>
                                         <input type="text" class="form-control" name="special_guest"
                                             value="{{ old('special_guest') }}" requiredd=""
                                             data-parsley-required-message="Year of Publication is required"
@@ -209,7 +207,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
-                                        <label class="form-label">Description <span>*<span></label>
+                                        <label class="form-label">Description <span class="imp">*<span></label>
                                         <textarea class="form-control textarea" data-parsley-required-message="Description is required" requiredd=""
                                             name="desc" rows="3">{{ old('desc') }}</textarea>
                                         @error('desc')
@@ -236,10 +234,6 @@
                                         </span>
                                     @enderror
                                 </div>
-                                @if (config('services.recaptcha.key'))
-                                    <div class="g-recaptcha mt-4" data-sitekey="{{ config('services.recaptcha.key') }}">
-                                    </div>
-                                @endif
                                 <div class="col-lg-12 col-xl-12 text-center">
                                     <button type="submit" class="btn btn-primary p-3 pt-3 pt-2"
                                         style="font-size: 18px">Submit</button>

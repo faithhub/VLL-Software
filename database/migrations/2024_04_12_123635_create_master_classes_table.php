@@ -23,10 +23,11 @@ return new class extends Migration
                 ->nullable()
                 ->constrained()
                 ->cascadeOnDelete();
-            $table->foreignId('meeting_id')
-                ->nullable()
-                ->constrained()
-                ->cascadeOnDelete();
+            $table->json('meeting_ids');
+            // $table->foreignId('meeting_id')
+            //     ->nullable()
+            //     ->constrained()
+            //     ->cascadeOnDelete();
             $table->foreignId('master_class_id')
                 ->nullable()
                 ->constrained('files')
@@ -34,6 +35,7 @@ return new class extends Migration
             $table->float('amount')->default(0);
             $table->string('uploaded_by')->nullable();
             $table->string('title')->nullable();
+            $table->string('timezone')->nullable();
             $table->string('duration')->nullable();
             $table->string('interval')->nullable();
             $table->json('dates');

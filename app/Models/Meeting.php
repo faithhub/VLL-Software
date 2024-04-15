@@ -26,4 +26,9 @@ class Meeting extends Model
     protected $casts = [
         'details' => 'array',
     ];
+
+    public function classes()
+    {
+        return $this->belongsToMany(MasterClass::class);
+    }
 }
