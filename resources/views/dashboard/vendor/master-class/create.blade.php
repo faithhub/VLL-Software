@@ -23,7 +23,7 @@
                         </h6>
                         <form method="POST" action="{{ route('vendor.setup_master_class') }}" class="validate-form"
                             enctype="multipart/form-data">
-                            <input type="hiddenn" name="timezone" id="timezone">
+                            <input type="hidden" name="timezone" id="timezone">
                             @csrf
                             <div class="row mt-5 mb-5 settings">
                                 <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 new_law_div_tag text-field taa-field vaa-field loj-field material_upload_fields"

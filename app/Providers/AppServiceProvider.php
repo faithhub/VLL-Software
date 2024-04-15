@@ -36,6 +36,37 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $ip = Requestt::getClientIp();
+
+        if ($ip == "127.0.0.1") {
+            $ip = '98.97.79.78';
+        }
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://ipapi.co/' . $ip . '/timezone',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $timezone = $response;
+
+        date_default_timezone_set($timezone ?? config('app.timezone'));
+
+
+        //https://raw.githubusercontent.com/leon-do/Timezones/main/timezone.json
+        //timezone_identifiers_list
+
         Validator::extend('recaptcha', 'App\Validators\ReCaptcha@validate');
         
         $settings = Cache::remember('settings', 3600, function () {
@@ -48,18 +79,9 @@ class AppServiceProvider extends ServiceProvider
                 });
         });
 
-        // if (Schema::hasTable('currencies')) {
-        // $ipp = Requestt::getClientIp();
-        // $ip = Http::get('https://ipecho.net/' . $ipp . '/json');
-        // if ($ip->json('timezone')) {
-        //     dd($ip->json('timezone'));
-        //     return $ip->json('timezone');
-        // }
         $currencies = Currency::all();
         $app_default_currency = Currency::where('isDefault', true)->first();
-        // dd($settings, $ipp, $ip->json('timezone'), timezone_identifiers_list(), timezone_version_get());
-        // Config::set('app.timezone', $db['timezone'] ?? config('app.timezone'));
-        // date_default_timezone_set($settings->timezone ? $settings->timezone : config('app.timezone'));
+
         View::share(['settings' => $settings, 'app_currencies' => $currencies, 'app_default_currency' =>
         $app_default_currency]);
     }
