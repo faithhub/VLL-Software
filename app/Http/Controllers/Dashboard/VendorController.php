@@ -1487,13 +1487,32 @@ class VendorController extends Controller
     public function master_classes()
     {
         try {
-            $ipp = Requestt::getClientIp();
-            $ip = Http::get('https://ipecho.net/' . $ipp . '/json');
-            if ($ip->json('timezone')) {
-                dd($ip->json('timezone'));
-                return $ip->json('timezone');
-            }
-            dd($ipp, $ip);
+            // $ipp = '98.97.79.78';
+            // if ($ipp) {
+            //     $timezone = Http::get('https://ipapi.co/' . $ipp . '/timezone');
+            //     dd($ipp, $timezone->json('timezone'));
+            // }
+
+            $ip = Requestt::getClientIp();
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://ipapi.co/' . $ip . '/timezone',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+            dd($response, $ip);
+
             $data['title'] = "Vendor Dashboard - Master Classes";
             $data['classes'] = $classes = MasterClass::where('user_id', Auth::user()->id)->with(['cover'])->Orderby('created_at', 'DESC')->get();
             return View('dashboard.vendor.master-class.index', $data);
