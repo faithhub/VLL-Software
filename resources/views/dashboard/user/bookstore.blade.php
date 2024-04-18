@@ -182,23 +182,14 @@
                                                             {{-- style="background-image: url({{ route('image.private', $material->cover->name ?? '') }})" --}}
                                                             >
                                                                 <div class="ribbon-holder">
-                                                                    @if ($material->mat_his)
-                                                                        @if (in_array($material->mat_his->material_id, $my_materials_arr))
-                                                                            @foreach ($all_my_materials_arr as $all_my_materials_arr_val)
-                                                                                @if ($all_my_materials_arr_val->material_id == $material->mat_his->material_id)
-                                                                                    @if ($all_my_materials_arr_val->type == 'rented')
-                                                                                        @if ($all_my_materials_arr_val->is_rent_expired == false)
-                                                                                            <div
-                                                                                                class="ribbon ribbon-holder ribbon-{{ $all_my_materials_arr_val->type }}">
-                                                                                                {{ $all_my_materials_arr_val->type }}
-                                                                                            </div>
-                                                                                        @endif
-                                                                                    @endif
-
-                                                                                    @if ($all_my_materials_arr_val->type == 'bought')
+                                                                    @if ($material->class_his)
+                                                                        @if (in_array($material->class_his->class_id, $my_classes_arr))
+                                                                            @foreach ($all_classes_arr as $all_classes_arr_val)
+                                                                                @if ($all_classes_arr_val->class_id == $material->class_his->class_id)
+                                                                                    @if ($all_classes_arr_val->type == 'bought')
                                                                                         <div
-                                                                                            class="ribbon ribbon-holder ribbon-{{ $all_my_materials_arr_val->type }}">
-                                                                                            {{ $all_my_materials_arr_val->type }}
+                                                                                            class="ribbon ribbon-holder ribbon-{{ $all_classes_arr_val->type }}">
+                                                                                            {{ $all_classes_arr_val->type }}
                                                                                         </div>
                                                                                     @endif
                                                                                 @endif

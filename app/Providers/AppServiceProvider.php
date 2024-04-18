@@ -45,7 +45,7 @@ class AppServiceProvider extends ServiceProvider
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://ipapi.co/' . $ip . '/timezone',
+            CURLOPT_URL => 'http://ip-api.com/json/' . $ip,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -59,13 +59,11 @@ class AppServiceProvider extends ServiceProvider
 
         curl_close($curl);
 
-        $timezone = $response;
+        $response = json_decode($response, true);
 
-        date_default_timezone_set($timezone ?? config('app.timezone'));
-
-
-        //https://raw.githubusercontent.com/leon-do/Timezones/main/timezone.json
-        //timezone_identifiers_list
+        if ($response['status'] == 'success') {
+            date_default_timezone_set($response['timezone'] ?? config('app.timezone'));
+        }
 
         Validator::extend('recaptcha', 'App\Validators\ReCaptcha@validate');
         

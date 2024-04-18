@@ -64,6 +64,8 @@ class UserController extends Controller
             $bought_and_free_folders = [];
 
             $my_materials_arr = [];
+            $my_classes_arr = [];
+            $all_classes_arr = [];
             $all_my_materials_arr = [];
             if (Auth::user()->team_id) {
                 # code...
@@ -71,6 +73,12 @@ class UserController extends Controller
                 foreach ($team->teammates as $key_2 => $value_2) {
                     # code...
                     $user = User::where('email', $value_2)->first();
+                    $all_classes = MaterialHistory::where(['user_id' => $user->id])->whereNotNull('class_id')->get();
+                    foreach ($all_classes as $key3 => $value3) {
+                        # code...
+                        array_push($my_classes_arr, $value3->class_id);
+                        array_push($all_classes_arr, $value3);
+                    }
                     $my_materials = MaterialHistory::where(['user_id' => $user->id, 'is_rent_expired' => false])->get();
                     $all_folders = MaterialHistory::where(['user_id' => $user->id, "mat_type" => "folder", 'isFolderExpired' => false])->get();
                     foreach ($all_folders as $key2 => $value2) {
@@ -91,6 +99,12 @@ class UserController extends Controller
                     }
                 }
             } else {
+                $all_classes = MaterialHistory::where(['user_id' => Auth::user()->id])->whereNotNull('class_id')->get();
+                foreach ($all_classes as $key3 => $value3) {
+                    # code...
+                    array_push($my_classes_arr, $value3->class_id);
+                    array_push($all_classes_arr, $value3);
+                }
                 $data['my_materials'] = $my_materials = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false])->get();
                 $all_folders = MaterialHistory::where(['user_id' => Auth::user()->id, "mat_type" => "folder", 'isFolderExpired' => false])->get();
                 foreach ($all_folders as $key2 => $value2) {
@@ -122,7 +136,7 @@ class UserController extends Controller
                     $object->materials = $material_grp;
                     array_push($material_array, $object);
                 } elseif (substr($value->mat_unique_id, 0, 3) == "MCL") {
-                    $data['classes'] = $classes = MasterClass::with(['cover'])->inRandomOrder()->limit(4)->get();
+                    $data['classes'] = $classes = MasterClass::with(['cover', 'class_his'])->inRandomOrder()->limit(4)->get();
                     $object = new \stdClass();
                     $object->type = $value;
                     $object->materials = $classes;
@@ -140,6 +154,8 @@ class UserController extends Controller
 
             $data['bought_folders'] = $bought_folders;
             $data['free_folders'] = $free_folders;
+            $data['my_classes_arr'] = $my_classes_arr;
+            $data['all_classes_arr'] = $all_classes_arr;
             $data['material_array'] = $material_array;
             $data['my_materials_arr'] = $my_materials_arr;
             $data['all_my_materials_arr'] = $all_my_materials_arr;
@@ -191,12 +207,24 @@ class UserController extends Controller
             $bought_folders = [];
             $free_folders = [];
             $bought_and_free_folders = [];
+
+            $all_classes_arr = [];
+            $my_classes_arr = [];
+
             if (Auth::user()->team_id) {
                 # code...
                 $team = Team::find(Auth::user()->team_id);
                 foreach ($team->teammates as $key_2 => $value_2) {
                     # code...
                     $user = User::where('email', $value_2)->first();
+                    $all_classes = MaterialHistory::where(['user_id' => $user->id])->whereNotNull('class_id')->get();
+                    foreach ($all_classes as $key3 => $value3) {
+                        # code...
+                        array_push($my_classes_arr, $value3->class_id);
+                        array_push($all_classes_arr, $value3);
+                    }
+
+
                     $my_materials = MaterialHistory::where(['user_id' => $user->id, 'is_rent_expired' => false])->get();
                     $all_folders = MaterialHistory::where(['user_id' => $user->id, "mat_type" => "folder", 'isFolderExpired' => false])->get();
                     foreach ($all_folders as $key2 => $value2) {
@@ -215,6 +243,14 @@ class UserController extends Controller
                     }
                 }
             } else {
+                $all_classes = MaterialHistory::where(['user_id' => Auth::user()->id])->whereNotNull('class_id')->get();
+                foreach ($all_classes as $key3 => $value3) {
+                    # code...
+                    array_push($my_classes_arr, $value3->class_id);
+                    array_push($all_classes_arr, $value3);
+                }
+
+
                 $data['my_materials'] = $my_materials = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false])->get();
                 $all_folders = MaterialHistory::where(['user_id' => Auth::user()->id, "mat_type" => "folder", 'isFolderExpired' => false])->get();
                 foreach ($all_folders as $key2 => $value2) {
@@ -263,12 +299,16 @@ class UserController extends Controller
                     return View('dashboard.user.search', $data);
                 }
             }
+
+            $data['all_classes_arr'] = $all_classes_arr;
+            $data['my_classes_arr'] = $my_classes_arr;
             
             $data['notes'] = Note::where(['user_id' => Auth::user()->id])->latest()->limit(5)->get();
             $data['title'] = "User Dashboard - My Library";
             $data['bought_folders'] = $bought_folders;
             $data['free_folders'] = $free_folders;
             $data['folders'] = $fd = Folder::whereIn('id', $bought_and_free_folders)->get();
+            $data['master_classes'] = MasterClass::whereIn('id', $my_classes_arr)->with(['cover', 'class_his'])->get();
             $data['materials'] = $mm = DB::table('material_histories')
                 ->join('materials', 'material_histories.material_id', '=', 'materials.id')
                 ->join('material_types', 'materials.material_type_id', '=', 'material_types.id')
@@ -281,7 +321,7 @@ class UserController extends Controller
             // dd($mm);
             return View('dashboard.user.library', $data);
         } catch (\Throwable $th) {
-            //throw $th;
+            dd($th);
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('user');
         }
@@ -348,18 +388,21 @@ class UserController extends Controller
             //code...
             $data['limit_folder'] = [1, 2, 3, 4];
             $data['type'] = 'Material';
+            $MCL = false;
             $data['material_type'] = $mt = MaterialType::where(['id' => $id])->first();
             if (!$mt) {
                 # code...
                 Session::flash('warning', "No record found");
                 return back();
             }
-            if (substr($mt->mat_unique_id, 0, 3) == "CSL") {
+            if (substr($mt->mat_unique_id, 0, 3) == "CSL"  || substr($mt->mat_unique_id, 0, 3) == "LAW") {
                 $data['t_materials'] = $tm = Material::where(['material_type_id' => $mt->id])->with(['type', 'folder', 'mat_his'])->get();
                 $data['t_materials'] = $tm->groupBy('folder_id');
                 $data['type'] = 'Folder';
             }
 
+            $my_classes_arr = [];
+            $all_classes_arr = [];
             $my_materials_arr = [];
             $all_my_materials_arr = [];
             if (Auth::user()->team_id) {
@@ -368,6 +411,15 @@ class UserController extends Controller
                 foreach ($team->teammates as $key_2 => $value_2) {
                     # code...
                     $user = User::where('email', $value_2)->first();
+
+                    $all_classes = MaterialHistory::where(['user_id' => $user->id])->whereNotNull('class_id')->get();
+                    foreach ($all_classes as $key3 => $value3) {
+                        # code...
+                        array_push($my_classes_arr, $value3->class_id);
+                        array_push($all_classes_arr, $value3);
+                    }
+
+
                     $my_materials = MaterialHistory::where(['user_id' => $user->id, 'is_rent_expired' => false])->get();
                     foreach ($my_materials as $key => $value) {
                         # code...
@@ -376,6 +428,13 @@ class UserController extends Controller
                     }
                 }
             } else {
+                $all_classes = MaterialHistory::where(['user_id' => Auth::user()->id])->whereNotNull('class_id')->get();
+                foreach ($all_classes as $key3 => $value3) {
+                    # code...
+                    array_push($my_classes_arr, $value3->class_id);
+                    array_push($all_classes_arr, $value3);
+                }
+
                 $data['my_materials'] = $my_materials = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false])->get();
                 foreach ($my_materials as $key => $value) {
                     # code...
@@ -386,14 +445,22 @@ class UserController extends Controller
 
             $data['my_materials_arr'] = $my_materials_arr;
             $data['all_my_materials_arr'] = $all_my_materials_arr;
+            $data['my_classes_arr'] = $my_classes_arr;
+            $data['all_classes_arr'] = $all_classes_arr;
 
             $data['materials'] = $m = Material::where(['material_type_id' => $mt->id])->with(['type', 'folder', 'mat_his'])->get();
+            $data['master_classes'] = MasterClass::with(['cover', 'class_his'])->get();
 
+
+            if (substr($mt->mat_unique_id, 0, 3) == "MCL") {
+                $MCL = true;
+            }
 
             if (substr($mt->mat_unique_id, 0, 3) == "TAA") {
                 $data['materials'] = $m = Material::where(['material_type_id' => $mt->id, 'university_id' => Auth::user()->university_id])->with(['type', 'folder', 'mat_his'])->get();
             }
 
+            $data['MCL'] = $MCL;
             $data['title'] = $mt->name;
             return View('dashboard.user.view-all-material-type', $data);
         } catch (\Throwable $th) {
@@ -423,8 +490,35 @@ class UserController extends Controller
                 $meeting_details = Meeting::where('id', $meeting)->first();
                 array_push($meetings_arr, $meeting_details);
             }
+
+            // Check for all the bought/owned classes
+            $my_classes_arr = [];
+            $all_classes_arr = [];
+            if (Auth::user()->team_id) {
+                # code...
+                $team = Team::find(Auth::user()->team_id);
+                foreach ($team->teammates as $key_2 => $value_2) {
+                    # code...
+                    $user = User::where('email', $value_2)->first();
+                    $all_classes = MaterialHistory::where(['user_id' => $user->id])->whereNotNull('class_id')->get();
+                    foreach ($all_classes as $key3 => $value3) {
+                        # code...
+                        array_push($all_classes_arr, $value3->class_id);
+                    }
+                    // }
+                }
+            } else {
+                $all_classes = MaterialHistory::where(['user_id' => Auth::user()->id])->whereNotNull('class_id')->get();
+                foreach ($all_classes as $key3 => $value3) {
+                    # code...
+                    array_push($all_classes_arr, $value3->class_id);
+                }
+            }
+
             $data['response'] = $object;
             $data['meetings_arr'] = $meetings_arr;
+            $data['all_classes_arr'] = $all_classes_arr;
+            $data['my_classes_arr'] = $my_classes_arr;
             return View('dashboard.user.classes.view', $data);
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());
@@ -455,6 +549,7 @@ class UserController extends Controller
                     $user = User::where('email', $value_2)->first();
                     $my_materials = MaterialHistory::where(['user_id' => $user->id, 'is_rent_expired' => false])->get();
                     $all_folders = MaterialHistory::where(['user_id' => $user->id, "mat_type" => "folder", 'isFolderExpired' => false])->get();
+                    $all_classes = MaterialHistory::where(['user_id' => $user->id])->whereNotNull('class_id')->get();
                     foreach ($all_folders as $key2 => $value2) {
                         # code...
                         array_push($bought_folders, $value2->folder_id);
@@ -465,6 +560,7 @@ class UserController extends Controller
                     }
                 }
             } else {
+                $all_classes = MaterialHistory::where(['user_id' => Auth::user()->id])->whereNotNull('class_id')->get();
                 $data['my_materials'] = $my_materials = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false])->get();
                 $all_folders = MaterialHistory::where(['user_id' => Auth::user()->id, "mat_type" => "folder", 'isFolderExpired' => false])->get();
                 foreach ($all_folders as $key2 => $value2) {
@@ -503,9 +599,9 @@ class UserController extends Controller
             $data['folder_mat_count'] = $fmc = Material::where('folder_id', $f->id ?? 0)->count();
             return View('dashboard.user.view', $data);
         } catch (\Throwable $th) {
+            throw $th;
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('user');
-            //throw $th;
         }
     }
 
@@ -1053,10 +1149,16 @@ class UserController extends Controller
         # code...
         try {
             //code...
+            $material = Material::find($id);
+
+            if (!$material) {
+                Session::flash('warning', 'Material not found');
+                return redirect()->route('user.library');
+            }
 
             MaterialHistory::create([
                 'user_id' => Auth::user()->id,
-                'material_id' => $id,
+                'material_id' => $material->id,
                 'unique_id' => Str::upper("MATHIS" . $this->unique_code(12)),
                 'transaction_id' => null,
                 'date' =>  Carbon::now(),
@@ -1064,6 +1166,36 @@ class UserController extends Controller
             ]);
 
             Session::flash('success', 'Material added to my library successfully');
+            return redirect()->route('user.library');
+        } catch (\Throwable $th) {
+            Session::flash('warning', $th->getMessage());
+            return back() ?? redirect()->route('user');
+            //throw $th;
+        }
+    }
+
+    public function add_masterclass_to_library($id)
+    {
+        # code...
+        try {
+            //code...
+            $class = MasterClass::find($id);
+
+            if (!$class) {
+                Session::flash('warning', 'Master Class not found');
+                return redirect()->route('user.library');
+            }
+
+            MaterialHistory::create([
+                'user_id' => Auth::user()->id,
+                'class_id' => $class->id,
+                'unique_id' => Str::upper("MATHIS" . $this->unique_code(12)),
+                'transaction_id' => null,
+                'date' =>  Carbon::now(),
+                'type' => 'free'
+            ]);
+
+            Session::flash('success', 'Master Class added to my library successfully');
             return redirect()->route('user.library');
         } catch (\Throwable $th) {
             Session::flash('warning', $th->getMessage());

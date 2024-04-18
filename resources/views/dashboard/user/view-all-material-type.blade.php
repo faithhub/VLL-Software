@@ -31,156 +31,35 @@
                                 <div class="media mt-4">
                                     <div class="media-body">
                                         <h6 class="mb-1 mt-1 font-weight-bold h3">{{ $material_type->name }}</h6>
-                                        <small class="h5">{{ $materials->count() }} Material(s)</small>
+                                        @if ($MCL)
+                                            <small class="h5">{{ $master_classes->count() }} Material(s)</small>
+                                        @else
+                                            <small class="h5">{{ $materials->count() }} Material(s)</small>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        @isset($materials)
-                            {{-- @foreach ($all_materials3 as $materials_types) --}}
-                            <div class="row">
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                    <div class="card-body pt-0">
-                                        <div class="row">
-                                            @isset($materials)
-                                                {{-- @foreach ($materials_types->groupBy('folder_id') as $key => $materiall) --}}
-                                                {{-- @isset($materiall[0]->folder)
-                                                        @if (in_array($key, $limit_folder))
-                                                        <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
-                                                            <div class="image">
-                                                                <a onclick="shiNew(event)" data-type="dark" data-size="xl"
-                                                                    data-title="{{ $materiall[0]['folder']['name'] }}"
-                                                                    href="{{ route('user.view_folder', $materiall[0]['folder']['id']) }}">
-                                                                    <img src="{{ $materiall[0]['folder']['folder_cover']['url'] }}"
-                                                                        alt="{{ $materiall[0]['folder']['name'] }}">
-                                                                </a>
-                                                            </div>
-                                                            <div class="mat-title">
-                                                                <div class="mt-2">
-                                                                </div>
-                                                                <a onclick="shiNew(event)" data-type="dark" data-size="xl"
-                                                                    data-title="{{ $materiall[0]['folder']['name'] }}"
-                                                                    href="{{ route('user.view_folder', $materiall[0]['folder']['id']) }}"
-                                                                    class="book-title mt-2">
-                                                                    <h4 class="text-capitalize">
-                                                                        {{ $materiall[0]['folder']['name'] }}
-                                                                    </h4>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        @endif
-                                                    @else
-                                                @endisset --}}
-                                                @foreach ($materials as $key => $material)
-                                                    
-                                                    @if (substr($material->type->mat_unique_id, 0, 3) == 'TAA')
-                                                        @if (Auth::user()->user_type == 'student')
-                                                            @if ($material->university_id == Auth::user()->university_id)
-                                                                <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
-                                                                    <div class="image image_big_div">
-                                                                        <div class="ribbon-holder">
-                                                                            @if ($material->mat_his)
-                                                                                @if (in_array($material->mat_his->material_id, $my_materials_arr))
-                                                                                    @foreach ($all_my_materials_arr as $all_my_materials_arr_val)
-                                                                                        @if ($all_my_materials_arr_val->material_id == $material->mat_his->material_id)
-                                                                                            @if ($all_my_materials_arr_val->type == 'rented')
-                                                                                                @if ($all_my_materials_arr_val->is_rent_expired == false)
-                                                                                                    <div
-                                                                                                        class="ribbon ribbon-holder ribbon-{{ $all_my_materials_arr_val->type }}">
-                                                                                                        {{ $all_my_materials_arr_val->type }}
-                                                                                                    </div>
-                                                                                                @endif
-                                                                                            @endif
-
-                                                                                            @if ($all_my_materials_arr_val->type == 'bought')
-                                                                                                <div
-                                                                                                    class="ribbon ribbon-holder ribbon-{{ $all_my_materials_arr_val->type }}">
-                                                                                                    {{ $all_my_materials_arr_val->type }}
-                                                                                                </div>
-                                                                                            @endif
-                                                                                        @endif
-                                                                                    @endforeach
-                                                                                @endif
-                                                                            @endif
-
-                                                                            @if ($material->price == 'Free')
-                                                                                <div class="ribbon ribbon-holder ribbon-free">Free
-                                                                                </div>
-                                                                            @endif
-
-                                                                            @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
-                                                                                <a onclick="shiNew(event)" data-type="dark"
-                                                                                    data-size="m"
-                                                                                    data-title="{{ $material->title }}"
-                                                                                    href="{{ route('user.view_material', $material->id) }}">
-                                                                                    {{-- <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}"
-                                                                                        alt="{{ $material->title }}"
-                                                                                        class="mat_img"> --}}
-                                                                                @if ($material->folder)
-                                                                                    <img src="{{ asset($material->folder->folder_cover->url ?? 'images/new-meeting.png') }}"
-                                                                                        alt="{{ $material->title }}"
-                                                                                        class="mat_img">
-                                                                                @else
-                                                                                    <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
-                                                                                        alt="{{ $material->title }}"
-                                                                                        class="mat_img">
-                                                                                @endif
-                                                                                    <img id="img-2"
-                                                                                        src="{{ asset('materials/icon/v-play.png' ?? "") }}"
-                                                                                        alt="{{ $material->title }}" align="middle"
-                                                                                        style="color: black">
-                                                                                </a>
-                                                                            @else
-                                                                                <a onclick="shiNew(event)" data-type="dark"
-                                                                                    data-size="m"
-                                                                                    data-title="{{ $material->title }}"
-                                                                                    href="{{ route('user.view_material', $material->id) }}">
-                                                                                    <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}"
-                                                                                        alt="{{ $material->title }}"
-                                                                                        class="mat_img">
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="mat-title">
-                                                                        <div class="mt-2">
-                                                                        </div>
-                                                                        <a onclick="shiNew(event)" data-type="dark" data-size="m"
-                                                                            data-title="{{ $material->title }}"
-                                                                            href="{{ route('user.view_material', $material->id) }}"
-                                                                            class="book-title mt-2">
-                                                                            <h4 class="text-capitalize">{{ $material->title }}
-                                                                                ({{ $material->year_of_publication }})
-                                                                            </h4>
-                                                                            <h5 class="text-capitalize">
-                                                                                {{ $material->name_of_author }}
-                                                                            </h5>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            @endif
-                                                        @endif
-                                                    @else
+                        @if ($MCL)
+                            @isset($master_classes)
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                        <div class="card-body pt-0">
+                                            <div class="row">
+                                                @isset($master_classes)
+                                                    @foreach ($master_classes as $key => $material)
                                                         <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
                                                             <div class="image image_big_div">
                                                                 <div class="ribbon-holder">
-                                                                    @if ($material->mat_his)
-                                                                        @if (in_array($material->mat_his->material_id, $my_materials_arr))
-                                                                            @foreach ($all_my_materials_arr as $all_my_materials_arr_val)
-                                                                                @if ($all_my_materials_arr_val->material_id == $material->mat_his->material_id)
-                                                                                    @if ($all_my_materials_arr_val->type == 'rented')
-                                                                                        @if ($all_my_materials_arr_val->is_rent_expired == false)
-                                                                                            <div
-                                                                                                class="ribbon ribbon-holder ribbon-{{ $all_my_materials_arr_val->type }}">
-                                                                                                {{ $all_my_materials_arr_val->type }}
-                                                                                            </div>
-                                                                                        @endif
-                                                                                    @endif
-
-                                                                                    @if ($all_my_materials_arr_val->type == 'bought')
+                                                                    @if ($material->class_his)
+                                                                        @if (in_array($material->class_his->class_id, $my_classes_arr))
+                                                                            @foreach ($all_classes_arr as $all_classes_arr_val)
+                                                                                @if ($all_classes_arr_val->class_id == $material->class_his->class_id)
+                                                                                    @if ($all_classes_arr_val->type == 'bought')
                                                                                         <div
-                                                                                            class="ribbon ribbon-holder ribbon-{{ $all_my_materials_arr_val->type }}">
-                                                                                            {{ $all_my_materials_arr_val->type }}
+                                                                                            class="ribbon ribbon-holder ribbon-{{ $all_classes_arr_val->type }}">
+                                                                                            {{ $all_classes_arr_val->type }}
                                                                                         </div>
                                                                                     @endif
                                                                                 @endif
@@ -192,25 +71,11 @@
                                                                         <div class="ribbon ribbon-holder ribbon-free">Free
                                                                         </div>
                                                                     @endif
-
-                                                                    @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
-                                                                        <a onclick="shiNew(event)" data-type="dark" data-size="m"
-                                                                            data-title="{{ $material->title }}"
-                                                                            href="{{ route('user.view_material', $material->id) }}">
-                                                                            <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}"
-                                                                                alt="{{ $material->title }}" class="mat_img">
-                                                                            <img id="img-2"
-                                                                                src="{{ asset('materials/icon/v-play.png') }}"
-                                                                                alt="{{ $material->title }}" align="middle"
-                                                                                style="color: black">
-                                                                        </a>
-                                                                    @else
-                                                                        <a onclick="shiNew(event)" data-type="dark" data-size="m"
-                                                                            data-title="{{ $material->title }}"
-                                                                            href="{{ route('user.view_material', $material->id) }}">
-                                                                            <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}"
-                                                                                alt="{{ $material->title }}" class="mat_img">
-                                                                    @endif
+                                                                    <a onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                                        data-title="{{ $material->title }}"
+                                                                        href="{{ route('user.view_class', $material->id) }}">
+                                                                        <img src="{{ route('image.private', $material->cover->name ?? '') }}"
+                                                                            alt="{{ $material->title }}" class="mat_img">
                                                                 </div>
                                                             </div>
                                                             <div class="mat-title">
@@ -218,28 +83,196 @@
                                                                 </div>
                                                                 <a onclick="shiNew(event)" data-type="dark" data-size="m"
                                                                     data-title="{{ $material->title }}"
-                                                                    href="{{ route('user.view_material', $material->id) }}"
+                                                                    href="{{ route('user.view_class', $material->id) }}"
                                                                     class="book-title mt-2">
-                                                                    <h4 class="text-capitalize">{{ $material->title }}
-                                                                        ({{ $material->year_of_publication }})
-                                                                    </h4>
-                                                                    <h5 class="text-capitalize">
-                                                                        {{ $material->name_of_author }}
-                                                                    </h5>
+                                                                    <h4 class="text-capitalize">{{ $material->title }}</h4>
                                                                 </a>
                                                             </div>
                                                         </div>
-                                                    @endif
-                                                @endforeach
-                                                {{-- @endforeach --}}
-                                            @endisset
+                                                    @endforeach
+                                                @endisset
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            {{-- @endforeach --}}
-                        @endisset
+                            @endisset
+                        @else
+                            @isset($materials)
+                                {{-- @foreach ($all_materials3 as $materials_types) --}}
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                        <div class="card-body pt-0">
+                                            <div class="row">
+                                                @isset($materials)
+                                                    @foreach ($materials as $key => $material)
+                                                        @if (substr($material->type->mat_unique_id, 0, 3) == 'TAA')
+                                                            @if (Auth::user()->user_type == 'student')
+                                                                @if ($material->university_id == Auth::user()->university_id)
+                                                                    <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
+                                                                        <div class="image image_big_div">
+                                                                            <div class="ribbon-holder">
+                                                                                @if ($material->mat_his)
+                                                                                    @if (in_array($material->mat_his->material_id, $my_materials_arr))
+                                                                                        @foreach ($all_my_materials_arr as $all_my_materials_arr_val)
+                                                                                            @if ($all_my_materials_arr_val->material_id == $material->mat_his->material_id)
+                                                                                                @if ($all_my_materials_arr_val->type == 'rented')
+                                                                                                    @if ($all_my_materials_arr_val->is_rent_expired == false)
+                                                                                                        <div
+                                                                                                            class="ribbon ribbon-holder ribbon-{{ $all_my_materials_arr_val->type }}">
+                                                                                                            {{ $all_my_materials_arr_val->type }}
+                                                                                                        </div>
+                                                                                                    @endif
+                                                                                                @endif
 
+                                                                                                @if ($all_my_materials_arr_val->type == 'bought')
+                                                                                                    <div
+                                                                                                        class="ribbon ribbon-holder ribbon-{{ $all_my_materials_arr_val->type }}">
+                                                                                                        {{ $all_my_materials_arr_val->type }}
+                                                                                                    </div>
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endforeach
+                                                                                    @endif
+                                                                                @endif
+
+                                                                                @if ($material->price == 'Free')
+                                                                                    <div class="ribbon ribbon-holder ribbon-free">
+                                                                                        Free
+                                                                                    </div>
+                                                                                @endif
+
+                                                                                @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
+                                                                                    <a onclick="shiNew(event)" data-type="dark"
+                                                                                        data-size="m"
+                                                                                        data-title="{{ $material->title }}"
+                                                                                        href="{{ route('user.view_material', $material->id) }}">
+                                                                                        {{-- <img src="{{ asset($material->cover->url ??  "images/new-meeting.png") }}"
+                                                                                        alt="{{ $material->title }}"
+                                                                                        class="mat_img"> --}}
+                                                                                        @if ($material->folder)
+                                                                                            <img src="{{ asset($material->folder->folder_cover->url ?? 'images/new-meeting.png') }}"
+                                                                                                alt="{{ $material->title }}"
+                                                                                                class="mat_img">
+                                                                                        @else
+                                                                                            <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
+                                                                                                alt="{{ $material->title }}"
+                                                                                                class="mat_img">
+                                                                                        @endif
+                                                                                        <img id="img-2"
+                                                                                            src="{{ asset('materials/icon/v-play.png' ?? '') }}"
+                                                                                            alt="{{ $material->title }}"
+                                                                                            align="middle" style="color: black">
+                                                                                    </a>
+                                                                                @else
+                                                                                    <a onclick="shiNew(event)" data-type="dark"
+                                                                                        data-size="m"
+                                                                                        data-title="{{ $material->title }}"
+                                                                                        href="{{ route('user.view_material', $material->id) }}">
+                                                                                        <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
+                                                                                            alt="{{ $material->title }}"
+                                                                                            class="mat_img">
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="mat-title">
+                                                                            <div class="mt-2">
+                                                                            </div>
+                                                                            <a onclick="shiNew(event)" data-type="dark"
+                                                                                data-size="m" data-title="{{ $material->title }}"
+                                                                                href="{{ route('user.view_material', $material->id) }}"
+                                                                                class="book-title mt-2">
+                                                                                <h4 class="text-capitalize">{{ $material->title }}
+                                                                                    ({{ $material->year_of_publication }})
+                                                                                </h4>
+                                                                                <h5 class="text-capitalize">
+                                                                                    {{ $material->name_of_author }}
+                                                                                </h5>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
+                                                            @endif
+                                                        @else
+                                                            <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
+                                                                <div class="image image_big_div">
+                                                                    <div class="ribbon-holder">
+                                                                        @if ($material->mat_his)
+                                                                            @if (in_array($material->mat_his->material_id, $my_materials_arr))
+                                                                                @foreach ($all_my_materials_arr as $all_my_materials_arr_val)
+                                                                                    @if ($all_my_materials_arr_val->material_id == $material->mat_his->material_id)
+                                                                                        @if ($all_my_materials_arr_val->type == 'rented')
+                                                                                            @if ($all_my_materials_arr_val->is_rent_expired == false)
+                                                                                                <div
+                                                                                                    class="ribbon ribbon-holder ribbon-{{ $all_my_materials_arr_val->type }}">
+                                                                                                    {{ $all_my_materials_arr_val->type }}
+                                                                                                </div>
+                                                                                            @endif
+                                                                                        @endif
+
+                                                                                        @if ($all_my_materials_arr_val->type == 'bought')
+                                                                                            <div
+                                                                                                class="ribbon ribbon-holder ribbon-{{ $all_my_materials_arr_val->type }}">
+                                                                                                {{ $all_my_materials_arr_val->type }}
+                                                                                            </div>
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            @endif
+                                                                        @endif
+
+                                                                        @if ($material->price == 'Free')
+                                                                            <div class="ribbon ribbon-holder ribbon-free">Free
+                                                                            </div>
+                                                                        @endif
+
+                                                                        @if (substr($material->type->mat_unique_id, 0, 3) == 'VAA')
+                                                                            <a onclick="shiNew(event)" data-type="dark"
+                                                                                data-size="m" data-title="{{ $material->title }}"
+                                                                                href="{{ route('user.view_material', $material->id) }}">
+                                                                                <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
+                                                                                    alt="{{ $material->title }}" class="mat_img">
+                                                                                <img id="img-2"
+                                                                                    src="{{ asset('materials/icon/v-play.png') }}"
+                                                                                    alt="{{ $material->title }}" align="middle"
+                                                                                    style="color: black">
+                                                                            </a>
+                                                                        @else
+                                                                            <a onclick="shiNew(event)" data-type="dark"
+                                                                                data-size="m"
+                                                                                data-title="{{ $material->title }}"
+                                                                                href="{{ route('user.view_material', $material->id) }}">
+                                                                                <img src="{{ asset($material->cover->url ?? 'images/new-meeting.png') }}"
+                                                                                    alt="{{ $material->title }}" class="mat_img">
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mat-title">
+                                                                    <div class="mt-2">
+                                                                    </div>
+                                                                    <a onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                                        data-title="{{ $material->title }}"
+                                                                        href="{{ route('user.view_material', $material->id) }}"
+                                                                        class="book-title mt-2">
+                                                                        <h4 class="text-capitalize">{{ $material->title }}
+                                                                            ({{ $material->year_of_publication }})
+                                                                        </h4>
+                                                                        <h5 class="text-capitalize">
+                                                                            {{ $material->name_of_author }}
+                                                                        </h5>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                    {{-- @endforeach --}}
+                                                @endisset
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- @endforeach --}}
+                            @endisset
+                        @endif
                     </div>
                 </div>
         @endif

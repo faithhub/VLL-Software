@@ -24,6 +24,7 @@ class MaterialHistory extends Model
         "rent_count",
         "unique_id",
         "mat_type",
+        "class_id",
         "rent_unique_id",
         "type"
     ];
@@ -36,6 +37,11 @@ class MaterialHistory extends Model
     public function mat()
     {
         return $this->hasOne(Material::class, 'id', 'material_id');
+    }
+
+    public function class()
+    {
+        return $this->hasOne(Material::class, 'id', 'class_id');
     }
     public function folder()
     {

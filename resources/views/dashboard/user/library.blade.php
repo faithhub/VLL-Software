@@ -42,7 +42,7 @@
                                                         <img id="video-bookstore-cover"
                                                             src="{{ asset('materials/icon/v-play.png') }}"
                                                             alt="{{ $material->title }}" align="middle" style="color: black">
-                                                     @endif
+                                                    @endif
                                                 </a>
                                             </div>
                                         </div>
@@ -64,9 +64,96 @@
                                     </div>
                                 @endforeach
                             @endisset
+
+                            @isset($master_classes)
+                                @foreach ($master_classes as $key => $material)
+                                    <div class="col-lg-4 col-md-4 mb-5 justify-content-center">
+                                        <div class="image image_big_div">
+                                            <div class="ribbon-holder">
+                                                {{-- @dump($material) --}}
+                                                @if ($material->class_his->type == 'bought' || $material->class_his->type == 'free')
+                                                    <div class="ribbon ribbon-holder ribbon-{{ $material->class_his->type }}">
+                                                        {{ $material->class_his->type }}</div>
+                                                @endif
+                                                <a onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                    data-title="{{ $material->title }}"
+                                                    href="{{ route('user.view_class', $material->id) }}">
+                                                    <img src="{{ route('image.private', $material->cover->name ?? '') }}"
+                                                        alt="{{ $material->title }}" class="mat_img">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mat-title">
+                                            <div class="mt-2">
+                                            </div>
+                                            <a onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                data-title="{{ $material->title }}"
+                                                href="{{ route('user.view_material', $material->id) }}"
+                                                class="book-title mt-2">
+                                                <h4 class="text-capitalize">{{ $material->title }}
+                                                    ({{ $material->year_of_publication }})
+                                                </h4>
+                                                <h5 class="text-capitalize">
+                                                    {{ $material->name_of_author }}
+                                                </h5>
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endforeach
+                                {{-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                        <div class="card-body pt-0">
+                                            <div class="row">
+                                                @isset($master_classes)
+                                                    @foreach ($master_classes as $key => $material)
+                                                        <div class="col-lg-3 col-md-3 mb-5 justify-content-center">
+                                                            <div class="image image_big_div">
+                                                                <div class="ribbon-holder">
+                                                                    @if ($material->class_his)
+                                                                        @if (in_array($material->class_his->class_id, $my_classes_arr))
+                                                                            @foreach ($all_classes_arr as $all_classes_arr_val)
+                                                                                @if ($all_classes_arr_val->class_id == $material->class_his->class_id)
+                                                                                    @if ($all_classes_arr_val->type == 'bought')
+                                                                                        <div
+                                                                                            class="ribbon ribbon-holder ribbon-{{ $all_classes_arr_val->type }}">
+                                                                                            {{ $all_classes_arr_val->type }}
+                                                                                        </div>
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endforeach
+                                                                        @endif
+                                                                    @endif
+
+                                                                    @if ($material->price == 'Free')
+                                                                        <div class="ribbon ribbon-holder ribbon-free">Free
+                                                                        </div>
+                                                                    @endif
+                                                                    <a onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                                        data-title="{{ $material->title }}"
+                                                                        href="{{ route('user.view_class', $material->id) }}">
+                                                                        <img src="{{ route('image.private', $material->cover->name ?? '') }}"
+                                                                            alt="{{ $material->title }}" class="mat_img">
+                                                                </div>
+                                                            </div>
+                                                            <div class="mat-title">
+                                                                <div class="mt-2">
+                                                                </div>
+                                                                <a onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                                    data-title="{{ $material->title }}"
+                                                                    href="{{ route('user.view_class', $material->id) }}"
+                                                                    class="book-title mt-2">
+                                                                    <h4 class="text-capitalize">{{ $material->title }}</h4>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                @endisset
+                                            </div>
+                                        </div>
+                                    </div> --}}
+                            @endisset
                             @isset($folders)
                                 @foreach ($folders as $key => $folder)
-                                    <div class="col-lg-4 col-md-4 mb-5 justify-content-center">
+                                    <div class="col-lg-4 col-md-2 mb-2 justify-content-center">
                                         <div class="image image_big_div">
                                             <div class="ribbon-holder">
                                                 @if (in_array($folder->id, $bought_folders))
@@ -142,7 +229,7 @@
                         @endisset
                     </div>
                 </div>
-                @unless(Auth::user()->user_type == 'professionals')
+                @unless (Auth::user()->user_type == 'professionals')
                     {{-- <div class="card text-card">
                         <div class="card-header border-bottom-0 mt-3 text-white">
                             <h3 class="card-title font-weight-bold h2">Test</h3>

@@ -11,6 +11,7 @@ use App\Models\MaterialHistory;
 use App\Models\SubHistory;
 use App\Models\Subscription;
 use App\Models\Team;
+use App\Models\MasterClass;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Wallet;
@@ -452,6 +453,157 @@ class FlutterwaveController extends Controller
                 'type' => $type,
                 'folder_expired_date' => $folder_expired_date ?? 0,
                 'isFolderExpired' => $isFolderExpired ?? false,
+                'mat_type' => $mat_type
+            ]);
+
+            Session::flash('success', "Payment Successful");
+            return redirect()->route('user.library');
+        } catch (\Throwable $th) {
+            dd($th);
+            Session::flash('warning', 'Something went wrong');
+            return back() ?? redirect()->route('user');
+        }
+    }
+
+    public function confirm_masterclass_transaction()
+    {
+        try {
+            //code...
+            $rented_days = \getenv('RENTED_DAYS');
+            $transaction_id = $_GET['transaction_id'];
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . getenv('SECRET_KEY'),
+            ])->get('https://api.flutterwave.com/v3/transactions/' . $transaction_id . '/verify');
+
+
+            // You can access the response body like this:
+            $responseBody = $response->json();
+
+            if ($responseBody['status'] == "error") {
+                Session::flash('warning', $responseBody['message']);
+                return back() ?? redirect()->route('user');
+            }
+
+            $tx_ref = $responseBody['data']['tx_ref'];
+            $trans = Transaction::where('trxref', $tx_ref)->first();
+            $amount = $responseBody['data']['amount'];
+            $status = $responseBody['data']['status'];
+            $reference = $tx_ref;
+            $mat_data = strstr($tx_ref, "@", true);
+            $mat_id = strstr($mat_data, "#", true); //get material id
+            $type = substr($mat_data, strpos($mat_data, "#") + 1); //get payment type (buy or rent)
+            $tx_ref = substr($tx_ref, strpos($tx_ref, "@") + 1); //get payment ref
+
+            $invoice_id = Str::upper("TRX" . $this->unique_code(12));
+
+            $check_trans = Transaction::where('trxref', $tx_ref)->get();
+            if ($check_trans->count() < 1) {
+                $curr_used = Currency::where('code', $responseBody['data']['currency'])->first();
+                $trans = Transaction::create([
+                    'user_id' => Auth::user()->id,
+                    'invoice_id' => $invoice_id,
+                    'material_id' => $mat_id,
+                    'date' => $responseBody['data']['created_at'],
+                    'amount' => $responseBody['data']['amount'],
+                    'status' => $responseBody['data']['status'],
+                    'currency_id' => $curr_used->id,
+                    'reference' => $responseBody['data']['id'],
+                    'trxref' => $tx_ref,
+                    'type' => $type
+                ]);
+            } else {
+                $trans = $check_trans->first();
+            }
+
+
+            if (
+                $responseBody['data']['status'] != "successful"
+            ) {
+                # code...
+                Session::flash('warning', "Payment faild");
+                return back() ?? redirect()->route('user');
+            }
+
+            $mat_type = "material";
+            $currency = $responseBody['data']['currency'];
+
+
+            # code...
+            $type = "bought";
+            $mat_details = MasterClass::find($mat_id);
+
+            //Calc payment for bought material to vendore wallets
+            $percentage = \getenv('PERCENTAGE_PAYOUT_FOR_BOUGHT_BOOK');
+            $payout_for_mat = ($percentage / 100) * $responseBody['data']['amount'];
+
+
+            if (!$mat_details) {
+                Session::flash('warning', 'Unable to confirm payment');
+                return back() ?? redirect()->route('user');
+            }
+
+            $vendor = User::where(['id' => $mat_details->user_id])->first();
+
+            if (!$trans->amount_paid) {
+                if ($vendor->role == "vendor" || $vendor->role == "admin" || $vendor->role == "sub_admin") {
+                    $wallet = Wallet::where(['user_id' => $vendor->id, 'code' => $currency])->first();
+                    if ($wallet) {
+                        $wallet->amount = $wallet->amount + $payout_for_mat; //save to vendor wallet if wallet does exist
+                        $save_with = $wallet->save();
+                        if ($save_with) {
+                            $trans->paid_to_vendor = true;
+                            $trans->amount_paid = $payout_for_mat;
+                            $trans->save();
+                        }
+                    } else {
+                        $curr = Currency::where('code', $currency)->first(); //create wallet and save to vendor wallet
+                        $new_wallet = Wallet::create([
+                            'user_id' => $vendor->id,
+                            'currency_id' => $curr->id,
+                            'code' => $currency,
+                            'amount' => $payout_for_mat
+                        ]);
+                        if ($new_wallet->id) {
+                            $trans->paid_to_vendor = true;
+                            $trans->amount_paid = $payout_for_mat;
+                            $trans->save();
+                        }
+                    }
+                }
+            }
+
+            $data['invoice_id'] = $invoice_id;
+            $data['date'] = $date = Carbon::now();
+
+
+            $my_materials_arr = [];
+            $my_materials = MaterialHistory::where(['user_id' => Auth::user()->id, 'is_rent_expired' => false])->get('class_id');
+            foreach ($my_materials as $key => $value) {
+                # code...
+                array_push($my_materials_arr, $value->material_id);
+            }
+
+            $object = new \stdClass();
+            $object->name = Auth::user()->name;
+            $object->currency = $responseBody['data']['currency'];
+            $object->amount = $responseBody['data']['amount'];
+            $object->date = $responseBody['data']['created_at'];
+            $object->type = $type;
+            $object->mat_type = $mat_type;
+            $object->payment_type = 'material_trans';
+            $object->material = $mat_details->title;
+            $object->ref = $tx_ref;
+
+            Mail::to(Auth::user()->email)->send(new Receipt($object));
+
+            MaterialHistory::create([
+                'user_id' => Auth::user()->id,
+                'class_id' => $mat_id,
+                'transaction_id' => $trans->id,
+                'invoice_id' => $invoice_id,
+                'unique_id' => Str::upper("MATHIS" . $this->unique_code(12)),
+                'type' => $type,
                 'mat_type' => $mat_type
             ]);
 

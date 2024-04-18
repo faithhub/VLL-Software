@@ -86,29 +86,25 @@
         }
     }
 
-    function flutterwaveBuyMaterial(amount, mat_id, type) {
+    function flutterwaveBuyMaterial(amount, mat_id, type, masterClass = null) {
         const currency = "{{ $currency }}";
+            var tx_ref = mat_id + "#" + type + "@VLL-MATERIAL-" + Math.floor((Math.random() * 100000000000000) + 1);
+            var redirect_url = "{{ route('material.payment') }}";
+        if (masterClass == "class") {
+            redirect_url = "{{ route('master-class.payment') }}";
+            tx_ref = mat_id + "#" + type + "@VLL-MASTERCLASS-" + Math.floor((Math.random() * 100000000000000) + 1);
+        }
         console.log(currency, amount, mat_id, type);
         FlutterwaveCheckout({
             public_key: PUBLIC_KEY,
-            tx_ref: mat_id + "#" + type + "@VLL-MATERIAL-" + Math.floor((Math.random() * 100000000000000) + 1),
+            tx_ref: tx_ref,
             // tx_ref: "VLL-" + Math.floor((Math.random() * 100000000000000) + 1),
             amount: amount,
             currency: currency,
-            redirect_url: "{{ route('material.payment') }}",
+            redirect_url: redirect_url,
             payment_options: "card",
             callback: function(payment) {
                 console.log(payment);
-                if (payment.status == "successful") {
-                    console.log(payment);
-                    // saveMaterial(amount, mat_id, type, payment)
-                    setTimeout(function() {
-                        window.location.href = "{{ route('user.library') }}";
-                    }, 2000);
-                    return toastr.success("{{ session('success') }}", "Payment Successful");
-                } else {
-                    return toastr.error("{{ session('error') }}", "Payment Failed");
-                }
             },
             onclose: function(incomplete) {
                 console.log(incomplete);

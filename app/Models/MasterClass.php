@@ -41,6 +41,16 @@ class MasterClass extends Model
         return $this->hasOne(File::class, 'id', 'master_class_id');
     }
 
+    public function vendor()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function class_his()
+    {
+        return $this->hasOne(MaterialHistory::class, 'class_id', 'id');
+    }
+
     public function meeting()
     {
         return $this->belongsToMany(Meeting::class);

@@ -16,7 +16,7 @@
         }
     </style>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
-{{-- <script src='https://www.google.com/recaptcha/api.js'></script> --}}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     <!-- Start Why Choose Us Area -->
     <section id="about" class="why-choose-us bg-f9faff">
         <div class="container">

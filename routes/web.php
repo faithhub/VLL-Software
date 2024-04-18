@@ -71,6 +71,7 @@ Route::group(['middleware' => ['auth']], function () {
     //Payment Confrimation
     Route::get('/confirm-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'confirm_subscription_transaction'])->name('confirm.payment');
     Route::get('/material-confirm-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'confirm_material_transaction'])->name('material.payment');
+    Route::get('/master-class-confirm-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'confirm_masterclass_transaction'])->name('master-class.payment');
     Route::post('/save-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'save_transaction'])->name('save.transaction');
     Route::post('/withdraw-transaction',  [App\Http\Controllers\FlutterwaveController::class, 'withdraw'])->name('withdraw.transaction');
 });
@@ -94,7 +95,8 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::match(['get'], 'view_material_type/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'view_material_type'])->name('view_material_type');
         Route::match(['post'], 'subscribe',  [App\Http\Controllers\Dashboard\UserController::class, 'subscribe'])->name('subscribe');
         Route::match(['post'], 'buy_rent_material',  [App\Http\Controllers\Dashboard\UserController::class, 'buy_rent_material'])->name('rent.buy')->middleware('sub');
-        Route::match(['get'], 'add_to_library/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'add_to_library'])->name('add_to_library')->middleware('sub');
+        Route::match(['get'], 'add-to-library/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'add_to_library'])->name('add_to_library')->middleware('sub');
+        Route::match(['get'], 'add-masterclass-library/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'add_masterclass_to_library'])->name('add_masterclass_to_library')->middleware('sub');
         Route::match(['get'], 'add_free_folder_to_library/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'add_free_folder_to_library'])->name('add_free_folder_to_library')->middleware('sub');
         Route::match(['get'], 'second_rent/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'second_rent'])->name('second_rent')->middleware('sub');
         Route::match(['get', 'post'], 'access-material/{id}',  [App\Http\Controllers\Dashboard\UserController::class, 'access_material'])->name('access_material')->middleware('myHeader');
@@ -170,6 +172,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/vendors',  [App\Http\Controllers\Admin\VendorController::class, 'index'])->name('vendors')->middleware('sub_admin_user');;
         Route::get('/vendor/{id}',  [App\Http\Controllers\Admin\VendorController::class, 'view'])->name('vendor')->middleware('sub_admin_user');;
         Route::get('/vendor/acc/{id}/{type}/{mode}',  [App\Http\Controllers\Admin\VendorController::class, 'lock_unlock'])->name('vendor.lock_unlock')->middleware('sub_admin_user');;
+
+        //Master Class
+        Route::get('/master-classes',  [App\Http\Controllers\Admin\MasterClassController::class, 'index'])->name('masterclass.index')->middleware('sub_admin_mat');
 
         Route::get('/library',  [App\Http\Controllers\Admin\MaterialController::class, 'library'])->name('library')->middleware('sub_admin_mat');
         Route::match(['get', 'post'], '/upload',  [App\Http\Controllers\Admin\MaterialController::class, 'upload'])->name('upload')->middleware('sub_admin_mat');
