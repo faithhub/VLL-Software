@@ -20,6 +20,7 @@
                         @isset($mat_folder)
                         <h5><b class="font-weight-bold text-capitalize">Folder: </b>{{ $mat_folder->folder->name ?? "" }}</h5>
                         @endisset
+                        @dump($tran)
                     </div>
                 </div>
             </div>

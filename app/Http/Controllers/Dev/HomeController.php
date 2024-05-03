@@ -77,6 +77,61 @@ class HomeController extends Controller
         }
     }
 
+    public function melt(Request $request)
+    {
+        # code...
+        try {
+            // $pass = Hash::make("Admin@123");
+            // dd($pass);
+
+            if ($_POST) {
+
+                $rules = array(
+                    'name' => ['required', 'string'],
+                    'pdfFile' => ['required', 'mimes:pdf', 'max:10000'],
+                    // 'folder_cover_id' => ['mimes:jpeg,png,jpg,gif,svg', 'max:50000'],
+                );
+
+                $messages = [
+                    // 'name.unique' => __('The Folder name has already been taken'),
+                    // 'folder_cover_id.required_if' => __('The Folder cover is required'),
+                ];
+
+                // dd($request->all());
+                $validator = Validator::make($request->all(), $rules, $messages);
+
+                if ($validator->fails()) {
+                    $errors = $validator->errors();
+                    if ($errors->has('name')) {
+                        Session::flash('warning', $errors->first('name'));
+                    } else {
+                        Session::flash('warning', __('All fields are required'));
+                    }
+                    return back()->withErrors($validator)->withInput();
+                }
+
+
+                // dd($request->all());
+
+                // $mpdf->Output('filename.pdf');
+                // $data = [
+                //     'foo' => 'bar'
+                // ];
+                // $pdf = ProtectPDF::loadView('pdf.document', $data);
+                // return $pdf->stream('document.pdf');
+            }
+
+
+            $data['title'] = "Test";
+            return View('dev.melt', $data);
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            Session::flash('warning', $th->getMessage());
+            return back();
+            //throw $th;
+        }
+    }
+
 
     public function email_template(Request $request)
     {

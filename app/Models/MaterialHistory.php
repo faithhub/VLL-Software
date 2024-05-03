@@ -36,7 +36,15 @@ class MaterialHistory extends Model
 
     public function mat()
     {
-        return $this->hasOne(Material::class, 'id', 'material_id');
+        return $this->hasOne(Material::class, 'id', 'material_id')
+            // ->select([
+            //     'id',
+            //     'name',
+            //     'email',
+            //     'country_id',
+            //     'university_id',
+            // ])
+        ;
     }
 
     public function class()
@@ -50,6 +58,12 @@ class MaterialHistory extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'id', 'user_id');
+        return $this->hasOne(User::class, 'id', 'user_id')->select([
+            'id',
+            'name',
+            'email',
+            'country_id',
+            'university_id',
+        ]);
     }
 }

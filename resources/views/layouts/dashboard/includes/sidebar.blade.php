@@ -166,7 +166,7 @@
                             <span class="side-menu__label">Bookstore</span>
                         </a>
                     </li>
-{{-- 
+
                     <li class="slide is-expanded" id="sidebar">
                         <a class="side-menu__item side_menus {{ request()->is('vendor/master-classes') ? 'active' : '' }}"
                             href="{{ route('vendor.master_classes') }}">
@@ -178,7 +178,7 @@
                             </svg>
                             <span class="side-menu__label">Master Classes</span>
                         </a>
-                    </li> --}}
+                    </li>
 
                     <li class="slide is-expanded" id="sidebar">
                         <a class="side-menu__item side_menus {{ request()->is('vendor/folders') ? 'active' : '' }}"
@@ -357,7 +357,7 @@
                                 <span class="side-menu__label">Folders</span>
                             </a>
                         </li>
-{{-- 
+
                         <li class="slide is-expanded" id="sidebar">
                             <a class="side-menu__item side_menus {{ request()->is('admin/master-classes') ? 'active' : '' }}"
                                 href="{{ route('admin.masterclass.index') }}">
@@ -369,7 +369,7 @@
                                 </svg>
                                 <span class="side-menu__label">Master Classes</span>
                             </a>
-                        </li> --}}
+                        </li>
                     @endif
                 @endif
 

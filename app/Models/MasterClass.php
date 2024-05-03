@@ -29,10 +29,12 @@ class MasterClass extends Model
         'status',
         'timezone',
         'meeting_ids',
+        'details',
     ];
 
     protected $casts = [
         'dates' => 'array',
+        'details' => 'array',
         'meeting_ids' => 'array'
     ];
 

@@ -61,12 +61,14 @@ class AppServiceProvider extends ServiceProvider
 
         $response = json_decode($response, true);
 
-        if ($response['status'] == 'success') {
-            date_default_timezone_set($response['timezone'] ?? config('app.timezone'));
+        if ($response) {
+            if ($response['status'] == 'success') {
+                date_default_timezone_set($response['timezone'] ?? config('app.timezone'));
+            }
         }
 
         Validator::extend('recaptcha', 'App\Validators\ReCaptcha@validate');
-        
+
         $settings = Cache::remember('settings', 3600, function () {
             return Setting::all([
                 'key', 'value'

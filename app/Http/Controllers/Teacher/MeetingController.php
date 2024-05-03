@@ -511,11 +511,11 @@ class MeetingController extends Controller
         }
     }
 
-    public function create_meeting($data, $dates, $timezone, $time)
+    public function create_meeting($data, $date, $timezone, $time)
     {
         try {
             //code...
-            $start = Carbon::parse($dates[0] . ' ' . $time)->format('Y-m-d H:i:s');
+            $start = Carbon::parse($date . ' ' . $time)->format('Y-m-d H:i:s');
             // $end = Carbon::parse($request->end)->format('Y-m-d H:i:s');
             $title = $data['title'];
             // return [$data, $dates[0], $title];

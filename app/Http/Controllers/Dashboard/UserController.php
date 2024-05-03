@@ -472,10 +472,11 @@ class UserController extends Controller
 
     public function view_class($id)
     {
+        $object = new \stdClass();
 
         try {
             //code...
-            $object = new \stdClass();
+            $data['status'] = true;
             $data['class'] = $class = MasterClass::where('id', $id)->with('cover')->first();
             if (!$class) {
                 $object->status = false;
@@ -485,10 +486,19 @@ class UserController extends Controller
             }
             $object->status = true;
             $meetings_arr = [];
-            $meetings = $class->meeting_ids;
-            foreach ($meetings as $meeting) {
-                $meeting_details = Meeting::where('id', $meeting)->first();
-                array_push($meetings_arr, $meeting_details);
+            $details = $class->details;
+            if (is_array($details)) {
+                foreach ($details as $detail) {
+                    if (!empty($detail['meeting_id'])) {
+                        $meeting_details = Meeting::where('id', $detail['meeting_id'])->first();
+                        $obj = new \stdClass();
+                        $obj->id = $detail['id'];
+                        $obj->date = $detail['date'];
+                        $obj->meeting_id = $detail['meeting_id'];
+                        $obj->meeting = $meeting_details;
+                        array_push($meetings_arr, $obj);
+                    }
+                }
             }
 
             // Check for all the bought/owned classes
@@ -521,6 +531,12 @@ class UserController extends Controller
             $data['my_classes_arr'] = $my_classes_arr;
             return View('dashboard.user.classes.view', $data);
         } catch (\Throwable $th) {
+            $object->status = false;
+            // $object->msg = false;
+            $object->msg = "Something went wrong, try again!";
+            $data['response'] = $object;
+            return View('dashboard.user.classes.view', $data);
+            
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('user');
             //throw $th;

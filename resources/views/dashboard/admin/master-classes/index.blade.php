@@ -6,10 +6,10 @@
                 <div class="card border-10">
                     <div class="card-header border-bottom-0 mb-4 mt-3">
                         <h6 class="mb-1 mt-1 font-weight-bold h3">Master Class</h6>
-                        <div class="card-options" style="margin-right:2.5%">
+                        {{-- <div class="card-options" style="margin-right:2.5%">
                             <a href="{{ route('admin.upload') }}" class="btn btn-bg btn-primary p-3"><b>Upload a
                                     Material</b></a>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="card-body pt-0">
                         <div class="table-responsive">
@@ -29,9 +29,7 @@
                                                     <th class="sorting" tabindex="0" style="">Special Guest</th>
                                                     <th class="sorting" tabindex="0" style="">Duration</th>
                                                     <th class="sorting" tabindex="0" style="">Interval</th>
-                                                    <th class="sorting" tabindex="0" style="">Description</th>
                                                     <th class="sorting" tabindex="0" style="">Price</th>
-                                                    <th class="sorting" tabindex="0" style="">Material</th>
                                                     <th class="sorting" tabindex="0" style="">Action</th>
                                                 </tr>
                                             </thead>
@@ -47,7 +45,7 @@
                                                             <td class="sorting_1"><a class="font-weight-bold"
                                                                     onclick="shiNew(event)" data-type="dark" data-size="m"
                                                                     data-title="{{ $material->title }}"
-                                                                    href="{{ route('admin.view_material', $material->id) }}">{{ $material->title }}
+                                                                    href="{{ route('admin.masterclass.view', $material->id) }}">{{ $material->title }}
                                                                 </a></td>
                                                              <td>
                                                                 <span
@@ -75,29 +73,23 @@
                                                                 <span
                                                                     class="text-capitalize">{{ $material->interval }}</span>
                                                             </td>
-                                                            <td>{{ mb_strimwidth($material->desc ?? '', 0, 20, '...') }}
-                                                            </td>
+                                                            {{-- <td>{{ mb_strimwidth($material->desc ?? '', 0, 20, '...') }}
+                                                            </td> --}}
                                                             <td><span
                                                                     class="money">{{ money($material->amount, $material->currency_id) }}
                                                                 </span> </td>
                                                             <td>
-                                                                {{-- <a class="font-weight-bold" href="{{ asset($material->file->url ?? "") }}" target="blank" >{{ mb_strimwidth($material->title ?? '', 0, 20, '...') }}.pdf</a> --}}
-                                                                {{-- <a class="font-weight-bold btn m-1 btn-sm btn-primary"
-                                                                    href="{{ asset($material->file->url ?? '') }}"
-                                                                    target="blank"><i class="fa fa-eye"></i> Material</a> --}}
-                                                            </td>
-                                                            <td>
                                                                 <div class="d-flex">
                                                                     {{-- <a href="" class="p-2"><i class="fa fa-trash"></i></a> --}}
-                                                                    <a onclick="return confirm('Are you sure you want to delete this material?')"
-                                                                        href="{{ route('admin.delete.library', $material->id) }}"
+                                                                    <a onclick="return confirm('Are you sure you want to delete this class?')"
+                                                                        href="{{ route('admin.masterclass.delete', $material->id) }}"
                                                                         class="btn m-1 btn-sm btn-danger">Delete</a>
-                                                                    <a href="{{ route('admin.edit.library', $material->id) }}"
-                                                                        class="btn btn-sm m-1 btn-primary">Edit</a>
+                                                                    {{-- <a href="{{ route('admin.edit.library', $material->id) }}"
+                                                                        class="btn btn-sm m-1 btn-primary">Edit</a> --}}
                                                                     <a onclick="shiNew(event)" data-type="dark" data-size="m"
                                                                         data-title="{{ $material->invoice_id }}"
-                                                                        href="{{ route('admin.view_material', $material->id) }}"
-                                                                        class="btn btn-sm m-1 btn-blue">Summary</a>
+                                                                        href="{{ route('admin.masterclass.view', $material->id) }}"
+                                                                        class="btn btn-sm m-1 btn-dark">View</a>
                                                                     {{-- <a onclick="return confirm('Are you sure you want to delete this material?')" href="{{ route('admin.delete.library', $material->id) }}" class="p-2"><i class="fa fa-trash"></i></a>
                                                                 <a href="{{ route('admin.edit.library', $material->id) }}" class="p-2"><i class="fa fa-pencil"></i></a> --}}
                                                                     {{-- <a href="{{ route('admin.view.library', $material->id) }}" class="p-2"><i class="fa fa-eye"></i></a> --}}

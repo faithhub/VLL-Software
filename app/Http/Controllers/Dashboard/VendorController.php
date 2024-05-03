@@ -1393,10 +1393,24 @@ class VendorController extends Controller
 
                 $meeting = $createZoom->create_meeting(
                     $request->only('title', 'time'),
-                    $dates,
+                    $dates[0],
                     $request->timezone,
                     $request->time
                 );
+
+                $dates_arr = [];
+                foreach ($dates as $date) {
+                    $obj = new \stdClass();
+                    if ($dates[0] == $date) {
+                        $obj->meeting_id = $meeting['meeting']['id'];
+                    } else {
+                        $obj->meeting_id = null;
+                    }
+                    $obj->id = $this->unique_code(6);
+                    $obj->date = $date;
+                    array_push($dates_arr, $obj);
+                }
+
                 if ($meeting['status']) {
                     // if ($request->hasFile('master_class_id')) {
                     //     $material_file = $request->file('master_class_id');
@@ -1456,6 +1470,8 @@ class VendorController extends Controller
                         'instructor_name' => $request->instructor_name,
                         'special_guest' => $request->special_guest,
                         'desc' => $request->desc ?? null,
+                        'details' => $dates_arr,
+                        'timezone' => $request->timezone,
                         'master_class_id' => $save_cover->id ?? null,
                         'status' => 'pending',
                         'meeting_ids' => [$meeting['meeting']['id']]
@@ -1491,6 +1507,7 @@ class VendorController extends Controller
             $data['classes'] = $classes = MasterClass::where('user_id', Auth::user()->id)->with(['cover'])->Orderby('created_at', 'DESC')->get();
             return View('dashboard.vendor.master-class.index', $data);
         } catch (\Throwable $th) {
+            dd($th);
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('vendor');
             //throw $th;
@@ -1499,6 +1516,10 @@ class VendorController extends Controller
 
     public function master_class($id)
     {
+        $object = new \stdClass();
+        $object->status = true;
+        $data['response'] = $object;
+
         try {
             $data['class'] = $class = MasterClass::where(['user_id' => Auth::user()->id, 'id' => $id])->with(['cover'])->first();
             if (!$class) {
@@ -1506,17 +1527,31 @@ class VendorController extends Controller
                 return back() ?? redirect()->route('vendor.master_classes');
             }
             $meetings_arr = [];
-            $meetings = $class->meeting_ids;
-            foreach ($meetings as $meeting) {
-                $meeting_details = Meeting::where('id', $meeting)->first();
-                // dd($meeting_details);
-                array_push($meetings_arr, $meeting_details);
+            $details = $class->details;
+            // dd($details);
+            if (is_array($details)) {
+                foreach ($details as $detail) {
+                    // dd($detail);
+                    if (!empty($detail['meeting_id'])) {
+                        $meeting_details = Meeting::where('id', $detail['meeting_id'])->first();
+                        $obj = new \stdClass();
+                        $obj->id = $detail['id'];
+                        $obj->date = $detail['date'];
+                        $obj->meeting_id = $detail['meeting_id'];
+                        $obj->meeting = $meeting_details;
+                        array_push($meetings_arr, $obj);
+                    }
+                }
             }
-            // dd($meetings_arr, $meetings, $class->pluck('meeting_ids'), $class->meeting_ids);
-            $data['meetings_arr'] = $meetings_arr;
-            $data['title'] = "Vendor Dashboard - Master Class";
+            $data['students'] = $students = MaterialHistory::where(['class_id' => $class->id])->with('user')->get();
+            $data['meetings_array'] = $meetings_arr;
+            $data['title'] = "Vendor Dashboard - " . $class->title;
             return View('dashboard.vendor.master-class.view', $data);
         } catch (\Throwable $th) {
+            $object->status = false;
+            $object->msg = "Something went wrong, try again!";
+            $data['response'] = $object;
+            return View('dashboard.vendor.master-class.view', $data);
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('vendor');
             //throw $th;

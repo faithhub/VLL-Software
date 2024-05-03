@@ -16,9 +16,9 @@
 <script src="{{ asset('assets/dashboard/plugins/bootstrap/popper.min.js') }}"></script>
 <script src="{{ asset('assets/dashboard/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/dashboard/plugins/sidemenu/sidemenu.js') }}"></script>
-<script src="{{ asset('assets/dashboard/plugins/p-scrollbar/p-scrollbar.js') }}"></script>
+{{-- <script src="{{ asset('assets/dashboard/plugins/p-scrollbar/p-scrollbar.js') }}"></script>
 <script src="{{ asset('assets/dashboard/plugins/p-scrollbar/p-scroll1.js') }}"></script>
-<script src="{{ asset('assets/dashboard/plugins/p-scrollbar/p-scroll.js') }}"></script>
+<script src="{{ asset('assets/dashboard/plugins/p-scrollbar/p-scroll.js') }}"></script> --}}
 <script src="{{ asset('assets/dashboard/plugins/flot/jquery.flot.js') }}"></script>
 <script src="{{ asset('assets/dashboard/plugins/flot/jquery.flot.fillbetween.js') }}"></script>
 <script src="{{ asset('assets/dashboard/plugins/flot/jquery.flot.pie.js') }}"></script>
@@ -65,7 +65,6 @@
 
 <script type="text/javascript">
     window.addEventListener('keydown', function(e) {
-
         if (e.ctrlKey == true && (e.which == '80')) {
             e.preventDefault();
             alert('You can\'t print W');

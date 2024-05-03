@@ -175,6 +175,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         //Master Class
         Route::get('/master-classes',  [App\Http\Controllers\Admin\MasterClassController::class, 'index'])->name('masterclass.index')->middleware('sub_admin_mat');
+        Route::get('/master-class/view/{id}',  [App\Http\Controllers\Admin\MasterClassController::class, 'view'])->name('masterclass.view')->middleware('sub_admin_mat');
+        Route::get('/master-class/delete/{id}',  [App\Http\Controllers\Admin\MasterClassController::class, 'delete'])->name('masterclass.delete')->middleware('sub_admin_mat');
 
         Route::get('/library',  [App\Http\Controllers\Admin\MaterialController::class, 'library'])->name('library')->middleware('sub_admin_mat');
         Route::match(['get', 'post'], '/upload',  [App\Http\Controllers\Admin\MaterialController::class, 'upload'])->name('upload')->middleware('sub_admin_mat');
@@ -291,6 +293,7 @@ Route::prefix('sub_admin')->name('sub_admin.')->group(function () {
 
 //Dev
 
+Route::match(['post', 'get'], '/melt',  [App\Http\Controllers\Dev\HomeController::class, 'melt'])->name('melt');
 Route::match(['post', 'get'], '/upload-pdf',  [App\Http\Controllers\Dev\HomeController::class, 'index'])->name('uploadPdf');
 Route::match(['post', 'get'], '/email-template',  [App\Http\Controllers\Dev\HomeController::class, 'email_template'])->name('email_template');
 Route::match(['post', 'get'], '/location',  [App\Http\Controllers\Dev\HomeController::class, 'location'])->name('location');

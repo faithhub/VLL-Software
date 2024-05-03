@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('dailyCurrencyRateUpdate:currency')->everySixHours();
         $schedule->command('dailyMaterialUpdate:send')->dailyAt("23:59");
         $schedule->command('webex:refresh')->days(3);
+        $schedule->command('class:reminder')->dailyAt("00:01");
     }
 
     /**

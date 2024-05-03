@@ -50,8 +50,8 @@
                                                             </td> --}}
 
                                                             <td class="sorting_1">
-                                                                <a class="font-weight-bold"
-                                                                    onclick="shiNew(event)" data-type="dark" data-size="m"
+                                                                <a class="font-weight-bold" onclick="shiNew(event)"
+                                                                    data-type="dark" data-size="m"
                                                                     data-title="{{ $transaction->invoice_id }}"
                                                                     href="{{ route('vendor.view-transaction', $transaction->id) }}">
                                                                     {{ $transaction->invoice_id }}
@@ -60,9 +60,10 @@
                                                             <td>{{ $transaction->created_at->format('D, M j, Y h:i a') }}
                                                             </td>
                                                             <td>
-                                                                    <span
-                                                                        class="badge bg-warning-light border-warning text-capitalize type-text">{{ $transaction->type }}</span>
+                                                                <span
+                                                                    class="badge bg-warning-light border-warning text-capitalize type-text">{{ $transaction->type }}</span>
                                                             </td>
+
 
                                                             @if ($transaction->type == 'bought')
                                                                 <td><span
@@ -71,16 +72,14 @@
                                                                 <td><span
                                                                         class="money">{{ money((getenv('PERCENTAGE_PAYOUT_FOR_BOUGHT_BOOK') / 100) * $transaction->amount) }}</span>
                                                                 </td>
-                                                            @endif
-                                                            @if ($transaction->type == 'folder')
+                                                            @elseif ($transaction->type == 'folder')
                                                                 <td><span
                                                                         class="money">{{ money($transaction->amount) }}</span>
                                                                 </td>
                                                                 <td><span
                                                                         class="money">{{ money((getenv('PERCENTAGE_PAYOUT_FOR_FOLDER_BOOK') / 100) * $transaction->amount) }}</span>
                                                                 </td>
-                                                            @endif
-                                                            @if ($transaction->type == 'rented')
+                                                            @elseif($transaction->type == 'rented')
                                                                 <td>
                                                                     <span
                                                                         class="money">{{ money($transaction->amount) }}</span>
@@ -111,6 +110,9 @@
                                                                         --
                                                                     @endif --}}
                                                                 </td>
+                                                            @else
+                                                                <td>--</td>
+                                                                <td>--</td>
                                                             @endif
                                                             <td>
                                                                 <span
