@@ -1,6 +1,29 @@
 @extends('layouts/dashboard/app')
 @section('content')
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+<style>
+    /* Style for container */
+    .container_new {
+        display: flex;
+        /* align-items: center; */
+       /* width: 300px; /* Adjust width as needed */
+    }
+
+    /* Style for input field */
+    .input-field {
+        flex: 1; /* Take remaining space */
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px 0 0 5px;
+    }
+
+    /* Style for select tag */
+    .select-field {
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 0 5px 5px 0;
+    }
+</style>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
     {{-- <link href="{{ asset('date-time/css/mobiscroll.jquery.min.css') }}" rel="stylesheet" /> --}}
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css"
@@ -23,11 +46,10 @@
                         </h6>
                         <form method="POST" action="{{ route('vendor.setup_master_class') }}" class="validate-form"
                             enctype="multipart/form-data">
-                            <input type="hidden" name="timezone" id="timezone">
+                            <input type="hidden" name="timezone2" id="timezone">
                             @csrf
                             <div class="row mt-5 mb-5 settings">
-                                <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 new_law_div_tag text-field taa-field vaa-field loj-field material_upload_fields"
-                                    id="mat_title_div">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="mat_title_div">
                                     <div class="form-group">
                                         <label class="form-label">Master Class Title</span>
                                             <span class="imp">*<span></label>
@@ -41,15 +63,18 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Duration <span class="imp">*<span></label>
-                                        <select class="form-control select2" name="duration" id="folder-duration" requiredd
+                                        <select class="form-control select2" name="duration" id=""
+                                            onchange="showfield(this.value)" requiredd
                                             data-parsley-required-message="Duration is required">
                                             <option value="">Select Duration</option>
                                             <option value="1" @selected(old('duration') == '1')>1 Month</option>
                                             <option value="3" @selected(old('duration') == '3')>3 Months</option>
                                             <option value="6" @selected(old('duration') == '6')>6 Months</option>
+                                            <option value="others" @selected(old('duration') == 'others')>Other, Please Specify
+                                            </option>
                                         </select>
                                         @error('duration')
                                             <span class="invalid-feedback" role="alert">
@@ -58,7 +83,18 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="otherDiv" style="display: none">
+                                    <div class="form-group">
+                                        <input type="number" name="other" value="{{ old('others') }}"
+                                            class="form-control numericValue" placeholder="3 months" style="width: 100%">
+                                        @error('others')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Interval <span class="imp">*<span></label>
                                         <select class="form-control select2" name="interval" id="" requiredd
@@ -75,7 +111,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Dates <span class="imp">*<span></label>
                                         <input id="dateRangeNow" name="dates" value="{{ old('dates') }}"
@@ -83,13 +119,19 @@
                                     </div>
                                 </div>
 
-                                <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Time: <span class="imp">*<span></label>
-                                        <input type="text" id="" class="form-control timepicker" placeholder="Select Time"
-                                            value="{{ old('time') }}" name="time" requiredd=""
-                                            data-parsley-required-message="Time is required">
-
+                                            <div class="container_new">
+                                        <input type="text" id="" class="form-control timepicker"
+                                            placeholder="Select Time" value="{{ old('time') }}" name="time"
+                                            requiredd="" data-parsley-required-message="Time is required">
+                                        <select id="selectField" name="timezone" class="select-field select form-control">
+                                            @foreach ($timezones as $timezone)
+                                            <option value="{{$timezone}}" @selected(old('timezone') || $my_timezone == $timezone)>{{$timezone}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                         @error('time')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -97,8 +139,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 text-field"
-                                    id="priceDiv">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 text-field" id="priceDiv">
                                     <div class="form-group settings">
                                         <label class="form-label">Price <span class="imp">*<span></label>
                                         <select requiredd="" class="form-control select2"
@@ -119,8 +160,8 @@
                                         <span class="invalid-feedback" id="price-error" role="alert">
                                     </div>
                                 </div>
-                                <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12 material_upload_fields"
-                                    id="paidDiv" style="display: none">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 material_upload_fields" id="paidDiv"
+                                    style="display: none">
                                     <div class="form-group">
                                         <label class="form-label">Amount <span class="imp">*<span></label>
                                         <div class="d-flex">
@@ -146,7 +187,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Instructor Name <span class="imp">*<span></label>
                                         <input type="text" class="form-control" name="instructor_name"
@@ -159,7 +200,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Special Guest <span class="imp">*<span></label>
                                         <input type="text" class="form-control" name="special_guest"
@@ -174,7 +215,7 @@
                                     </div>
                                 </div>
 
-                                <div class="upload-form-fields col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Master Class Cover <span class="imp">*<span></label>
                                         <label class="btn btn-primary btn-block custom-file-upload">
@@ -245,6 +286,18 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $('.numericValue').on('input', function(event) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        function showfield(name) {
+            console.log(name);
+            if (name == 'others') document.getElementById('otherDiv').style.display = 'block';
+            else
+                document.getElementById('otherDiv').style.display = 'none';
+        }
+    </script>
     @include('layouts.dashboard.includes.master-class')
     {{-- 
        <div mbsc-page class="demo-single-select">
@@ -267,4 +320,3 @@
                             </div>
                         </div> --}}
 @endsection
-2

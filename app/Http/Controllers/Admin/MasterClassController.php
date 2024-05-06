@@ -18,7 +18,7 @@ class MasterClassController extends Controller
         # code...
         try {
             //code...
-            $data['title'] = "All Master Classes";
+            $data['title'] = "All Masterclass";
             $data['sn'] = 1;
             $data['materials'] = MasterClass::with(['cover', 'vendor'])->orderBy('created_at', 'DESC')->get();
             return View('dashboard.admin.master-classes.index', $data);

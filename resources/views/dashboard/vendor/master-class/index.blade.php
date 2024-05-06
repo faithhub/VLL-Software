@@ -48,7 +48,7 @@
                     <div class="card-header border-bottom-0 mb-4 mt-3">
                         <div class="media mt-4">
                             <div class="media-body">
-                                <h6 class="mb-1 mt-1 font-weight-bold h3">Master Classes</h6>
+                                <h6 class="mb-1 mt-1 font-weight-bold h3">Masterclass</h6>
                                 <small class="h5"></small>
                             </div>
                         </div>

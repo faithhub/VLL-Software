@@ -1336,6 +1336,8 @@ class VendorController extends Controller
         try {
             //code...
             // dd(env('APP_URL'));
+            $data['my_timezone'] = date_default_timezone_get();
+            $data['timezones'] = timezone_identifiers_list();
             $data['mode'] = "create";
             $data['scriptWithoutJquery'] = true;
             $data['scriptWitJquery'] = false;
@@ -1386,8 +1388,8 @@ class VendorController extends Controller
 
                 $dates = explode(",", $request->dates);
 
-                $carbonDate = new Carbon($dates[0] . ' ' . $request->time);
-                $carbonDate->timezone = $request->timezone;
+                // $carbonDate = new Carbon($dates[0] . ' ' . $request->time);
+                // $carbonDate->timezone = $request->timezone;
                 // dd($dates);
                 // dd($dates, $request->time, $carbonDate->toDateTimeString());
 
@@ -1410,6 +1412,13 @@ class VendorController extends Controller
                     $obj->date = $date;
                     array_push($dates_arr, $obj);
                 }
+
+                if ($request->duration == "others") {
+                    $duration = $request->other;
+                } else {
+                    $duration = $request->duration;
+                }
+                $expires = Carbon::now()->addMonths($duration);
 
                 if ($meeting['status']) {
                     // if ($request->hasFile('master_class_id')) {
@@ -1460,7 +1469,7 @@ class VendorController extends Controller
                         'user_id' => Auth::user()->id,
                         'uploaded_by' => 'vendor',
                         'title' => $request->title,
-                        'duration' => $request->duration,
+                        'duration' => $duration,
                         'interval' => $request->interval,
                         'dates' => $dates,
                         'time' => $request->time,
@@ -1474,6 +1483,7 @@ class VendorController extends Controller
                         'timezone' => $request->timezone,
                         'master_class_id' => $save_cover->id ?? null,
                         'status' => 'pending',
+                        'expire_date' => $duration ?? "",
                         'meeting_ids' => [$meeting['meeting']['id']]
                     ]);
 
@@ -1503,7 +1513,7 @@ class VendorController extends Controller
     public function master_classes()
     {
         try {
-            $data['title'] = "Vendor Dashboard - Master Classes";
+            $data['title'] = "Vendor Dashboard - Masterclass";
             $data['classes'] = $classes = MasterClass::where('user_id', Auth::user()->id)->with(['cover'])->Orderby('created_at', 'DESC')->get();
             return View('dashboard.vendor.master-class.index', $data);
         } catch (\Throwable $th) {

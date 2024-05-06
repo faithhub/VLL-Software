@@ -28,6 +28,7 @@ class MasterClass extends Model
         'master_class_id',
         'status',
         'timezone',
+        'expire_date',
         'meeting_ids',
         'details',
     ];
