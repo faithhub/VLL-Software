@@ -66,8 +66,8 @@
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Duration <span class="imp">*<span></label>
-                                        <select class="form-control select2" name="duration" id=""
-                                            onchange="showfield(this.value)" requiredd
+                                        <select class="form-control select2" name="duration" id="durationDiv"
+                                        requiredd
                                             data-parsley-required-message="Duration is required">
                                             <option value="">Select Duration</option>
                                             <option value="1" @selected(old('duration') == '1')>1 Month</option>
@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" id="otherDiv" style="display: none">
                                     <div class="form-group">
-                                        <input type="number" name="other" value="{{ old('others') }}"
+                                        <input type="number" name="other" value="{{ old('other') }}"
                                             class="form-control numericValue" placeholder="3 months" style="width: 100%">
                                         @error('others')
                                             <span class="invalid-feedback" role="alert">
@@ -118,7 +118,6 @@
                                             class="form-control" placeholder="Select class dates" style="width: 100%">
                                     </div>
                                 </div>
-
                                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                                     <div class="form-group">
                                         <label class="form-label">Time: <span class="imp">*<span></label>
@@ -128,7 +127,7 @@
                                             requiredd="" data-parsley-required-message="Time is required">
                                         <select id="selectField" name="timezone" class="select-field select form-control">
                                             @foreach ($timezones as $timezone)
-                                            <option value="{{$timezone}}" @selected(old('timezone') || $my_timezone == $timezone)>{{$timezone}}</option>
+                                            <option value="{{$timezone}}" @selected(old('timezone') == $timezone) @selected($my_timezone == $timezone)>{{$timezone}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -170,7 +169,7 @@
                                                 @isset($app_currencies)
                                                     @foreach ($app_currencies as $app_currency)
                                                         <option value="{{ $app_currency->id }}" @selected(Auth::user()->currency->id == $app_currency->id)
-                                                            style="background-image:url('{{ asset($app_currency->flag) }}');">
+                                                           @selected(old('currency_id') == $app_currency->id) style="background-image:url('{{ asset($app_currency->flag) }}');">
                                                             {{ $app_currency->name }} ({{ $app_currency->symbol }})
                                                         </option>
                                                     @endforeach
@@ -286,18 +285,6 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        $('.numericValue').on('input', function(event) {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-
-        function showfield(name) {
-            console.log(name);
-            if (name == 'others') document.getElementById('otherDiv').style.display = 'block';
-            else
-                document.getElementById('otherDiv').style.display = 'none';
-        }
-    </script>
     @include('layouts.dashboard.includes.master-class')
     {{-- 
        <div mbsc-page class="demo-single-select">

@@ -112,7 +112,7 @@
                                                             {{-- <b>{{ substr($link, 0, 20) }}...</b> --}}
                                                             @if (now() <= $endTime)
                                                                 <button class="btn btn-sm btn-outline-dark"
-                                                                    onclick="copyMeeting('{{ $data->meeting->link }}')">Copy
+                                                                    onclick="copyMeeting('{{ route('join.meeting', $data->meeting->token) }}')">Copy
                                                                     Link</button>
                                                             @else
                                                                 <button class="btn btn-sm btn-outline-danger" disabled

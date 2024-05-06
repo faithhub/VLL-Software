@@ -204,6 +204,20 @@
 
 
     $(document).ready(function() {
+        // var otherDivE = document.getElementById("durationDiv");
+        // var otherDivValue = otherDivE.options[otherDivE.selectedIndex].value;
+        // console.log(otherDivValue, "jghvjgvjhv");
+        // showfield();
+        $("#durationDiv").change(function() {
+
+            var value = $(this).val()
+            console.log(value, "Myealuheruygjhvejhb");
+
+            if (value == 'others') document.getElementById('otherDiv').style.display = 'block';
+            else
+                document.getElementById('otherDiv').style.display = 'none';
+        }).change();
+
         $("#bookPriceSelect").change(function() {
 
             var value = $(this).val()
@@ -261,6 +275,16 @@
     //     //         // timezonePlugin: mobiscroll.momentTimezone,
     //     //     });
     // });
+    $('.numericValue').on('input', function(event) {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    // function showfield(name) {
+    //     console.log(name);
+    //     if (name == 'others') document.getElementById('otherDiv').style.display = 'block';
+    //     else
+    //         document.getElementById('otherDiv').style.display = 'none';
+    // }
 </script>
 <script src="http://parsleyjs.org/dist/parsley.js"></script>
 <script>

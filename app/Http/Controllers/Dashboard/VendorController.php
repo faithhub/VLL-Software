@@ -1379,14 +1379,21 @@ class VendorController extends Controller
                 ];
 
                 $validator = Validator::make($request->all(), $rules, $messages);
+                $dates = explode(",", $request->dates);
 
+                $carbonDate = new Carbon($dates[0] . ' ' . $request->time);
+                if ($carbonDate < Carbon::now()) {
+                    // dd(Carbon::parse($dates[0] . $request->time) < Carbon::now());
+                    Session::flash('warning', __('Class start date and time must not less than current date'));
+                    return back()->withInput();
+                }
+                // dd(Carbon::parse($dates[0] . $request->time) < Carbon::now(), $carbonDate, Carbon::now());
                 if ($validator->fails()) {
                     // dd($validator->errors());
                     Session::flash('warning', __('All fields are required'));
                     return back()->withErrors($validator)->withInput();
                 }
 
-                $dates = explode(",", $request->dates);
 
                 // $carbonDate = new Carbon($dates[0] . ' ' . $request->time);
                 // $carbonDate->timezone = $request->timezone;
@@ -1483,7 +1490,7 @@ class VendorController extends Controller
                         'timezone' => $request->timezone,
                         'master_class_id' => $save_cover->id ?? null,
                         'status' => 'pending',
-                        'expire_date' => $duration ?? "",
+                        'expire_date' => $expires ?? "",
                         'meeting_ids' => [$meeting['meeting']['id']]
                     ]);
 
