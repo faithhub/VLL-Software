@@ -55,7 +55,8 @@
                                         $carbonDate->timezone = $class->timezone;
                                         $actual_date = $carbonDate->toDayDateTimeString();
                                     @endphp
-                                    {{ $actual_date }}, 
+                                    <span class="btn btn-sm text-white m-1" style="background-color: #1d3557">{{ $actual_date }}</span>
+                                    {{-- {{ $actual_date }},  --}}
                                 @endforeach
                                 @if (Auth::user()->sub->isActive)
                                 @if (in_array($class->id, $all_classes_arr))
