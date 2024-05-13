@@ -88,13 +88,13 @@
                                                     <th scope="col">
                                                         @php
                                                             // $now = new Carbon::now();
-                                                            $carbonDate = new Carbon($data->date . ' ' . $class->time);
-                                                            $carbonDate->timezone = $class->timezone;
-                                                            $new_date = $carbonDate->toDayDateTimeString();
+                                                            $carbonDate = new Carbon($data->date);
+                                                            // $carbonDate->timezone = $class->timezone;
+                                                            // $new_date = $carbonDate->toDayDateTimeString();
                                                         @endphp
-                                                        {{ $new_date }}<br>
+                                                        {{-- {{ $new_date }}<br> --}}
 
-                                                        {{-- {{ date('D, M j, Y h:i:s A', strtotime($new_date)) }} --}}
+                                                        {{ date('D, M j, Y h:i:s A', strtotime($carbonDate)) }}
                                                     </th>
                                                     <th scope="col" class="text-centerr">
                                                         @if ($data->meeting)

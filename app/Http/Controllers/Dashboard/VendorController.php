@@ -1349,7 +1349,7 @@ class VendorController extends Controller
 
             if ($_POST) {
                 $createZoom = new MeetingController;
-                
+
                 $rules = array(
                     // 'material_type_id' => ['required', 'string', 'max:255'],
                     'title' => ['required', 'string', 'max:255'],
@@ -1380,9 +1380,18 @@ class VendorController extends Controller
 
                 $validator = Validator::make($request->all(), $rules, $messages);
                 $dates = explode(",", $request->dates);
+                $dates_arr_new = [];
 
-                $carbonDate = new Carbon($dates[0] . ' ' . $request->time);
-                if ($carbonDate < Carbon::now()) {
+                foreach ($dates as $date) {
+                    $carbonDate = new Carbon($date . ' ' . $request->time);
+                    $carbonDate->timezone = $request->timezone;
+                    array_push($dates_arr_new, $carbonDate->toDateTimeString());
+                    // dd($dates, $request->time, $carbonDate->toDateTimeString(), $carbonDate->format('d M, Y H:i A'));
+                }
+
+
+                $carbonDate = new Carbon($dates_arr_new[0]);
+                if ($carbonDate < Carbon::now($request->timezone)) {
                     // dd(Carbon::parse($dates[0] . $request->time) < Carbon::now());
                     Session::flash('warning', __('Class start date and time must not less than current date'));
                     return back()->withInput();
@@ -1408,9 +1417,9 @@ class VendorController extends Controller
                 );
 
                 $dates_arr = [];
-                foreach ($dates as $date) {
+                foreach ($dates_arr_new as $date) {
                     $obj = new \stdClass();
-                    if ($dates[0] == $date) {
+                    if ($dates_arr_new[0] == $date) {
                         $obj->meeting_id = $meeting['meeting']['id'];
                     } else {
                         $obj->meeting_id = null;
@@ -1425,7 +1434,7 @@ class VendorController extends Controller
                 } else {
                     $duration = $request->duration;
                 }
-                $expires = Carbon::now()->addMonths($duration);
+                $expires = Carbon::now($request->timezone)->addMonths($duration);
 
                 if ($meeting['status']) {
                     // if ($request->hasFile('master_class_id')) {
