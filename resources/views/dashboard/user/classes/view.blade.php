@@ -33,7 +33,18 @@
                             </h5>
                             <h5 class="text-capitalize"><b class="font-weight-bold">Interval: </b>{{ $class->interval }}
                             </h5>
-                            <h5 class="text-capitalize"><b class="font-weight-bold">Time: </b>{{ $class->time }}</h5>
+                            @php
+                                $date_with_timezone = Carbon::parse($class->dates[0] . ' ' . $class->time, $class->timezone); // Example date in New York timezone
+
+                                // Get the timezone in full name
+                                $timezone_new = $date_with_timezone->timezone->getName();
+
+                                // Format the date with timezone in full name
+                                $formatted_timezone = $date_with_timezone->format('h:i:s A') .' '. $timezone_new;
+
+                            @endphp
+                            <h5 class="text-capitalize"><b class="font-weight-bold">Time: </b>{{ $formatted_timezone }}</h5>
+                            
                             <h5><b class="font-weight-bold">Amount:
                                     @if ($class->price == 'Paid')
                                         {{ money($class->amount, $class->currency_id) }}
