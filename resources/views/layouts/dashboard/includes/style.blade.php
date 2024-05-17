@@ -20,6 +20,7 @@
 {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
 <style type="text/css">
     @media print {
+
         html,
         body {
             display: none !important;
@@ -28,6 +29,13 @@
     }
 </style>
 <style type="text/css">
+    .main-sidemenu {
+        position: fixed;
+        overflow-y: scroll;
+        top: 0;
+        bottom: 0;
+    }
+
     .jconfirm {
         z-index: 999999 !important;
     }
