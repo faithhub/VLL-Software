@@ -122,18 +122,38 @@
                                                                 )->addMinutes(70);
                                                             @endphp
                                                         @endif
+
+
+                                                        @php
+                                                            $original_date = Carbon::parse(
+                                                                $data->date . ' ' . $class->time,
+                                                                $class->timezone,
+                                                            ); // Example date in New York timezone
+
+                                                            // Get the timezone in full name
+                                                            $my_local_timezone = $original_date->setTimezone(
+                                                                date_default_timezone_get(),
+                                                            );
+
+                                                            // Format the date with timezone in full name
+                                                            $formatted_mylocal_timezone =
+                                                                $original_date->format('D, M j, Y h:i:s A') .
+                                                                ' ' .
+                                                                $my_local_timezone->timezone->getName();
+                                                        @endphp
                                                         <tr>
                                                             <th scope="col">{{ $sn++ }}</th>
                                                             <th scope="col">
                                                                 @php
                                                                     // $now = new Carbon::now();
-                                                                    $carbonDate = new Carbon($data->date);
+                                                                    // $carbonDate = new Carbon($data->date);
                                                                     // $carbonDate->timezone = $class->timezone;
                                                                     // $new_date = $carbonDate->toDayDateTimeString();
                                                                 @endphp
                                                                 {{-- {{ $new_date }}<br> --}}
 
-                                                                {{ date('D, M j, Y h:i:s A', strtotime($carbonDate)) }}
+                                                                {{ $formatted_mylocal_timezone }}
+                                                                {{-- {{ date('D, M j, Y h:i:s A', strtotime($carbonDate)) }} --}}
                                                             </th>
                                                             <th scope="col" class="text-centerr">
                                                                 @if ($data->meeting)
