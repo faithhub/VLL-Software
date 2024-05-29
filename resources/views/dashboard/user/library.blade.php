@@ -91,11 +91,11 @@
                                                 href="{{ route('user.view_material', $material->id) }}"
                                                 class="book-title mt-2">
                                                 <h4 class="text-capitalize">{{ $material->title }}
-                                                    ({{ $material->year_of_publication }})
+                                                    {{-- ({{ $material->year_of_publication }}) --}}
                                                 </h4>
-                                                <h5 class="text-capitalize">
+                                                {{-- <h5 class="text-capitalize">
                                                     {{ $material->name_of_author }}
-                                                </h5>
+                                                </h5> --}}
                                             </a>
                                         </div>
                                     </div>

@@ -19,6 +19,10 @@ return new class extends Migration
                 ->nullable()
                 ->constrained()
                 ->cascadeOnDelete();
+            $table->foreignId('class_id')
+                ->nullable()
+                ->constrained('master_classes')
+                ->cascadeOnDelete();
             $table->foreignId('material_id')
                 ->nullable()
                 ->constrained()
@@ -27,11 +31,23 @@ return new class extends Migration
                 ->nullable()
                 ->constrained()
                 ->cascadeOnDelete();
+            $table->foreignId('folder_id')
+                ->nullable()
+                ->constrained()
+                ->cascadeOnDelete();
+            // $table->bigInteger('folder_id')->unsigned()->nullable();
+            // $table->foreign('folder_id')->references('id')->on('folders');
             $table->string('invoice_id')->nullable();
             $table->date('date');
             $table->date('date_rented_expired');
+            $table->string('unique_id')->nullable();
             $table->boolean('is_rent_expired')->default(false);
+            $table->enum('mat_type', ['material', 'folder']);
             $table->enum('type', ['rented', 'bought', 'free']);
+            $table->date('folder_expired_date')->nullable();
+            $table->boolean('isFolderExpired')->default(false);
+            $table->integer('rent_count')->default(0);
+            $table->string('rent_unique_id')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

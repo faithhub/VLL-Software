@@ -6,6 +6,22 @@
         <div class="card border-10 pt-2 card-primary">
             <div class="card-body">
                 @if ($response->status)
+                    @php
+                        $date_with_timezone = Carbon::parse($class->dates[0] . ' ' . $class->time, $class->timezone); // Example date in New York timezone
+
+                        // Get the timezone in full name
+                        $timezone_new = $date_with_timezone->timezone->getName();
+
+                        // Format the date with timezone in full name
+                        $formatted_timezone = $date_with_timezone->format('h:i:s A') . ' ' . $timezone_new;
+
+                        // Get the timezone in full name
+                        $timezone_new2 = $date_with_timezone->setTimezone(date_default_timezone_get());
+
+                        // Format the date with timezone in full name
+                        $formatted_mylocal_timezone =
+                            $date_with_timezone->format('h:i:s A') . ' ' . $timezone_new2->timezone->getName();
+                    @endphp
                     <div class="row">
                         <div class="image text-center">
                             <div id="frame">
@@ -33,18 +49,11 @@
                             </h5>
                             <h5 class="text-capitalize"><b class="font-weight-bold">Interval: </b>{{ $class->interval }}
                             </h5>
-                            @php
-                                $date_with_timezone = Carbon::parse($class->dates[0] . ' ' . $class->time, $class->timezone); // Example date in New York timezone
+                            <h5 class="text-capitalize"><b class="font-weight-bold">Time: </b>{{ $formatted_timezone }}
+                            </h5>
 
-                                // Get the timezone in full name
-                                $timezone_new = $date_with_timezone->timezone->getName();
-
-                                // Format the date with timezone in full name
-                                $formatted_timezone = $date_with_timezone->format('h:i:s A') .' '. $timezone_new;
-
-                            @endphp
-                            <h5 class="text-capitalize"><b class="font-weight-bold">Time: </b>{{ $formatted_timezone }}</h5>
-                            
+                            <h5 class="text-capitalize"><b class="font-weight-bold">Local Time:
+                                </b>{{ $formatted_mylocal_timezone }}</h5>
                             <h5><b class="font-weight-bold">Amount:
                                     @if ($class->price == 'Paid')
                                         {{ money($class->amount, $class->currency_id) }}
@@ -61,73 +70,92 @@
                             <h5 class="text-capitalize"><b class="font-weight-bold">Class Dates:</b>
                                 @foreach ($class->dates as $date)
                                     @php
-                                    // $now = new Carbon::now();
-                                        $carbonDate = new Carbon($date . ' ' . $class->time);
-                                        $carbonDate->timezone = $class->timezone;
-                                        $actual_date = $carbonDate->toDayDateTimeString();
+                                        // $now = new Carbon::now();
+                                        // $carbonDate = new Carbon($date . ' ' . $class->time);
+                                        // $carbonDate->timezone = $class->timezone;
+                                        // $actual_date = $carbonDate->toDayDateTimeString();
                                     @endphp
-                                    <span class="btn btn-sm text-white m-1" style="background-color: #1d3557">{{ $actual_date }}</span>
+                                    @php
+                                        $original_date = Carbon::parse(
+                                            $class->date . ' ' . $class->time,
+                                            $class->timezone,
+                                        ); // Example date in New York timezone
+
+                                        // Get the timezone in full name
+                                        $my_local_timezone = $original_date->setTimezone(date_default_timezone_get());
+
+                                        // Format the date with timezone in full name
+                                        $formatted_mylocal_timezone =
+                                            $original_date->format('D, M j, Y h:i:s A') .
+                                            ' ' .
+                                            $my_local_timezone->timezone->getName();
+                                    @endphp
+                                    {{-- {{ $formatted_mylocal_timezone }} --}}
+                                    <span class="btn btn-sm text-white m-1"
+                                        style="background-color: #1d3557">{{ $formatted_mylocal_timezone }}</span>
                                     {{-- {{ $actual_date }},  --}}
                                 @endforeach
                                 @if (Auth::user()->sub->isActive)
-                                @if (in_array($class->id, $all_classes_arr))
-                                @isset($meetings_arr)
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>S/N</th>
-                                                <th>Dates</th>
-                                                <th>Class Link</th>
-                                                {{-- <th>Class Password</th> --}}
-                                                <th>Join Class</th>
-                                            </tr>
-                                            @php
-                                                $sn = 1;
-                                            @endphp
-                                            @foreach ($meetings_arr as $key => $data)
-                                                {{-- @dump($data) --}}
-                                                @if ($data->meeting)
+                                    @if (in_array($class->id, $all_classes_arr))
+                                        @isset($meetings_arr)
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Dates</th>
+                                                        <th>Class Link</th>
+                                                        {{-- <th>Class Password</th> --}}
+                                                        <th>Join Class</th>
+                                                    </tr>
                                                     @php
-                                                        $startTime = Carbon::parse($data->meeting->start)->subMinutes(
-                                                            15,
-                                                        );
-                                                        $endTime = Carbon::parse($data->meeting->start)->addMinutes(70);
+                                                        $sn = 1;
                                                     @endphp
-                                                @endif
-                                                <tr>
-                                                    <th scope="col">{{ $sn++ }}</th>
-                                                    <th scope="col">
-                                                        @php
-                                                            // $now = new Carbon::now();
-                                                            $carbonDate = new Carbon($data->date);
-                                                            // $carbonDate->timezone = $class->timezone;
-                                                            // $new_date = $carbonDate->toDayDateTimeString();
-                                                        @endphp
-                                                        {{-- {{ $new_date }}<br> --}}
-
-                                                        {{ date('D, M j, Y h:i:s A', strtotime($carbonDate)) }}
-                                                    </th>
-                                                    <th scope="col" class="text-centerr">
+                                                    @foreach ($meetings_arr as $key => $data)
+                                                        {{-- @dump($data) --}}
                                                         @if ($data->meeting)
-                                                            {{-- <b>{{ substr($link, 0, 20) }}...</b> --}}
-                                                            @if (now() <= $endTime)
-                                                                <button class="btn btn-sm btn-outline-dark"
-                                                                    onclick="copyMeeting('{{ route('join.meeting', $data->meeting->token) }}')">Copy
-                                                                    Link</button>
-                                                            @else
-                                                                <button class="btn btn-sm btn-outline-danger" disabled
-                                                                    style="cursor: no-drop !important">Copy
-                                                                    Link</button>
-                                                            @endif
-                                                        @else
-                                                            <span
-                                                                class="badge bg-warning-light border-warning text-capitalize type-text">Awaiting
-                                                                <img src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"
-                                                                    style="width:15px;" alt="">
-                                                            </span>
+                                                            @php
+                                                                $startTime = Carbon::parse(
+                                                                    $data->meeting->start,
+                                                                )->subMinutes(15);
+                                                                $endTime = Carbon::parse(
+                                                                    $data->meeting->start,
+                                                                )->addMinutes(70);
+                                                            @endphp
                                                         @endif
-                                                    </th>
-                                                    {{-- <th scope="col" class="text-centerr">
+                                                        <tr>
+                                                            <th scope="col">{{ $sn++ }}</th>
+                                                            <th scope="col">
+                                                                @php
+                                                                    // $now = new Carbon::now();
+                                                                    $carbonDate = new Carbon($data->date);
+                                                                    // $carbonDate->timezone = $class->timezone;
+                                                                    // $new_date = $carbonDate->toDayDateTimeString();
+                                                                @endphp
+                                                                {{-- {{ $new_date }}<br> --}}
+
+                                                                {{ date('D, M j, Y h:i:s A', strtotime($carbonDate)) }}
+                                                            </th>
+                                                            <th scope="col" class="text-centerr">
+                                                                @if ($data->meeting)
+                                                                    {{-- <b>{{ substr($link, 0, 20) }}...</b> --}}
+                                                                    @if (now() <= $endTime)
+                                                                        <button class="btn btn-sm btn-outline-dark"
+                                                                            onclick="copyMeeting('{{ route('join.meeting', $data->meeting->token) }}')">Copy
+                                                                            Link</button>
+                                                                    @else
+                                                                        <button class="btn btn-sm btn-outline-danger"
+                                                                            disabled style="cursor: no-drop !important">Copy
+                                                                            Link</button>
+                                                                    @endif
+                                                                @else
+                                                                    <span
+                                                                        class="badge bg-warning-light border-warning text-capitalize type-text">Awaiting
+                                                                        <img src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"
+                                                                            style="width:15px;" alt="">
+                                                                    </span>
+                                                                @endif
+                                                            </th>
+                                                            {{-- <th scope="col" class="text-centerr">
                                                         @if ($data->meeting)
                                                             @if (now() <= $endTime)
                                                                 <button class="btn btn-sm btn-outline-dark"
@@ -145,21 +173,22 @@
                                                                     style="width:15px;" alt=""></span>
                                                         @endif
                                                     </th> --}}
-                                                    <th>
-                                                        @if ($data->meeting)
-                                                            {{-- {{ Carbon::parse($meetings_arr[$key]->start)->subMinutes(15) }}<br>
+                                                            <th>
+                                                                @if ($data->meeting)
+                                                                    {{-- {{ Carbon::parse($meetings_arr[$key]->start)->subMinutes(15) }}<br>
                                                         {{ Carbon::now() }}<br>
                                                         {{ Carbon::parse($meetings_arr[$key]->start)->addMinutes(70) }}<br> --}}
 
-                                                            @if (now() >= $startTime && now() <= $endTime)
-                                                                <a href="{{ route('join.meeting', $data->meeting->token) }}" target="blank"
-                                                                    class="btn btn-primary">Join Class</a>
-                                                            @else
-                                                                {{ $startTime->diffForHumans() }}
-                                                                {{-- <p>The button is only available between {{ $startTime }} and
+                                                                    @if (now() >= $startTime && now() <= $endTime)
+                                                                        <a href="{{ route('join.meeting', $data->meeting->token) }}"
+                                                                            target="blank" class="btn btn-primary">Join
+                                                                            Class</a>
+                                                                    @else
+                                                                        {{ $startTime->diffForHumans() }}
+                                                                        {{-- <p>The button is only available between {{ $startTime }} and
                                                                 {{ $endTime }}.</p> --}}
-                                                            @endif
-                                                            {{-- @if (Carbon::parse($data['meeting']->start)->subMinutes(15) <= Carbon::now())
+                                                                    @endif
+                                                                    {{-- @if (Carbon::parse($data['meeting']->start)->subMinutes(15) <= Carbon::now())
                                                             <a href="{{ route('join.meeting', $meetings_arr[$key]->token) }}"
                                                                 class="btn btn-primary">Join Class</a>
                                                         @endif
@@ -167,16 +196,16 @@
                                                             <a href="{{ route('join.meeting', $meetings_arr[$key]->token) }}"
                                                                 class="btn btn-primary">Join Class</a>
                                                         @endif --}}
-                                                        @else
-                                                            ---
-                                                        @endif
-                                                    </th>
-                                                </tr>
-                                            @endforeach
-                                        </thead>
-                                    </table>
-                                @endisset
-                                @endif
+                                                                @else
+                                                                    ---
+                                                                @endif
+                                                            </th>
+                                                        </tr>
+                                                    @endforeach
+                                                </thead>
+                                            </table>
+                                        @endisset
+                                    @endif
                                 @endif
                             </h5>
 

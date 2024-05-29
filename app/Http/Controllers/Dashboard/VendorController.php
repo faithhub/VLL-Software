@@ -1334,6 +1334,8 @@ class VendorController extends Controller
     {
         # code...
         try {
+
+           
             //code...
             // dd(env('APP_URL'));
             $data['my_timezone'] = date_default_timezone_get();
@@ -1341,13 +1343,25 @@ class VendorController extends Controller
             $data['mode'] = "create";
             $data['scriptWithoutJquery'] = true;
             $data['scriptWitJquery'] = false;
-            $ip = Requestt::getClientIp();
-            $loc = Location::get($ip);
-            $now = Carbon::now();
+            // $ip = Requestt::getClientIp();
+            // $loc = Location::get($ip);
+            // $now = Carbon::now();
             // dd(new DateTime());
             // dd($now->timezone, $loc, $ip, Browser::);
 
             if ($_POST) {
+
+                // $date = explode(",", $request->dates);
+
+                // $originalDate = Carbon::parse($date[0] . ' ' . $request->time, $request->timezone);
+                // $datedd = Carbon::createFromFormat('Y-m-d H:i:s', $originalDate, $request->timezone);
+                // $datedd->setTimezone(date_default_timezone_get());
+                // dd($originalDate, $request->timezone, $datedd->toDateTimeString(), date_default_timezone_get());
+
+                // $carbonDate = new Carbon($date[0] . ' ' . $request->time);
+                // // $carbonDate->timezone = $request->timezone;
+                // $carbonDate->toDateTimeString();
+
                 $createZoom = new MeetingController;
 
                 $rules = array(
@@ -1382,15 +1396,15 @@ class VendorController extends Controller
                 $dates = explode(",", $request->dates);
                 $dates_arr_new = [];
 
-                foreach ($dates as $date) {
-                    $carbonDate = new Carbon($date . ' ' . $request->time);
-                    $carbonDate->timezone = $request->timezone;
-                    array_push($dates_arr_new, $carbonDate->toDateTimeString());
-                    // dd($dates, $request->time, $carbonDate->toDateTimeString(), $carbonDate->format('d M, Y H:i A'));
-                }
+                // foreach ($dates as $date) {
+                //     $carbonDate = new Carbon($date . ' ' . $request->time);
+                //     $carbonDate->timezone = $request->timezone;
+                //     array_push($dates_arr_new, $carbonDate->toDateTimeString());
+                //     // dd($dates, $request->time, $carbonDate->toDateTimeString(), $carbonDate->format('d M, Y H:i A'));
+                // }
 
 
-                $carbonDate = new Carbon($dates_arr_new[0]);
+                $carbonDate = new Carbon($dates[0]);
                 if ($carbonDate < Carbon::now($request->timezone)) {
                     // dd(Carbon::parse($dates[0] . $request->time) < Carbon::now());
                     Session::flash('warning', __('Class start date and time must not less than current date'));
@@ -1417,9 +1431,9 @@ class VendorController extends Controller
                 );
 
                 $dates_arr = [];
-                foreach ($dates_arr_new as $date) {
+                foreach ($dates as $date) {
                     $obj = new \stdClass();
-                    if ($dates_arr_new[0] == $date) {
+                    if ($meeting['meeting']['id']) {
                         $obj->meeting_id = $meeting['meeting']['id'];
                     } else {
                         $obj->meeting_id = null;
@@ -1520,6 +1534,7 @@ class VendorController extends Controller
             $data['universities'] = University::Orderby('name', 'ASC')->get();
             return View('dashboard.vendor.master-class.create', $data);
         } catch (\Throwable $th) {
+            dd($th->getMessage());
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('vendor');
             //throw $th;

@@ -555,6 +555,7 @@ class UserController extends Controller
         try {
 
             //code...
+            $data['status'] = true;
             $my_materials_arr = [];
             $bought_folders = [];
             if (Auth::user()->team_id) {
@@ -595,6 +596,7 @@ class UserController extends Controller
             $data['material'] = $m = Material::where(['id' => $id])->with(['type', 'cover', 'country', 'folder', 'subject', 'test_country', 'university'])->first();
             if (!$m) {
                 # code...
+                $data['status'] = false;
                 Session::flash('warning', "No material found");
                 return back();
             }
@@ -1201,19 +1203,22 @@ class UserController extends Controller
                 Session::flash('warning', 'Master Class not found');
                 return redirect()->route('user.library');
             }
-
-            MaterialHistory::create([
+            $params = [
                 'user_id' => Auth::user()->id,
                 'class_id' => $class->id,
-                'unique_id' => Str::upper("MATHIS" . $this->unique_code(12)),
+                // 'unique_id' => Str::upper("MATHIS" . $this->unique_code(12)),
                 'transaction_id' => null,
                 'date' =>  Carbon::now(),
                 'type' => 'free'
-            ]);
+            ];
+
+            // dd($class, $params);
+            MaterialHistory::create($params);
 
             Session::flash('success', 'Master Class added to my library successfully');
             return redirect()->route('user.library');
         } catch (\Throwable $th) {
+            dd($th);
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('user');
             //throw $th;

@@ -40,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
 
         if ($ip == "127.0.0.1") {
             $ip = '98.97.79.78';
+            // $ip = '198.166.231.223';
         }
 
         $curl = curl_init();
@@ -79,10 +80,14 @@ class AppServiceProvider extends ServiceProvider
                 });
         });
 
-        $currencies = Currency::all();
-        $app_default_currency = Currency::where('isDefault', true)->first();
+        $currencies = [];
+        $app_default_currency = null;
+        if (Schema::hasTable('currencies')) {
+            // Code to create table
+            $currencies = Currency::all();
+            $app_default_currency = Currency::where('isDefault', true)->first();
+        }
 
-        View::share(['settings' => $settings, 'app_currencies' => $currencies, 'app_default_currency' =>
-        $app_default_currency]);
+        View::share(['settings' => $settings, 'app_currencies' => $currencies, 'app_default_currency' => $app_default_currency]);
     }
 }

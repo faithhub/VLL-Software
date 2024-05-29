@@ -12,6 +12,22 @@
         }
     </style>
     @if ($response->status)
+        @php
+            $date_with_timezone = Carbon::parse($class->dates[0] . ' ' . $class->time, $class->timezone); // Example date in New York timezone
+
+            // Get the timezone in full name
+            $timezone_new = $date_with_timezone->timezone->getName();
+
+            // Format the date with timezone in full name
+            $formatted_timezone = $date_with_timezone->format('h:i:s A') . ' ' . $timezone_new;
+
+            // Get the timezone in full name
+            $timezone_new2 = $date_with_timezone->setTimezone(date_default_timezone_get());
+
+            // Format the date with timezone in full name
+            $formatted_mylocal_timezone =
+                $date_with_timezone->format('h:i:s A') . ' ' . $timezone_new2->timezone->getName();
+        @endphp
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div class="card border-10 pt-2 card-primary">
                 <div class="card-body">
@@ -49,17 +65,10 @@
                             </h5>
                             <h5 class="text-capitalize"><b class="font-weight-bold">Interval: </b>{{ $class->interval }}
                             </h5>
-                            @php
-                                $date_with_timezone = Carbon::parse($class->dates[0] . ' ' . $class->time, $class->timezone); // Example date in New York timezone
-
-                                // Get the timezone in full name
-                                $timezone_new = $date_with_timezone->timezone->getName();
-
-                                // Format the date with timezone in full name
-                                $formatted_timezone = $date_with_timezone->format('h:i:s A') .' '. $timezone_new;
-
-                            @endphp
-                            <h5 class="text-capitalize"><b class="font-weight-bold">Time: </b>{{ $formatted_timezone }}</h5>
+                            <h5 class="text-capitalize"><b class="font-weight-bold">Time: </b>{{ $formatted_timezone }}
+                            </h5>
+                            <h5 class="text-capitalize"><b class="font-weight-bold">Local Time:
+                                </b>{{ $formatted_mylocal_timezone }}</h5>
                             <h5><b class="font-weight-bold">Amount:
                                     @if ($class->price == 'Paid')
                                         {{ money($class->amount, $class->currency_id) }}
@@ -108,13 +117,24 @@
                                                     <th scope="col">{{ $sn++ }}</th>
                                                     <th scope="col">
                                                         @php
-                                                            // $now = new Carbon::now();
-                                                            $carbonDate = new Carbon($data->date);
-                                                            // $carbonDate->timezone = $class->timezone;
-                                                            // $new_date = $carbonDate->toDayDateTimeString();
+                                                            $original_date = Carbon::parse(
+                                                                $data->date. ' ' . $class->time,
+                                                                $class->timezone,
+                                                            ); // Example date in New York timezone
+
+                                                            // Get the timezone in full name
+                                                            $my_local_timezone = $original_date->setTimezone(
+                                                                date_default_timezone_get(),
+                                                            );
+
+                                                            // Format the date with timezone in full name
+                                                            $formatted_mylocal_timezone =
+                                                                $original_date->format('D, M j, Y h:i:s A') .
+                                                                ' ' .
+                                                                $my_local_timezone->timezone->getName();
                                                         @endphp
-                                                        {{-- {{ $data->date }}<br> --}}
-                                                        {{ date('D, M j, Y h:i:s A', strtotime($carbonDate)) }}
+                                                        {{ $formatted_mylocal_timezone }}
+                                                        {{-- {{ date('D, M j, Y h:i:s A', strtotime($carbonDate)) }} --}}
                                                     </th>
                                                     <th scope="col" class="text-centerr">
                                                         @if ($data->meeting)
