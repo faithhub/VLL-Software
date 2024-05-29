@@ -125,8 +125,10 @@
 
 
                                                         @php
+                                                        $format_new_date = new DateTime($data->date);
+                                                        $format_new_date = $format_new_date->format('Y-m-d');
                                                             $original_date = Carbon::parse(
-                                                                $data->date . ' ' . $class->time,
+                                                                $format_new_date . ' ' . $class->time,
                                                                 $class->timezone,
                                                             ); // Example date in New York timezone
 
