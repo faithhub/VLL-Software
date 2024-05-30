@@ -234,10 +234,10 @@
 
                             @if (Auth::user()->sub->isActive) {{-- If user has an active sub --}}
                                 @if (in_array($class->id, $all_classes_arr))
-                                    <a href="{{ route('user.access_material', $class->id) }}"
+                                    {{-- <a href="{{ route('user.access_material', $class->id) }}"
                                         class="btn btn-primary p-3">
                                         Access Material
-                                    </a>
+                                    </a> --}}
                                 @else
                                     @if ($class->price == 'Free')
                                         <a href="{{ route('user.add_masterclass_to_library', $class->id) }}"
@@ -259,10 +259,10 @@
                             @elseif (Auth::user()->team_id && Auth::user()->team->sub_status == 'active')
                                 {{-- if the user is in a team and the team has an active sub --}}
                                 @if (in_array($material->id, $my_materials_arr))
-                                    <a href="{{ route('user.access_material', $material->id) }}"
+                                    {{-- <a href="{{ route('user.access_material', $material->id) }}"
                                         class="btn btn-primary p-3">
                                         Access Material
-                                    </a>
+                                    </a> --}}
                                 @else
                                     @if ($material->price == 'Free')
                                         <a href="{{ route('user.add_to_library', $material->id) }}"
@@ -271,23 +271,23 @@
                                         </a>
                                     @endif
                                     @if ($material->price == 'Paid')
-                                        <a class="btn m-2 btn-dark p-2 btn-outline-primary"
+                                        {{-- <a class="btn m-2 btn-dark p-2 btn-outline-primary"
                                             onclick="flutterwaveBuyMaterial('{{ exchange($settings['rent'] ?? getenv('RENTED_AMOUNT')) }}', '{{ $material->id }}', 'rented')">
                                             Rent Book
                                         </a>
                                         <a onclick="flutterwaveBuyMaterial('{{ exchange($material->amount) }}', '{{ $material->id }}', 'bought')"
                                             class="btn m-2 btn-primary p-2">
                                             Buy Book
-                                        </a>
+                                        </a> --}}
                                     @endif
                                 @endif
                             @else
                                 {{-- Access material if already bought it or subscribe --}}
                                 @if (in_array($class->id, $all_classes_arr))
-                                    <a href="{{ route('user.access_material', $class->id) }}"
+                                    {{-- <a href="{{ route('user.access_material', $class->id) }}"
                                         class="btn btn-primary p-3">
                                         Access Material
-                                    </a>
+                                    </a> --}}
                                 @else
                                     <button onclick="shiSub(event)" data-type="dark" data-size="s"
                                         data-title="Subscribe" href="{{ route('user.sub.text', $class->id) }}"
