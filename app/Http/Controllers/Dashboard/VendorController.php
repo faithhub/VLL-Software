@@ -1404,12 +1404,12 @@ class VendorController extends Controller
                 // }
 
 
-                $carbonDate = new Carbon($dates[0]);
-                if ($carbonDate < Carbon::now($request->timezone)) {
-                    // dd(Carbon::parse($dates[0] . $request->time) < Carbon::now());
-                    Session::flash('warning', __('Class start date and time must not less than current date'));
-                    return back()->withInput();
-                }
+                // $carbonDate = new Carbon($dates[0]);
+                // if ($carbonDate < Carbon::now($request->timezone)) {
+                //     // dd(Carbon::parse($dates[0] . $request->time) < Carbon::now());
+                //     Session::flash('warning', __('Class start date and time must not less than current date'));
+                //     return back()->withInput();
+                // }
                 // dd(Carbon::parse($dates[0] . $request->time) < Carbon::now(), $carbonDate, Carbon::now());
                 if ($validator->fails()) {
                     // dd($validator->errors());
