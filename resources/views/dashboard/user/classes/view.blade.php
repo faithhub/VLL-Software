@@ -20,7 +20,7 @@
 
                         // Format the date with timezone in full name
                         $formatted_mylocal_timezone =
-                            $date_with_timezone->format('h:i:s A') . ' ' . $timezone_new2->timezone->getName();
+                        $date_with_timezone->format('h:i:s A') . ' ' . $timezone_new2->timezone->getName();
                     @endphp
                     <div class="row">
                         <div class="image text-center">
@@ -160,15 +160,15 @@
                                                             <th scope="col" class="text-centerr">
                                                                 @if ($data->meeting)
                                                                     {{-- <b>{{ substr($link, 0, 20) }}...</b> --}}
-                                                                    @if (now() <= $endTime)
+                                                                    {{-- @if (now() <= $endTime) --}}
                                                                         <button class="btn btn-sm btn-outline-dark"
                                                                             onclick="copyMeeting('{{ route('join.meeting', $data->meeting->token) }}')">Copy
                                                                             Link</button>
-                                                                    @else
+                                                                    {{-- @else
                                                                         <button class="btn btn-sm btn-outline-danger"
                                                                             disabled style="cursor: no-drop !important">Copy
                                                                             Link</button>
-                                                                    @endif
+                                                                    @endif --}}
                                                                 @else
                                                                     <span
                                                                         class="badge bg-warning-light border-warning text-capitalize type-text">Awaiting
