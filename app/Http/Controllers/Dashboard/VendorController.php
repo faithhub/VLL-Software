@@ -1343,26 +1343,12 @@ class VendorController extends Controller
             $data['mode'] = "create";
             $data['scriptWithoutJquery'] = true;
             $data['scriptWitJquery'] = false;
-            // $ip = Requestt::getClientIp();
-            // $loc = Location::get($ip);
-            // $now = Carbon::now();
-            // dd(new DateTime());
-            // dd($now->timezone, $loc, $ip, Browser::);
 
             if ($_POST) {
 
-                // $date = explode(",", $request->dates);
-
-                // $originalDate = Carbon::parse($date[0] . ' ' . $request->time, $request->timezone);
-                // $datedd = Carbon::createFromFormat('Y-m-d H:i:s', $originalDate, $request->timezone);
-                // $datedd->setTimezone(date_default_timezone_get());
-                // dd($originalDate, $request->timezone, $datedd->toDateTimeString(), date_default_timezone_get());
-
-                // $carbonDate = new Carbon($date[0] . ' ' . $request->time);
-                // // $carbonDate->timezone = $request->timezone;
-                // $carbonDate->toDateTimeString();
-
                 $createZoom = new MeetingController;
+
+                // dd($meeting);
 
                 $rules = array(
                     // 'material_type_id' => ['required', 'string', 'max:255'],
@@ -1430,14 +1416,14 @@ class VendorController extends Controller
                     $request->time
                 );
 
+                if (!$meeting) {
+                    Session::flash('error', 'Unable to create meeting, try again!');
+                    return back();
+                }
                 $dates_arr = [];
                 foreach ($dates as $date) {
                     $obj = new \stdClass();
-                    if ($meeting['meeting']['id']) {
-                        $obj->meeting_id = $meeting['meeting']['id'];
-                    } else {
-                        $obj->meeting_id = null;
-                    }
+                    $obj->meeting_id = $meeting['meeting']['id'];
                     $obj->id = $this->unique_code(6);
                     $obj->date = $date;
                     array_push($dates_arr, $obj);
@@ -1534,7 +1520,7 @@ class VendorController extends Controller
             $data['universities'] = University::Orderby('name', 'ASC')->get();
             return View('dashboard.vendor.master-class.create', $data);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            dd($th);
             Session::flash('warning', $th->getMessage());
             return back() ?? redirect()->route('vendor');
             //throw $th;
@@ -1607,6 +1593,18 @@ class VendorController extends Controller
                 Session::flash('warning', 'No record found');
                 return back() ?? redirect()->route('vendor.master_classes');
             }
+
+            $meeting = Meeting::find($class->meeting_ids[0]);
+            $meeting_MTID = $meeting->MTID;
+            // dd($meeting, $class->meeting_ids[0], $meeting_MTID);
+
+            $createZoom = new MeetingController;
+            $delete_meeting = $createZoom->delete_masterclass($meeting_MTID);
+            if ($delete_meeting != true) {
+                Session::flash('warning', 'An error occur');
+                return back() ?? redirect()->route('vendor.master_classes');
+            }
+
             $class->delete();
             Session::flash('success', 'Class deleted');
             return back() ?? redirect()->route('vendor.master_classes');

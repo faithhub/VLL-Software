@@ -97,22 +97,13 @@
                                                 <th>S/N</th>
                                                 <th>Dates</th>
                                                 <th>Class Link</th>
-                                                <th>Class Password</th>
+                                                <th>Status</th>
                                                 <th>Join Class</th>
                                             </tr>
                                             @php
                                                 $sn = 1;
                                             @endphp
                                             @foreach ($meetings_array as $key => $data)
-                                                {{-- @dump($data) --}}
-                                                @if ($data->meeting)
-                                                    @php
-                                                        $startTime = Carbon::parse($data->meeting->start)->subMinutes(
-                                                            15,
-                                                        );
-                                                        $endTime = Carbon::parse($data->meeting->start)->addMinutes(70);
-                                                    @endphp
-                                                @endif
                                                 <tr>
                                                     <th scope="col">{{ $sn++ }}</th>
                                                     <th scope="col">
@@ -132,6 +123,20 @@
                                                                 $original_date->format('D, M j, Y h:i:s A') .
                                                                 ' ' .
                                                                 $my_local_timezone->timezone->getName();
+                                                                $startTime = $original_date->subMinutes(5);
+
+                                                                $format_end_date = new DateTime($data->date);
+                                                                $format_end_date = $format_end_date->format('Y-m-d');
+                                                                $original_end_date = Carbon::parse(
+                                                                    $format_end_date . ' ' . $class->time,
+                                                                    $class->timezone,
+                                                                ); // Example date in New York timezone
+
+                                                                // Get the timezone in full name
+                                                                $end_date_in_my_local_timezone = $original_end_date->setTimezone(
+                                                                    date_default_timezone_get(),
+                                                                );
+                                                                $endTime = $original_end_date->addMinutes(70);
                                                         @endphp
                                                         {{ $formatted_mylocal_timezone }}
                                                         {{-- {{ date('D, M j, Y h:i:s A', strtotime($carbonDate)) }} --}}
@@ -158,7 +163,7 @@
                                                     </th>
                                                     <th scope="col" class="text-centerr">
                                                         @if ($data->meeting)
-                                                            @if (now() <= $endTime)
+                                                            {{-- @if (now() <= $endTime)
                                                                 <button class="btn btn-sm btn-outline-dark"
                                                                     onclick="copyMeetingPassword('{{ $data->meeting->password }}')">Copy
                                                                     Password</button>
@@ -166,7 +171,25 @@
                                                                 <button class="btn btn-sm btn-outline-danger" disabled
                                                                     style="cursor: no-drop !important">Copy
                                                                     Password</button>
-                                                            @endif
+                                                            @endif --}}
+                                                                    @php
+                                                                        $currentDateTime = now();
+                                                                        $shouldShowButton = $currentDateTime->between(
+                                                                            $startTime,
+                                                                            $endTime,
+                                                                        );
+                                                                    @endphp
+                                                                    @if ($shouldShowButton)
+                                                                        <span
+                                                                            class="btn btn-sm btn-success">Ongoing</span>
+                                                                    @elseif (now() > $endTime)
+                                                                        <span
+                                                                            class="badge btn-sm btn-danger">Expired</span>
+                                                                    @elseif (now() < $startTime)
+                                                                        <span
+                                                                            class="badge btn-sm btn-primary">Pending</span>
+                                                                    @else
+                                                                    @endif
                                                         @else
                                                             <span
                                                                 class="badge bg-warning-light border-warning text-capitalize type-text">Awaiting
@@ -176,7 +199,7 @@
                                                     </th>
                                                     <th>
                                                         @if ($data->meeting)
-                                                            {{-- {{ Carbon::parse($meetings_arr[$key]->start)->subMinutes(15) }}<br>
+                                                            {{-- {{ Carbon::parse($meetings_arr[$key]->start)->subMinutes(5) }}<br>
                                                         {{ Carbon::now() }}<br>
                                                         {{ Carbon::parse($meetings_arr[$key]->start)->addMinutes(70) }}<br> --}}
 
@@ -188,7 +211,7 @@
                                                                 {{-- <p>The button is only available between {{ $startTime }} and
                                                                 {{ $endTime }}.</p> --}}
                                                             @endif
-                                                            {{-- @if (Carbon::parse($data['meeting']->start)->subMinutes(15) <= Carbon::now())
+                                                            {{-- @if (Carbon::parse($data['meeting']->start)->subMinutes(5) <= Carbon::now())
                                                             <a href="{{ route('join.meeting', $meetings_arr[$key]->token) }}"
                                                                 class="btn btn-primary">Join Class</a>
                                                         @endif

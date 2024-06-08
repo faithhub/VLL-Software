@@ -39,8 +39,8 @@ class AppServiceProvider extends ServiceProvider
         $ip = Requestt::getClientIp();
 
         if ($ip == "127.0.0.1") {
-            $ip = '98.97.79.78';
-            // $ip = '198.166.231.223';
+            // $ip = '98.97.79.78';
+            $ip = '198.166.231.223';
         }
 
         $curl = curl_init();

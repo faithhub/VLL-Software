@@ -20,7 +20,7 @@
 
                         // Format the date with timezone in full name
                         $formatted_mylocal_timezone =
-                        $date_with_timezone->format('h:i:s A') . ' ' . $timezone_new2->timezone->getName();
+                            $date_with_timezone->format('h:i:s A') . ' ' . $timezone_new2->timezone->getName();
                     @endphp
                     <div class="row">
                         <div class="image text-center">
@@ -70,29 +70,39 @@
                             <h5 class="text-capitalize"><b class="font-weight-bold">Class Dates:</b>
                                 @foreach ($class->dates as $date)
                                     @php
-                                        // $now = new Carbon::now();
-                                        // $carbonDate = new Carbon($date . ' ' . $class->time);
-                                        // $carbonDate->timezone = $class->timezone;
-                                        // $actual_date = $carbonDate->toDayDateTimeString();
-                                    @endphp
-                                    @php
-                                        $original_date = Carbon::parse(
-                                            $class->date . ' ' . $class->time,
+                                        // $original_date = Carbon::parse(
+                                        //     $class->date . ' ' . $class->time,
+                                        //     $class->timezone,
+                                        // ); // Example date in New York timezone
+
+                                        // // Get the timezone in full name
+                                        // $my_local_timezone = $original_date->setTimezone(date_default_timezone_get());
+
+                                        // // Format the date with timezone in full name
+                                        // $formatted_mylocal_timezone_class_date =
+                                        //     $original_date->format('D, M j, Y h:i:s A') .
+                                        //     ' ' .
+                                        //     $my_local_timezone->timezone->getName();
+
+                                        $format_new_date_class_date = new DateTime($date);
+                                        $format_new_date_class_date = $format_new_date_class_date->format('Y-m-d');
+                                        $original_date_class_date = Carbon::parse(
+                                            $format_new_date_class_date . ' ' . $class->time,
                                             $class->timezone,
                                         ); // Example date in New York timezone
 
                                         // Get the timezone in full name
-                                        $my_local_timezone = $original_date->setTimezone(date_default_timezone_get());
+                                        $my_local_timezone_class_date = $original_date_class_date->setTimezone(date_default_timezone_get());
 
                                         // Format the date with timezone in full name
-                                        $formatted_mylocal_timezone =
-                                            $original_date->format('D, M j, Y h:i:s A') .
+                                        $formatted_mylocal_timezone_class_date =
+                                            $original_date_class_date->format('D, M j, Y h:i:s A') .
                                             ' ' .
-                                            $my_local_timezone->timezone->getName();
+                                            $my_local_timezone_class_date->timezone->getName();
                                     @endphp
-                                    {{-- {{ $formatted_mylocal_timezone }} --}}
+                                    {{-- {{ $formatted_mylocal_timezone_class_date }} --}}
                                     <span class="btn btn-sm text-white m-1"
-                                        style="background-color: #1d3557">{{ $formatted_mylocal_timezone }}</span>
+                                        style="background-color: #1d3557">{{ $formatted_mylocal_timezone_class_date }}</span>
                                     {{-- {{ $actual_date }},  --}}
                                 @endforeach
                                 @if (Auth::user()->sub->isActive)
@@ -103,7 +113,7 @@
                                                     <tr>
                                                         <th>S/N</th>
                                                         <th>Dates</th>
-                                                        <th>Class Link</th>
+                                                        <th>Class Status</th>
                                                         {{-- <th>Class Password</th> --}}
                                                         <th>Join Class</th>
                                                     </tr>
@@ -111,22 +121,9 @@
                                                         $sn = 1;
                                                     @endphp
                                                     @foreach ($meetings_arr as $key => $data)
-                                                        {{-- @dump($data) --}}
-                                                        @if ($data->meeting)
-                                                            @php
-                                                                $startTime = Carbon::parse(
-                                                                    $data->meeting->start,
-                                                                )->subMinutes(15);
-                                                                $endTime = Carbon::parse(
-                                                                    $data->meeting->start,
-                                                                )->addMinutes(70);
-                                                            @endphp
-                                                        @endif
-
-
                                                         @php
-                                                        $format_new_date = new DateTime($data->date);
-                                                        $format_new_date = $format_new_date->format('Y-m-d');
+                                                            $format_new_date = new DateTime($data->date);
+                                                            $format_new_date = $format_new_date->format('Y-m-d');
                                                             $original_date = Carbon::parse(
                                                                 $format_new_date . ' ' . $class->time,
                                                                 $class->timezone,
@@ -142,6 +139,21 @@
                                                                 $original_date->format('D, M j, Y h:i:s A') .
                                                                 ' ' .
                                                                 $my_local_timezone->timezone->getName();
+
+                                                            $startTime = $original_date->subMinutes(5);
+
+                                                            $format_end_date = new DateTime($data->date);
+                                                            $format_end_date = $format_end_date->format('Y-m-d');
+                                                            $original_end_date = Carbon::parse(
+                                                                $format_end_date . ' ' . $class->time,
+                                                                $class->timezone,
+                                                            ); // Example date in New York timezone
+
+                                                            // Get the timezone in full name
+                                                            $end_date_in_my_local_timezone = $original_end_date->setTimezone(
+                                                                date_default_timezone_get(),
+                                                            );
+                                                            $endTime = $original_end_date->addMinutes(70);
                                                         @endphp
                                                         <tr>
                                                             <th scope="col">{{ $sn++ }}</th>
@@ -158,17 +170,26 @@
                                                                 {{-- {{ date('D, M j, Y h:i:s A', strtotime($carbonDate)) }} --}}
                                                             </th>
                                                             <th scope="col" class="text-centerr">
+
+                                                                <button id="timed-button" style="display:none;">Click
+                                                                    Me</button>
                                                                 @if ($data->meeting)
-                                                                    {{-- <b>{{ substr($link, 0, 20) }}...</b> --}}
-                                                                    {{-- @if (now() <= $endTime) --}}
-                                                                        <button class="btn btn-sm btn-outline-dark"
-                                                                            onclick="copyMeeting('{{ route('join.meeting', $data->meeting->token) }}')">Copy
-                                                                            Link</button>
-                                                                    {{-- @else
-                                                                        <button class="btn btn-sm btn-outline-danger"
-                                                                            disabled style="cursor: no-drop !important">Copy
-                                                                            Link</button>
-                                                                    @endif --}}
+                                                                    @php
+                                                                        $currentDateTime = now();
+                                                                        $shouldShowButton = $currentDateTime->between(
+                                                                            $startTime,
+                                                                            $endTime,
+                                                                        );
+                                                                    @endphp
+                                                                    @if ($shouldShowButton)
+                                                                        <span class="btn btn-sm btn-success">Ongoing</span>
+                                                                    @elseif (now() > $endTime)
+                                                                        <span class="badge btn-sm btn-danger">Expired</span>
+                                                                    @elseif (now() < $startTime)
+                                                                        <span
+                                                                            class="badge btn-sm btn-primary">Pending</span>
+                                                                    @else
+                                                                    @endif
                                                                 @else
                                                                     <span
                                                                         class="badge bg-warning-light border-warning text-capitalize type-text">Awaiting
@@ -177,30 +198,8 @@
                                                                     </span>
                                                                 @endif
                                                             </th>
-                                                            {{-- <th scope="col" class="text-centerr">
-                                                        @if ($data->meeting)
-                                                            @if (now() <= $endTime)
-                                                                <button class="btn btn-sm btn-outline-dark"
-                                                                    onclick="copyMeetingPassword('{{ $data->meeting->password }}')">Copy
-                                                                    Password</button>
-                                                            @else
-                                                                <button class="btn btn-sm btn-outline-danger" disabled
-                                                                    style="cursor: no-drop !important">Copy
-                                                                    Password</button>
-                                                            @endif
-                                                        @else
-                                                            <span
-                                                                class="badge bg-warning-light border-warning text-capitalize type-text">Awaiting
-                                                                <img src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"
-                                                                    style="width:15px;" alt=""></span>
-                                                        @endif
-                                                    </th> --}}
                                                             <th>
                                                                 @if ($data->meeting)
-                                                                    {{-- {{ Carbon::parse($meetings_arr[$key]->start)->subMinutes(15) }}<br>
-                                                        {{ Carbon::now() }}<br>
-                                                        {{ Carbon::parse($meetings_arr[$key]->start)->addMinutes(70) }}<br> --}}
-
                                                                     @if (now() >= $startTime && now() <= $endTime)
                                                                         <a href="{{ route('join.meeting', $data->meeting->token) }}"
                                                                             target="blank" class="btn btn-primary">Join
@@ -210,7 +209,7 @@
                                                                         {{-- <p>The button is only available between {{ $startTime }} and
                                                                 {{ $endTime }}.</p> --}}
                                                                     @endif
-                                                                    {{-- @if (Carbon::parse($data['meeting']->start)->subMinutes(15) <= Carbon::now())
+                                                                    {{-- @if (Carbon::parse($data['meeting']->start)->subMinutes(5) <= Carbon::now())
                                                             <a href="{{ route('join.meeting', $meetings_arr[$key]->token) }}"
                                                                 class="btn btn-primary">Join Class</a>
                                                         @endif
@@ -304,6 +303,18 @@
 </div>
 </div>
 
+<style>
+    #timed-button {
+        margin: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
 <script>
     function copyMeetingPassword(password) {
         // console.log(password);

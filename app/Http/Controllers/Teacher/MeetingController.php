@@ -530,9 +530,124 @@ class MeetingController extends Controller
                 'password' => $password,
                 'timezone' => $timezone,
                 'host_email' => Auth::user()->email,
+                'reoccurence' => [
+                    'type' => 1,
+                ],
+                'authentication_exception' => [
+                    'auto_recording' => 'cloud',
+                ],
+                'settings'   => [
+                    'host_video'        => false,
+                    // 'alternative_hosts' => Auth::user()->email,
+                    'participant_video' => true,
+                    'cn_meeting'        => false,
+                    'in_meeting'        => false,
+                    'join_before_host'  => true,
+                    'mute_upon_entry'   => true,
+                    'show_share_button' => false,
+                    'watermark'         => false,
+                    'use_pmi'           => false,
+                    'approval_type'     => 0,
+                    'registration_type' => 0,
+                    'audio'             => 'voip',
+                    'auto_recording'    => 'none',
+                    'waiting_room'      => false,
+                ],
+            ];
+
+            // $this->refress_access_token();
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->settings()['zoom_access_token'],
+                'Content-Type'  => 'application/json',
+                'cache-control' => 'no-cache',
+            ])
+                ->withOptions([
+                    'verify' => false, // Skip SSL verification
+                ])
+                ->post('https://api.zoom.us/v2/users/me/meetings', $params);
+
+            if ($response->successful()) {
+                $meeting = Meeting::create([
+                    'user_id' => Auth::user()->id,
+                    // 'university_id' => $request->university_id,
+                    'MTID' => $response->json()['id'],
+                    'link' => $response->json()['join_url'],
+                    'title' => $title,
+                    'status' => $response->json()['status'],
+                    'start' => $start,
+                    'token' => md5(Str::orderedUuid()),
+                    'end' => $duration,
+                    'details' => $response->json(),
+                    'password' => $password
+                ]);
+
+                MeetingDetail::create([
+                    'meeting_id' => $meeting->id,
+                ]);
+
+                return ['meeting' => $meeting, 'status' => true];
+            } else {
+                // dd($response->json());
+                return false;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            // dd($th);
+            // return $th;
+            return false;
+        }
+    }
+
+    public function delete_masterclass($MTID)
+    {
+        # code...
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->settings()['zoom_access_token'],
+                'Content-Type'  => 'application/json',
+                'cache-control' => 'no-cache',
+            ])
+                ->withOptions([
+                    'verify' => false, // Skip SSL verification
+                ])
+                ->delete('https://api.zoom.us/v2/meetings/' . $MTID);
+            return true;
+            dd($response->json());
+            return $response->json();
+        } catch (\Throwable $th) {
+            return false;
+            dd($th->getMessage());
+            //throw $th;
+        }
+    }
+
+    public function create_meeting_test($data, $date, $timezone, $time)
+    {
+        try {
+            //code...
+            $start = Carbon::parse($date . ' ' . $time)->format('Y-m-d H:i:s');
+            // $end = Carbon::parse($request->end)->format('Y-m-d H:i:s');
+            $title = $data['title'];
+            // return [$data, $dates[0], $title];
+            $duration = 60;
+            $password = Str::random(10);
+
+            $params = [
+                'topic' => $title,
+                'type'  => 2,
+                'start_time' => $start,
+                'duration' => $duration,
+                'password' => $password,
+                'timezone' => $timezone,
+                'host_email' => Auth::user()->email,
+                'reoccurence' => [
+                    'type' => 1,
+                ],
                 'settings'   => [
                     'host_video'        => false,
                     'participant_video' => true,
+                    'alternative_hosts' => Auth::user()->email,
                     'cn_meeting'        => false,
                     'in_meeting'        => false,
                     'join_before_host'  => true,
