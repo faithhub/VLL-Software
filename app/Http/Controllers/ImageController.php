@@ -66,8 +66,6 @@ class ImageController extends Controller
 
     public function show2($filename)
     {
-        dd("fff");
-        return 333;
         // $path = storage_path('private/' . $filename);
         $path = 'private/' . $filename;
 
@@ -96,8 +94,6 @@ class ImageController extends Controller
 
     public function avatars($filename)
     {
-        dd("fff");
-        return 333;
         // $path = storage_path('private/' . $filename);
         $path = 'private/' . $filename;
 
