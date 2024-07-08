@@ -51,6 +51,10 @@ Route::get('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'
 Route::match(['get', 'post'], '/register/vendor', [App\Http\Controllers\Auth\RegisterController::class, 'vendor'])->name('vendor_reg');
 
 Route::get('/', [App\Http\Controllers\Web\HomeController::class, 'index'])->name('home');
+// Route::get('/', function () {
+   
+// });
+
 Route::get('privacy', [App\Http\Controllers\Web\HomeController::class, 'privacy'])->name('privacy');
 Route::get('about-us', [App\Http\Controllers\Web\HomeController::class, 'about_us'])->name('about_us');
 Route::get('faq', [App\Http\Controllers\Web\HomeController::class, 'faq'])->name('faq');

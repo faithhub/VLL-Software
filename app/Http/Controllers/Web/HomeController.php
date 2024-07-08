@@ -22,6 +22,7 @@ class HomeController extends Controller
 
     public function index()
     {
+        return redirect()->route('login');
         $data['title'] = "Home";
         $data['banner'] = true;
         $data['materials'] = Material::with(['type', 'cover', 'folder:*'])->where('status', 'active')->inRandomOrder()->limit(6)->get();
