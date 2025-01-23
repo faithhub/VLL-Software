@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
@@ -19,7 +17,7 @@ class Withdraw extends Mailable
      * Create a new message instance.
      *
      * @return void
-     * 
+     *
      */
     private $pdf_data;
 
@@ -27,15 +25,15 @@ class Withdraw extends Mailable
     {
         $this->pdf_data = [
             'payment_type' => $this->data->payment_type,
-            'acc_name' => $this->data->acc_name,
-            'bank' => $this->data->bank,
-            'acc_name' => $this->data->acc_name,
-            'acc_num' => $this->data->acc_num,
-            'fee' => $this->data->fee,
-            'date' => $this->data->date,
-            'currency' => $this->data->currency,
-            'amount' => $this->data->amount,
-            'ref' => $this->data->ref,
+            'acc_name'     => $this->data->acc_name,
+            'bank'         => $this->data->bank,
+            'acc_name'     => $this->data->acc_name,
+            'acc_num'      => $this->data->acc_num,
+            'fee'          => $this->data->fee,
+            'date'         => $this->data->date,
+            'currency'     => $this->data->currency,
+            'amount'       => $this->data->amount,
+            'ref'          => $this->data->ref,
         ];
     }
 
@@ -43,7 +41,6 @@ class Withdraw extends Mailable
     {
         return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
     }
-
 
     /**
      * Get the message envelope.
@@ -65,7 +62,6 @@ class Withdraw extends Mailable
     public function content()
     {
 
-
         return new Content(
             markdown: 'emails.transaction.withdraw',
             with: $this->pdf_data,
@@ -77,12 +73,27 @@ class Withdraw extends Mailable
      *
      * @return array
      */
+    // public function attachments()
+    // {
+    //     $pdf = PDF::loadView('pdf.receipt', ['data' => $this->pdf_data]);
+    //     return [
+    //         Attachment::fromData(fn () => $pdf->output(), $this->data->ref . '-' . $this->data->payment_type . '.pdf')
+    //             ->withMime('application/pdf'),
+    //     ];
+    // }
     public function attachments()
     {
-        $pdf = PDF::loadView('pdf.receipt', ['data' => $this->pdf_data]);
-        return [
-            Attachment::fromData(fn () => $pdf->output(), $this->data->ref . '-' . $this->data->payment_type . '.pdf')
-                ->withMime('application/pdf'),
-        ];
+        try {
+            $pdf = PDF::loadView('pdf.receipt', ['data' => $this->pdf_data]);
+            return [
+                Attachment::fromData(
+                    fn() => $pdf->output(),
+                    'receipt-' . Str::slug($this->data->ref) . '-' . $this->data->payment_type . '.pdf'
+                )->withMime('application/pdf'),
+            ];
+        } catch (\Exception $e) {
+            \Log::error('PDF Generation Error: ' . $e->getMessage());
+            return [];
+        }
     }
 }

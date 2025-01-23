@@ -8,8 +8,10 @@
     <meta content="Virtual Law Library Dashboard" name="description">
     <meta content="" name="author">
     <meta name="keywords" content="Virtual Law Library dashboard">
-    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/2.15.2/css/bootstrap.css" />
-    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/2.15.2/css/react-select.css" />
+    {{-- <link type="text/css" rel="stylesheet" href="https://source.zoom.us/2.15.2/css/bootstrap.css" />
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/2.15.2/css/react-select.css" /> --}}
+    <link rel="stylesheet" href="https://source.zoom.us/2.18.0/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://source.zoom.us/2.18.0/css/react-select.css" />
     <link rel="icon" type="image/png" href="{{ asset('assets/web/logo/vll-b.png') }}">
     <!-- Link of CSS files -->
     <style>
@@ -35,15 +37,23 @@
     <div class="global-pop-up-box"></div>
     <div class="sharer-controlbar-container sharer-controlbar-container--hidden"></div>
 
-    <script src="https://source.zoom.us/2.15.2/lib/vendor/react.min.js"></script>
+    {{-- <script src="https://source.zoom.us/2.15.2/lib/vendor/react.min.js"></script>
     <script src="https://source.zoom.us/2.15.2/lib/vendor/react-dom.min.js"></script>
     <script src="https://source.zoom.us/2.15.2/lib/vendor/redux.min.js"></script>
     <script src="https://source.zoom.us/2.15.2/lib/vendor/redux-thunk.min.js"></script>
     <script src="https://source.zoom.us/2.15.2/lib/vendor/lodash.min.js"></script>
-    <script src="https://source.zoom.us/zoom-meeting-2.15.2.min.js"></script>
+    <script src="https://source.zoom.us/zoom-meeting-2.15.2.min.js"></script> --}}
+
+    <script src="https://source.zoom.us/2.18.0/lib/vendor/react.min.js"></script>
+    <script src="https://source.zoom.us/2.18.0/lib/vendor/react-dom.min.js"></script>
+    <script src="https://source.zoom.us/2.18.0/lib/vendor/redux.min.js"></script>
+    <script src="https://source.zoom.us/2.18.0/lib/vendor/redux-thunk.min.js"></script>
+    <script src="https://source.zoom.us/2.18.0/lib/vendor/lodash.min.js"></script>
+    <script src="https://source.zoom.us/zoom-meeting-2.18.0.min.js"></script>
 
     <script>
-        ZoomMtg.setZoomJSLib("https://jssdk.zoomus.cn/2.15.2/lib", "/av"); // china cdn option'   
+        // ZoomMtg.setZoomJSLib("https://jssdk.zoomus.cn/2.15.2/lib", "/av"); // china cdn option'
+        ZoomMtg.setZoomJSLib("https://source.zoom.us/2.18.0/lib", "/av");
         ZoomMtg.preLoadWasm();
         ZoomMtg.prepareJssdk();
 
@@ -55,10 +65,23 @@
             role: 0, // 0 for attendee, 1 for host
         };
 
+        // const signature = ZoomMtg.generateSDKSignature({
+        //     meetingNumber: zoomMeeting.meetingNumber,
+        //     sdkKey: "{{ $settings['zoom_client_id'] }}",
+        //     sdkSecret: "{{ $settings['zoom_client_secret'] }}", // replace with your Zoom API secret
+        //     role: zoomMeeting.role,
+        //     success: function(res) {
+        //         console.log('Signature:', res.result);
+        //     },
+        //     error: function(res) {
+        //         console.error('Error signature meeting:', res);
+        //     },
+        // });
+
         const signature = ZoomMtg.generateSDKSignature({
             meetingNumber: zoomMeeting.meetingNumber,
             sdkKey: "{{ $settings['zoom_client_id'] }}",
-            sdkSecret: "{{ $settings['zoom_client_secret'] }}", // replace with your Zoom API secret
+            sdkSecret: "{{ $settings['zoom_client_secret'] }}",
             role: zoomMeeting.role,
             success: function(res) {
                 console.log('Signature:', res.result);
@@ -73,23 +96,23 @@
             leaveUrl: zoomMeeting.leaveUrl,
             isSupportAV: true,
             success: function() {
-                 ZoomMtg.showInviteFunction({
-                show: 0,
-            }),
-                ZoomMtg.join({
-                    meetingNumber: zoomMeeting.meetingNumber,
-                    userName: zoomMeeting.userName,
-                    sdkKey: "{{ $settings['zoom_client_id'] }}",
-                    userEmail: '{{ Auth::user()->email }}',
-                    passWord: zoomMeeting.passWord,
-                    signature: signature,
-                    success: function(res) {
-                        console.log('Meeting joined successfully:', res);
-                    },
-                    error: function(res) {
-                        console.error('Error joining meeting:', res);
-                    },
-                });
+                ZoomMtg.showInviteFunction({
+                        show: 0,
+                    }),
+                    ZoomMtg.join({
+                        meetingNumber: zoomMeeting.meetingNumber,
+                        userName: zoomMeeting.userName,
+                        sdkKey: "{{ $settings['zoom_client_id'] }}",
+                        userEmail: '{{ Auth::user()->email }}',
+                        passWord: zoomMeeting.passWord,
+                        signature: signature,
+                        success: function(res) {
+                            console.log('Meeting joined successfully:', res);
+                        },
+                        error: function(res) {
+                            console.error('Error joining meeting:', res);
+                        },
+                    });
             },
             error: function(res) {
                 console.error('Zoom initialization error:', res);
