@@ -34,7 +34,7 @@ Route::get('/', function () {
 // })->middleware('auth')->where('any', '.*');
 
 
-Route::get('/api/materials-carousel', [MaterialAPIController::class, 'getMaterialsForCarousel']);
+// Route::get('/api/materials-carousel', [MaterialAPIController::class, 'getMaterialsForCarousel']);
 
 //Master Class Cover
 Route::get('private/{filename}', [App\Http\Controllers\ImageController::class, 'private'])->name('image.private');

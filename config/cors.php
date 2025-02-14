@@ -15,20 +15,34 @@ return [
     |
     */
 
+    // 'paths' => ['api/*', 'sanctum/csrf-cookie'],
+
+    // 'allowed_methods' => ['*'],
+
+    // 'allowed_origins' => ['*'],
+
+    // 'allowed_origins_patterns' => [],
+
+    // 'allowed_headers' => ['*'],
+
+    // 'exposed_headers' => [],
+
+    // 'max_age' => 0,
+
+    // 'supports_credentials' => false,
+
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
-
-    'allowed_methods' => ['*'],
-
-    'allowed_origins' => ['*'],
-
-    'allowed_origins_patterns' => [],
-
-    'allowed_headers' => ['*'],
-
+    // 'allowed_methods' => ['*'],
+    // 'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
+    // 'allowed_origins_patterns' => [],
+    'allowed_methods' => ['GET'],
+    'allowed_origins' => [
+        'http://localhost:3000', // Your React development server
+        'https://www.virtuallawlibrary.com' // Your production frontend
+    ],
+    'allowed_headers' => ['Content-Type', 'X-Requested-With', 'Authorization'],
     'exposed_headers' => [],
-
     'max_age' => 0,
-
-    'supports_credentials' => false,
-
+    'supports_credentials' => true,
 ];
+
