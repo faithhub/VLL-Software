@@ -96,4 +96,14 @@ class Material extends Model
     {
         return $this->hasOne(Folder::class, 'id', 'folder_id');
     }
+
+    public function materialCover()
+    {
+        return $this->belongsTo(File::class, 'material_cover_id');
+    }
+
+    public function materialType()
+    {
+        return $this->belongsTo(MaterialType::class);
+    }
 }

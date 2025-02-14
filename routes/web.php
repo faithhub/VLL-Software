@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MaterialAPIController;
 use App\Http\Controllers\ZoomController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -31,6 +32,9 @@ Route::get('/', function () {
 //     abort_if(!Storage::disk('profile_pics')->exists($file), 404, "File doesn't exist.");
 //     return Storage::disk('profile_pics')->response($file);
 // })->middleware('auth')->where('any', '.*');
+
+
+Route::get('/api/materials-carousel', [MaterialAPIController::class, 'getMaterialsForCarousel']);
 
 //Master Class Cover
 Route::get('private/{filename}', [App\Http\Controllers\ImageController::class, 'private'])->name('image.private');
