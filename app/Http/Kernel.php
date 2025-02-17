@@ -78,6 +78,7 @@ class Kernel extends HttpKernel
         'check_rented_materials' => \App\Http\Middleware\CheckRentedMaterials::class,
         // Other middleware entries...
         'protected' => \App\Http\Middleware\ProtectedMiddleware::class,
+        'api.key' => \App\Http\Middleware\CheckApiKey::class,
 
     ];
 }

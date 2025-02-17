@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Material;
 
 class MaterialAPIController extends Controller
-{  public function getMaterialsForCarousel()
+{
+    public function getMaterialsForCarousel()
     {
         $materials = Material::with(['materialCover', 'materialType'])
             ->whereHas('materialType', function($query) {

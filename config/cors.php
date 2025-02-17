@@ -15,7 +15,7 @@ return [
     |
     */
 
-    // 'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
     // 'allowed_methods' => ['*'],
 
@@ -31,15 +31,7 @@ return [
 
     // 'supports_credentials' => false,
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
-    // 'allowed_methods' => ['*'],
-    // 'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
-    // 'allowed_origins_patterns' => [],
     'allowed_methods' => ['GET'],
-    'allowed_origins' => [
-        'http://localhost:3000', // Your React development server
-        'https://www.virtuallawlibrary.com' // Your production frontend
-    ],
     'allowed_headers' => ['Content-Type', 'X-Requested-With', 'Authorization'],
     'exposed_headers' => [],
     'max_age' => 0,
