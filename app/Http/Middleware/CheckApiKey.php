@@ -16,16 +16,24 @@ class CheckApiKey
      */
     public function handle(Request $request, Closure $next)
     {
-        $validApiKey = config('app.api_key'); // Store this in your .env file
+        // $validApiKey = config('app.api_key'); // Store this in your .env file
         
+        
+        // if (!$request->header('X-API-Key') || $request->header('X-API-Key') !== $validApiKey) {
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => 'Invalid API key'
+        //     ], 401);
+        // }
+
+        $validApiKey = config('app.api_key');
         
         if (!$request->header('X-API-Key') || $request->header('X-API-Key') !== $validApiKey) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid API key'
-            ], 401);
+            ], 401)->header('Access-Control-Allow-Headers', 'X-API-Key');
         }
-
         return $next($request);
     }
 }

@@ -19,7 +19,8 @@ return [
 
     // 'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    // 'allowed_origins' => ['*'],
+    'allowed_origins' => ['https://virtuallawlibrary.com', 'http://127.0.0.1:3000'],
 
     'allowed_origins_patterns' => [],
 
@@ -32,7 +33,8 @@ return [
     // 'supports_credentials' => false,
 
     'allowed_methods' => ['GET'],
-    'allowed_headers' => ['Content-Type', 'X-Requested-With', 'Authorization'],
+    // 'allowed_headers' => ['Content-Type', 'X-Requested-With', 'Authorization'],
+    'allowed_headers' => ['Content-Type', 'X-Requested-With', 'X-API-Key', 'Authorization'],  // Add X-API-Key here
     'exposed_headers' => [],
     'max_age' => 0,
     'supports_credentials' => true,
